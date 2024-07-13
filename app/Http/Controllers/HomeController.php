@@ -1345,7 +1345,7 @@ class HomeController extends Controller
     } 
 
     public function exportInvoice(Request $request){
-   
-        return Excel::download(new ExportOrderList($invoice_ref,$vendor_id), 'invoice.xlsx');
+        $invoice_ref = $request->invoice_ref;
+        return Excel::download(new ExportOrderList($invoice_ref), 'invoice.xlsx');
     }
 }//class
