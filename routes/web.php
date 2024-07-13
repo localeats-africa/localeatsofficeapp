@@ -105,7 +105,7 @@ Route::controller(HomeController::class)->group(function () {
     Route::post('reset-order-food-price/{id}',  'resetOrderFoodPrice')->name('reset-order-food-price');
     Route::post('reset-order-extra/{id}',  'resetOrderExtra')->name('reset-order-extra');
     //exportinvoice
-    Route::get('export-invoice/{id}/{vendor}', 'exportInvoice')->name('export-invoice');
+    Route::get('export-invoice/{id}', 'exportInvoice')->name('export-invoice');
 });
 
 Route::controller(SuperAdminController::class)->group(function () {
