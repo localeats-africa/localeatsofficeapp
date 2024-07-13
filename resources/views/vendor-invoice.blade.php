@@ -240,10 +240,10 @@ function exportInvoice() {
 </script>
 <script> 
         function printDiv() { 
-            document.write( "<link rel='stylesheet' href='{{ asset('assets/css/style.css') }}' type='text/css' media='print'/>" );
-            var divContents = document.getElementById("print_invoice").innerHTML; 
-            var a = window.open(''); 
+          var divContents = document.getElementById("print_invoice").innerHTML; 
+            var a = window.open(); 
             a.document.write('<html>'); 
+            a.document.write( "<link rel='stylesheet' href='{{ asset('assets/css/style.css') }}' type='text/css' media='print'/>" );
             a.document.write('<body> '); 
             a.document.write(divContents); 
             a.document.write('</body></html>'); 
