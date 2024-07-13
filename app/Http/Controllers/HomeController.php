@@ -1117,6 +1117,13 @@ class HomeController extends Controller
         ->where('users.id', $user_id)
         ->pluck('role_name')->first();
 
+        $vendorID = Vendor::where('id', $vendor)
+        ->get('*')->pluck('id')->first();
+
+        $invoiceRef = Orders::where('vendor_id', $vendor)
+        ->where('invoice_ref', $invoice_ref)
+        ->get('*')->pluck('invoice_ref')->first();
+
         $vendorBusinessName = Vendor::where('id', $vendor)
         ->get('*')->pluck('store_name')->first();
 
