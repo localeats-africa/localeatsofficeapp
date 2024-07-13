@@ -156,9 +156,9 @@
                                                                         <td><small>{{$data->order_ref}}</small></td>
                                                                         <td><small>{{ date('m/d/Y', strtotime($data->delivery_date))}}</small>
                                                                         </td>
-                                                                        <td><small>{{number_format($data->food_price)}}</small>
+                                                                        <td><small>{{number_format(floatval($data->food_price))}}</small>
                                                                         </td>
-                                                                        <td><small>{{number_format($data->extra)}}</small>
+                                                                        <td><small>{{number_format(floatval($data->extra))}}</small>
                                                                         </td>
 
                                                                   </tr>
