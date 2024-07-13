@@ -1188,7 +1188,7 @@ class HomeController extends Controller
             'vendorAddress','vendorState', 'vendorCountry', 'vendorPhone',
             'vendorEmail', 'vendorFname', 'vendorLname', 'orders',
             'sumFoodPrice', 'sumExtra','vendorFoodPrice', 'payout', 
-            'payment_status', 'invoice_ref', 'vendorID'));
+            'payment_status', 'invoice_ref', 'vendorID', 'invoiceRef'));
 
      }
 
