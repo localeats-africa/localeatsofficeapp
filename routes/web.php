@@ -104,7 +104,8 @@ Route::controller(HomeController::class)->group(function () {
     Route::post('delete-order/{id}',  'deleteOrder')->name('delete-order');
     Route::post('reset-order-food-price/{id}',  'resetOrderFoodPrice')->name('reset-order-food-price');
     Route::post('reset-order-extra/{id}',  'resetOrderExtra')->name('reset-order-extra');
-
+    //exportinvoice
+    Route::get('/export-invoice', 'exportInvoice')->name('export-invoice');
 });
 
 Route::controller(SuperAdminController::class)->group(function () {
