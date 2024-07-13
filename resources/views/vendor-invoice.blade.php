@@ -241,7 +241,7 @@ function exportInvoice() {
 <script> 
         function printDiv() { 
             var divContents = document.getElementById("print_invoice").innerHTML; 
-            var a = window.open('', ''); 
+            var a = window.open(''); 
             a.document.write('<html>'); 
             a.document.write('<body> '); 
             a.document.write(divContents); 
