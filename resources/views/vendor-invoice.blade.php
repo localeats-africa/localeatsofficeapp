@@ -32,15 +32,17 @@
             <div class="page-header">
                   <h3 class="page-title">Invoice</h3>
 
+                 
+
                   <nav aria-label="breadcrumb">
                 <ul class="breadcrumb">
                   <li class="breadcrumb-item active" aria-current="page">
-                    <span></span>  <a href="{{ url('/export') }}">Export To Excel</a> 
+                    <span></span>  <a href=" {{ route('export-invoice,  [$invoice_ref]') }}">Export To Excel </a> 
                   </li>
                 </ul>
               </nav>
             </div>
-            <!---Alert --->
+            <!---Alert --->                            
 
             <div class="row">
                   <div class="col-lg-12">
