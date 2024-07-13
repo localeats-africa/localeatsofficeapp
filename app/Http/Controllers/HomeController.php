@@ -1334,5 +1334,5 @@ class HomeController extends Controller
         else{
             return redirect()->back()->with('merge-error', 'Opps! something went wrong'); 
         }
-    }
+    } 
 }//class
