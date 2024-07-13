@@ -33,15 +33,23 @@
                   <h3 class="page-title">Invoice</h3>
 
                   <nav aria-label="breadcrumb">
-                <ul class="breadcrumb">
-                  <li class="breadcrumb-item active" aria-current="page">
-                  <a href="{{ route('export-invoice', [$invoice_ref]) }}"> Export here   {{$invoice_ref}}</a>
-                    <span></span>  <button type="button" class="btn btn-info">Export To Excel</button> 
-                  </li>
-                </ul>
-              </nav>
+                        <ul class="breadcrumb">
+                              <li class="breadcrumb-item active" aria-current="page">
+                              <span></span>       
+                              <form action="{{ route('export-invoice', [$invoice_ref]) }}" method="post"
+                                          name="submit" enctype="multipart/form-data">
+                                          @csrf
+                                          <input type="hidden" value="{{$invoice_ref}}" name="invoice_ref">
+                                          <button type="submit" name="submit" class="btn btn-info">Export To
+                                          Excel</button>
+                                    </form>
+
+                                
+                              </li>
+                        </ul>
+                  </nav>
             </div>
-            <!---Alert --->                            
+            <!---Alert --->
 
             <div class="row">
                   <div class="col-lg-12">
@@ -115,7 +123,8 @@
                                                             <ol class="breadcrumb">
                                                                   <li class="breadcrumb-item">
                                                                         <button
-                                                                              class="btn btn-outline-dark bg-gradient text-dark" onclick="javascript:window.print();">
+                                                                              class="btn btn-outline-dark bg-gradient text-dark"
+                                                                              onclick="javascript:window.print();">
                                                                               <i class="fa fa-print"></i></button>
                                                                   </li>
                                                                   <li class="breadcrumb-item">
@@ -159,7 +168,8 @@
 
                                                                   <tr>
                                                                         <td width="50%" style="white-space:wrap"><small>
-                                                                        {!! nl2br($data->description) !!}    </small></td>
+                                                                                    {!! nl2br($data->description) !!}
+                                                                              </small></td>
                                                                         <td><small>{{$data->order_ref}}</small></td>
                                                                         <td><small>{{ date('m/d/Y', strtotime($data->delivery_date))}}</small>
                                                                         </td>
@@ -191,7 +201,7 @@
 
                                                                   </tr>
 
-                                                                  
+
                                                                   <tr>
                                                                         <th colspan="4" class="text-end">
                                                                               <h6>Total Order (s)</h6>
@@ -240,11 +250,11 @@
 
 <script>
 function exportInvoice() {
-            var id = document.getElementById('invoice_ref').value;
-            var showRoute = "{{ route('export-invoice', ':id') }}";
-            url = showRoute.replace(':id', id);
+      var id = document.getElementById('invoice_ref').value;
+      var showRoute = "{{ route('export-invoice', ':id') }}";
+      url = showRoute.replace(':id', id);
 
-            window.location = url;
+      window.location = url;
 
 }
 </script>
