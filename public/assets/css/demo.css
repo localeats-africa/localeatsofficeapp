@@ -9,12 +9,40 @@
 /* prettier-ignore */
 /* prettier-ignore */
 /* custom css */
+@media print {
+  .d-print-none {
+ display: none !important;}
+  .d-print-inline {
+ display: inline !important;}
+ 
+  .d-print-inline-block {
+ display: inline-block !important;}
+ 
+  .d-print-block {
+ display: block !important;}
+ 
+  .d-print-table {
+ display: table !important;}
+ 
+  .d-print-table-row {
+ display: table-row !important;}
+ 
+  .d-print-table-cell {
+ display: table-cell !important;}
+ 
+  .d-print-flex {
+ display: -ms-flexbox !important;
+ display: flex !important; }
+ 
+  .d-print-inline-flex {
+ display: -ms-inline-flexbox !important;
+ display: inline-flex !important;}
+}
+ 
 .select2-results__option[aria-selected] {
   cursor: pointer;
   text-transform: capitalize;
   }
-
-
 .avatar-xl{
   size: 2.5rem;
   font-size: 2rem;
