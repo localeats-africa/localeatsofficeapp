@@ -35,7 +35,8 @@
                   <nav aria-label="breadcrumb">
                 <ul class="breadcrumb">
                   <li class="breadcrumb-item active" aria-current="page">
-                    <span></span>  <a href="export-invoice/{{$invoice_ref}}">Export To Excel </a> 
+                        
+                    <span></span>  <button type="button" class="btn btn-info" onclick="exportInvoice()">Export To Excel</button> 
                   </li>
                 </ul>
               </nav>
@@ -96,7 +97,7 @@
                                                             </div>
                                                             <p></p>
                                                             <div class="mt-1">
-                                                                  <h4>Invoice ID: {{$invoice_ref}}</h4>
+                                                                  <h4 id="invoice_ref">Invoice ID: {{$invoice_ref}}</h4>
                                                                   <h3 class="text-info text-uppercase">
                                                                         {{$payment_status}}</h3>
                                                             </div>
@@ -236,4 +237,15 @@
 <script src="{{ asset('assets/js/file-upload.js')}}"></script>
 <script src="{{ asset('assets/js/typeahead.js')}}"></script>
 <script src="{{ asset('assets/js/select2.js')}}"></script>
+
+<script>
+function exportInvoice() {
+            var id = document.getElementById('invoice_ref').value;
+            var showRoute = "{{ route('export-invoice', ':id') }}";
+            url = showRoute.replace(':id', id);
+
+            window.location = url;
+
+}
+</script>
 @endsection
