@@ -31,23 +31,6 @@
 
             <div class="page-header">
                   <h3 class="page-title">Invoice</h3>
-
-                  <nav aria-label="breadcrumb">
-                        <ul class="breadcrumb">
-                              <li class="breadcrumb-item active" aria-current="page">
-                              <span></span>       
-                              <form action="{{ route('export-invoice', [$invoice_ref]) }}" method="post"
-                                          name="submit" enctype="multipart/form-data">
-                                          @csrf
-                                          <input type="hidden" value="{{$invoice_ref}}" name="invoice_ref">
-                                          <button type="submit" name="submit" class="btn btn-info">Export To
-                                          Excel</button>
-                                    </form>
-
-                                
-                              </li>
-                        </ul>
-                  </nav>
             </div>
             <!---Alert --->
 
@@ -56,7 +39,40 @@
                   </div>
             </div>
             <!---end---alert--->
-
+            <div class="row">
+                  <div class="col-sm-12">
+                        <div class="page-header">
+                              <form action="{{ route('export-invoice', [$invoice_ref]) }}" method="post" name="submit"
+                                    enctype="multipart/form-data">
+                                    @csrf
+                                    <input type="hidden" value="{{$invoice_ref}}" name="invoice_ref">
+                                    <button type="submit" name="submit" class="btn btn-info">Export To
+                                          Excel</button>
+                              </form>
+                              <nav style="--bs-breadcrumb-divider: '';" aria-label="breadcrumb">
+                                    <ol class="breadcrumb">
+                                          <li class="breadcrumb-item">
+                                                <button class="btn btn-outline-dark bg-gradient text-dark"
+                                                      onclick="printDiv()">
+                                                      <i class="fa fa-print"></i></button>
+                                          </li>
+                                          <li class="breadcrumb-item">
+                                                <button class="btn btn-outline-dark bg-gradient text-dark">
+                                                      <i class="fa fa-download"></i></button>
+                                          </li>
+                                          <li class="breadcrumb-item">
+                                                <button class="btn btn-outline-dark bg-gradient text-dark">
+                                                      <i class="fa fa-envelope"></i></button>
+                                          </li>
+                                          <li class="breadcrumb-item">
+                                                <button class="btn btn-outline-dark bg-gradient text-dark">
+                                                      <i class="fa fa-whatsapp"></i></button>
+                                          </li>
+                                    </ol>
+                              </nav>
+                        </div>
+                  </div>
+            </div>
 
             <div class="row">
                   <div class="col-md-12">
@@ -115,39 +131,6 @@
 
                                     </div>
                                     <!---row--->
-                                    <div class="row">
-                                          <div class="col-sm-12">
-                                                <div class="page-header">
-                                                      <h6></h6>
-                                                      <nav style="--bs-breadcrumb-divider: '';" aria-label="breadcrumb">
-                                                            <ol class="breadcrumb">
-                                                                  <li class="breadcrumb-item">
-                                                                        <button
-                                                                              class="btn btn-outline-dark bg-gradient text-dark"
-                                                                              onclick="javascript:window.print();">
-                                                                              <i class="fa fa-print"></i></button>
-                                                                  </li>
-                                                                  <li class="breadcrumb-item">
-                                                                        <button
-                                                                              class="btn btn-outline-dark bg-gradient text-dark">
-                                                                              <i class="fa fa-download"></i></button>
-                                                                  </li>
-                                                                  <li class="breadcrumb-item">
-                                                                        <button
-                                                                              class="btn btn-outline-dark bg-gradient text-dark">
-                                                                              <i class="fa fa-envelope"></i></button>
-                                                                  </li>
-                                                                  <li class="breadcrumb-item">
-                                                                        <button
-                                                                              class="btn btn-outline-dark bg-gradient text-dark">
-                                                                              <i class="fa fa-whatsapp"></i></button>
-                                                                  </li>
-                                                            </ol>
-                                                      </nav>
-                                                </div>
-                                          </div>
-                                    </div>
-
 
                                     <div class="row mb-3">
                                           <div class="col-sm-12">
@@ -239,14 +222,11 @@
       </footer>
 </div><!-- main-panel -->
 
-<script src="{{ asset('assets/vendors/select2/select2.min.js')}}"></script>
-<script src="{{ asset('assets/vendors/typeahead.js/typeahead.bundle.min.js')}}"></script>
+<script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.0/jquery.min.js"></script>
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/1.5.3/jspdf.min.js">
+</script>
+<script type="text/javascript" src="https://html2canvas.hertzen.com/dist/html2canvas.js"></script>
 
-<!-- endinject -->
-<!-- Custom js for this page -->
-<script src="{{ asset('assets/js/file-upload.js')}}"></script>
-<script src="{{ asset('assets/js/typeahead.js')}}"></script>
-<script src="{{ asset('assets/js/select2.js')}}"></script>
 
 <script>
 function exportInvoice() {
@@ -255,6 +235,20 @@ function exportInvoice() {
       url = showRoute.replace(':id', id);
 
       window.location = url;
+
+}
+</script>
+
+<script>
+function printDiv(invoice) {
+      var printContents = document.getElementById(invoice).innerHTML;
+      var originalContents = document.body.innerHTML;
+
+      document.body.innerHTML = printContents;
+
+      window.print();
+
+      document.body.innerHTML = originalContents;
 
 }
 </script>
