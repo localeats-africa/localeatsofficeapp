@@ -1336,4 +1336,8 @@ class HomeController extends Controller
             return redirect()->back()->with('merge-error', 'Opps! something went wrong'); 
         }
     } 
+
+    public function exportInvoice(Request $request){
+        return Excel::download(new ExportOrderList, 'invoice.xlsx');
+    }
 }//class
