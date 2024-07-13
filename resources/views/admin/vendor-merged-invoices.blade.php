@@ -99,7 +99,6 @@
                                                       <th>Import Date</th>
                                                       <th>Vendor</th>
                                                       <th>Invoice Ref.</th>
-                                                      <th>No. of Order Imported</th>
 
                                                       <th></th>
                                                 </tr>
@@ -111,7 +110,6 @@
                                                       <td>{{$data->created_at}}</td>
                                                       <td class="text-sm">{{$data->vendor_name}} </td>
                                                       <td>{{ $data->invoice_ref}}</td>
-                                                      <td>{{$data->number_of_order_merge}}</td>
 
 
 
