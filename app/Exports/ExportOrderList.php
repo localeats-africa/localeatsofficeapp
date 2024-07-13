@@ -11,7 +11,7 @@ use Auth;
 
 class ExportOrderList implements FromCollection
 {
-    public function  __construct(string $vendor_id, $invoice_ref ) {
+    public function  __construct(string $invoice_ref, $vendor_id ) {
         $this->vendor_id= $vendor_id;
         $this->invoice_ref =  $invoice_ref ;
     }
