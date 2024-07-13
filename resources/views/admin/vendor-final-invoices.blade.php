@@ -97,7 +97,7 @@
                                                       <th class="w-1"><input class="form-check-input m-0 align-middle"
                                                                   type="checkbox" aria-label="Select all product">
                                                       </th>
-                                                      <th>Import Date</th>
+                                                      <th>Date Created</th>
                                                       <th>Vendor</th>
                                                       <th>Invoice  Ref.</th>
                                                       <th></th>
@@ -108,7 +108,7 @@
                                                 <tr>
                                                       <td><input class="form-check-input m-0 align-middle"
                                                                   type="checkbox" aria-label="Select"></td>
-                                                      <td>{{$data->created_at}}</td>
+                                                      <td>{{ date('Y/m/d', strtotime($data->created_at))}}</td>
                                                   
                                                       <td class="text-sm">{{$data->vendor_name}} </td>
                                                       <td>{{ $data->invoice_ref}}</td>

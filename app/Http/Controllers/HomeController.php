@@ -27,6 +27,7 @@ use App\Mail\NewUserEmail;
 use App\Imports\OrderList;
 use App\Imports\OrdersImportClass;
 use App\Imports\FoodMenuImportClass;
+use App\Exports\ExportOrderList;
 use App\Models\Invoice;
 use App\Models\Payout;
 
@@ -1116,6 +1117,13 @@ class HomeController extends Controller
         ->where('users.id', $user_id)
         ->pluck('role_name')->first();
 
+        $vendorID = Vendor::where('id', $vendor)
+        ->get('*')->pluck('id')->first();
+
+        $invoiceRef = Orders::where('vendor_id', $vendor)
+        ->where('invoice_ref', $invoice_ref)
+        ->get('*')->pluck('invoice_ref')->first();
+
         $vendorBusinessName = Vendor::where('id', $vendor)
         ->get('*')->pluck('store_name')->first();
 
@@ -1180,7 +1188,7 @@ class HomeController extends Controller
             'vendorAddress','vendorState', 'vendorCountry', 'vendorPhone',
             'vendorEmail', 'vendorFname', 'vendorLname', 'orders',
             'sumFoodPrice', 'sumExtra','vendorFoodPrice', 'payout', 
-            'payment_status', 'invoice_ref'));
+            'payment_status', 'invoice_ref', 'vendorID'));
 
      }
 
@@ -1335,4 +1343,9 @@ class HomeController extends Controller
             return redirect()->back()->with('merge-error', 'Opps! something went wrong'); 
         }
     } 
+
+    public function exportInvoice(Request $request){
+        $invoice_ref = $request->invoice_ref;
+        return Excel::download(new ExportOrderList($invoice_ref), 'invoice-'.$invoice_ref.'.xlsx');
+    }
 }//class
