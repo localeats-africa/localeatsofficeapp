@@ -11,8 +11,7 @@ use Auth;
 
 class ExportOrderList implements FromCollection
 {
-    public function  __construct(string $invoice_ref, $vendor_id ) {
-        $this->vendor_id= $vendor_id;
+    public function  __construct(string $invoice_ref ) {
         $this->invoice_ref =  $invoice_ref ;
     }
 
@@ -23,7 +22,6 @@ class ExportOrderList implements FromCollection
     {
         return Orders::leftJoin('merge_invoices', 'orders.id', '=', 'merge_invoices.order_id')
         ->leftJoin('vendor', 'orders.vendor_id', '=', 'vendor.id')
-        ->where('orders.vendor_id',  $this->vendor_id)
         ->where('orders.invoice_ref', $this->invoice_ref)
         ->where('orders.deleted_at', null)
         ->get(['vendor.vendor_name',
