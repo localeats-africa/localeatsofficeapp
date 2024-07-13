@@ -32,7 +32,8 @@ class ExportOrderList implements FromCollection
         'orders.order_amount',
         'orders.delivery_date',
         'orders.food_price',
-        'orders.extra'
+        'orders.extra',
+        'orders.payout'
        ]);
     }
 }
