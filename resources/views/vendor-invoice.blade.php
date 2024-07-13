@@ -76,7 +76,7 @@
 
             <div class="row">
                   <div class="col-md-12">
-                        <div class="card">
+                        <div class="card" id="print_invoice">
                               <div class="card-body">
                                     <div class="row">
                                           <div class="col-md-6 col-6">
@@ -238,18 +238,17 @@ function exportInvoice() {
 
 }
 </script>
+<script> 
+        function printDiv() { 
+            var divContents = document.getElementById("print_invoice").innerHTML; 
+            var a = window.open('', ''); 
+            a.document.write('<html>'); 
+            a.document.write('<body> '); 
+            a.document.write(divContents); 
+            a.document.write('</body></html>'); 
+            a.document.close(); 
+            a.print(); 
+        } 
+    </script>
 
-<script>
-function printDiv(invoice) {
-      var printContents = document.getElementById(invoice).innerHTML;
-      var originalContents = document.body.innerHTML;
-
-      document.body.innerHTML = printContents;
-
-      window.print();
-
-      document.body.innerHTML = originalContents;
-
-}
-</script>
 @endsection
