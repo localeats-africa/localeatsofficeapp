@@ -35,7 +35,7 @@
                   <nav aria-label="breadcrumb">
                 <ul class="breadcrumb">
                   <li class="breadcrumb-item active" aria-current="page">
-                  <a href="{{ route('export-invoice', ['invoice_ref' => $invoice_ref]) }}"> Export here</a>
+                  <a href="{{ route('export-invoice', [$invoice_ref]) }}"> Export here   {{$invoice_ref}}</a>
                     <span></span>  <button type="button" class="btn btn-info">Export To Excel</button> 
                   </li>
                 </ul>
