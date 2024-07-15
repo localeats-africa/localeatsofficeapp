@@ -23,13 +23,15 @@ use App\Models\Role;
 use App\Models\Level;
 use App\Models\MergeInvoice;
 use App\Models\Commission;
-use App\Mail\NewUserEmail;
 use App\Imports\OrderList;
 use App\Imports\OrdersImportClass;
 use App\Imports\FoodMenuImportClass;
 use App\Exports\ExportOrderList;
 use App\Models\Invoice;
 use App\Models\Payout;
+use App\Mail\NewUserEmail;
+use App\Mail\EmailVendorInvoice;
+use Barryvdh\DomPDF\Facade\Pdf;
 
 use Excel;
 use Auth;
@@ -1188,7 +1190,7 @@ class HomeController extends Controller
             'vendorAddress','vendorState', 'vendorCountry', 'vendorPhone',
             'vendorEmail', 'vendorFname', 'vendorLname', 'orders',
             'sumFoodPrice', 'sumExtra','vendorFoodPrice', 'payout', 
-            'payment_status', 'invoice_ref', 'vendorID'));
+            'payment_status', 'invoice_ref', 'vendor'));
 
      }
 
@@ -1347,5 +1349,212 @@ class HomeController extends Controller
     public function exportInvoice(Request $request){
         $invoice_ref = $request->invoice_ref;
         return Excel::download(new ExportOrderList($invoice_ref), 'invoice-'.$invoice_ref.'.xlsx');
+    }
+
+
+    public function saveImage(Request $request)
+{
+    $image = Image::make($request->get('imgBase64'));
+    $image->save('public/bar.jpg');
+}
+
+    public function emailPdfInvoice(Request $request, $invoice_ref )
+    {
+        $invoice_ref = $request->invoice_ref;
+        $vendor =   $request->vendor;
+
+        $vendorBusinessName = Vendor::where('id', $vendor)
+        ->get('*')->pluck('store_name')->first();
+
+        $vendorAddress = DB::table('vendor')->where('id', $vendor)
+        ->select('*')->pluck('address')->first();
+
+        $vendorState = DB::table('vendor')->where('vendor.id', $vendor)
+        ->join('state', 'state.id', '=', 'vendor.state_id')
+        ->select('state.state')->pluck('state')->first();
+
+        $vendorCountry = DB::table('vendor')->where('vendor.id', $vendor)
+        ->join('country', 'country.id', '=', 'vendor.country_id')
+        ->select('country.country')->pluck('country')->first();
+
+        $vendorPhone = DB::table('vendor')->where('id', $vendor)
+        ->select('*')->pluck('contact_phone')->first();
+
+        $vendorEmail = DB::table('vendor')->where('id', $vendor)
+        ->select('*')->pluck('email')->first();
+
+        $vendorFname = DB::table('vendor')->where('id', $vendor)
+        ->select('*')->pluck('contact_fname')->first();
+
+        $vendorLname = DB::table('vendor')->where('id', $vendor)
+        ->select('*')->pluck('contact_lname')->first();
+
+        $sumFoodPrice = DB::table('orders')
+        ->where('orders.vendor_id', $vendor)
+        ->where('orders.invoice_ref', $invoice_ref)
+        ->where('orders.deleted_at', null)
+        ->sum('food_price');
+
+         $sumExtra = DB::table('orders')
+         ->where('orders.vendor_id', $vendor)
+         ->where('orders.invoice_ref', $invoice_ref)
+         ->where('orders.deleted_at', null)
+         ->sum('extra');
+
+         $vendorFoodPrice =  $sumFoodPrice + $sumExtra;
+
+         $getpayout =  DB::table('orders')
+            ->where('vendor_id', $vendor)
+            ->where('invoice_ref', $invoice_ref)
+            ->get('*')
+            ->value('payout');
+            $payout = (int)$getpayout;
+
+         $payment_status = DB::table('orders')
+          ->where('orders.vendor_id', $vendor)
+         ->where('orders.invoice_ref', $invoice_ref)
+         ->where('orders.payment_status', '!=', null)
+         ->pluck('payment_status')->first();
+  
+          $order_description = DB::table('orders')
+          ->leftJoin('merge_invoices', 'orders.id', '=', 'merge_invoices.order_id')
+          ->where('orders.vendor_id', $vendor)
+          ->where('orders.invoice_ref', $invoice_ref)
+          ->where('orders.deleted_at', null)
+          ->get('orders.description');
+
+          $order_invoice_ref = DB::table('orders')
+          ->leftJoin('merge_invoices', 'orders.id', '=', 'merge_invoices.order_id')
+          ->where('orders.vendor_id', $vendor)
+          ->where('orders.invoice_ref', $invoice_ref)
+          ->where('orders.deleted_at', null)
+          ->get('orders.invoice_ref');
+
+
+          $order_date = DB::table('orders')
+          ->leftJoin('merge_invoices', 'orders.id', '=', 'merge_invoices.order_id')
+          ->where('orders.vendor_id', $vendor)
+          ->where('orders.invoice_ref', $invoice_ref)
+          ->where('orders.deleted_at', null)
+          ->get('orders.delivery_date');
+
+          $order_food = DB::table('orders')
+          ->leftJoin('merge_invoices', 'orders.id', '=', 'merge_invoices.order_id')
+          ->where('orders.vendor_id', $vendor)
+          ->where('orders.invoice_ref', $invoice_ref)
+          ->where('orders.deleted_at', null)
+          ->get('orders.food_price');
+
+          $order_extra = DB::table('orders')
+          ->leftJoin('merge_invoices', 'orders.id', '=', 'merge_invoices.order_id')
+          ->where('orders.vendor_id', $vendor)
+          ->where('orders.invoice_ref', $invoice_ref)
+          ->where('orders.deleted_at', null)
+          ->get('orders.extra');
+    
+        $data = [
+            [
+                'invoice_ref'               => $invoice_ref,
+                'business_name'             => $vendorBusinessName,
+                'address'                   => $vendorAddress,
+                'state'                     => $vendorState,
+                'country'                   => $vendorCountry,
+                'phone'                     => $vendorPhone,
+                'email'                     => $vendorEmail,
+                'first_name'                => $vendorFname,
+                'last_name'                 => $vendorLname,
+                'food_price'                => $sumFoodPrice,
+                'extra'                     => $sumExtra,
+                'extra'                     => $sumExtra,
+                'total_amount'              => $vendorFoodPrice,
+                'payout'                    => $payout,
+                'payment_status'            => $payment_status,
+                'description'               => $order_description,
+                'order_invoice_ref'         => $order_invoice_ref,
+                'delivery_date'             => $order_date,
+                'food_price'                => $order_food,
+                'extra'                     => $order_extra,
+            ]
+        ];
+       // dd( $data);
+     
+        $pdf = Pdf::loadView('email-vendor-invoice', array('data' =>  $data));
+        return $pdf->download('invoice-'.$invoice_ref.'pdf'); 
+
+     
+   
+
+        $vendorName = Vendor::where('id', $vendor)
+        ->get('*')->pluck('vendor_name')->first();
+
+        $vendorEmail = Vendor::where('id', $vendor)
+        ->get('email');
+
+        if (!empty($vendorEmail)){
+           
+         
+             $data = [
+                'vendor_name'   => $vendorName,
+                'title'         => 'Payment Invoice'
+            ]; 
+            //send email
+            $message = new EmailVendorInvoice($data);
+            $message->attachData($pdf->output(), 'invoice-'.$invoice_ref.'pdf');
+            $sendMail = Mail::to($vendorEmail)
+                        ->cc('admin@localeats.africa')
+                        ->send($message);
+            if($sendMail){
+                $storeInvoice = new Invoice();
+                $storeInvoice->reference       = $invoice_ref;
+                $storeInvoice->vendor_id       = $vendor;
+                $storeInvoice->invoice_url     = $image;
+                $storeInvoice->invoice_status  = 'email';
+                $storeInvoice->save();
+            }
+
+        }
+        else{
+            return redirect()->back()->with('email-error',  $vendorName.'has to email address');
+        }
+    
+    }
+
+    public function sendEmailPdfInvoice(Request $request, $ref){
+        //$image =  $request->file("file");
+      
+        $img = $request->img; //get the image string from ajax post
+        $getimg = substr(explode(";",$img)[1], 7); //this extract the exact image
+        $target=time().'invoice.png'; //rename the image by time
+        $image = file_put_contents(public_path($target), base64_decode($getimg));
+        // $putImage = 
+     
+        $invoice_ref =  $ref;
+
+        $vendor = DB::table('orders')
+       ->where('orders.invoice_ref', $invoice_ref)
+       ->pluck('vendor_id')->first();
+           if($image){
+               // $fileName =  'invoice-'.$invoice_ref['invoice_ref'] . '.' . 'pdf' ;
+                //$path = $getimg->move(public_path('assets/invoice/'), $target);
+                $pdf_path = "/".$target; 
+                //$pdf_path = $path. '/' .$fileName;
+
+                
+            }
+           else {
+            $pdf_path = "";
+            }
+
+        $storeInvoice = new Invoice();
+                $storeInvoice->reference       = $invoice_ref;
+                $storeInvoice->vendor_id       = $vendor;
+                $storeInvoice->invoice_url     = $pdf_path;
+                $storeInvoice->invoice_status  = 'email';
+                $storeInvoice->save();
+
+                if($storeInvoice){
+                    return redirect()->back()->with('save', 'save successfully .');
+                }
+
     }
 }//class

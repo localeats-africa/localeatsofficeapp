@@ -106,6 +106,10 @@ Route::controller(HomeController::class)->group(function () {
     Route::post('reset-order-extra/{id}',  'resetOrderExtra')->name('reset-order-extra');
     //exportinvoice
     Route::post('export-invoice/{id}', 'exportInvoice')->name('export-invoice');
+    Route::get('email-invoice/{id}', 'emailPdfInvoice')->name('email-invoice');
+    Route::post('send-email-pdf/{id}', 'sendEmailPdfInvoice')->name('send-email-pdf');
+
+   
 });
 
 Route::controller(SuperAdminController::class)->group(function () {
