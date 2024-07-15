@@ -588,8 +588,8 @@ class HomeController extends Controller
             'price'  => 'max:255',
             ]);
             $menu = FoodMenu::find($id);
-            $menu->item         = $request->first_name;
-            $menu->price        = $request->last_name;
+            $menu->item         = $request->item;
+            $menu->price        = $request->price;
             $menu->update();
 
             if($menu){
