@@ -594,12 +594,22 @@ class HomeController extends Controller
 
             if($menu){
                 return redirect('all-food-menu')->with('menu-status', 'Record Updated');
-  
             }
             else{
                 return redirect('all-food-menu')->with('menu-error', 'Opps! something went wrong'); 
             }
 
+    }
+
+    public function deleteFoodMenu(Request $request, $id){
+        $today = Carbon::now();
+        $food = FoodMenu::find($id);
+        $food->deleted_at  = $today ;
+        $food->update();
+        if($food){
+            return redirect('all-food-menu')->with('menu-status', 'Record Deleted Successfully');
+        }
+        
     }
 
     public function setupApprovedVendor(Request $request){
