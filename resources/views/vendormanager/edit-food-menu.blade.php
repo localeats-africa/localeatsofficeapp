@@ -8,7 +8,7 @@
       <div class="content-wrapper">
             <div class="page-header">
                   <h3 class="page-title">
-                        Edit >>> Food Menu for {{$vendor}}
+                        Edit >>> Food Menu for <span class="text-info">{{$vendor}}</span>
                   </h3>
             </div>
             <!--Alert here--->
