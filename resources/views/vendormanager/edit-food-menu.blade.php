@@ -107,7 +107,7 @@
                                                 <div class="col-md-6">
                                                       <div class="form-group">
                                                             <h6>Price </h6>
-                                                            <input type="text" value="{{$menu->price}}" name="prie"
+                                                            <input type="text" value="{{$menu->price}}" name="price"
                                                                   class="form-control">
                                                       </div>
                                                 </div>
