@@ -89,7 +89,7 @@
 
             <div class="row ">
                   <div class="col-12">
-                        <form action="{{ route('update-vendor', [$vendor->id] )}}" method="post">
+                        <form action="{{ route('update-food-menu', [$menu->id] )}}" method="post">
                               @csrf
                               <div class="card">
                                     <div class="card-header">
@@ -98,75 +98,26 @@
                                     <div class="card-body py-3">
                                           <div class="row">
                                                 <p>Contact Person:</p>
-                                                <div class="col-md-3">
+                                                <div class="col-md-6 col-6">
                                                       <div class="form-group">
-                                                            <h6>First Name </h6>
-                                                            <input type="text" value="{{$vendor->contact_fname}}" name="first_name"
+                                                            <h6>Food Item </h6>
+                                                            <input type="text" value="{{$menu->item}}" name="item"
                                                                   class="form-control">
                                                       </div>
                                                 </div>
-                                                <div class="col-md-3">
+                                                <div class="col-md-6 col-6">
                                                       <div class="form-group">
-                                                            <h6>Last Name </h6>
-                                                            <input type="text" value="{{$vendor->contact_lname}}" name="first_name"
+                                                            <h6>Price </h6>
+                                                            <input type="text" value="{{$menu->price}}" name="prie"
                                                                   class="form-control">
                                                       </div>
                                                 </div>
 
-                                                <div class="col-md-3">
-                                                      <div class="form-group">
-                                                            <h6>Phone </h6>
-                                                            <input type="text" value="{{$vendor->contact_phone}}"
-                                                                  name="phone" class="form-control">
-                                                      </div>
-                                                </div>
-
-                                                <div class="col-md-3">
-                                                      <div class="form-group">
-                                                            <h6>Email </h6>
-                                                            <input type="email" value="{{$vendor->email}}" name="email"
-                                                                  class="form-control">
-                                                      </div>
-                                                </div>
+                                                
                                           </div>
                                           <!--- row-->
 
-                                          <div class="row">
-                                                <p>Bank Details</p>
-                                                <div class="col-md-4">
-                                                      <div class="form-group">
-                                                            <h6>Bank Name </h6>
-                                                            <select class="js-example-basic-single" style="width:100%"
-                                                                  name="bank_name" id="bank">
-                                                                  <option value="{{$vendorBank}}">
-                                                                        {{$vendorBank}}
-                                                                  </option>
-                                                                  @foreach($selectBankName as $bank)
-                                                                  <option value="{{$bank->code}}">
-                                                                        {{$bank->name}}</option>
-                                                                  @endforeach
-                                                            </select>
-                                                      </div>
-                                                </div>
-                                                <div class="col-md-4">
-                                                      <div class="form-group">
-                                                            <h6>Account Number </h6>
-                                                            <input type="text" value="{{$vendor->account_number}}"
-                                                                  name="account_number" class="form-control">
-                                                      </div>
-                                                </div>
-
-                                                <div class="col-md-4">
-                                                      <div class="form-group">
-                                                            <h6>Account Name </h6>
-                                                            <input type="text" value="{{$vendor->account_name}}"
-                                                                  name="account_name" class="form-control">
-                                                      </div>
-                                                </div>
-
-                                          </div>
-                                          <!--- row-->
-
+                                         
                                           <div class="row">
                                                 <p></p>
                                                 <div class="col-md-6">
