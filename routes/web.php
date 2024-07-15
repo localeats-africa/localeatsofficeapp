@@ -84,6 +84,7 @@ Route::controller(HomeController::class)->group(function () {
     Route::get('all-food-menu',  'allFoodMenu')->name('all-food-menu');
     Route::get('edit-food-menu/{id}', 'editFoodMenu')->name('edit-food-menu');
     Route::post('update-food-menu/{id}',  'updateFoodMenu')->name('update-food-menu');
+    Route::post('delete-food-menu/{id}', 'deleteFoodMenu')->name('delete-food-menu');
     Route::post('add-food-menu',  'addFoodMenu')->name('add-food-menu');
     Route::get('show-change-password', 'showChangePassword')->name('show-change-password');
     Route::post('import-food-menu', 'importFoodMenu')->name('import-food-menu');
