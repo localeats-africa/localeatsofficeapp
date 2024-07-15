@@ -15,7 +15,7 @@
             <div class="row">
                   <div class="col-12">
 
-                        @if(session('add-menu'))
+                        @if(session('menu-status'))
                         <div class="alert  alert-success alert-dismissible" role="alert">
                               <div class="d-flex">
                                     <div>
@@ -30,14 +30,14 @@
                                                 <path d="M12 17h.01" />
                                           </svg>
                                     </div>
-                                    <div> {!! session('add-menu') !!}</div>
+                                    <div> {!! session('menu-status') !!}</div>
                               </div>
                               <a class="btn-close" data-bs-dismiss="alert" aria-label="close"></a>
                         </div>
                         @endif
 
-                        @if(session('food-status'))
-                        <div class="alert  alert-success alert-dismissible" role="alert">
+                        @if(session('menu-error'))
+                        <div class="alert  alert-danger alert-dismissible" role="alert">
                               <div class="d-flex">
                                     <div>
                                           <!-- Download SVG icon from http://tabler-icons.io/i/alert-triangle -->
@@ -51,7 +51,7 @@
                                                 <path d="M12 17h.01" />
                                           </svg>
                                     </div>
-                                    <div> {!! session('food-status') !!}</div>
+                                    <div> {!! session('menu-error') !!}</div>
                               </div>
                               <a class="btn-close" data-bs-dismiss="alert" aria-label="close"></a>
                         </div>
@@ -97,7 +97,6 @@
                                     </div>
                                     <div class="card-body py-3">
                                           <div class="row">
-                                                <p>Contact Person:</p>
                                                 <div class="col-md-6 col-6">
                                                       <div class="form-group">
                                                             <h6>Food Item </h6>
