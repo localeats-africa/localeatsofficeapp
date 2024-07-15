@@ -518,6 +518,7 @@ class HomeController extends Controller
             $foodMenu = DB::table('food_menu')
             ->join('vendor', 'vendor.id', '=','food_menu.vendor_id')
             ->join('users', 'users.id', '=','food_menu.added_by')
+            ->where('food_menu.deleted_at', null)
             ->select(['vendor.vendor_name', 'food_menu.*', 'users.name'])
             ->orderBy('food_menu.created_at', 'desc')
             ->where(function ($query) use ($search) {  // <<<
