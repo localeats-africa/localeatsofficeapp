@@ -572,8 +572,12 @@ class HomeController extends Controller
             ->pluck('role_name')->first();
 
             $menu = FoodMenu::find($id);
+            $vendor = DB::table('food_menu')
+            ->join('vendor', 'vendor.id', '=','food_menu.vendor_id')
+            ->where('food_menu.id', $id)
+            ->get()->pluck('vendor.vendor_name')->first();
 
-            return view('vendormanager.edit-food-menu', compact('menu', 'role', 'name')); 
+            return view('vendormanager.edit-food-menu', compact('menu', 'role', 'vendor')); 
         }
           else { return Redirect::to('/login');
         }
