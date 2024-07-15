@@ -8,7 +8,7 @@
       <div class="content-wrapper">
             <div class="page-header">
                   <h3 class="page-title">
-                        Edit >>> Food Menu 
+                        Edit >>> Food Menu for {{$vendor}}
                   </h3>
             </div>
             <!--Alert here--->
@@ -97,6 +97,7 @@
                                     </div>
                                     <div class="card-body py-3">
                                           <div class="row">
+                                                <p>Contact Person:</p>
                                                 <div class="col-md-6 col-6">
                                                       <div class="form-group">
                                                             <h6>Food Item </h6>
@@ -104,7 +105,7 @@
                                                                   class="form-control">
                                                       </div>
                                                 </div>
-                                                <div class="col-md-6 col-6">
+                                                <div class="col-md-6">
                                                       <div class="form-group">
                                                             <h6>Price </h6>
                                                             <input type="text" value="{{$menu->price}}" name="prie"
