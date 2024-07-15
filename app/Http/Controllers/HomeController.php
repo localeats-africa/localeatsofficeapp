@@ -594,7 +594,7 @@ class HomeController extends Controller
             $menu->update();
 
             if($menu){
-                return redirect('all-food-menu')->with('menu-status', 'Record Updated');
+                return redirect('all-food-menu')->with('food-status', 'Record Updated');
             }
             else{
                 return redirect('all-food-menu')->with('menu-error', 'Opps! something went wrong'); 
@@ -608,7 +608,7 @@ class HomeController extends Controller
         $food->deleted_at  = $today ;
         $food->update();
         if($food){
-            return redirect('all-food-menu')->with('menu-status', 'Record Deleted Successfully');
+            return redirect('all-food-menu')->with('food-status', 'Record Deleted Successfully');
         }
         
     }
