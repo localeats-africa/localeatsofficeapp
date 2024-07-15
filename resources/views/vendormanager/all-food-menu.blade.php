@@ -138,9 +138,7 @@
                                           id="orders">
                                           <thead>
                                                 <tr>
-                                                      <th class="w-1"><input class="form-check-input m-0 align-middle"
-                                                                  type="checkbox" aria-label="Select all product">
-                                                      </th>
+                                                      
                                                       <th>Posted by</th>
                                                       <th>Item</th>
                                                       <th>Price </th>
@@ -151,8 +149,6 @@
                                           <tbody>
                                                 @foreach($foodMenu as $data)
                                                 <tr>
-                                                      <td><input class="form-check-input m-0 align-middle"
-                                                                  type="checkbox" aria-label="Select"></td>
                                                       <td class="text-sm"><small>{{$data->name}}</small></td>
                                                       <td><small>{{$data->item}}</small></td>
                                                       <td class="text-capitalize"><small>{{$data->price}}</small> </td>
@@ -160,8 +156,7 @@
                                                       <td><small>{{$data->vendor_name}}</small></td>
 
                                                       <!--- admin approve/edit --->
-                                                      @auth
-                                                      @if(Auth::user()->role_id == '2')
+                                                    
                                                       <td class="text-end">
                                                             <span class="dropdown">
                                                                   <button
@@ -169,8 +164,6 @@
                                                                         data-bs-boundary="viewport"
                                                                         data-bs-toggle="dropdown">Actions</button>
                                                                   <div class="dropdown-menu ">
-
-
 
                                                                         <a class="dropdown-item text-capitalize text-dark"
                                                                               href="edit-food-menu/{{$data->id}}">
@@ -180,15 +173,10 @@
                                                                               href="delete-food-menu/{{$data->id}}">
                                                                               <small>Delete</small>
                                                                         </a>
-
-
-
-
                                                                   </div>
                                                             </span>
                                                       </td>
-                                                      @endif
-                                                      @endauth
+                                                 
                                                 </tr>
                                                 @endforeach
 
