@@ -97,7 +97,6 @@
                                     </div>
                                     <div class="card-body py-3">
                                           <div class="row">
-                                                <p>Contact Person:</p>
                                                 <div class="col-md-6 col-6">
                                                       <div class="form-group">
                                                             <h6>Food Item </h6>
