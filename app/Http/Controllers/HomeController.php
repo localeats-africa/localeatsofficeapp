@@ -593,7 +593,7 @@ class HomeController extends Controller
             $menu->update();
 
             if($menu){
-                return redirect('all-food-menu')->with('menu-vendor', 'Record Updated');
+                return redirect('all-food-menu')->with('menu-status', 'Record Updated');
   
             }
             else{
