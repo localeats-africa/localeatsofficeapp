@@ -138,7 +138,7 @@
                                           id="orders">
                                           <thead>
                                                 <tr>
-                                                      
+                                                      <th></th>
                                                       <th>Posted by</th>
                                                       <th>Item</th>
                                                       <th>Price </th>
@@ -149,6 +149,10 @@
                                           <tbody>
                                                 @foreach($foodMenu as $data)
                                                 <tr>
+                                                      <td><a class="dropdown-item text-capitalize text-danger"
+                                                                              href="edit-food-menu/{{$data->id}}">
+                                                                             <i class="fa fa-edit"></i>
+                                                                        </a></td>
                                                       <td class="text-sm"><small>{{$data->name}}</small></td>
                                                       <td><small>{{$data->item}}</small></td>
                                                       <td class="text-capitalize"><small>{{$data->price}}</small> </td>
@@ -158,24 +162,19 @@
                                                       <!--- admin approve/edit --->
                                                     
                                                       <td class="text-end">
-                                                            <span class="dropdown">
-                                                                  <button
-                                                                        class="btn dropdown-toggle align-text-top text-danger"
-                                                                        data-bs-boundary="viewport"
-                                                                        data-bs-toggle="dropdown">Actions</button>
-                                                                  <div class="dropdown-menu ">
+                                                                        <form action="{{ route('delete-food-menu', [$data->id]) }}"
+                                                                                    method="post" name="submit"
+                                                                                    enctype="multipart/form-data">
+                                                                                    @csrf
 
-                                                                        <a class="dropdown-item text-capitalize text-dark"
-                                                                              href="edit-food-menu/{{$data->id}}">
-                                                                              <small>Edit</small>
-                                                                        </a>
-                                                                        <p></p>
-                                                                        <a class="dropdown-item text-capitalize text-dark"
-                                                                              href="delete-food-menu/{{$data->id}}">
-                                                                              <small>Delete</small>
-                                                                        </a>
-                                                                  </div>
-                                                            </span>
+                                                                                    <div class="input-group">
+                                                                                          <input type="hidden"
+                                                                                                value="{{$data->id}}">
+                                                                                          <button type="submit"
+                                                                                                class="text-danger btn btn-block"><i class="fa fa-trash"></i></button>
+                                                                                    </div>
+                                                                              </form>
+                                                                     
                                                       </td>
                                                  
                                                 </tr>
