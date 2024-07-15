@@ -562,6 +562,44 @@ class HomeController extends Controller
  
     }
 
+    public function editFoodMenu(Request $request, $id){
+        if( Auth::user()){
+            $name = Auth::user()->name;
+            $user_id = Auth::user()->id;
+            $role = DB::table('role')->select('role_name')
+            ->join('users', 'users.role_id', 'role.id')
+            ->where('users.id', $user_id)
+            ->pluck('role_name')->first();
+
+            $menu = FoodMenu::find($id);
+
+            return view('vendormanager.edit-food-menu', compact('menu', 'role', 'name')); 
+        }
+          else { return Redirect::to('/login');
+        }
+  }
+
+    public function updateFoodMenu(Request $request, $id)
+    {
+        $this->validate($request, [
+            'item'  => 'max:255',
+            'price'  => 'max:255',
+            ]);
+            $menu = FoodMenu::find($id);
+            $menu->item         = $request->first_name;
+            $menu->price        = $request->last_name;
+            $menu->update();
+
+            if($menu){
+                return redirect('all-food-menu')->with('menu-vendor', 'Record Updated');
+  
+            }
+            else{
+                return redirect('all-food-menu')->with('menu-error', 'Opps! something went wrong'); 
+            }
+
+    }
+
     public function setupApprovedVendor(Request $request){
         $name = Auth::user()->name;
         $id = Auth::user()->id;
