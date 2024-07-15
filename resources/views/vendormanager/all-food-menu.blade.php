@@ -169,6 +169,7 @@
                                                                               href="edit-food-menu/{{$data->id}}">
                                                                               <small>Edit</small>
                                                                         </a>
+                                                                        <p></p>
                                                                         <a class="dropdown-item text-capitalize text-dark"
                                                                               href="delete-food-menu/{{$data->id}}">
                                                                               <small>Delete</small>
