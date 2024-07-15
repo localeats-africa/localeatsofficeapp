@@ -8,7 +8,7 @@
       <div class="content-wrapper">
             <div class="page-header">
                   <h3 class="page-title">
-                        Edit >>> Food Menu for {{$menu->vendor_name}}
+                        Edit >>> Food Menu 
                   </h3>
             </div>
             <!--Alert here--->
