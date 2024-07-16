@@ -964,10 +964,13 @@ class HomeController extends Controller
         $foodPrice = DB::table('food_menu')->whereIn('id', $food_price_id)
         ->sum('price');
 
+        $selectFoodPrice = Orders::where('id', $order_id)->pluck('food_price')->first();
+        $addFoodPrice =  (int)$selectFoodPrice + $foodPrice ;
+
         $updateOrder = Orders::where('id', $order_id)
         ->where('vendor_id', $vendor)
         ->update([
-            'food_price' => $foodPrice,
+            'food_price' => $addFoodPrice,
         ]);
         if($updateOrder){
           
