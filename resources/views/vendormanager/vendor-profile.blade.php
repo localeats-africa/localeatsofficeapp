@@ -384,7 +384,28 @@
             var showRoute = "{{ route('vendor-platform-ref', ':id') }}";
             url = showRoute.replace(':id', id);
 
-            window.location = url;
+            //window.location = url;
+            $.ajaxSetup({
+                  headers: {
+                        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                  }
+            });
+      $.ajax({
+            method: 'POST',
+                  enctype: 'multipart/form-data',
+                  url: url,
+            data: {
+                //you can more data here
+                'platform_ref':platform_ref
+            },
+            success: function(data){
+                console.log(data);
+            },
+            error: function(data){
+                console.log(data);
+            }
+        });
+        
       }
 
 </script>
