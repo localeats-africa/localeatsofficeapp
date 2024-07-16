@@ -267,7 +267,7 @@ class AdminController extends Controller
     {
         $platformRef = SalesPlatform::where('id',$id)
         ->update([
-            'platform_ref' => $requset->platform_ref
+            'platform_ref' => $request->platform_ref
         ]);
         if($platformRef){
             return  redirect()->back('update-status', 'Update successful');
