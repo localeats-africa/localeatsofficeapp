@@ -400,8 +400,9 @@
                 'platform_ref':platform_ref
             },
             success: function(data){
-                console.log(data.data);
-                document.getElementById('response').innerHTML = data;
+                console.log(data.message);
+                document.getElementById('response').style.color = 'green';
+                document.getElementById('response').innerHTML = data.message;
             },
             error: function(data){
                 console.log(data);
