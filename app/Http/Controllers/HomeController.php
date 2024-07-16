@@ -519,6 +519,8 @@ class HomeController extends Controller
             ->join('vendor', 'vendor.id', '=','food_menu.vendor_id')
             ->join('users', 'users.id', '=','food_menu.added_by')
             ->where('food_menu.deleted_at', null)
+            ->where('food_menu.price', '!=', null)
+            ->where('food_menu.item', '!=', null)
             ->select(['vendor.vendor_name', 'food_menu.*', 'users.name'])
             ->orderBy('food_menu.created_at', 'desc')
             ->where(function ($query) use ($search) {  // <<<
@@ -594,7 +596,7 @@ class HomeController extends Controller
             $menu->update();
 
             if($menu){
-                return redirect()->back()->with('food-status', 'Record Updated');
+                return redirect()->back()->with('menu-status', 'Record Updated');
             }
             else{
                 return redirect()->back()->with('menu-error', 'Opps! something went wrong'); 
