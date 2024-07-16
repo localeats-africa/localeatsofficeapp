@@ -430,8 +430,6 @@ function updateRef() {
             }
       });
 
-
-
 }
 </script>
 @endsection
