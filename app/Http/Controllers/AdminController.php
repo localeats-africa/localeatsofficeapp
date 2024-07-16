@@ -263,16 +263,16 @@ class AdminController extends Controller
         }
     }
 
-    public function updateVendorPlatformRef(Request $request)
+    public function updateVendorPlatformRef(Request $request, $id)
     {
-        if ($request->ajax()) {
-            SalesPlatform::find($request->pk)
-                ->update([
-                    'platform_ref' => $request->name
-                ]);
-  
-            return response()->json(['success' => true]);
+        $platformRef = SalesPlatform::where('id',$id)
+        ->update([
+            'platform_ref' => $requset->platform_ref
+        ]);
+        if($platformRef){
+            return  redirect()->back('update-status', 'Update successful');
         }
+
     }
 
 
