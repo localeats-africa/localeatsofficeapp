@@ -381,7 +381,7 @@ class HomeController extends Controller
             ->join('platforms', 'platforms.name', 'sales_platform.platform_name')
             ->where('vendor.id', $vendorID)
             ->where('sales_platform.deleted_at', null)
-            ->get(['sales_platform.vendor_status', 
+            ->get(['sales_platform.vendor_status', 'sales_platform.id',
             'sales_platform.platform_name',
             'sales_platform.platform_ref', 'platforms.img_url']);
 
