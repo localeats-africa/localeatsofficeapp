@@ -132,7 +132,7 @@ Route::controller(AdminController::class)->group(function () {
     Route::get('new-staff',  'newUser')->name('new-staff');
     Route::post('add-user',  'adduser')->name('add-user');
     Route::get('all-staff',  'allUser')->name('all-staff');
-    Route::post('vendor-platform-ref/{id}',  'updateVendorPlatformRef')->name('vendor-platform-ref');
+    Route::get('vendor-platform-ref/{id}',  'updateVendorPlatformRef')->name('vendor-platform-ref');
     
    
 });
