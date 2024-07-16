@@ -182,7 +182,7 @@
                                                                                     @else
                                                                                     <span
                                                                                           class="text-secondary">{{$platform->platform_ref}}</span>
-                                                                                          <a href="" class="update" data-name="ref" data-type="text" data-pk="{{ $platform->platform_ref }}" data-title="">{{  $platform->platform_ref }}</a>
+                                                                                          <a href="" class="update" data-name="name" data-type="text" data-pk="{{ $platform->platform_ref }}" data-title="">{{  $platform->platform_ref }}</a>
                                                                                     @endif
                                                                               </td>
 
@@ -361,10 +361,10 @@
     }); 
   
     $('.update').editable({
-           url: "{{ route('users.update') }}",
+           url: "{{ route('vendor-platform-ref') }}",
            type: 'text',
            pk: 1,
-           name: 'ref'
+           name: 'name'
     });
 </script>
 @endsection
