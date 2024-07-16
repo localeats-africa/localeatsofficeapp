@@ -17,7 +17,7 @@
                   <nav aria-label="breadcrumb">
                         <ul class="breadcrumb">
                               <li class="breadcrumb-item active" aria-current="page">
-                              
+
                                     <form action="{{ route('approve-vendor', [$vendorID] )}}" method="post">
                                           @csrf
                                           <div class="alert  alert-danger alert-dismissible" role="alert">
@@ -118,8 +118,9 @@
                                           <div class="card">
                                                 <div class="card-body">
                                                       <div class="d-flex flex-column align-items-center text-center">
-                                                            <img src="{{ asset('assets/images/faces/user.png')}}" alt="Admin"
-                                                                  class="rounded-circle p-1 bg-dark" width="110">
+                                                            <img src="{{ asset('assets/images/faces/user.png')}}"
+                                                                  alt="Admin" class="rounded-circle p-1 bg-dark"
+                                                                  width="110">
                                                             <div class="mt-3">
                                                                   <h4>{{$vendorName}}</h4>
                                                                   <p class="text-secondary mb-1"> </p>
@@ -145,7 +146,8 @@
                                                                   <span class="text-secondary">{{$vendorRef}}</span>
                                                             </li>
                                                       </ul>
-                                                      <span id="response"></span>
+                                                     
+                                                  
                                                       <div class="table-responsive">
                                                             <table class="table">
                                                                   <thead>
@@ -204,13 +206,24 @@
                                                                                     nill
                                                                                     @else
 
-                                                                                    <input type="hidden" class="text-secondary form-control" id="ref" value="{{$platform->id}}">
-                                                                                  
-                                                                                  <div class="input-group">
-                                                                                  <input type="text" class="text-secondary form-control" id="platform_ref" value="{{$platform->platform_ref}}">
-                                                                                    <button class="text-success" onclick="updateRef()"><i class="fa fa-check"></i></button>
-                                                                                  </div>
+                                                                                    <input type="hidden"
+                                                                                          class="text-secondary form-control"
+                                                                                          id="ref"
+                                                                                          value="{{$platform->id}}">
+
+                                                                                    <div class="input-group">
+                                                                                          <input type="text"
+                                                                                                class="text-secondary form-control"
+                                                                                                id="platform_ref"
+                                                                                                value="{{$platform->platform_ref}}">
+                                                                                          <button class="text-success"
+                                                                                                onclick="updateRef()"><i
+                                                                                                      class="fa fa-check"></i></button>
+                                                                                    </div>
                                                                                     @endif
+                                                                                     <!---response from javascriot --->
+                                                      <div id="response"> </div>
+                                                      <!--end response from Ajax --->
                                                                               </td>
 
                                                                         </tr>
@@ -220,7 +233,7 @@
 
                                                       </div>
 
-                                                      
+
                                                 </div>
                                           </div>
                                     </div>
@@ -379,39 +392,40 @@
 </div><!-- main-panel -->
 
 <script type="text/javascript">
-      function updateRef() {
-            var id = document.getElementById('ref').value;
-            var platform_ref = document.getElementById('platform_ref').value;
-            var showRoute = "{{ route('vendor-platform-ref', ':id') }}";
-            url = showRoute.replace(':id', id);
+function updateRef() {
+      document.getElementById('response').style.display = 'none';
+      var id = document.getElementById('ref').value;
+      var platform_ref = document.getElementById('platform_ref').value;
+      var showRoute = "{{ route('vendor-platform-ref', ':id') }}";
+      url = showRoute.replace(':id', id);
 
-            //window.location = url;
-            $.ajaxSetup({
-                  headers: {
-                        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-                  }
-            });
+      //window.location = url;
+      $.ajaxSetup({
+            headers: {
+                  'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+            }
+      });
       $.ajax({
             method: 'POST',
-                  enctype: 'multipart/form-data',
-                  url: url,
+            enctype: 'multipart/form-data',
+            url: url,
             data: {
-                //you can more data here
-                'platform_ref':platform_ref
+                  //you can more data here
+                  'platform_ref': platform_ref
             },
-            success: function(data){
-                console.log(data.message);
-                document.getElementById('response').style.color = 'green';
-                document.getElementById('response').innerHTML = data.message;
+            success: function(data) {
+                  console.log(data.message);
+                  document.getElementById('response').style.display = '';
+                  document.getElementById('response').style.color = 'green';
+                  document.getElementById('response').innerHTML = data.message;
             },
-            error: function(data){
-                console.log(data);
+            error: function(data) {
+                  console.log(data);
             }
-        });
+      });
 
-        
-        
-      }
 
+
+}
 </script>
 @endsection
