@@ -206,7 +206,7 @@
                                                                                     <input type="hidden" class="text-secondary form-control" id="ref" value="{{$platform->id}}">
                                                                                   
                                                                                   <div class="input-group">
-                                                                                  <input type="text" class="text-secondary form-control" value="{{$platform->platform_ref}}">
+                                                                                  <input type="text" class="text-secondary form-control" id="platform_ref" value="{{$platform->platform_ref}}">
                                                                                     <button class="text-success" onclick="updateRef()"><i class="fa fa-check"></i></button>
                                                                                   </div>
                                                                                     @endif
@@ -380,6 +380,7 @@
 <script type="text/javascript">
       function updateRef() {
             var id = document.getElementById('ref').value;
+            var platform_ref = document.getElementById('platform_ref').value;
             var showRoute = "{{ route('vendor-platform-ref', ':id') }}";
             url = showRoute.replace(':id', id);
 
