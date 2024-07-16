@@ -272,6 +272,9 @@ class AdminController extends Controller
         if($platformRef){
             return  redirect()->back('update-status', 'Update successful');
         }
+        else{
+            return  redirect()->back('update-error', 'Opps! something happened');
+        }
 
     }
 
