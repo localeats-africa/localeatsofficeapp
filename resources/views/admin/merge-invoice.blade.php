@@ -281,14 +281,6 @@
                                                                                     <input type="hidden" name="extra"
                                                                                           value="{{$data->extra}}">
 
-                                                                                    <div class="form-group">
-                                                                                          <input type="number"
-                                                                                                name="quantity"
-                                                                                                value="1"
-                                                                                                class="form-control">
-
-                                                                                    </div>
-
 
                                                                                     <div
                                                                                           class="d-flex flex-column align-items-center text-center">
@@ -324,26 +316,21 @@
                                                                                     enctype="multipart/form-data">
                                                                                     @csrf
                                                                                     <div class="form-group">
-                                                                                    <select
-                                                                                          class="js-example-basic-multiple"
-                                                                                          multiple="multiple"
-                                                                                          style="width:100%"
-                                                                                          name="extra[]">
-                                                                                          @foreach($vendorFoodPrice
-                                                                                          as $food)
-                                                                                          <option value="{{$food->id}}">
-                                                                                                {{$food->item}}
-                                                                                          </option>
-                                                                                          @endforeach
-                                                                                    </select>
+                                                                                          <select
+                                                                                                class="js-example-basic-multiple"
+                                                                                                multiple="multiple"
+                                                                                                style="width:100%"
+                                                                                                name="extra[]">
+                                                                                                @foreach($vendorFoodPrice
+                                                                                                as $food)
+                                                                                                <option
+                                                                                                      value="{{$food->id}}">
+                                                                                                      {{$food->item}}
+                                                                                                </option>
+                                                                                                @endforeach
+                                                                                          </select>
                                                                                     </div>
-                                                                                    <div class="form-group">
-                                                                                          <input type="number"
-                                                                                                name="quantity"
-                                                                                                value="1"
-                                                                                                class="form-control">
-
-                                                                                    </div>
+                                          
                                                                                     <div
                                                                                           class="d-flex flex-column align-items-center text-center">
                                                                                           <input type="hidden"
