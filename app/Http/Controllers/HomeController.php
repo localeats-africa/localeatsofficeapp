@@ -918,12 +918,14 @@ class HomeController extends Controller
             ->pluck('invoice_ref')->first();
 
             $orders = DB::table('orders')
-            ->leftJoin('platforms', 'orders.platform_id', '=', 'platforms.id')
-            ->leftJoin('commission', 'orders.id', '=', 'commission.order_id')
+            ->Join('platforms', 'orders.platform_id', '=', 'platforms.id')
+            ->Join('commission', 'orders.id', '=', 'commission.order_id')
             //->leftJoin('merge_invoices', 'orders.id', '=', 'merge_invoices.order_id')
             ->where('orders.vendor_id', $vendor)
             ->where('orders.invoice_ref', $invoice_ref)
             ->where('orders.deleted_at', null)
+            ->where('orders.order_amount', '!=', null)
+            ->where('orders.order_ref', '!=', null)
             ->get(['orders.*', 'platforms.name', 
             'commission.platform_comm',
             'commission.localeats_comm']);
