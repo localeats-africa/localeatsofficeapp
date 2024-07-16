@@ -181,7 +181,7 @@
                                                                                     nill
                                                                                     @else
 
-                                                                                    <input type="text" class="text-secondary form-control" value="{{$platform->id}}">
+                                                                                    <input type="hidden" class="text-secondary form-control" value="{{$platform->id}}">
                                                                                   
                                                                                   <div class="input-group">
                                                                                   <input type="text" class="text-secondary form-control" value="{{$platform->platform_ref}}">
