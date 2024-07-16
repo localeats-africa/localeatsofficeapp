@@ -146,8 +146,8 @@
                                                                   <span class="text-secondary">{{$vendorRef}}</span>
                                                             </li>
                                                       </ul>
-                                                     
-                                                  
+
+
                                                       <div class="table-responsive">
                                                             <table class="table">
                                                                   <thead>
@@ -202,6 +202,8 @@
                                                                               </td>
                                                                               <td>
                                                                                     <!--- platform ref --->
+                                                                                    @auth
+                                                                                    @if(Auth::user()->role_id =='2')
                                                                                     @if(empty($platform->platform_ref))
                                                                                     nill
                                                                                     @else
@@ -221,9 +223,13 @@
                                                                                                       class="fa fa-check"></i></button>
                                                                                     </div>
                                                                                     @endif
-                                                                                     <!---response from javascriot --->
-                                                      <div id="response"> </div>
-                                                      <!--end response from Ajax --->
+                                                                                    <!---response from javascript --->
+                                                                                    <div id="response"> </div>
+                                                                                    <!--end response from Ajax --->
+                                                                                    @else
+                                                                                   <span class="text-secondary"> {{$platform->platform_ref}}</span>
+                                                                                    @endif 
+                                                                                    @endauth
                                                                               </td>
 
                                                                         </tr>
