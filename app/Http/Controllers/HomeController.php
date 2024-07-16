@@ -594,10 +594,10 @@ class HomeController extends Controller
             $menu->update();
 
             if($menu){
-                return redirect('all-food-menu')->with('food-status', 'Record Updated');
+                return redirect()->back()->with('food-status', 'Record Updated');
             }
             else{
-                return redirect('all-food-menu')->with('menu-error', 'Opps! something went wrong'); 
+                return redirect()->back()->with('menu-error', 'Opps! something went wrong'); 
             }
 
     }
