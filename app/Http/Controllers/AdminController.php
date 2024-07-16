@@ -268,7 +268,7 @@ class AdminController extends Controller
         if ($request->ajax()) {
             SalesPlatform::find($request->pk)
                 ->update([
-                    $request->name => $request->value
+                    'platform_ref' => $request->name
                 ]);
   
             return response()->json(['success' => true]);
