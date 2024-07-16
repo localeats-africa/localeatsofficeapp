@@ -1105,8 +1105,8 @@ class HomeController extends Controller
         $perPage = $request->perPage ?? 25;
         $search = $request->input('search');
 
-        $orders = DB::table('orders')
-        ->join('merge_invoices', 'orders.number_of_order_merge', '=', 'merge_invoices.number_of_order_merge')
+        $orders = DB::table('orders')->distinct()
+       ->join('merge_invoices', 'merge_invoices.number_of_order_merge', '=', 'orders.number_of_order_merge')
         ->join('vendor', 'orders.vendor_id', '=', 'vendor.id')
         ->orderBy('orders.created_at', 'desc')
         ->select(['orders.*', 
@@ -1114,9 +1114,7 @@ class HomeController extends Controller
         ->where(function ($query) use ($search) {  // <<<
         $query->where('orders.created_at', 'LIKE', '%'.$search.'%')
                ->orWhere('vendor.vendor_name', 'LIKE', '%'.$search.'%')
-               ->orWhere('orders.number_of_order_merge', 'LIKE', '%'.$search.'%')
-               ->orderBy('orders.created_at', 'desc')
-               ->take(1);
+               ->orderBy('orders.created_at', 'desc');
         })->paginate($perPage, $columns = ['*'], $pageName = 'orders'
         )->appends(['per_page'   => $perPage]);
     
