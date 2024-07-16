@@ -32,6 +32,6 @@
     $(".js-example-basic-multiple").select2();
   }
   if ($(".js-example-basic-multiple1").length) {
-    $(".js-example-basic-multiple").select2();
+    $(".js-example-basic-multiple1").select2();
   }
 })(jQuery);
