@@ -255,7 +255,7 @@
 
                                                                                     <div class="form-group">
                                                                                           <select
-                                                                                                class="js-example-basic-multiple"
+                                                                                                class="js-example-basic-multiple1"
                                                                                                 multiple="multiple"
                                                                                                 style="width:100%"
                                                                                                 name="food_price[]">
