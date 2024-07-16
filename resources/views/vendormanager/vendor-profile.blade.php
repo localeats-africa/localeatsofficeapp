@@ -354,21 +354,15 @@
             </div>
       </footer>
 </div><!-- main-panel -->
-<script src="//cdnjs.cloudflare.com/ajax/libs/x-editable/1.5.0/jquery-editable/js/jquery-editable-poshytip.min.js"></script>
+
 <script type="text/javascript">
-    $.fn.editable.defaults.mode = 'inline';
-  
-    $.ajaxSetup({
-        headers: {
-            'X-CSRF-TOKEN': '{{csrf_token()}}'
-        }
-    }); 
-  
-    $('.update').editable({
-           url: "{{ route('vendor-platform-ref') }}",
-           type: 'text',
-           pk: 1,
-           name: 'name'
-    });
+      function exportInvoice() {
+            var id = document.getElementById('ref').value;
+            var showRoute = "{{ route('vendor-platform-ref', ':id') }}";
+            url = showRoute.replace(':id', id);
+
+            window.location = url;
+      }
+
 </script>
 @endsection
