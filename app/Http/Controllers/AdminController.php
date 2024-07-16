@@ -263,6 +263,19 @@ class AdminController extends Controller
         }
     }
 
+    public function updateVendorPlatformRef(Request $request)
+    {
+        if ($request->ajax()) {
+            SalesPlatform::find($request->pk)
+                ->update([
+                    $request->ref => $request->value
+                ]);
+  
+            return response()->json(['success' => true]);
+        }
+    }
+
+
     
     public function restaurant(Request $request){
         $name = Auth::user()->name;
