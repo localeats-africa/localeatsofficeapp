@@ -269,11 +269,26 @@ class AdminController extends Controller
         ->update([
             'platform_ref' => $request->platform_ref
         ]);
+
+
         if($platformRef){
-            return  redirect()->back('update-status', 'Update successful');
+
+            $data = [
+                'success' => true,
+                'message'=> 'Update successful'
+              ] ;
+              
+              return response()->json($data);
+
+            //return  redirect()->back('update-status', 'Update successful');
         }
         else{
-            return  redirect()->back('update-error', 'Opps! something happened');
+            $data = [
+                'success' => false,
+                'message'=> 'Opps! something happen'
+              ] ;
+              
+              return response()->json($data);
         }
 
     }
