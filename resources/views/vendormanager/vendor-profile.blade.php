@@ -180,9 +180,13 @@
                                                                                     @if(empty($platform->platform_ref))
                                                                                     nill
                                                                                     @else
-                                                                                    <span
-                                                                                          class="text-secondary">{{$platform->platform_ref}}</span>
-                                                                                          <a href="" class="update" data-name="name" data-type="text" data-pk="{{ $platform->platform_ref }}" data-title="">{{  $platform->platform_ref }}</a>
+
+                                                                                    <input type="text" class="text-secondary form-control" value="{{$platform->id}}">
+                                                                                  
+                                                                                  <div class="input-group">
+                                                                                  <input type="text" class="text-secondary form-control" value="{{$platform->platform_ref}}">
+                                                                                    <button class="text-success"><i class="fa fa-check"></i></button>
+                                                                                  </div>
                                                                                     @endif
                                                                               </td>
 
