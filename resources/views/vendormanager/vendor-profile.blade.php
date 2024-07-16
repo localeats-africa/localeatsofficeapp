@@ -145,6 +145,7 @@
                                                                   <span class="text-secondary">{{$vendorRef}}</span>
                                                             </li>
                                                       </ul>
+                                                      <span id="response"></span>
                                                       <div class="table-responsive">
                                                             <table class="table">
                                                                   <thead>
@@ -399,12 +400,15 @@
                 'platform_ref':platform_ref
             },
             success: function(data){
-                console.log(data);
+                console.log(data.data);
+                document.getElementById('response').innerHTML = data;
             },
             error: function(data){
                 console.log(data);
             }
         });
+
+        
         
       }
 
