@@ -444,9 +444,7 @@ class HomeController extends Controller
             else{
                 return redirect('all-vendor')->with('update-error', 'Opps! something went wrong'); 
             }
-
     }
-
 
     public function foodMenu(Request $request){
         if(Auth::user()){
