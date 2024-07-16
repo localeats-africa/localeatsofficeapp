@@ -1250,7 +1250,7 @@ class HomeController extends Controller
         $search = $request->input('search');
 
 
-        $orders = DB::table('orders')
+        $orders = DB::table('orders')->distinct()
         ->join('merge_invoices', 'orders.number_of_order_merge', '=', 'merge_invoices.number_of_order_merge')
         ->join('vendor', 'orders.vendor_id', '=', 'vendor.id')
         ->select(['orders.*', 
