@@ -220,10 +220,8 @@
 
                                                                         <th colspan="3" class="text-end">
                                                                         </th>
-                                                                        <th>{{number_format($sumFoodPrice, 2)}}
-                                                                        </th>
-                                                                        <th>{{number_format($sumExtra, 2)}}
-                                                                        </th>
+                                                                        <th></th>
+                                                                        <th></th>
 
                                                                   </tr>
                                                                   <tr>
