@@ -181,11 +181,11 @@
                                                                                     nill
                                                                                     @else
 
-                                                                                    <input type="hidden" class="text-secondary form-control" value="{{$platform->id}}">
+                                                                                    <input type="hidden" class="text-secondary form-control" id="ref" value="{{$platform->id}}">
                                                                                   
                                                                                   <div class="input-group">
                                                                                   <input type="text" class="text-secondary form-control" value="{{$platform->platform_ref}}">
-                                                                                    <button class="text-success"><i class="fa fa-check"></i></button>
+                                                                                    <button class="text-success" onclick="updateRef()"><i class="fa fa-check"></i></button>
                                                                                   </div>
                                                                                     @endif
                                                                               </td>
@@ -356,7 +356,7 @@
 </div><!-- main-panel -->
 
 <script type="text/javascript">
-      function exportInvoice() {
+      function updateRef() {
             var id = document.getElementById('ref').value;
             var showRoute = "{{ route('vendor-platform-ref', ':id') }}";
             url = showRoute.replace(':id', id);
