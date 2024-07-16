@@ -182,6 +182,7 @@
                                                                                     @else
                                                                                     <span
                                                                                           class="text-secondary">{{$platform->platform_ref}}</span>
+                                                                                          <a href="" class="update" data-name="ref" data-type="text" data-pk="{{ $platform->platform_ref }}" data-title="">{{  $platform->platform_ref }}</a>
                                                                                     @endif
                                                                               </td>
 
@@ -349,5 +350,21 @@
             </div>
       </footer>
 </div><!-- main-panel -->
-
+<script src="//cdnjs.cloudflare.com/ajax/libs/x-editable/1.5.0/jquery-editable/js/jquery-editable-poshytip.min.js"></script>
+<script type="text/javascript">
+    $.fn.editable.defaults.mode = 'inline';
+  
+    $.ajaxSetup({
+        headers: {
+            'X-CSRF-TOKEN': '{{csrf_token()}}'
+        }
+    }); 
+  
+    $('.update').editable({
+           url: "{{ route('users.update') }}",
+           type: 'text',
+           pk: 1,
+           name: 'ref'
+    });
+</script>
 @endsection
