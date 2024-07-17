@@ -503,13 +503,41 @@ class AdminController extends Controller
     }
 
    
-    public function totalOrdersAllPlatform(Request $request){
+    public function allOrders(Request $request){
 
-        $orders = Orders::all()
+        $sumAllOrders = Orders::all()
         ->where('deleted_at', null)
         ->where('orders.order_amount', '!=', null)
         ->where('orders.order_ref', '!=', null)
         ->sum('order_amount');
+
+        $countAllOrder = Orders::all()
+        ->where('deleted_at', null)
+        ->where('orders.order_amount', '!=', null)
+        ->where('orders.order_ref', '!=', null)
+        ->count();
+
+        $orders = DB::table('orders')
+        ->join('vendor', 'orders.vendor_id', '=', 'vendor.id')->distinct()
+        ->Join('platforms', 'orders.platform_id', '=', 'platforms.id')
+        ->where('orders.deleted_at', null)
+        ->select(['order_*', 'vendor.vendor_name', 'platforms.platform_name'])
+        ->orderBy('orders.created_at', 'desc')
+        ->where(function ($query) use ($search) {  // <<<
+        $query->where('orders.created_at', 'LIKE', '%'.$search.'%')
+               ->orWhere('vendor.vendor_name', 'LIKE', '%'.$search.'%')
+               ->orWhere('orders.invoice_ref', 'LIKE', '%'.$search.'%')
+               ->orderBy('orders.created_at', 'desc');
+        })->paginate($perPage, $columns = ['*'], $pageName = 'orders'
+        )->appends(['per_page'   => $perPage]);
+    
+        $pagination = $orders->appends ( array ('search' => $search) );
+            if (count ( $pagination ) > 0){
+                return view('admin.all-orders',  compact(
+                'perPage', 'name', 'role', 'orders'))->withDetails( $pagination );     
+            } 
+            else{return redirect()->back()->with('order-status', 'No record order found');}
+        return view('admin.all-orders', compact('name', 'role', 'orders'));
     }
   
 }//class
