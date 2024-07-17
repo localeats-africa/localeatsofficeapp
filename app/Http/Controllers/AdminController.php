@@ -517,8 +517,7 @@ class AdminController extends Controller
         ->where('orders.order_ref', '!=', null)
         ->sum('order_amount');
 
-        $countAllOrder = Orders::all()
-        ->where('deleted_at', null)
+        $countAllOrder = Orders::where('deleted_at', null)
         ->where('orders.order_amount', '!=', null)
         ->where('orders.order_ref', '!=', null)
         ->count();
@@ -538,6 +537,8 @@ class AdminController extends Controller
         ->join('vendor', 'orders.vendor_id', '=', 'vendor.id')->distinct()
         ->Join('platforms', 'orders.platform_id', '=', 'platforms.id')
         ->where('orders.deleted_at', null)
+        ->where('orders.order_amount', '!=', null)
+        ->where('orders.order_ref', '!=', null)
         ->select(['orders.*', 'vendor.vendor_name', 'platforms.name'])
         ->orderBy('orders.created_at', 'desc')
         ->where(function ($query) use ($search) {  // <<<
