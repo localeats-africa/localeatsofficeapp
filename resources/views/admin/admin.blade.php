@@ -17,7 +17,7 @@
                               <div class="row row-cards">
 
                               <div class="col-md-3 stretch-card grid-margin">
-                                    <div class="card bg-gradient-danger card-img-holder text-white">
+                                    <div class="card bg-gradient-dark card-img-holder text-white">
                                           <div class="card-body">
                                                 <img src="{{ asset('assets/images/dashboard/circle.svg')}}" class="card-img-absolute"
                                                       alt="circle-image">
@@ -26,12 +26,12 @@
                                                 </h4>
                                                 <h2 class="mb-5">{{$countPlatforms->count()}}</h2>
                                                 <hr class="w-100">
-                                                <h6 class="card-text"> {{$activePlatform->count()}} active</h6>
+                                                <h6 class="card-text">active <span  style="float:right;">{{$activePlatform->count()}} </span> </h6>
                                           </div>
                                     </div>
                               </div>
                                     <div class="col-md-3 stretch-card grid-margin">
-                                          <div class="card bg-gradient-danger card-img-holder text-white">
+                                          <div class="card bg-gradient-warning card-img-holder text-dark">
                                                 <div class="card-body">
                                                       <img src="{{ asset('assets/images/dashboard/circle.svg') }}"
                                                             class="card-img-absolute" alt="circle-image">
@@ -51,7 +51,7 @@
                                     </div>
 
                                     <div class="col-md-3 stretch-card grid-margin">
-                                          <div class="card bg-gradient-danger card-img-holder text-white">
+                                          <div class="card bg-gradient-secondary card-img-holder text-dark">
                                                 <div class="card-body">
                                                       <img src="{{ asset('assets/images/dashboard/circle.svg') }}"
                                                             class="card-img-absolute" alt="circle-image">
@@ -71,7 +71,7 @@
                                     </div>
 
                                     <div class="col-md-3 stretch-card grid-margin">
-                                          <div class="card bg-gradient-success card-img-holder text-white">
+                                          <div class="card bg-gradient-danger card-img-holder text-white">
                                                 <div class="card-body">
                                                       <img src="{{ asset('assets/images/dashboard/circle.svg') }}"
                                                             class="card-img-absolute" alt="circle-image">
