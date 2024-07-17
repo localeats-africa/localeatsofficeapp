@@ -57,13 +57,18 @@ class AdminController extends Controller
         ->where('users.id', $id)
         ->pluck('role_name')->first();
 
+        $orders = Orders::where('deleted_at', null)
+        ->where('order_amount', '!=', null)
+        ->where('order_ref', '!=', null)
+        ->sum('order_amount');
+        
         $countVendor = Vendor::all();
          // a vendor is consider active if it's active on one or more platform
          $countActiveVendor = DB::table('sales_platform')
-         ->join('vendor', 'vendor.id', '=', 'sales_platform.vendor_id')
+         ->join('vendor', 'vendor.id', '=', 'sales_platform.vendor_id')->distinct()
          ->where('sales_platform.vendor_status', 'active')
-         ->get('platform_name');
-
+         ->get('sales_platform.vendor_id');
+      
          $countPlatforms = Platforms::all();
          // a platform is ative is it has one or more active vendor
          $chowdeckVendor = DB::table('sales_platform')
@@ -489,5 +494,13 @@ class AdminController extends Controller
     }
 
    
+    public function totalOrdersAllPlatform(Request $request){
+
+        $orders = Orders::all()
+        ->where('deleted_at', null)
+        ->where('orders.order_amount', '!=', null)
+        ->where('orders.order_ref', '!=', null)
+        ->sum('order_amount');
+    }
   
 }//class
