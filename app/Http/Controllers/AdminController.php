@@ -517,6 +517,14 @@ class AdminController extends Controller
         ->where('orders.order_ref', '!=', null)
         ->count();
 
+
+        $countPlatformWhereOrderCame = DB::table('orders')
+        ->Join('platforms', 'orders.platform_id', '=', 'platforms.id')->distinct()
+        ->where('deleted_at', null)
+        ->where('orders.order_amount', '!=', null)
+        ->where('orders.order_ref', '!=', null)
+        ->count('platforms.id');
+
         $orders = DB::table('orders')
         ->join('vendor', 'orders.vendor_id', '=', 'vendor.id')->distinct()
         ->Join('platforms', 'orders.platform_id', '=', 'platforms.id')
@@ -535,11 +543,11 @@ class AdminController extends Controller
             if (count ( $pagination ) > 0){
                 return view('admin.all-orders',  compact(
                 'perPage', 'name', 'role', 'orders',
-                'sumAllOrders', 'countAllOrder'))->withDetails( $pagination );     
+                'sumAllOrders', 'countAllOrder', 'countPlatformWhereOrderCame'))->withDetails( $pagination );     
             } 
             else{return redirect()->back()->with('order-status', 'No record order found');}
         return view('admin.all-orders', compact('name', 'role', 'orders', 
-        'sumAllOrders', 'countAllOrder'));
+        'sumAllOrders', 'countAllOrder', 'countPlatformWhereOrderCame'));
     }
   
 }//class
