@@ -184,7 +184,7 @@
 
                                                       <td>
                                                             @if($data->name == 'Chowdeck')
-                                                            {{$chowdeckVendor->count()}}
+                                                            {{$activeChowdeckVendor->count()}}
                                                             @endif
 
                                                             @if($data->name == 'Glovo')
