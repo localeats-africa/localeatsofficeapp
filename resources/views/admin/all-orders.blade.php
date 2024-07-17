@@ -106,28 +106,6 @@
                         </div>
                         @endif
 
-
-                        @if(session('setup-vendor'))
-                        <div class="alert  alert-success alert-dismissible" role="alert">
-                              <div class="d-flex">
-                                    <div>
-                                          <!-- Download SVG icon from http://tabler-icons.io/i/alert-triangle -->
-                                          <svg xmlns="http://www.w3.org/2000/svg" class="icon alert-icon" width="24"
-                                                height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"
-                                                fill="none" stroke-linecap="round" stroke-linejoin="round">
-                                                <path stroke="none" d="M0 0h24v24H0z" fill="none" />
-                                                <path
-                                                      d="M10.24 3.957l-8.422 14.06a1.989 1.989 0 0 0 1.7 2.983h16.845a1.989 1.989 0 0 0 1.7 -2.983l-8.423 -14.06a1.989 1.989 0 0 0 -3.4 0z" />
-                                                <path d="M12 9v4" />
-                                                <path d="M12 17h.01" />
-                                          </svg>
-                                    </div>
-                                    <div> {!! session('setup-vendor') !!}</div>
-                              </div>
-                              <a class="btn-close" data-bs-dismiss="alert" aria-label="close"></a>
-                        </div>
-                        @endif
-
                   </div>
             </div>
             <!---end Alert --->
@@ -164,7 +142,7 @@
                                                 Search:
                                                 <div class="ms-2 d-inline-block">
 
-                                                      <form action="{{ route('all-platform') }}" method="GET" role="search">
+                                                      <form action="{{ route('all-orders') }}" method="GET" role="search">
                                                             {{ csrf_field() }}
                                                             <div class="input-group mb-2">
                                                                   <input type="text" class="form-control"
@@ -186,60 +164,33 @@
                                                       <th class="w-1"><input class="form-check-input m-0 align-middle"
                                                                   type="checkbox" aria-label="Select all product">
                                                       </th>
-                                                      <th>Logo</th>
-                                                      <th>Platform</th>
+                                                      <th>No. Imported</th>
+                                                      <th>Invoice Ref.</th>
                                                       <th>Vendors</th>
-                                                      <th>Order (s)</th>
-                                                      <th></th>
+                                                      <th>Amount</th>
+                                                      <th>Food Price</th>
+                                                      <th>Extra</th>
+                                                      <th>Delivery Date</th>
                                                 </tr>
                                           </thead>
                                           <tbody>
-                                                @foreach($platform as $data)
+                                                @foreach($orders as $data)
                                                 <tr>
                                                       <td><input class="form-check-input m-0 align-middle"
                                                                   type="checkbox" aria-label="Select"></td>
                                                       <td class="py-1">
-                                                            @if(empty($data->img_url))
-                                                            None
-                                                            @else
-                                                            <img src="{{ asset($data->img_url) }}" class="cursor"
-                                                                  style="">
-                                                            @endif
+                                                      {{$data->number_of_imported_order}}
                                                       </td>
 
-                                                      <td class="text-capitalize">{{$data->name}}</td>
+                                                      <td>{{$data->invoice_ref}}</td>
 
-                                                      <td>
-                                                            @if($data->name == 'Chowdeck')
-                                                            {{$activeChowdeckVendor->count()}}
-                                                            @endif
-
-                                                            @if($data->name == 'Glovo')
-                                                            {{$activeGlovoVendor->count()}}
-                                                            @endif
-
-                                                            @if($data->name == 'Edenlife')
-                                                            {{$edenlifeVendor->count()}}
-                                                            @endif
-                                                      </td>
+                                                      <td class="text-capitalize">{{$data->vendor_name}}</td>
                                                      
-                                                      <td>0</td>
+                                                      <td>{{$data->food_price}}</td>
+                                                      <td>{{$data->extra}}</td>
+                                                      <td>{{$data->delivery_date}}</td>
 
-                                                      <td class="text-end">
-                                                            <span class="dropdown">
-                                                                  <button
-                                                                        class="btn dropdown-toggle align-text-top text-danger"
-                                                                        data-bs-boundary="viewport"
-                                                                        data-bs-toggle="dropdown">Actions</button>
-                                                                  <div class="dropdown-menu ">
-                                                                        <a class="dropdown-item text-capitalize text-dark"
-                                                                              href="delete-platform/{{$data->id}}">
-                                                                              <small>Delete</small>
-                                                                        </a>
-
-                                                                  </div>
-                                                            </span>
-                                                      </td>
+                                                
 
                                                 </tr>
                                                 @endforeach
