@@ -970,7 +970,7 @@ class HomeController extends Controller
                 
                 $platformComm = '0';
                
-                $locaEatsComm = (int)$orderAmount - $platformComm - $foodPrice - $extra;
+                $locaEatsComm = (int)$orderAmount - $platformComm - $addFoodPrice - $extra;
                 $updateComm = Commission::where('order_id', $order_id)
                 ->where('vendor_id', $vendor)
                 ->update([
@@ -986,7 +986,7 @@ class HomeController extends Controller
 
                 $platformComm = (int)$orderAmount * 0.22;
                
-                $locaEatsComm = (int)$orderAmount - $platformComm - $foodPrice - $extra;
+                $locaEatsComm = (int)$orderAmount - $platformComm - $addFoodPrice - $extra;
                 $updateComm = Commission::where('order_id', $order_id)
                 ->where('vendor_id', $vendor)
                 ->update([
@@ -995,11 +995,23 @@ class HomeController extends Controller
                 ]);
         
                }
+               $data = [
+                'success' => true,
+                'message'=> 'Update successful'
+              ] ;
+              
+              return response()->json($data);
            
-            return redirect()->back()->with('invoice', 'Update successful');
+           // return redirect()->back()->with('invoice', 'Update successful');
         }
         else{
-            return redirect()->back()->with('merge-error', 'Opps! something went wrong');
+            $data = [
+                'success' => false,
+                'message'=> 'Opps! something happen'
+              ] ;
+              
+              return response()->json($data);
+            //return redirect()->back()->with('merge-error', 'Opps! something went wrong');
          
         }
     }
