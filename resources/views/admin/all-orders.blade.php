@@ -23,11 +23,11 @@
                                                       <h4 class="font-weight-normal">Number Of Orders <i
                                                                   class="mdi mdi-pot-steam  mdi-24px float-end"></i>
                                                       </h4>
-                                                      <h2 class="mb-5">{{$countAllOrder->count()}}</h2>
+                                                      <h2 class="mb-5">{{$countAllOrder}}</h2>
                                                       <hr class="w-100">
                                                       <h6 class="card-text">number of platform
                                                             <span
-                                                                  style="float:right;">{{$countPlatformWhereOrderCame->count()}}</span>
+                                                                  style="float:right;">{{$countPlatformWhereOrderCame}}</span>
 
                                                       </h6>
                                                 </div>
@@ -164,7 +164,7 @@
                                                       <th class="w-1"><input class="form-check-input m-0 align-middle"
                                                                   type="checkbox" aria-label="Select all product">
                                                       </th>
-                                                      <th>No. Imported</th>
+                                                      <th>Order Imported</th>
                                                       <th>Invoice Ref.</th>
                                                       <th>Vendors</th>
                                                       <th>Amount</th>
@@ -179,7 +179,7 @@
                                                       <td><input class="form-check-input m-0 align-middle"
                                                                   type="checkbox" aria-label="Select"></td>
                                                       <td class="py-1">
-                                                      {{$data->number_of_imported_order}}
+                                                      {{$data->number_of_order_merge}}
                                                       </td>
 
                                                       <td>{{$data->invoice_ref}}</td>
@@ -203,18 +203,18 @@
                                     <p class="m-0 text-secondary">
 
                                           Showing
-                                          {{ ($platform->currentPage() - 1) * $platform->perPage() + 1; }} to
-                                          {{ min($platform->currentPage()* $platform->perPage(), $platform->total()) }}
+                                          {{ ($orders->currentPage() - 1) * $orders->perPage() + 1; }} to
+                                          {{ min($orders->currentPage()* $orders->perPage(), $orders->total()) }}
                                           of
-                                          {{$platform->total()}} entries
+                                          {{$orders->total()}} entries
                                     </p>
 
                                     <ul class="pagination m-0 ms-auto">
-                                          @if(isset($platform))
-                                          @if($platform->currentPage() > 1)
+                                          @if(isset($orders))
+                                          @if($orders->currentPage() > 1)
                                           <li class="page-item ">
                                                 <a class="page-link text-danger"
-                                                      href="{{ $platform->previousPageUrl() }}" tabindex="-1"
+                                                      href="{{ $orders->previousPageUrl() }}" tabindex="-1"
                                                       aria-disabled="true">
                                                       <!-- Download SVG icon from http://tabler-icons.io/i/chevron-left -->
                                                       <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24"
@@ -231,11 +231,11 @@
 
 
                                           <li class="page-item">
-                                                {{ $platform->appends(compact('perPage'))->links()  }}
+                                                {{ $orders->appends(compact('perPage'))->links()  }}
                                           </li>
-                                          @if($platform->hasMorePages())
+                                          @if($orders->hasMorePages())
                                           <li class="page-item">
-                                                <a class="page-link text-danger" href="{{ $platform->nextPageUrl() }}">
+                                                <a class="page-link text-danger" href="{{ $orders->nextPageUrl() }}">
                                                       next
                                                       <!-- Download SVG icon from http://tabler-icons.io/i/chevron-right -->
                                                       <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24"
