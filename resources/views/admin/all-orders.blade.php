@@ -191,6 +191,7 @@
                                                       <th>Food Price</th>
                                                       <th>Extra</th>
                                                       <th>Delivery Date</th>
+                                                      <th>Posted By</th>
                                                 </tr>
                                           </thead>
                                           <tbody>
@@ -206,7 +207,7 @@
                                                       <td>{{$data->food_price}}</td>
                                                       <td>{{$data->extra}}</td>
                                                       <td>{{$data->delivery_date}}</td>
-
+                                                      <td class="text-capitalize">{{$data->name}}</td>
                                                 
 
                                                 </tr>
