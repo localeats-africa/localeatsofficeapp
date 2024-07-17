@@ -11,27 +11,74 @@
                         Overview
                   </h3>
             </div>
-            <p></p>
-            <div class="row ">
-                  <div class="col-12">
-                        <div class="row row-cards">
-                              <div class="col-md-4 stretch-card grid-margin">
-                                    <div class="card bg-gradient-danger card-img-holder text-white">
-                                          <div class="card-body">
-                                                <img src="{{ asset('assets/images/dashboard/circle.svg')}}" class="card-img-absolute"
-                                                      alt="circle-image">
-                                                <h4 class="font-weight-normal">Platforms <i
-                                                            class="mdi mdi-cloud-braces mdi-24px float-end"></i>
-                                                </h4>
-                                                <h2 class="mb-5">{{$countPlatforms->count()}}</h2>
-                                                <hr class="w-100">
-                                                <h6 class="card-text"> {{$activePlatform->count()}} active</h6>
+            <div class="container ">
+                  <div class="row ">
+                        <div class="col-12">
+                              <div class="row row-cards">
+                                    <div class="col-md-3 stretch-card grid-margin">
+                                          <div class="card bg-gradient-danger card-img-holder text-white">
+                                                <div class="card-body">
+                                                      <img src="{{ asset('assets/images/dashboard/circle.svg') }}"
+                                                            class="card-img-absolute" alt="circle-image">
+                                                      <h4 class="font-weight-normal">Number Of Orders <i
+                                                                  class="mdi mdi-pot-steam  mdi-24px float-end"></i>
+                                                      </h4>
+                                                      <h2 class="mb-5">{{$countAllOrder}}</h2>
+                                                      <hr class="w-100">
+                                                      <h6 class="card-text">From  <span class="text-dark">( {{$countPlatformWhereOrderCame}} )</span>
+                                                            <span
+                                                                  style="float:right;">platform (s)</span> 
+
+                                                      </h6>
+                                                </div>
+
                                           </div>
                                     </div>
+
+                                    <div class="col-md-3 stretch-card grid-margin">
+                                          <div class="card bg-gradient-success card-img-holder text-white">
+                                                <div class="card-body">
+                                                      <img src="{{ asset('assets/images/dashboard/circle.svg') }}"
+                                                            class="card-img-absolute" alt="circle-image">
+                                                      <h4 class="font-weight-normal">Number Of Plates <i
+                                                                  class="mdi mdi-pot-steam  mdi-24px float-end"></i>
+                                                      </h4>
+                                                      <h2 class="mb-5">{{$countAllPlate}}</h2>
+                                                      <hr class="w-100">
+                                                      <h6 class="card-text">From  <span class="text-dark">( {{$countAllOrder}} )</span>
+                                                            <span
+                                                                  style="float:right;">order (s)</span> 
+
+                                                      </h6>
+                                                </div>
+
+                                          </div>
+                                    </div>
+
+                                    <div class="col-md-3 stretch-card grid-margin">
+                                          <div class="card bg-gradient-info card-img-holder text-white">
+                                                <div class="card-body">
+                                                      <img src="{{ asset('assets/images/dashboard/circle.svg')}}"
+                                                            class="card-img-absolute" alt="circle-image">
+                                                      <h4 class="font-weight-normal">Orders <i
+                                                                  class="mdi mdi-shopping mdi-24px float-end"></i>
+                                                      </h4>
+                                                      <h2 class="mb-5">₦{{number_format($sumAllOrders)}}</h2>
+                                                      <hr class="w-100">
+                                                      <h6 class="card-text">weekly average <span style="float:right;">₦0
+                                                            </span></h6>
+                                                </div>
+                                          </div>
+                                    </div>
+
+         
                               </div>
+                              <!--row--->
                         </div>
                   </div>
+                  <!--row-deck-->
             </div>
+            <p></p>
             <p></p>
             <!--Alert here--->
             <div class="row ">
@@ -58,7 +105,7 @@
                         @endif
 
 
-                        @if(session('platform-status'))
+                        @if(session('order-status'))
                         <div class="alert  alert-danger alert-dismissible" role="alert">
                               <div class="d-flex">
                                     <div>
@@ -73,29 +120,7 @@
                                                 <path d="M12 17h.01" />
                                           </svg>
                                     </div>
-                                    <div> {!! session('platform-status') !!}</div>
-                              </div>
-                              <a class="btn-close" data-bs-dismiss="alert" aria-label="close"></a>
-                        </div>
-                        @endif
-
-
-                        @if(session('setup-vendor'))
-                        <div class="alert  alert-success alert-dismissible" role="alert">
-                              <div class="d-flex">
-                                    <div>
-                                          <!-- Download SVG icon from http://tabler-icons.io/i/alert-triangle -->
-                                          <svg xmlns="http://www.w3.org/2000/svg" class="icon alert-icon" width="24"
-                                                height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"
-                                                fill="none" stroke-linecap="round" stroke-linejoin="round">
-                                                <path stroke="none" d="M0 0h24v24H0z" fill="none" />
-                                                <path
-                                                      d="M10.24 3.957l-8.422 14.06a1.989 1.989 0 0 0 1.7 2.983h16.845a1.989 1.989 0 0 0 1.7 -2.983l-8.423 -14.06a1.989 1.989 0 0 0 -3.4 0z" />
-                                                <path d="M12 9v4" />
-                                                <path d="M12 17h.01" />
-                                          </svg>
-                                    </div>
-                                    <div> {!! session('setup-vendor') !!}</div>
+                                    <div> {!! session('order-status') !!}</div>
                               </div>
                               <a class="btn-close" data-bs-dismiss="alert" aria-label="close"></a>
                         </div>
@@ -137,7 +162,7 @@
                                                 Search:
                                                 <div class="ms-2 d-inline-block">
 
-                                                      <form action="{{ route('all-platform') }}" method="GET" role="search">
+                                                      <form action="{{ route('all-orders') }}" method="GET" role="search">
                                                             {{ csrf_field() }}
                                                             <div class="input-group mb-2">
                                                                   <input type="text" class="form-control"
@@ -159,60 +184,32 @@
                                                       <th class="w-1"><input class="form-check-input m-0 align-middle"
                                                                   type="checkbox" aria-label="Select all product">
                                                       </th>
-                                                      <th>Logo</th>
-                                                      <th>Platform</th>
+                                                      <th>Invoice Ref.</th>
                                                       <th>Vendors</th>
-                                                      <th>Order (s)</th>
-                                                      <th></th>
+                                                      <th>Platform</th>
+                                                      <th>Amount</th>
+                                                      <th>Food Price</th>
+                                                      <th>Extra</th>
+                                                      <th>Delivery Date</th>
+                                                      <th>Posted By</th>
                                                 </tr>
                                           </thead>
                                           <tbody>
-                                                @foreach($platform as $data)
+                                                @foreach($orders as $data)
                                                 <tr>
                                                       <td><input class="form-check-input m-0 align-middle"
                                                                   type="checkbox" aria-label="Select"></td>
-                                                      <td class="py-1">
-                                                            @if(empty($data->img_url))
-                                                            None
-                                                            @else
-                                                            <img src="{{ asset($data->img_url) }}" class="cursor"
-                                                                  style="">
-                                                            @endif
-                                                      </td>
 
+                                                      <td>{{$data->invoice_ref}}</td>
+                                                      <td class="text-capitalize">{{$data->vendor_name}}</td>
                                                       <td class="text-capitalize">{{$data->name}}</td>
-
-                                                      <td>
-                                                            @if($data->name == 'Chowdeck')
-                                                            {{$activeChowdeckVendor->count()}}
-                                                            @endif
-
-                                                            @if($data->name == 'Glovo')
-                                                            {{$activeGlovoVendor->count()}}
-                                                            @endif
-
-                                                            @if($data->name == 'Edenlife')
-                                                            {{$activeEdenlifeVendor->count()}}
-                                                            @endif
-                                                      </td>
-                                                     
-                                                      <td>0</td>
-
-                                                      <td class="text-end">
-                                                            <span class="dropdown">
-                                                                  <button
-                                                                        class="btn dropdown-toggle align-text-top text-danger"
-                                                                        data-bs-boundary="viewport"
-                                                                        data-bs-toggle="dropdown">Actions</button>
-                                                                  <div class="dropdown-menu ">
-                                                                        <a class="dropdown-item text-capitalize text-dark"
-                                                                              href="delete-platform/{{$data->id}}">
-                                                                              <small>Delete</small>
-                                                                        </a>
-
-                                                                  </div>
-                                                            </span>
-                                                      </td>
+                                                      <td>{{$data->order_amount}}</td>
+                                                      <td>{{$data->food_price}}</td>
+                                                      <td>{{$data->extra}}</td>
+                                                      <td>{{ date('m/d/Y', strtotime($data->delivery_date))}}
+                                                          </td>
+                                                      <td class="text-capitalize">{{$data->fullname}}</td>
+                                                
 
                                                 </tr>
                                                 @endforeach
@@ -225,18 +222,18 @@
                                     <p class="m-0 text-secondary">
 
                                           Showing
-                                          {{ ($platform->currentPage() - 1) * $platform->perPage() + 1; }} to
-                                          {{ min($platform->currentPage()* $platform->perPage(), $platform->total()) }}
+                                          {{ ($orders->currentPage() - 1) * $orders->perPage() + 1; }} to
+                                          {{ min($orders->currentPage()* $orders->perPage(), $orders->total()) }}
                                           of
-                                          {{$platform->total()}} entries
+                                          {{$orders->total()}} entries
                                     </p>
 
                                     <ul class="pagination m-0 ms-auto">
-                                          @if(isset($platform))
-                                          @if($platform->currentPage() > 1)
+                                          @if(isset($orders))
+                                          @if($orders->currentPage() > 1)
                                           <li class="page-item ">
                                                 <a class="page-link text-danger"
-                                                      href="{{ $platform->previousPageUrl() }}" tabindex="-1"
+                                                      href="{{ $orders->previousPageUrl() }}" tabindex="-1"
                                                       aria-disabled="true">
                                                       <!-- Download SVG icon from http://tabler-icons.io/i/chevron-left -->
                                                       <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24"
@@ -253,11 +250,11 @@
 
 
                                           <li class="page-item">
-                                                {{ $platform->appends(compact('perPage'))->links()  }}
+                                                {{ $orders->appends(compact('perPage'))->links()  }}
                                           </li>
-                                          @if($platform->hasMorePages())
+                                          @if($orders->hasMorePages())
                                           <li class="page-item">
-                                                <a class="page-link text-danger" href="{{ $platform->nextPageUrl() }}">
+                                                <a class="page-link text-danger" href="{{ $orders->nextPageUrl() }}">
                                                       next
                                                       <!-- Download SVG icon from http://tabler-icons.io/i/chevron-right -->
                                                       <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24"

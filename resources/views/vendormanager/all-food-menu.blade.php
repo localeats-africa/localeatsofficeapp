@@ -153,7 +153,7 @@
                                                                               href="edit-food-menu/{{$data->id}}">
                                                                              <i class="fa fa-edit"></i>
                                                                         </a></td>
-                                                      <td class="text-sm"><small>{{$data->name}}</small></td>
+                                                      <td class="text-sm"><small>{{$data->fullname}}</small></td>
                                                       <td><small>{{$data->item}}</small></td>
                                                       <td class="text-capitalize"><small>{{$data->price}}</small> </td>
 

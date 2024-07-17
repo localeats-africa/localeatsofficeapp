@@ -270,9 +270,9 @@ class HomeController extends Controller
             $countVendor = Vendor::all();
              // a vendor is consider active if it's active on one or more platform
             $countActivevendor = DB::table('sales_platform')
-            ->join('vendor', 'vendor.id', '=', 'sales_platform.vendor_id')
+            ->join('vendor', 'vendor.id', '=', 'sales_platform.vendor_id')->distinct()
             ->where('sales_platform.vendor_status', 'active')
-            ->get('platform_name');
+            ->get('sales_platform.vendor_id');
        
             $perPage = $request->perPage ?? 25;
             $search = $request->input('search');
@@ -519,7 +519,7 @@ class HomeController extends Controller
             ->where('food_menu.deleted_at', null)
             ->where('food_menu.price', '!=', null)
             ->where('food_menu.item', '!=', null)
-            ->select(['vendor.vendor_name', 'food_menu.*', 'users.name'])
+            ->select(['vendor.vendor_name', 'food_menu.*', 'users.fullname'])
             ->orderBy('food_menu.created_at', 'desc')
             ->where(function ($query) use ($search) {  // <<<
             $query->where('vendor.vendor_name', 'LIKE', '%'.$search.'%')
