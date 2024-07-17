@@ -25,9 +25,9 @@
                                                       </h4>
                                                       <h2 class="mb-5">{{$countAllOrder->count()}}</h2>
                                                       <hr class="w-100">
-                                                      <h6 class="card-text">active
+                                                      <h6 class="card-text">number of platform
                                                             <span
-                                                                  style="float:right;">{{$countActiveVendor->count()}}</span>
+                                                                  style="float:right;">{{$countPlatformWhereOrderCame->count()}}</span>
 
                                                       </h6>
                                                 </div>
