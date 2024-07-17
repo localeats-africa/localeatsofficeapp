@@ -995,14 +995,11 @@ class HomeController extends Controller
                 ]);
         
                }
-               $data = [
-                'success' => true,
-                'message'=> 'Update successful'
-              ] ;
+               $data = 'Update successful' ;
               
-              return response()->json($data);
+             // return response()->json($data);
            
-           // return redirect()->back()->with('invoice', 'Update successful');
+            return redirect()->back()->with('invoice',  $data );
         }
         else{
             $data = [
@@ -1010,8 +1007,8 @@ class HomeController extends Controller
                 'message'=> 'Opps! something happen'
               ] ;
               
-              return response()->json($data);
-            //return redirect()->back()->with('merge-error', 'Opps! something went wrong');
+             // return response()->json($data);
+            return redirect()->back()->with('merge-error', 'Opps! something went wrong');
          
         }
     }

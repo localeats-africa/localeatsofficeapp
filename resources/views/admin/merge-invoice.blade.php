@@ -248,6 +248,7 @@
                                                                         <td>
                                                                               <p> {{number_format(floatval($data->food_price))}}
                                                                               </p>
+                                                                              <p> </p>
                                                                               <form action="{{ route('update-merge-invoice-food') }}"
                                                                                     method="post" name="submit"
                                                                                     enctype="multipart/form-data">
@@ -487,4 +488,5 @@ function mydelete() {
       alert("Sure you want to delete?");
 }
 </script>
+
 @endsection
