@@ -92,15 +92,22 @@ class AdminController extends Controller
 
         $commission = Commission::all()->sum('localeats_comm');
 
+
+        $countPlatforms = Platforms::all();
+        // a platform is ative is it has one or more active vendor
+        $activePlatform = DB::table('sales_platform')
+        ->join('vendor', 'vendor.id', '=', 'sales_platform.vendor_id')
+       ->join('platforms', 'platforms.name', '=', 'sales_platform.platform_name')->distinct()
+        ->where('sales_platform.vendor_status', 'active')
+        ->get('sales_platform.platform_name');
+        
         $countVendor = Vendor::all();
          // a vendor is consider active if it's active on one or more platform
          $countActiveVendor = DB::table('sales_platform')
          ->join('vendor', 'vendor.id', '=', 'sales_platform.vendor_id')->distinct()
          ->where('sales_platform.vendor_status', 'active')
          ->get('sales_platform.vendor_id');
-      
-         $countPlatforms = Platforms::all();
-         // a platform is ative is it has one or more active vendor
+       
          $chowdeckVendor = DB::table('sales_platform')
          ->join('vendor', 'vendor.id', '=', 'sales_platform.vendor_id')
          ->join('platforms', 'platforms.name', '=', 'sales_platform.platform_name')
@@ -141,7 +148,7 @@ class AdminController extends Controller
          ->get('sales_platform.vendor_id');
 
         return view('admin.admin', compact('name', 'role', 'countVendor',
-         'countActiveVendor', 'countPlatforms',
+         'countActiveVendor', 'countPlatforms', 'activePlatform',
          'activeChowdeckVendor', 'chowdeckVendor',
          'glovoVendor', 'activeGlovoVendor',   'activeEdenlifeVendor', 
          'edenlifeVendor',  'countPlatforms',  'payouts',
@@ -209,8 +216,6 @@ class AdminController extends Controller
         ->where('sales_platform.vendor_status', 'active')
         ->get('sales_platform.platform_name');
 
-
-
         $activeChowdeckVendor = DB::table('sales_platform')
         ->join('vendor', 'vendor.id', '=', 'sales_platform.vendor_id')->distinct()
         ->join('platforms', 'platforms.name', '=', 'sales_platform.platform_name')
@@ -218,7 +223,6 @@ class AdminController extends Controller
         ->where('sales_platform.platform_name', 'chowdeck')
         ->get('sales_platform.vendor_id');
      
-
         $chowdeckVendor = DB::table('sales_platform')
         ->join('vendor', 'vendor.id', '=', 'sales_platform.vendor_id')
         ->join('platforms', 'platforms.name', '=', 'sales_platform.platform_name')
