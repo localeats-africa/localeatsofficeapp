@@ -510,7 +510,7 @@ class AdminController extends Controller
         ->join('users', 'users.role_id', 'role.id')
         ->where('users.id', $id)
         ->pluck('role_name')->first();
-        
+
         $sumAllOrders = Orders::all()
         ->where('deleted_at', null)
         ->where('orders.order_amount', '!=', null)
@@ -526,16 +526,19 @@ class AdminController extends Controller
 
         $countPlatformWhereOrderCame = DB::table('orders')
         ->Join('platforms', 'orders.platform_id', '=', 'platforms.id')->distinct()
-        ->where('deleted_at', null)
+        ->where('orders.deleted_at', null)
         ->where('orders.order_amount', '!=', null)
         ->where('orders.order_ref', '!=', null)
         ->count('platforms.id');
+
+        $perPage = $request->perPage ?? 10;
+        $search = $request->input('search');  
 
         $orders = DB::table('orders')
         ->join('vendor', 'orders.vendor_id', '=', 'vendor.id')->distinct()
         ->Join('platforms', 'orders.platform_id', '=', 'platforms.id')
         ->where('orders.deleted_at', null)
-        ->select(['order_*', 'vendor.vendor_name', 'platforms.platform_name'])
+        ->select(['orders.*', 'vendor.vendor_name', 'platforms.name'])
         ->orderBy('orders.created_at', 'desc')
         ->where(function ($query) use ($search) {  // <<<
         $query->where('orders.created_at', 'LIKE', '%'.$search.'%')
