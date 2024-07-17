@@ -440,7 +440,7 @@ class AdminController extends Controller
         }
 
         $addUser = new User;
-        $addUser->name              = $request->name;
+        $addUser->fullname           = $request->name;
         $addUser->email             = $request->email;
         $addUser->role_id           = $request->role;
         $addUser->email_verified_at = $verified;
@@ -484,7 +484,7 @@ class AdminController extends Controller
         ->select(['users.*', 'role.role_name' ])
         ->orderBy('created_at', 'desc')
         ->where(function ($query) use ($search) {  // <<<
-        $query->where('users.name', 'LIKE', '%'.$search.'%')
+        $query->where('users.fullname', 'LIKE', '%'.$search.'%')
         ->orWhere('users.email', 'LIKE', '%'.$search.'%')
         ->orWhere('role.role_name', 'LIKE', '%'.$search.'%')
         ->orderBy('users.created_at', 'desc');

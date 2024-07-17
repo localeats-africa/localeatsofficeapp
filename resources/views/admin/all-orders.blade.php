@@ -207,7 +207,7 @@
                                                       <td>{{$data->food_price}}</td>
                                                       <td>{{$data->extra}}</td>
                                                       <td>{{$data->delivery_date}}</td>
-                                                      <td class="text-capitalize">{{$data->name}}</td>
+                                                      <td class="text-capitalize">{{$data->fullname}}</td>
                                                 
 
                                                 </tr>
