@@ -62,6 +62,9 @@ class AdminController extends Controller
         ->where('order_ref', '!=', null)
         ->sum('order_amount');
 
+        $payouts = Orders::all()
+        ->sum('payout');
+
         $countVendor = Vendor::all();
          // a vendor is consider active if it's active on one or more platform
          $countActiveVendor = DB::table('sales_platform')
@@ -114,7 +117,7 @@ class AdminController extends Controller
          'countActiveVendor', 'countPlatforms',
          'activeChowdeckVendor', 'chowdeckVendor',
          'glovoVendor', 'activeGlovoVendor',   'activeEdenlifeVendor', 
-         'edenlifeVendor',  'countPlatforms', 'orders'));
+         'edenlifeVendor',  'countPlatforms', 'orders', 'payouts'));
       }
     }
 
