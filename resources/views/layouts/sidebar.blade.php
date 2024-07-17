@@ -76,7 +76,7 @@
                         </li>
 
                         <li class="nav-item">
-                              <a class="nav-link" href="" target="">
+                              <a class="nav-link" href="{{ url('all-orders') }}" target="">
                                     <span class="menu-title">Order (s)</span>
                                     <i class="mdi mdi-shopping fs-24 menu-icon"></i>
                                  
