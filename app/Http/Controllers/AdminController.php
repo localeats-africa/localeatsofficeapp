@@ -511,8 +511,7 @@ class AdminController extends Controller
         ->where('users.id', $id)
         ->pluck('role_name')->first();
 
-        $sumAllOrders = Orders::all()
-        ->where('deleted_at', null)
+        $sumAllOrders = Orders::where('deleted_at', null)
         ->where('orders.order_amount', '!=', null)
         ->where('orders.order_ref', '!=', null)
         ->sum('order_amount');
@@ -534,7 +533,7 @@ class AdminController extends Controller
         $search = $request->input('search');  
 
         $orders = DB::table('orders')
-        ->join('vendor', 'orders.vendor_id', '=', 'vendor.id')->distinct()
+        ->join('vendor', 'orders.vendor_id', '=', 'vendor.id')
         ->Join('platforms', 'orders.platform_id', '=', 'platforms.id')
         ->where('orders.deleted_at', null)
         ->where('orders.order_amount', '!=', null)
