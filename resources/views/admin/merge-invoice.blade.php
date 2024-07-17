@@ -193,20 +193,13 @@
                                                             <thead>
                                                                   <tr>
                                                                         <th>SN</th>
-
                                                                         <th>Order Ref</th>
-                                                                        <th>Platform</th>
-                                                                        <th>Delivery Date</th>
-                                                                        <th class="table-info">Amount (₦)
-                                                                        </th>
-                                                                        <th class="table-danger">
-                                                                              P-Comm.</th>
+                                                                        <th class="table-info">Amount (₦)</th>
+                                                                        <th class="table-danger">P-Comm.</th>
                                                                         <th>Item (s)</th>
                                                                         <th>F-Price</th>
                                                                         <th>Extra</th>
-                                                                        <th class="table-success">
-                                                                              Commission
-                                                                        </th>
+                                                                        <th class="table-success">Commission</th>
                                                                   </tr>
                                                             </thead>
                                                             <tbody>
@@ -232,13 +225,11 @@
 
                                                                         </td>
 
-                                                                        </td>
-                                                                        <td><small>{{$data->order_ref}}</small>
-                                                                        </td>
-                                                                        <td><small>{{$data->name}}</small>
-                                                                        </td>
                                                                         <td>
-                                                                              <small>{{ date('m/d/Y', strtotime($data->delivery_date))}}</small>
+                                                                              <p><small>{{$data->order_ref}}</small></p>
+                                                                              <p><small>{{$data->name}}</small></p>
+                                                                              <p><small>{{ date('m/d/Y', strtotime($data->delivery_date))}}</small>
+                                                                              </p>
                                                                         </td>
                                                                         <td class="table-info">
                                                                               <small>{{number_format(floatval($data->order_amount))}}</small>
@@ -261,80 +252,85 @@
                                                                                     method="post" name="submit"
                                                                                     enctype="multipart/form-data">
                                                                                     @csrf
-                                                                                    <select
-                                                                                          class="js-example-basic-multiple"
-                                                                                          multiple="multiple"
-                                                                                          style="width:100%"
-                                                                                          name="food_price[]">
-                                                                                          <option value="">
-                                                                                                Search
-                                                                                          </option>
-                                                                                          @foreach($vendorFoodPrice
-                                                                                          as $food)
-                                                                                          <option value="{{$food->id}}">
-                                                                                                {{$food->item}}
-                                                                                          </option>
-                                                                                          @endforeach
-                                                                                    </select>
+
+                                                                                    <div class="form-group">
+                                                                                          <select
+                                                                                                class="js-example-basic-multiple1"
+                                                                                                multiple="multiple"
+                                                                                                style="width:100%"
+                                                                                                name="food_price[]">
+                                                                                                <option value="">
+                                                                                                      Search
+                                                                                                </option>
+                                                                                                @foreach($vendorFoodPrice
+                                                                                                as $food)
+                                                                                                <option
+                                                                                                      value="{{$food->id}}">
+                                                                                                      {{$food->item}}
+                                                                                                </option>
+                                                                                                @endforeach
+                                                                                          </select>
+                                                                                    </div>
+                                                                                    <input type="hidden" name="order"
+                                                                                          value="{{$data->id}}">
+                                                                                    <input type="hidden" name="vendor"
+                                                                                          value="{{$data->vendor_id}}">
+                                                                                    <input type="hidden" name="amount"
+                                                                                          value="{{$data->order_amount}}">
+
+                                                                                    <input type="hidden" name="extra"
+                                                                                          value="{{$data->extra}}">
+
 
                                                                                     <div
                                                                                           class="d-flex flex-column align-items-center text-center">
-                                                                                          <input type="hidden"
-                                                                                                name="order"
-                                                                                                value="{{$data->id}}">
-                                                                                          <input type="hidden"
-                                                                                                name="vendor"
-                                                                                                value="{{$data->vendor_id}}">
-                                                                                          <input type="hidden"
-                                                                                                name="amount"
-                                                                                                value="{{$data->order_amount}}">
-
-                                                                                          <input type="hidden"
-                                                                                                name="extra"
-                                                                                                value="{{$data->extra}}">
-
                                                                                           <button type="submit"
                                                                                                 class="btn text-success"><i
                                                                                                       class="fa fa-check"></i></button>
                                                                                     </div>
                                                                               </form>
 
-                                                                              
+
                                                                               <div
-                                                                                          class="d-flex flex-column align-items-center text-center">
-                                                                                        <!-- Reset food prie ----->
-                                                                                        <form action="{{ route('reset-order-food-price', [$data->id]) }}"
-                                                                                                method="post"
-                                                                                                name="submit"
-                                                                                                enctype="multipart/form-data">
-                                                                                                @csrf
+                                                                                    class="d-flex flex-column align-items-center text-center">
+                                                                                    <!-- Reset food prie ----->
+                                                                                    <form action="{{ route('reset-order-food-price', [$data->id]) }}"
+                                                                                          method="post" name="submit"
+                                                                                          enctype="multipart/form-data">
+                                                                                          @csrf
 
-                                                                                                <button type="submit"
-                                                                                                      class="text-danger"><i
-                                                                                                            class="fa fa-times"></i></button>
+                                                                                          <button type="submit"
+                                                                                                class="text-danger"><i
+                                                                                                      class="fa fa-times"></i></button>
 
-                                                                                          </form>
+                                                                                    </form>
                                                                               </div>
 
                                                                         </td>
+
                                                                         <td>
-                                                                              <p> {{number_format(floatval($data->extra))}}</p>
+                                                                              <p> {{number_format(floatval($data->extra))}}
+                                                                              </p>
                                                                               <form action="{{ route('update-merge-invoice-extra') }}"
                                                                                     method="post" name="submit"
                                                                                     enctype="multipart/form-data">
                                                                                     @csrf
-                                                                                    <select
-                                                                                          class="js-example-basic-multiple"
-                                                                                          multiple="multiple"
-                                                                                          style="width:100%"
-                                                                                          name="extra[]">
-                                                                                          @foreach($vendorFoodPrice
-                                                                                          as $food)
-                                                                                          <option value="{{$food->id}}">
-                                                                                                {{$food->item}}
-                                                                                          </option>
-                                                                                          @endforeach
-                                                                                    </select>
+                                                                                    <div class="form-group">
+                                                                                          <select
+                                                                                                class="js-example-basic-multiple"
+                                                                                                multiple="multiple"
+                                                                                                style="width:100%"
+                                                                                                name="extra[]">
+                                                                                                @foreach($vendorFoodPrice
+                                                                                                as $food)
+                                                                                                <option
+                                                                                                      value="{{$food->id}}">
+                                                                                                      {{$food->item}}
+                                                                                                </option>
+                                                                                                @endforeach
+                                                                                          </select>
+                                                                                    </div>
+                                          
                                                                                     <div
                                                                                           class="d-flex flex-column align-items-center text-center">
                                                                                           <input type="hidden"
@@ -357,22 +353,22 @@
                                                                               </form>
 
                                                                               <div
-                                                                                          class="d-flex flex-column align-items-center text-center">
-                                                                                        <!-- Reset extra prie ----->
-                                                                                        <form action="{{ route('reset-order-extra', [$data->id]) }}"
-                                                                                                method="post"
-                                                                                                name="submit"
-                                                                                                enctype="multipart/form-data">
-                                                                                                @csrf
+                                                                                    class="d-flex flex-column align-items-center text-center">
+                                                                                    <!-- Reset extra prie ----->
+                                                                                    <form action="{{ route('reset-order-extra', [$data->id]) }}"
+                                                                                          method="post" name="submit"
+                                                                                          enctype="multipart/form-data">
+                                                                                          @csrf
 
-                                                                                                <button type="submit"
-                                                                                                      class="text-danger"><i
-                                                                                                            class="fa fa-times"></i></button>
+                                                                                          <button type="submit"
+                                                                                                class="text-danger"><i
+                                                                                                      class="fa fa-times"></i></button>
 
-                                                                                          </form>
+                                                                                    </form>
                                                                               </div>
 
                                                                         </td>
+
                                                                         <td class="table-success">
                                                                               @if($data->name == 'Chowdeck')
                                                                               {{ number_format($data->localeats_comm)}}
@@ -387,7 +383,7 @@
                                                                   @endforeach
                                                                   <tr>
 
-                                                                        <th colspan="4" class="text-end">
+                                                                        <th colspan="2" class="text-end">
                                                                               <h6>Total (₦)</h6>
                                                                         </th>
 
@@ -405,25 +401,25 @@
                                                                   </tr>
 
                                                                   <tr>
-                                                                        <th row colspan="7" class="text-end">
+                                                                        <th row colspan="6" class="text-end">
                                                                               <h6>Estimated PayOut (₦)</h6>
                                                                               <p><small class="text-danger fw-light">(food
                                                                                           price +
                                                                                           extra)</small></p>
                                                                         </th>
-                                                                        <th colspan="2">
+                                                                        <th>
                                                                               {{number_format($sumFoodPrice + $sumExtra, 2) }}
                                                                         </th>
                                                                         <th></th>
                                                                   </tr>
                                                                   <tr>
-                                                                        <th row colspan="7" class="text-end">
+                                                                        <th row colspan="6" class="text-end">
                                                                               <h6> Actual PayOut (₦)</h6>
                                                                               <p><small class="text-danger fw-light">(after
                                                                                           reconciliation)</small>
                                                                               </p>
                                                                         </th>
-                                                                        <th colspan="2">
+                                                                        <th>
                                                                               <form action="{{ route('update-merge-invoice-payout') }}"
                                                                                     method="post" name="submit"
                                                                                     enctype="multipart/form-data">

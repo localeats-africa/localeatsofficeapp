@@ -52,20 +52,43 @@
                               <nav style="--bs-breadcrumb-divider: '';" aria-label="breadcrumb">
                                     <ol class="breadcrumb">
                                           <li class="breadcrumb-item">
-                                                <button class="btn btn-outline-dark bg-gradient text-dark"
-                                                      onclick="printDiv()">
+                                                <button class="btn btn-outline-dark  text-dark" onclick="printDiv()">
                                                       <i class="fa fa-print"></i></button>
                                           </li>
                                           <li class="breadcrumb-item">
-                                                <button class="btn btn-outline-dark bg-gradient text-dark">
+                                                <button class="btn btn-outline-dark  text-dark" onclick="getPDF()">
                                                       <i class="fa fa-download"></i></button>
                                           </li>
                                           <li class="breadcrumb-item">
-                                                <button class="btn btn-outline-dark bg-gradient text-dark">
-                                                      <i class="fa fa-envelope"></i></button>
+
+                                                <form action="{{ route('email-invoice', [$invoice_ref]) }}" method="get"
+                                                      name="submit" enctype="multipart/form-data">
+                                                      @csrf
+                                                      <input type="hidden" value="{{$invoice_ref}}" name="invoice_ref"
+                                                            id="invoice_ref">
+                                                      <input type="hidden" value="{{$vendor}}" name="vendor"
+                                                            id="vendor">
+                                                      <button type="submit" name="submit"
+                                                            class="btn btn-outline-dark  text-dark">
+                                                            <i class="fa fa-envelope"></i></button>
+                                                </form>
+
+
+                                          </li>
+
+                                          <li class="breadcrumb-item">
+
+
+                                                <input type="hidden" value="{{$invoice_ref}}" name="ref" id="ref">
+                                                <input type="hidden" value="{{$vendor}}" name="vendor" id="vendor">
+                                                <button onclick="mypdf()"
+                                                      class="btn btn-outline-dark  text-dark">
+                                                      send email</button>
+
+
                                           </li>
                                           <li class="breadcrumb-item">
-                                                <button class="btn btn-outline-dark bg-gradient text-dark">
+                                                <button class="btn btn-outline-dark  text-dark">
                                                       <i class="fa fa-whatsapp"></i></button>
                                           </li>
                                     </ol>
@@ -74,9 +97,38 @@
                   </div>
             </div>
 
+            <!---Alert --->
+
+            <div class="row">
+                  <div class="col-lg-12">
+
+                        @if(session('save'))
+                        <div class="alert  alert-danger alert-dismissible" role="alert">
+                              <div class="d-flex">
+                                    <div>
+                                          <!-- Download SVG icon from http://tabler-icons.io/i/alert-triangle -->
+                                          <svg xmlns="http://www.w3.org/2000/svg" class="icon alert-icon" width="24"
+                                                height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"
+                                                fill="none" stroke-linecap="round" stroke-linejoin="round">
+                                                <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                                                <path
+                                                      d="M10.24 3.957l-8.422 14.06a1.989 1.989 0 0 0 1.7 2.983h16.845a1.989 1.989 0 0 0 1.7 -2.983l-8.423 -14.06a1.989 1.989 0 0 0 -3.4 0z" />
+                                                <path d="M12 9v4" />
+                                                <path d="M12 17h.01" />
+                                          </svg>
+                                    </div>
+                                    <div> {!! session('save') !!}</div>
+                              </div>
+                              <a class="btn-close" data-bs-dismiss="alert" aria-label="close"></a>
+                        </div>
+                        @endif
+                  </div>
+            </div>
+            <!---end---alert--->
+
             <div class="row">
                   <div class="col-md-12">
-                        <div class="card" id="print_invoice">
+                        <div class="card print_invoice" id="print_invoice">
                               <div class="card-body">
                                     <div class="row">
                                           <div class="col-md-6 col-6">
@@ -168,10 +220,8 @@
 
                                                                         <th colspan="3" class="text-end">
                                                                         </th>
-                                                                        <th>{{number_format($sumFoodPrice, 2)}}
-                                                                        </th>
-                                                                        <th>{{number_format($sumExtra, 2)}}
-                                                                        </th>
+                                                                        <th></th>
+                                                                        <th></th>
 
                                                                   </tr>
                                                                   <tr>
@@ -222,7 +272,7 @@
       </footer>
 </div><!-- main-panel -->
 
-<script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.0/jquery.min.js"></script>
+<script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
 <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/1.5.3/jspdf.min.js">
 </script>
 <script type="text/javascript" src="https://html2canvas.hertzen.com/dist/html2canvas.js"></script>
@@ -238,18 +288,165 @@ function exportInvoice() {
 
 }
 </script>
-<script> 
-        function printDiv() { 
-          var divContents = document.getElementById("print_invoice").innerHTML; 
-            var a = window.open(); 
-            a.document.write('<html>'); 
-            a.document.write( "<link rel='stylesheet' href='{{ asset('assets/css/style.css') }}' type='text/css' media='print'/>" );
-            a.document.write('<body> '); 
-            a.document.write(divContents); 
-            a.document.write('</body></html>'); 
-            a.document.close(); 
-            a.print(); 
-        } 
-    </script>
+<script>
+function printDiv() {
+      var divContents = document.getElementById("print_invoice").innerHTML;
+      var a = window.open();
+      a.document.write('<html>');
+      a.document.write(
+            "<link rel='stylesheet' href='{{ asset('assets/css/style.css') }}' type='text/css' media='print'/>");
+      a.document.write('<body> ');
+      a.document.write(divContents);
+      a.document.write('</body></html>');
+      a.document.close();
+      a.print();
+}
+</script>
+
+<script>
+//Create PDf from HTML...
+function getPDF() {
+
+      var HTML_Width = $(".print_invoice").width();
+      var HTML_Height = $(".print_invoice").height();
+      var top_left_margin = 15;
+      var PDF_Width = HTML_Width + (top_left_margin * 2);
+      var PDF_Height = (PDF_Width * 1.5) + (top_left_margin * 2);
+      var canvas_image_width = HTML_Width;
+      var canvas_image_height = HTML_Height;
+
+      var totalPDFPages = Math.ceil(HTML_Height / PDF_Height) - 1;
+
+
+      html2canvas($(".print_invoice")[0], {
+            allowTaint: true
+      }).then(function(canvas) {
+            canvas.getContext('2d');
+
+            console.log(canvas.height + "  " + canvas.width);
+            var imgData = canvas.toDataURL("image/jpeg", 1.0);
+            var pdf = new jsPDF('p', 'pt', [PDF_Width, PDF_Height]);
+            pdf.addImage(imgData, 'JPG', top_left_margin, top_left_margin, canvas_image_width,
+                  canvas_image_height);
+
+            for (var i = 1; i <= totalPDFPages; i++) {
+                  pdf.addPage(PDF_Width, PDF_Height);
+                  pdf.addImage(imgData, 'JPG', top_left_margin, -(PDF_Height * i) + (
+                        top_left_margin *
+                        4), canvas_image_width, canvas_image_height);
+            }
+            pdf.save("invoice-{{$invoice_ref}}.pdf");
+      });
+
+}
+</script>
+
+<script>
+      function mypdf(){
+            html2canvas($('#print_invoice')[0]).then(function(canvas) {
+            var dataUrl = canvas.toDataURL();
+            var newDataURL = dataUrl.replace(/^data:image\/png/, "data:application/octet-stream"); //do this to clean the url.
+           $("#saveBtn").attr("download", "your_pic_name.png").attr("href", newDataURL); //incase you want to create a download link to save the pic locally.
+      
+      //   var newDataURL = dataUrl.replace(/^data:application\/pdf/); //do this to clean the url.
+      //      $("#saveBtn").attr("download", "your_pic_name.png").attr("href", newDataURL); //incase you want to create a download link to save the pic locally.
+      
+           //data:application/pdf;base64,JVBERi0xLjQKJcOkw7zDtsOfCjIgMCBvYmoKPDwvTGVuZ3RoIDMgMCBSL0ZpbHRlci9GbGF0ZURlY29kZT4+CnN0cmVhbQp4nO1cyY4ktxG911fUWUC3kjsTaBTQ1Ytg32QN4IPgk23JMDQ2LB/0+2YsZAQzmZk1PSPIEB...
+           var id = document.getElementById('ref').value;
+            var showRoute = "{{ route('send-email-pdf', ':id') }}";
+            url = showRoute.replace(':id', id);
+            // $token = document.getElementsByName("_token")[0].value;
+            $.ajaxSetup({
+                  headers: {
+                        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                  }
+            });
+        $.ajax({
+            method: 'POST',
+                  enctype: 'multipart/form-data',
+                  url: url,
+            data: {
+                //you can more data here
+                'img':dataUrl
+            },
+            success: function(data){
+                console.log(data);
+            },
+            error: function(data){
+                console.log(data);
+            }
+        });
+        
+        });
+      }
+</script>
+
+<script>
+function sendEmail() {
+
+      var HTML_Width = $(".print_invoice").width();
+      var HTML_Height = $(".print_invoice").height();
+      var top_left_margin = 15;
+      var PDF_Width = HTML_Width + (top_left_margin * 2);
+      var PDF_Height = (PDF_Width * 1.5) + (top_left_margin * 2);
+      var canvas_image_width = HTML_Width;
+      var canvas_image_height = HTML_Height;
+
+      var totalPDFPages = Math.ceil(HTML_Height / PDF_Height) - 1;
+
+
+      html2canvas($(".print_invoice")[0], {
+            allowTaint: true
+      }).then(function(canvas) {
+            canvas.getContext('2d');
+
+            console.log(canvas.height + "  " + canvas.width);
+            var imgData = canvas.toDataURL("image/jpeg", 1.0);
+            var pdf = new jsPDF('p', 'pt', [PDF_Width, PDF_Height]);
+            pdf.addImage(imgData, 'JPG', top_left_margin, top_left_margin, canvas_image_width,
+                  canvas_image_height);
+
+            for (var i = 1; i <= totalPDFPages; i++) {
+                  pdf.addPage(PDF_Width, PDF_Height);
+                  pdf.addImage(imgData, 'JPG', top_left_margin, -(PDF_Height * i) + (
+                        top_left_margin *
+                        4), canvas_image_width, canvas_image_height);
+            }
+            // pdf.save("invoice-{{$invoice_ref}}.pdf");
+
+            var blob = pdf.output('blob');
+           
+
+
+            var id = document.getElementById('ref').value;
+            var showRoute = "{{ route('send-email-pdf', ':id') }}";
+            url = showRoute.replace(':id', id);
+            // $token = document.getElementsByName("_token")[0].value;
+            $.ajaxSetup({
+                  headers: {
+                        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                  }
+            });
+        $.ajax({
+            method: 'POST',
+                  enctype: 'multipart/form-data',
+                  url: url,
+            data: {
+                //you can more data here
+                'img':blob
+            },
+            success: function(data){
+                console.log(data);
+            },
+            error: function(data){
+                console.log(data);
+            }
+        });
+      });
+
+
+}
+</script>
+
 
 @endsection

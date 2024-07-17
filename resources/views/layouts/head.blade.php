@@ -9,7 +9,7 @@
       <meta name="csrf-token" content="{{ csrf_token() }}">
       <title>LocalEats</title>
       <!-- favicon -->
-      <link rel="shortcut icon" href="{{ asset('assets/images/favicon.ico')}}" />
+      <link rel="shortcut icon" href="{{ asset('assets/images/favicon.png')}}" />
       <!-- plugins:css -->
       <link rel="stylesheet" href="{{ asset('assets/vendors/mdi/css/materialdesignicons.min.css?v=echo filemtime();') }}">
       <link rel="stylesheet" href="{{ asset('assets/vendors/ti-icons/css/themify-icons.css?v=echo filemtime();') }}">

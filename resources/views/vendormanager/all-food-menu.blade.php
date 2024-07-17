@@ -138,9 +138,7 @@
                                           id="orders">
                                           <thead>
                                                 <tr>
-                                                      <th class="w-1"><input class="form-check-input m-0 align-middle"
-                                                                  type="checkbox" aria-label="Select all product">
-                                                      </th>
+                                                      <th></th>
                                                       <th>Posted by</th>
                                                       <th>Item</th>
                                                       <th>Price </th>
@@ -151,8 +149,10 @@
                                           <tbody>
                                                 @foreach($foodMenu as $data)
                                                 <tr>
-                                                      <td><input class="form-check-input m-0 align-middle"
-                                                                  type="checkbox" aria-label="Select"></td>
+                                                      <td><a class="dropdown-item text-capitalize text-danger"
+                                                                              href="edit-food-menu/{{$data->id}}">
+                                                                             <i class="fa fa-edit"></i>
+                                                                        </a></td>
                                                       <td class="text-sm"><small>{{$data->name}}</small></td>
                                                       <td><small>{{$data->item}}</small></td>
                                                       <td class="text-capitalize"><small>{{$data->price}}</small> </td>
@@ -160,35 +160,23 @@
                                                       <td><small>{{$data->vendor_name}}</small></td>
 
                                                       <!--- admin approve/edit --->
-                                                      @auth
-                                                      @if(Auth::user()->role_id == '2')
+                                                    
                                                       <td class="text-end">
-                                                            <span class="dropdown">
-                                                                  <button
-                                                                        class="btn dropdown-toggle align-text-top text-danger"
-                                                                        data-bs-boundary="viewport"
-                                                                        data-bs-toggle="dropdown">Actions</button>
-                                                                  <div class="dropdown-menu ">
+                                                                        <form action="{{ route('delete-food-menu', [$data->id]) }}"
+                                                                                    method="post" name="submit"
+                                                                                    enctype="multipart/form-data">
+                                                                                    @csrf
 
-
-
-                                                                        <a class="dropdown-item text-capitalize text-dark"
-                                                                              href="edit-food-menu/{{$data->id}}">
-                                                                              <small>Edit</small>
-                                                                        </a>
-                                                                        <a class="dropdown-item text-capitalize text-dark"
-                                                                              href="delete-food-menu/{{$data->id}}">
-                                                                              <small>Delete</small>
-                                                                        </a>
-
-
-
-
-                                                                  </div>
-                                                            </span>
+                                                                                    <div class="input-group">
+                                                                                          <input type="hidden"
+                                                                                                value="{{$data->id}}">
+                                                                                          <button type="submit"
+                                                                                                class="text-danger btn btn-block"><i class="fa fa-trash"></i></button>
+                                                                                    </div>
+                                                                              </form>
+                                                                     
                                                       </td>
-                                                      @endif
-                                                      @endauth
+                                                 
                                                 </tr>
                                                 @endforeach
 

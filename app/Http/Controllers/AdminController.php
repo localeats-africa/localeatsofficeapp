@@ -263,6 +263,37 @@ class AdminController extends Controller
         }
     }
 
+    public function updateVendorPlatformRef(Request $request, $id)
+    {
+        $platformRef = SalesPlatform::where('id',$id)
+        ->update([
+            'platform_ref' => $request->platform_ref
+        ]);
+
+
+        if($platformRef){
+
+            $data = [
+                'success' => true,
+                'message'=> 'Update successful'
+              ] ;
+              
+              return response()->json($data);
+
+            //return  redirect()->back('update-status', 'Update successful');
+        }
+        else{
+            $data = [
+                'success' => false,
+                'message'=> 'Opps! something happen'
+              ] ;
+              
+              return response()->json($data);
+        }
+
+    }
+
+
     
     public function restaurant(Request $request){
         $name = Auth::user()->name;

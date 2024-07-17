@@ -9,7 +9,7 @@
       <meta name="csrf-token" content="{{ csrf_token() }}">
     <title>LocalEats :: Login</title>
        <!-- favicon -->
-       <link rel="shortcut icon" href="{{ asset('dist/images/favicon.ico') }}" />
+       <link rel="shortcut icon" href="{{ asset('dist/images/favicon.png') }}" />
     <!-- CSS files -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.0/css/all.min.css">
     <link href="{{ asset('dist/css/tabler.css') }}" rel="stylesheet"/>

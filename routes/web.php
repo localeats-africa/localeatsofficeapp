@@ -82,6 +82,9 @@ Route::controller(HomeController::class)->group(function () {
     Route::get('vendor-profile/{id}',  'vendorProfile')->name('vendor-profile');
     Route::get('food-menu',  'foodMenu')->name('food-menu');
     Route::get('all-food-menu',  'allFoodMenu')->name('all-food-menu');
+    Route::get('edit-food-menu/{id}', 'editFoodMenu')->name('edit-food-menu');
+    Route::post('update-food-menu/{id}',  'updateFoodMenu')->name('update-food-menu');
+    Route::post('delete-food-menu/{id}', 'deleteFoodMenu')->name('delete-food-menu');
     Route::post('add-food-menu',  'addFoodMenu')->name('add-food-menu');
     Route::get('show-change-password', 'showChangePassword')->name('show-change-password');
     Route::post('import-food-menu', 'importFoodMenu')->name('import-food-menu');
@@ -106,6 +109,10 @@ Route::controller(HomeController::class)->group(function () {
     Route::post('reset-order-extra/{id}',  'resetOrderExtra')->name('reset-order-extra');
     //exportinvoice
     Route::post('export-invoice/{id}', 'exportInvoice')->name('export-invoice');
+    Route::get('email-invoice/{id}', 'emailPdfInvoice')->name('email-invoice');
+    Route::post('send-email-pdf/{id}', 'sendEmailPdfInvoice')->name('send-email-pdf');
+
+   
 });
 
 Route::controller(SuperAdminController::class)->group(function () {
@@ -125,6 +132,8 @@ Route::controller(AdminController::class)->group(function () {
     Route::get('new-staff',  'newUser')->name('new-staff');
     Route::post('add-user',  'adduser')->name('add-user');
     Route::get('all-staff',  'allUser')->name('all-staff');
+    Route::post('vendor-platform-ref/{id}',  'updateVendorPlatformRef')->name('vendor-platform-ref');
+    
    
 });
 

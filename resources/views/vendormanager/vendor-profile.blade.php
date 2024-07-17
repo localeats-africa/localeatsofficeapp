@@ -17,7 +17,7 @@
                   <nav aria-label="breadcrumb">
                         <ul class="breadcrumb">
                               <li class="breadcrumb-item active" aria-current="page">
-                              
+
                                     <form action="{{ route('approve-vendor', [$vendorID] )}}" method="post">
                                           @csrf
                                           <div class="alert  alert-danger alert-dismissible" role="alert">
@@ -84,6 +84,28 @@
                               <a class="btn-close" data-bs-dismiss="alert" aria-label="close"></a>
                         </div>
                         @endif
+
+
+                        @if(session('update-status'))
+                        <div class="alert  alert-success alert-dismissible" role="alert">
+                              <div class="d-flex">
+                                    <div>
+                                          <!-- Download SVG icon from http://tabler-icons.io/i/alert-triangle -->
+                                          <svg xmlns="http://www.w3.org/2000/svg" class="icon alert-icon" width="24"
+                                                height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"
+                                                fill="none" stroke-linecap="round" stroke-linejoin="round">
+                                                <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                                                <path
+                                                      d="M10.24 3.957l-8.422 14.06a1.989 1.989 0 0 0 1.7 2.983h16.845a1.989 1.989 0 0 0 1.7 -2.983l-8.423 -14.06a1.989 1.989 0 0 0 -3.4 0z" />
+                                                <path d="M12 9v4" />
+                                                <path d="M12 17h.01" />
+                                          </svg>
+                                    </div>
+                                    <div> {!! session('update-status') !!}</div>
+                              </div>
+                              <a class="btn-close" data-bs-dismiss="alert" aria-label="close"></a>
+                        </div>
+                        @endif
                   </div>
             </div>
             <!---end---alert--->
@@ -96,8 +118,9 @@
                                           <div class="card">
                                                 <div class="card-body">
                                                       <div class="d-flex flex-column align-items-center text-center">
-                                                            <img src="{{ asset('assets/images/faces/user.png')}}" alt="Admin"
-                                                                  class="rounded-circle p-1 bg-dark" width="110">
+                                                            <img src="{{ asset('assets/images/faces/user.png')}}"
+                                                                  alt="Admin" class="rounded-circle p-1 bg-dark"
+                                                                  width="110">
                                                             <div class="mt-3">
                                                                   <h4>{{$vendorName}}</h4>
                                                                   <p class="text-secondary mb-1"> </p>
@@ -123,6 +146,8 @@
                                                                   <span class="text-secondary">{{$vendorRef}}</span>
                                                             </li>
                                                       </ul>
+
+
                                                       <div class="table-responsive">
                                                             <table class="table">
                                                                   <thead>
@@ -177,12 +202,34 @@
                                                                               </td>
                                                                               <td>
                                                                                     <!--- platform ref --->
+                                                                                    @auth
+                                                                                    @if(Auth::user()->role_id =='2')
                                                                                     @if(empty($platform->platform_ref))
                                                                                     nill
                                                                                     @else
-                                                                                    <span
-                                                                                          class="text-secondary">{{$platform->platform_ref}}</span>
+
+                                                                                    <input type="hidden"
+                                                                                          class="text-secondary form-control"
+                                                                                          id="ref"
+                                                                                          value="{{$platform->id}}">
+
+                                                                                    <div class="input-group">
+                                                                                          <input type="text"
+                                                                                                class="text-secondary form-control"
+                                                                                                id="platform_ref"
+                                                                                                value="{{$platform->platform_ref}}">
+                                                                                          <button class="text-success"
+                                                                                                onclick="updateRef()"><i
+                                                                                                      class="fa fa-check"></i></button>
+                                                                                    </div>
                                                                                     @endif
+                                                                                    <!---response from javascript --->
+                                                                                    <div id="response"> </div>
+                                                                                    <!--end response from Ajax --->
+                                                                                    @else
+                                                                                   <span class="text-secondary"> {{$platform->platform_ref}}</span>
+                                                                                    @endif 
+                                                                                    @endauth
                                                                               </td>
 
                                                                         </tr>
@@ -192,7 +239,7 @@
 
                                                       </div>
 
-                                                      
+
                                                 </div>
                                           </div>
                                     </div>
@@ -350,4 +397,39 @@
       </footer>
 </div><!-- main-panel -->
 
+<script type="text/javascript">
+function updateRef() {
+      document.getElementById('response').style.display = 'none';
+      var id = document.getElementById('ref').value;
+      var platform_ref = document.getElementById('platform_ref').value;
+      var showRoute = "{{ route('vendor-platform-ref', ':id') }}";
+      url = showRoute.replace(':id', id);
+
+      //window.location = url;
+      $.ajaxSetup({
+            headers: {
+                  'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+            }
+      });
+      $.ajax({
+            method: 'POST',
+            enctype: 'multipart/form-data',
+            url: url,
+            data: {
+                  //you can more data here
+                  'platform_ref': platform_ref
+            },
+            success: function(data) {
+                  console.log(data.message);
+                  document.getElementById('response').style.display = '';
+                  document.getElementById('response').style.color = 'green';
+                  document.getElementById('response').innerHTML = data.message;
+            },
+            error: function(data) {
+                  console.log(data);
+            }
+      });
+
+}
+</script>
 @endsection
