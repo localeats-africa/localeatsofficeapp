@@ -504,7 +504,13 @@ class AdminController extends Controller
 
    
     public function allOrders(Request $request){
-
+        $name = Auth::user()->name;
+        $id = Auth::user()->id;
+        $role = DB::table('role')->select('role_name')
+        ->join('users', 'users.role_id', 'role.id')
+        ->where('users.id', $id)
+        ->pluck('role_name')->first();
+        
         $sumAllOrders = Orders::all()
         ->where('deleted_at', null)
         ->where('orders.order_amount', '!=', null)
