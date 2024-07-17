@@ -519,7 +519,7 @@ class HomeController extends Controller
             ->where('food_menu.deleted_at', null)
             ->where('food_menu.price', '!=', null)
             ->where('food_menu.item', '!=', null)
-            ->select(['vendor.vendor_name', 'food_menu.*', 'users.name'])
+            ->select(['vendor.vendor_name', 'food_menu.*', 'users.fullname'])
             ->orderBy('food_menu.created_at', 'desc')
             ->where(function ($query) use ($search) {  // <<<
             $query->where('vendor.vendor_name', 'LIKE', '%'.$search.'%')
