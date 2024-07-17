@@ -20,10 +20,10 @@
                                                 <div class="card-body">
                                                       <img src="{{ asset('assets/images/dashboard/circle.svg') }}"
                                                             class="card-img-absolute" alt="circle-image">
-                                                      <h4 class="font-weight-normal">Vendors <i
+                                                      <h4 class="font-weight-normal">Number Of Orders <i
                                                                   class="mdi mdi-pot-steam  mdi-24px float-end"></i>
                                                       </h4>
-                                                      <h2 class="mb-5">{{$countVendor->count()}}</h2>
+                                                      <h2 class="mb-5">{{$countAllOrder->count()}}</h2>
                                                       <hr class="w-100">
                                                       <h6 class="card-text">active
                                                             <span
@@ -43,7 +43,7 @@
                                                       <h4 class="font-weight-normal">Orders <i
                                                                   class="mdi mdi-shopping mdi-24px float-end"></i>
                                                       </h4>
-                                                      <h2 class="mb-5">₦{{number_format($orders)}}</h2>
+                                                      <h2 class="mb-5">₦{{number_format($sumAllOrders)}}</h2>
                                                       <hr class="w-100">
                                                       <h6 class="card-text">weekly average <span style="float:right;">₦0
                                                             </span></h6>
