@@ -65,6 +65,8 @@ class AdminController extends Controller
         $payouts = Orders::all()
         ->sum('payout');
 
+        $commission = Commission::all()->sum('localeats_comm');
+
         $countVendor = Vendor::all();
          // a vendor is consider active if it's active on one or more platform
          $countActiveVendor = DB::table('sales_platform')
@@ -117,7 +119,8 @@ class AdminController extends Controller
          'countActiveVendor', 'countPlatforms',
          'activeChowdeckVendor', 'chowdeckVendor',
          'glovoVendor', 'activeGlovoVendor',   'activeEdenlifeVendor', 
-         'edenlifeVendor',  'countPlatforms', 'orders', 'payouts'));
+         'edenlifeVendor',  'countPlatforms', 'orders', 'payouts',
+         'commission'));
       }
     }
 
