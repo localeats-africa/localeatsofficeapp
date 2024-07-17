@@ -188,11 +188,11 @@
                                                             @endif
 
                                                             @if($data->name == 'Glovo')
-                                                            {{$glovoVendor->count()}}
+                                                            {{$activeGlovoVendor->count()}}
                                                             @endif
 
                                                             @if($data->name == 'Edenlife')
-                                                            {{$edenlifeVendor->count()}}
+                                                            {{$activeEdenlifeVendor->count()}}
                                                             @endif
                                                       </td>
                                                      

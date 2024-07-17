@@ -178,10 +178,10 @@ class AdminController extends Controller
         $countPlatforms = Platforms::all();
         // a platform is ative is it has one or more active vendor
         $activePlatform = DB::table('sales_platform')
-        ->join('vendor', 'vendor.id', '=', 'sales_platform.vendor_id')->distinct()
-       ->join('platforms', 'platforms.name', '=', 'sales_platform.platform_name')
+        ->join('vendor', 'vendor.id', '=', 'sales_platform.vendor_id')
+       ->join('platforms', 'platforms.name', '=', 'sales_platform.platform_name')->distinct()
         ->where('sales_platform.vendor_status', 'active')
-        ->get('sales_platform.vendor_id');
+        ->get('sales_platform.platform_name');
 
 
 
