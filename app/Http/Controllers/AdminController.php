@@ -57,10 +57,35 @@ class AdminController extends Controller
         ->where('users.id', $id)
         ->pluck('role_name')->first();
 
-        $orders = Orders::where('deleted_at', null)
-        ->where('order_amount', '!=', null)
-        ->where('order_ref', '!=', null)
+
+        $sumAllOrders = Orders::where('deleted_at', null)
+        ->where('orders.order_amount', '!=', null)
+        ->where('orders.order_ref', '!=', null)
         ->sum('order_amount');
+
+        $countAllOrder = Orders::where('deleted_at', null)
+        ->where('orders.order_amount', '!=', null)
+        ->where('orders.order_ref', '!=', null)
+        ->count();
+
+
+        $getOrderItem = DB::table('orders')
+        ->where('deleted_at', null)
+        ->where('orders.order_amount', '!=', null)
+        ->where('orders.order_ref', '!=', null)
+        ->get('description')->pluck('description');
+
+        $string =  $getOrderItem;
+        $substring = 'plate';
+        $countAllPlate = substr_count($string, $substring);
+
+
+        $countPlatformWhereOrderCame = DB::table('orders')
+        ->Join('platforms', 'orders.platform_id', '=', 'platforms.id')->distinct()
+        ->where('orders.deleted_at', null)
+        ->where('orders.order_amount', '!=', null)
+        ->where('orders.order_ref', '!=', null)
+        ->count('platforms.id');
 
         $payouts = Orders::all()
         ->sum('payout');
@@ -119,8 +144,9 @@ class AdminController extends Controller
          'countActiveVendor', 'countPlatforms',
          'activeChowdeckVendor', 'chowdeckVendor',
          'glovoVendor', 'activeGlovoVendor',   'activeEdenlifeVendor', 
-         'edenlifeVendor',  'countPlatforms', 'orders', 'payouts',
-         'commission'));
+         'edenlifeVendor',  'countPlatforms',  'payouts',
+         'commission',   'sumAllOrders', 'countAllOrder', 'countPlatformWhereOrderCame',
+         'countAllPlate'));
       }
     }
 
@@ -521,13 +547,6 @@ class AdminController extends Controller
         ->where('orders.order_ref', '!=', null)
         ->count();
 
-        $word = 'plate';
-        // $countAllPlate = DB::table('orders')
-        // ->where('deleted_at', null)
-        // ->where('orders.order_amount', '!=', null)
-        // ->where('orders.order_ref', '!=', null)
-        // ->where('description', 'LIKE', '%'.$word.'%')
-        // ->count();
 
         $getOrderItem = DB::table('orders')
         ->where('deleted_at', null)
