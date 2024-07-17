@@ -178,17 +178,20 @@ class AdminController extends Controller
         $countPlatforms = Platforms::all();
         // a platform is ative is it has one or more active vendor
         $activePlatform = DB::table('sales_platform')
-        ->join('vendor', 'vendor.id', '=', 'sales_platform.vendor_id')
-        ->join('platforms', 'platforms.name', '=', 'sales_platform.platform_name')
+        ->join('vendor', 'vendor.id', '=', 'sales_platform.vendor_id')->distinct()
+       ->join('platforms', 'platforms.name', '=', 'sales_platform.platform_name')
         ->where('sales_platform.vendor_status', 'active')
-        ->get('platform_name');
+        ->get('sales_platform.vendor_id');
+
+
 
         $activeChowdeckVendor = DB::table('sales_platform')
-        ->join('vendor', 'vendor.id', '=', 'sales_platform.vendor_id')
-        ->join('platforms', 'platforms.name', '=', 'sales_platform.platform_name')
+        ->join('vendor', 'vendor.id', '=', 'sales_platform.vendor_id')->distinct()
+        //->join('platforms', 'platforms.name', '=', 'sales_platform.platform_name')
         ->where('sales_platform.vendor_status', 'active')
         ->where('sales_platform.platform_name', 'chowdeck')
         ->get('sales_platform.vendor_id');
+     
 
         $chowdeckVendor = DB::table('sales_platform')
         ->join('vendor', 'vendor.id', '=', 'sales_platform.vendor_id')
@@ -197,27 +200,27 @@ class AdminController extends Controller
         ->get('sales_platform.vendor_id');
 
         $activeGlovoVendor = DB::table('sales_platform')
-        ->join('vendor', 'vendor.id', '=', 'sales_platform.vendor_id')
+        ->join('vendor', 'vendor.id', '=', 'sales_platform.vendor_id')->distinct()
         ->join('platforms', 'platforms.name', '=', 'sales_platform.platform_name')
         ->where('sales_platform.vendor_status', 'active')
         ->where('sales_platform.platform_name', 'glovo')
         ->get('sales_platform.vendor_id');
 
         $glovoVendor = DB::table('sales_platform')
-        ->join('vendor', 'vendor.id', '=', 'sales_platform.vendor_id')
+        ->join('vendor', 'vendor.id', '=', 'sales_platform.vendor_id')->distinct()
         ->join('platforms', 'platforms.name', '=', 'sales_platform.platform_name')
         ->where('sales_platform.platform_name', 'glovo')
         ->get('sales_platform.vendor_id');
 
         $activeEdenlifeVendor = DB::table('sales_platform')
-        ->join('vendor', 'vendor.id', '=', 'sales_platform.vendor_id')
+        ->join('vendor', 'vendor.id', '=', 'sales_platform.vendor_id')->distinct()
         ->join('platforms', 'platforms.name', '=', 'sales_platform.platform_name')
         ->where('sales_platform.vendor_status', 'active')
         ->where('sales_platform.platform_name', 'edenlife')
         ->get('sales_platform.vendor_id');
 
         $edenlifeVendor = DB::table('sales_platform')
-        ->join('vendor', 'vendor.id', '=', 'sales_platform.vendor_id')
+        ->join('vendor', 'vendor.id', '=', 'sales_platform.vendor_id')->distinct()
         ->join('platforms', 'platforms.name', '=', 'sales_platform.platform_name')
         ->where('sales_platform.platform_name', 'edenlife')
         ->get('sales_platform.vendor_id');
