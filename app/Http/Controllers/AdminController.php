@@ -552,6 +552,7 @@ class AdminController extends Controller
 
         $orders = DB::table('orders')
         ->join('vendor', 'orders.vendor_id', '=', 'vendor.id')
+        ->join('users', 'orders.added_by', '=', 'users.id')
         ->Join('platforms', 'orders.platform_id', '=', 'platforms.id')
         ->where('orders.deleted_at', null)
         ->where('orders.order_amount', '!=', null)
