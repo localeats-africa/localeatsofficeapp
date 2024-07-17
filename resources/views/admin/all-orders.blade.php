@@ -185,7 +185,7 @@
                                                       <td>{{$data->invoice_ref}}</td>
 
                                                       <td class="text-capitalize">{{$data->vendor_name}}</td>
-                                                     
+                                                      <td>{{$data->order_amount}}</td>
                                                       <td>{{$data->food_price}}</td>
                                                       <td>{{$data->extra}}</td>
                                                       <td>{{$data->delivery_date}}</td>
