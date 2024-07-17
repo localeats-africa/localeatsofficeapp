@@ -521,13 +521,24 @@ class AdminController extends Controller
         ->where('orders.order_ref', '!=', null)
         ->count();
 
-        $countAllPlate = DB::table('orders')
+        $word = 'plate';
+        // $countAllPlate = DB::table('orders')
+        // ->where('deleted_at', null)
+        // ->where('orders.order_amount', '!=', null)
+        // ->where('orders.order_ref', '!=', null)
+        // ->where('description', 'LIKE', '%'.$word.'%')
+        // ->count();
+
+        $getOrderItem = DB::table('orders')
         ->where('deleted_at', null)
         ->where('orders.order_amount', '!=', null)
         ->where('orders.order_ref', '!=', null)
-        ->distinct()
-        ->count('plate');
-        
+        ->get('description')->pluck('description');
+
+        $string =  $getOrderItem;
+        $substring = 'plate';
+        $countAllPlate = substr_count($string, $substring);
+
 
         $countPlatformWhereOrderCame = DB::table('orders')
         ->Join('platforms', 'orders.platform_id', '=', 'platforms.id')->distinct()
@@ -559,11 +570,13 @@ class AdminController extends Controller
             if (count ( $pagination ) > 0){
                 return view('admin.all-orders',  compact(
                 'perPage', 'name', 'role', 'orders',
-                'sumAllOrders', 'countAllOrder', 'countPlatformWhereOrderCame'))->withDetails( $pagination );     
+                'sumAllOrders', 'countAllOrder', 'countPlatformWhereOrderCame',
+                'countAllPlate'))->withDetails( $pagination );     
             } 
             else{return redirect()->back()->with('order-status', 'No record order found');}
         return view('admin.all-orders', compact('name', 'role', 'orders', 
-        'sumAllOrders', 'countAllOrder', 'countPlatformWhereOrderCame'));
+        'sumAllOrders', 'countAllOrder', 'countPlatformWhereOrderCame',
+        'countAllPlate'));
     }
   
 }//class
