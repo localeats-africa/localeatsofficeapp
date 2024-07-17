@@ -557,7 +557,7 @@ class AdminController extends Controller
         ->where('orders.deleted_at', null)
         ->where('orders.order_amount', '!=', null)
         ->where('orders.order_ref', '!=', null)
-        ->select(['orders.*', 'vendor.vendor_name', 'platforms.name'])
+        ->select(['orders.*', 'vendor.vendor_name', 'platforms.name', 'users.fullname'])
         ->orderBy('orders.created_at', 'desc')
         ->where(function ($query) use ($search) {  // <<<
         $query->where('orders.created_at', 'LIKE', '%'.$search.'%')
