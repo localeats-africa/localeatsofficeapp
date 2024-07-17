@@ -164,9 +164,9 @@
                                                       <th class="w-1"><input class="form-check-input m-0 align-middle"
                                                                   type="checkbox" aria-label="Select all product">
                                                       </th>
-                                                      <th>Order Imported</th>
                                                       <th>Invoice Ref.</th>
                                                       <th>Vendors</th>
+                                                      <th>Platform</th>
                                                       <th>Amount</th>
                                                       <th>Food Price</th>
                                                       <th>Extra</th>
@@ -178,13 +178,10 @@
                                                 <tr>
                                                       <td><input class="form-check-input m-0 align-middle"
                                                                   type="checkbox" aria-label="Select"></td>
-                                                      <td class="py-1">
-                                                      {{$data->number_of_order_merge}}
-                                                      </td>
 
                                                       <td>{{$data->invoice_ref}}</td>
-
                                                       <td class="text-capitalize">{{$data->vendor_name}}</td>
+                                                      <td class="text-capitalize">{{$data->name}}</td>
                                                       <td>{{$data->order_amount}}</td>
                                                       <td>{{$data->food_price}}</td>
                                                       <td>{{$data->extra}}</td>
