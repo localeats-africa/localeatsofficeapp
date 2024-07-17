@@ -521,6 +521,13 @@ class AdminController extends Controller
         ->where('orders.order_ref', '!=', null)
         ->count();
 
+        $countAllPlate = DB::table('orders')
+        ->where('deleted_at', null)
+        ->where('orders.order_amount', '!=', null)
+        ->where('orders.order_ref', '!=', null)
+        ->distinct()
+        ->count('plate');
+        
 
         $countPlatformWhereOrderCame = DB::table('orders')
         ->Join('platforms', 'orders.platform_id', '=', 'platforms.id')->distinct()
