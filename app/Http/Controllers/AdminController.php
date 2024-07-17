@@ -534,10 +534,12 @@ class AdminController extends Controller
         $pagination = $orders->appends ( array ('search' => $search) );
             if (count ( $pagination ) > 0){
                 return view('admin.all-orders',  compact(
-                'perPage', 'name', 'role', 'orders'))->withDetails( $pagination );     
+                'perPage', 'name', 'role', 'orders',
+                'sumAllOrders', 'countAllOrder'))->withDetails( $pagination );     
             } 
             else{return redirect()->back()->with('order-status', 'No record order found');}
-        return view('admin.all-orders', compact('name', 'role', 'orders'));
+        return view('admin.all-orders', compact('name', 'role', 'orders', 
+        'sumAllOrders', 'countAllOrder'));
     }
   
 }//class
