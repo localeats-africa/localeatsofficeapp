@@ -1240,6 +1240,7 @@ class HomeController extends Controller
           ->leftJoin('merge_invoices', 'orders.id', '=', 'merge_invoices.order_id')
           ->where('orders.vendor_id', $vendor)
           ->where('orders.invoice_ref', $invoice_ref)
+          ->where('orders.order_amount', '!=', null)
           ->where('orders.deleted_at', null)
           ->get(['orders.*']);
 
@@ -1269,6 +1270,7 @@ class HomeController extends Controller
         ->join('vendor', 'orders.vendor_id', '=', 'vendor.id')
         ->select(['orders.*', 
         'vendor.vendor_name', 'vendor.id' ])
+        ->where('orders.deleted_at', null)
         ->orderBy('orders.created_at', 'desc')
         ->where(function ($query) use ($search) {  // <<<
         $query->where('orders.created_at', 'LIKE', '%'.$search.'%')
