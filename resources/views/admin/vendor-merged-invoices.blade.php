@@ -108,9 +108,10 @@
                                                       <td class="text-sm">{{$data->vendor_name}} </td>
                                                       <td>{{ $data->invoice_ref}}</td>
 
+                                                    
+                                                      <td class="">
                                                       @auth
                                                       @if(Auth::user()->role_id == '2')
-                                                      <td class="">
                                                             <span class="dropdown">
                                                                   <button
                                                                         class="btn dropdown-toggle align-text-top text-danger"
@@ -148,8 +149,9 @@
 
 
                                                             @endif
+                                                            @endauth
                                                       </td>
-                                                      @endauth
+                                                  
                                                 </tr>
                                                 @endforeach
 
