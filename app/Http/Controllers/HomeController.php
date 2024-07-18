@@ -1653,7 +1653,7 @@ class HomeController extends Controller
         $vendor = $request->vendor;
         $platform = Platforms::all();
         $vendorName = Vendor::where('id', $vendor)
-        ->get()->pluck('vendor_name');
+        ->get()->pluck('vendor_name')->first();
 
         return view('vendormanager.add-invoice-row', compact('role','invoice_ref',
          'vendor', 'platform', 'vendorName'));
