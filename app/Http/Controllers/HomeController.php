@@ -1698,7 +1698,7 @@ class HomeController extends Controller
           $commission->order_id               = $storeOrder->id;
           $commission->vendor_id              = $vendor;
           $commission->platform_id            = $request->platform;
-          $commission->platform_name          = $platformNam;
+          $commission->platform_name          = $platformName;
           $commission->save();
 
           $insert = new MergeInvoice();
