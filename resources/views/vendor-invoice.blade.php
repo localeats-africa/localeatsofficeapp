@@ -78,11 +78,11 @@
 
                                           <li class="breadcrumb-item">
 
-
+<!-- 
                                                 <input type="hidden" value="{{$invoice_ref}}" name="ref" id="ref">
                                                 <input type="hidden" value="{{$vendor}}" name="vendor" id="vendor">
                                                 <button onclick="mypdf()" class="btn btn-outline-dark  text-dark">
-                                                      send email</button>
+                                                      send email</button> -->
 
 
                                           </li>
