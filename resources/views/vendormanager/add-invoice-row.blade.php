@@ -8,7 +8,7 @@
       <div class="content-wrapper">
             <div class="page-header">
                   <h3 class="page-title">
-                        Add New Row To >>> {{$vendorName}} Invoice Number >>> {{$invoice_ref}} 
+                        Add New Row To >>> <span class="text-info">{{$vendorName}}</span> >>> Invoice Number >>> <span class="text-info">{{$invoice_ref}}</span> 
                   </h3>
             </div>
             <!--Alert here--->
