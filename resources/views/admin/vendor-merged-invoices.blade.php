@@ -17,7 +17,7 @@
             <!--Alert here--->
             <div class="row ">
                   <div class="col-12">
-                  
+
                         @if(session('invoice-status'))
                         <div class="alert  alert-danger alert-dismissible" role="alert">
                               <div class="d-flex">
@@ -49,7 +49,7 @@
                                     <h3 class="card-title"> </h3>
                               </div>
                               <div class="card-body border-bottom py-3">
-                              <div class="d-flex">
+                                    <div class="d-flex">
                                           <div class="text-secondary">
                                                 Show
                                                 <div class="mx-2 d-inline-block">
@@ -74,7 +74,8 @@
                                                 Search:
                                                 <div class="ms-2 d-inline-block">
 
-                                                      <form action="{{ route('vendor-merged-invoices') }}" method="GET" role="search">
+                                                      <form action="{{ route('vendor-merged-invoices') }}" method="GET"
+                                                            role="search">
                                                             {{ csrf_field() }}
                                                             <div class="input-group mb-2">
                                                                   <input type="text" class="form-control"
@@ -93,9 +94,6 @@
                                           id="orders">
                                           <thead>
                                                 <tr>
-                                                      <th class="w-1"><input class="form-check-input m-0 align-middle"
-                                                                  type="checkbox" aria-label="Select all product">
-                                                      </th>
                                                       <th>Import Date</th>
                                                       <th>Vendor</th>
                                                       <th>Invoice Ref.</th>
@@ -106,17 +104,54 @@
                                           <tbody>
                                                 @foreach($orders as $data)
                                                 <tr>
-                                                      <td><input class="form-check-input m-0 align-middle" type="checkbox" aria-label="Select"></td>
-                                                      <td>{{$data->created_at}}</td>
+                                                      <td>{{date('d/m/Y',  strtotime($data->created_at))}}</td>
                                                       <td class="text-sm">{{$data->vendor_name}} </td>
                                                       <td>{{ $data->invoice_ref}}</td>
 
-
-
+                                                    
                                                       <td class="">
-                                                            <a href="computed-invoice/{{$data->id}}/{{$data->number_of_order_merge}}/{{$data->invoice_ref}}" class="text-danger"><i  class="fa fa-eye"></i></a>
-                                                      </td>
+                                                      @auth
+                                                      @if(Auth::user()->role_id == '2')
+                                                            <span class="dropdown">
+                                                                  <button
+                                                                        class="btn dropdown-toggle align-text-top text-danger"
+                                                                        data-bs-boundary="viewport"
+                                                                        data-bs-toggle="dropdown"
+                                                                        style="padding:0;">Action</button>
 
+
+                                                                  <div class="dropdown-menu ">
+                                                                        <a class="dropdown-item text-danger"
+                                                                              href="computed-invoice/{{$data->id}}/{{$data->number_of_order_merge}}/{{$data->invoice_ref}}">View
+                                                                        </a>
+                                                                        <br>
+                                                                        @if($data->payment_status == 'paid')
+                                                                        @else 
+                                                                        <div class="dropdown-item text-danger">
+                                                                     
+                                                                              <input type="hidden" id="vendor_id" value="{{$data->vendor_id}}">
+                                                                              <input type="hidden" id="invoice_ref" value="{{$data->invoice_ref}}">
+                                                                              <button onclick="deleteInvoice()" class="text-danger"> Delete</button>
+                                                                     
+                                                                        </div>
+                                                                        @endif 
+                                                                   
+                                                                  </div>
+                                                            </span>
+                                                            <p id="response"></p>
+
+                                                            @endif
+
+                                                            @if(Auth::user()->role_id == '6')
+
+                                                            <a href="computed-invoice/{{$data->id}}/{{$data->number_of_order_merge}}/{{$data->invoice_ref}}"
+                                                                  class="text-danger"><i class="fa fa-eye"></i></a>
+
+
+                                                            @endif
+                                                            @endauth
+                                                      </td>
+                                                  
                                                 </tr>
                                                 @endforeach
 
@@ -192,4 +227,41 @@
             </div>
       </footer>
 </div>
+
+<script type="text/javascript">
+function deleteInvoice() {
+      document.getElementById('response').style.display = 'none';
+      var id = document.getElementById('invoice_ref').value;
+      var vendor_id = document.getElementById('vendor_id').value;
+      var showRoute = "{{ route('delete-invoice', ':id') }}";
+      url = showRoute.replace(':id', id);
+
+      //window.location = url;
+      $.ajaxSetup({
+            headers: {
+                  'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+            }
+      });
+      $.ajax({
+            method: 'POST',
+            enctype: 'multipart/form-data',
+            url: url,
+            data: {
+                  //you can more data here
+                  'vendor_id': vendor_id
+            },
+            success: function(data) {
+                  console.log(data.message);
+                  document.getElementById('response').style.display = '';
+                  document.getElementById('response').style.color = 'green';
+                  document.getElementById('response').innerHTML = data.message;
+            },
+            error: function(data) {
+                  console.log(data);
+            }
+      });
+      location.reload();
+
+}
+</script>
 @endsection

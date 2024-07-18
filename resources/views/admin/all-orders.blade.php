@@ -206,7 +206,7 @@
                                                       <td>{{$data->order_amount}}</td>
                                                       <td>{{$data->food_price}}</td>
                                                       <td>{{$data->extra}}</td>
-                                                      <td>{{ date('m/d/Y', strtotime($data->delivery_date))}}
+                                                      <td>{{ date('d/m/Y', strtotime($data->delivery_date))}}
                                                           </td>
                                                       <td class="text-capitalize">{{$data->fullname}}</td>
                                                 

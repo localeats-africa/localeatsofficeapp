@@ -301,7 +301,7 @@
                         <div class="col-md-4 col-12 grid-margin stretch-card">
                               <div class="card">
                                     <div class="card-body">
-                                          <div class="form-label required">Store Area <i class="text-danger">*</i>
+                                          <div class="form-label required">Store Area / Location <i class="text-danger">*</i><br><small class="text-danger">( this is not address. <b class="text-dark">Example  Enter Ikeja or Ojota </b>)</small> 
                                           </div>
                                           <input type="text" class="form-control" name="area" placeholder="example: Ikeja"
                                                 value="">

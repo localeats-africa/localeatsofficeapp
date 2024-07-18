@@ -180,7 +180,7 @@ class HomeController extends Controller
             $foodType = $request->food_type;
             $vendorStatus = 'pending';
 
-            $vendorName = $foodType. '-' .$request->area;
+            $vendorName = $request->area. '-' .$foodType;
        
             $addVendor = new Vendor();
             $addVendor->vendor_ref                  = $vendorRef;
@@ -419,8 +419,10 @@ class HomeController extends Controller
     public function updateVendor(Request $request, $id)
     {
         $this->validate($request, [
-            'first_name'  => 'max:255',
-            'last_name'  => 'max:255',
+            'vendor_name'    => 'max:255',
+            'store_area'     => 'max:255',
+            'first_name'    => 'max:255',
+            'last_name'     => 'max:255',
             'email'         => 'max:255',  
             'phone'         => 'max:255',
             'bank_name'     => 'max:255',
@@ -428,6 +430,8 @@ class HomeController extends Controller
             'account_number' => 'max:255',
             ]);
             $vendor = Vendor::find($id);
+            $vendor->vendor_name    = $request->vendor_name;
+            $vendor->store_area     = $request->store_area;
             $vendor->contact_fname  = $request->first_name;
             $vendor->contact_lname  = $request->last_name;
             $vendor->email          = $request->email;
@@ -438,11 +442,11 @@ class HomeController extends Controller
             $vendor->update();
 
             if($vendor){
-                return redirect('all-vendor')->with('update-vendor', 'Record Updated');
+                return redirect()->back()->with('update-vendor', 'Record Updated');
   
             }
             else{
-                return redirect('all-vendor')->with('update-error', 'Opps! something went wrong'); 
+                return redirect()->back()->with('update-error', 'Opps! something went wrong'); 
             }
     }
 
@@ -917,6 +921,14 @@ class HomeController extends Controller
             ->select('orders.invoice_ref')
             ->pluck('invoice_ref')->first();
 
+            $invoicePaymentStatus =  DB::table('orders')
+            ->where('vendor_id', $vendor)
+            ->where('invoice_ref', $invoice_ref)
+            ->where('payment_status', '!=',  null)
+            ->get('payment_status')
+            ->pluck('payment_status')->first();
+            //dd($invoicePaymentStatus);
+
             $orders = DB::table('orders')
             ->Join('platforms', 'orders.platform_id', '=', 'platforms.id')
             ->Join('commission', 'orders.id', '=', 'commission.order_id')
@@ -934,7 +946,7 @@ class HomeController extends Controller
         'vendorAddress','vendorState', 'vendorCountry', 'vendorPhone',
          'vendorEmail', 'vendorFname', 'vendorLname', 'orders',
          'totalComm', 'totalPlatformComm', 'sumAmount', 'sumFoodPrice', 'sumExtra',
-        'vendorFoodPrice', 'payout', 'invoiceRef', 'vendorID') );
+        'vendorFoodPrice', 'payout', 'invoiceRef', 'vendorID', 'invoicePaymentStatus') );
     }
 
     public function updateMergeInvoiceFood(Request $request){
@@ -995,14 +1007,11 @@ class HomeController extends Controller
                 ]);
         
                }
-               $data = [
-                'success' => true,
-                'message'=> 'Update successful'
-              ] ;
+               $data = 'Update successful' ;
               
-              return response()->json($data);
+             // return response()->json($data);
            
-           // return redirect()->back()->with('invoice', 'Update successful');
+            return redirect()->back()->with('invoice',  $data );
         }
         else{
             $data = [
@@ -1010,8 +1019,8 @@ class HomeController extends Controller
                 'message'=> 'Opps! something happen'
               ] ;
               
-              return response()->json($data);
-            //return redirect()->back()->with('merge-error', 'Opps! something went wrong');
+             // return response()->json($data);
+            return redirect()->back()->with('merge-error', 'Opps! something went wrong');
          
         }
     }
@@ -1084,23 +1093,29 @@ class HomeController extends Controller
      }
 
      public function updateVendorInvoicePayout(Request $request){
-        $this->validate($request, [ 
-            'amount_payout'          => 'required|max:255',
-        ]);
+
         $amount         = $request->amount_payout;
         $order_id       = $request->order;
-        $vendor         = $request->vendor;
 
          $updateOrder = Orders::where('id', $order_id)
-         ->where('vendor_id', $vendor)
          ->update([
              'payout'     => $amount,
          ]);
          if($updateOrder){
-             return redirect()->back()->with('invoice', 'Update successful');
+            $data = [
+                'status' => true,
+                'message'=> 'Record updated successfully'
+            ];
+            return response()->json($data);
+             //return redirect()->back()->with('invoice', 'Update successful');
          }
          else{
-             return redirect()->back()->with('merge-error', 'Opps! something went wrong');
+            $data = [
+                'status' => false,
+                'message'=> 'Opps! something happen'
+            ];
+            return response()->json($data);
+            //return redirect()->back()->with('merge-error', 'Opps! something went wrong');
           
          }
      }
@@ -1118,8 +1133,10 @@ class HomeController extends Controller
         $search = $request->input('search');
 
         $orders = DB::table('orders')->distinct()
-       ->join('merge_invoices', 'merge_invoices.number_of_order_merge', '=', 'orders.number_of_order_merge')
+      // ->join('merge_invoices', 'merge_invoices.number_of_order_merge', '=', 'orders.number_of_order_merge')
         ->join('vendor', 'orders.vendor_id', '=', 'vendor.id')
+        ->where('orders.deleted_at', null)
+        ->where('orders.payment_status', 'unpaid')
         ->orderBy('orders.created_at', 'desc')
         ->select(['orders.*', 
         'vendor.vendor_name', 'vendor.id'])
@@ -1238,6 +1255,7 @@ class HomeController extends Controller
           ->leftJoin('merge_invoices', 'orders.id', '=', 'merge_invoices.order_id')
           ->where('orders.vendor_id', $vendor)
           ->where('orders.invoice_ref', $invoice_ref)
+          ->where('orders.order_amount', '!=', null)
           ->where('orders.deleted_at', null)
           ->get(['orders.*']);
 
@@ -1263,11 +1281,13 @@ class HomeController extends Controller
 
 
         $orders = DB::table('orders')->distinct()
-        ->join('merge_invoices', 'orders.number_of_order_merge', '=', 'merge_invoices.number_of_order_merge')
+        //->join('merge_invoices', 'orders.number_of_order_merge', '=', 'merge_invoices.number_of_order_merge')
         ->join('vendor', 'orders.vendor_id', '=', 'vendor.id')
+        ->where('orders.deleted_at', null)
+        ->where('orders.payment_status', '!=', null)
+        ->orderBy('orders.created_at', 'desc')
         ->select(['orders.*', 
         'vendor.vendor_name', 'vendor.id' ])
-        ->orderBy('orders.created_at', 'desc')
         ->where(function ($query) use ($search) {  // <<<
         $query->where('orders.created_at', 'LIKE', '%'.$search.'%')
                ->orWhere('vendor.vendor_name', 'LIKE', '%'.$search.'%')
@@ -1275,7 +1295,8 @@ class HomeController extends Controller
                ->orderBy('orders.created_at', 'desc');
         })->paginate($perPage, $columns = ['*'], $pageName = 'orders'
         )->appends(['per_page'   => $perPage]);
-    
+
+     
         $pagination = $orders->appends ( array ('search' => $search) );
             if (count ( $pagination ) > 0){
                 return view('admin.vendor-final-invoices',  compact(
@@ -1295,10 +1316,23 @@ class HomeController extends Controller
         //  $order = Orders::find($id);
         //  $order->delete();
         if($order){
-            return redirect()->back()->with('invoice', 'Record Deleted');
+            $data = [
+                'status'=> true,
+                'message'=> 'Record Deleted'
+            ] ;
+              
+            return response()->json($data);
+            //return redirect()->back()->with('invoice', 'Record Deleted');
         }
         else{
-            return redirect()->back()->with('merge-error', 'Opps! something went wrong'); 
+             
+            $data = [
+                'status'=> false,
+                'message'=> 'Opps! somthing happend'
+            ] ;
+              
+            return response()->json($data);
+            //return redirect()->back()->with('merge-error', 'Opps! something went wrong'); 
         }
     }
 
@@ -1610,6 +1644,97 @@ class HomeController extends Controller
                 if($storeInvoice){
                     return redirect()->back()->with('save', 'save successfully .');
                 }
+
+    }
+
+    public function addInvoiceRow(Request $request, $invoice_ref){
+        $name = Auth::user()->name;
+        $user_id = Auth::user()->id;
+        $role = DB::table('role')->select('role_name')
+        ->join('users', 'users.role_id', 'role.id')
+        ->where('users.id', $user_id)
+        ->pluck('role_name')->first();
+        
+        $vendor = $request->vendor;
+        $platform = Platforms::all();
+        $vendorName = Vendor::where('id', $vendor)
+        ->get()->pluck('vendor_name')->first();
+
+        return view('vendormanager.add-invoice-row', compact('role','invoice_ref',
+         'vendor', 'platform', 'vendorName'));
+
+    }
+
+    public function storeAddNewInvoiceRow(Request $request){
+        $name = Auth::user()->name;
+        $user_id = Auth::user()->id;
+        $role = DB::table('role')->select('role_name')
+        ->join('users', 'users.role_id', 'role.id')
+        ->where('users.id', $user_id)
+        ->pluck('role_name')->first();
+        
+        $request->validate([
+            'item'                  => 'required',
+            'order_reference'       => 'required|string|max:255',
+            'order_amount'          => 'required|string|max:255',
+            'delivery_date'         => 'required|string|max:255',
+            'platform'              => 'required|string|max:255',
+          ]);
+
+          $invoice_ref = $request->invoice_ref;
+          $vendor = $request->vendor;
+
+          $platformName = Platforms::where('id', $request->platform)
+          ->get()->pluck('name')->first();
+
+          $storeOrder = new Orders();
+          $storeOrder->invoice_ref     = $invoice_ref; 
+          $storeOrder->added_by        = $user_id;
+          $storeOrder->platform_id     = $request->platform;
+          $storeOrder->vendor_id       = $vendor;
+          $storeOrder->order_ref       = $request->order_reference;
+          $storeOrder->order_amount    = $request->order_amount;
+          $storeOrder->description     = $request->item;
+          $storeOrder->delivery_date   = $request->delivery_date;
+          $storeOrder->save();
+
+          $commission = new Commission();
+          $commission->order_id               = $storeOrder->id;
+          $commission->vendor_id              = $vendor;
+          $commission->platform_id            = $request->platform;
+          $commission->platform_name          = $platformName;
+          $commission->save();
+
+        
+
+        if($commission){
+              //count the number of order taht was merge to create invoice
+            $countRow =Orders::where('invoice_ref', $invoice_ref)
+            ->count();
+
+            $numberOfRow = $countRow - 1;
+
+            Orders::where('number_of_order_merge', $numberOfRow)
+            ->where('invoice_ref', $invoice_ref)
+            ->update([
+            'number_of_order_merge' => $countRow,
+            'payment_status' => 'unpaid',
+            ]);
+
+            $insert = new MergeInvoice();
+            $insert->vendor_id              = $vendor;
+            $insert->order_id               =  $storeOrder->id;
+            $insert->number_of_order_merge  = $countRow;
+            $insert->save();
+
+       
+
+            return redirect('computed-invoice/'.$vendor.'/'.$numberOfRow.'/'.$invoice_ref)->with('invoice', 'New Row Added'); 
+        }
+        else{
+            return redirect()->back()->with('merge-error', 'Something went wrong');
+        }
+
 
     }
 }//class

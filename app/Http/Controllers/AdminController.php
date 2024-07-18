@@ -57,7 +57,6 @@ class AdminController extends Controller
         ->where('users.id', $id)
         ->pluck('role_name')->first();
 
-
         $sumAllOrders = Orders::where('deleted_at', null)
         ->where('orders.order_amount', '!=', null)
         ->where('orders.order_ref', '!=', null)
@@ -90,7 +89,8 @@ class AdminController extends Controller
         $payouts = Orders::all()
         ->sum('payout');
 
-        $commission = Commission::all()->sum('localeats_comm');
+        $commission = (int)$sumAllOrders - (int)$payouts ;
+        //Commission::all()->sum('localeats_comm');
 
 
         $countPlatforms = Platforms::all();
@@ -601,6 +601,66 @@ class AdminController extends Controller
         return view('admin.all-orders', compact('name', 'role', 'orders', 
         'sumAllOrders', 'countAllOrder', 'countPlatformWhereOrderCame',
         'countAllPlate'));
+    }
+
+
+    public function deleteInvoice(Request $request, $id){
+        $today = Carbon::now();
+        $vendor_id = $request->vendor_id;
+
+        $order = DB::table('orders')
+        ->where('invoice_ref', '=', $id)
+        ->where('vendor_id', '=', $vendor_id)
+        ->update(array('deleted_at' => $today));
+
+        if($order){
+            $data = [
+                'status' => true,
+                'message'=> 'Invoice Number' .$id.' deleted successfully'
+            ];
+            return response()->json($data);
+            //return redirect()->back()->with('invoice', 'Record Deleted');
+        }
+        else{
+            $data = [
+                'status' => false,
+                'message'=> 'Opps! something went wrong'
+            ];
+            return response()->json($data);
+           // return redirect()->back()->with('merge-error', 'Opps! something went wrong'); 
+        }
+    }
+
+    public function markInvoicePaid(Request $request, $invoice_ref){
+        $vendor = $request->vendor_id;
+        // $payment_status = DB::table('orders')
+        //   ->where('orders.vendor_id', $vendor)
+        //  ->where('orders.invoice_ref', $invoice_ref)
+        //  ->where('orders.payment_status', '!=', null)
+        //  ->pluck('payment_status')->first();
+
+        $paid =  DB::table('orders')
+            ->where('orders.vendor_id', $vendor)
+            ->where('orders.invoice_ref', $invoice_ref)
+            ->where('orders.payment_status', '!=', null)
+            ->update([
+            'payment_status' => 'paid'
+            ]);
+
+        if($paid){
+            $data = [
+                'status' => true,
+                'message'=> 'Invoice Number' .$invoice_ref.' paid successfully'
+            ];
+            return response()->json($data);
+        }
+        else{
+            $data = [
+                'status' => false,
+                'message'=> 'Opps! something went wrong'
+            ];
+            return response()->json($data);
+        }
     }
   
 }//class

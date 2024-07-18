@@ -172,9 +172,15 @@
                                                                                     name="invoice">
                                                                               <input type="hidden" value="{{$vendorID}}"
                                                                                     name="vendor">
+                                                                                    @if($invoicePaymentStatus == 'paid')
+                                                                                    <button type="submit" name="submit"
+                                                                                    class="btn bg-gradient-primary text-white">View
+                                                                                    Invoice</button>
+                                                                                    @else
                                                                               <button type="submit" name="submit"
                                                                                     class="btn bg-gradient-primary text-white">Generate
                                                                                     Invoice</button>
+                                                                                    @endif 
                                                                         </form>
 
                                                                   </li>
@@ -208,27 +214,24 @@
                                                                   <tr>
                                                                         <td class="align-items-center">
                                                                               <small>{{$loop->iteration}} </small>
+                                                                              @if($invoicePaymentStatus == 'paid')
+                                                                              @else
 
-                                                                              <form action="{{ route('delete-order', [$data->id]) }}"
-                                                                                    method="post" name="submit"
-                                                                                    enctype="multipart/form-data">
-                                                                                    @csrf
+                                                                              <!-- <div class="input-group">
+                                                                                    <input type="hidden" id="order_id"
+                                                                                          value="{{$data->id}}">
+                                                                                    <button onclick="deleteOrderRow()"
+                                                                                          class="text-danger"><i
+                                                                                                class="fa fa-trash"></i></button>
+                                                                              </div> -->
 
-                                                                                    <div class="input-group">
-                                                                                          <input type="hidden"
-                                                                                                value="{{$data->id}}">
-                                                                                          <button type="submit"
-                                                                                                class="text-danger"><i
-                                                                                                      class="fa fa-trash"></i></button>
-                                                                                    </div>
-                                                                              </form>
-
+                                                                              @endif
                                                                         </td>
 
                                                                         <td>
                                                                               <p><small>{{$data->order_ref}}</small></p>
                                                                               <p><small>{{$data->name}}</small></p>
-                                                                              <p><small>{{ date('m/d/Y', strtotime($data->delivery_date))}}</small>
+                                                                              <p><small>{{ date('d/m/Y', strtotime($data->delivery_date))}}</small>
                                                                               </p>
                                                                         </td>
                                                                         <td class="table-info">
@@ -248,6 +251,9 @@
                                                                         <td>
                                                                               <p> {{number_format(floatval($data->food_price))}}
                                                                               </p>
+                                                                              <p> </p>
+                                                                              @if($invoicePaymentStatus == 'paid')
+                                                                              @else
                                                                               <form action="{{ route('update-merge-invoice-food') }}"
                                                                                     method="post" name="submit"
                                                                                     enctype="multipart/form-data">
@@ -255,7 +261,7 @@
 
                                                                                     <div class="form-group">
                                                                                           <select
-                                                                                                class="js-example-basic-multiple1"
+                                                                                                class="js-example-basic-multiple"
                                                                                                 multiple="multiple"
                                                                                                 style="width:100%"
                                                                                                 name="food_price[]">
@@ -290,7 +296,6 @@
                                                                                     </div>
                                                                               </form>
 
-
                                                                               <div
                                                                                     class="d-flex flex-column align-items-center text-center">
                                                                                     <!-- Reset food prie ----->
@@ -305,12 +310,15 @@
 
                                                                                     </form>
                                                                               </div>
+                                                                              @endif
 
                                                                         </td>
 
                                                                         <td>
                                                                               <p> {{number_format(floatval($data->extra))}}
                                                                               </p>
+                                                                              @if($invoicePaymentStatus == 'paid')
+                                                                              @else
                                                                               <form action="{{ route('update-merge-invoice-extra') }}"
                                                                                     method="post" name="submit"
                                                                                     enctype="multipart/form-data">
@@ -330,7 +338,7 @@
                                                                                                 @endforeach
                                                                                           </select>
                                                                                     </div>
-                                          
+
                                                                                     <div
                                                                                           class="d-flex flex-column align-items-center text-center">
                                                                                           <input type="hidden"
@@ -366,7 +374,7 @@
 
                                                                                     </form>
                                                                               </div>
-
+                                                                              @endif
                                                                         </td>
 
                                                                         <td class="table-success">
@@ -382,8 +390,24 @@
 
                                                                   @endforeach
                                                                   <tr>
-
-                                                                        <th colspan="2" class="text-end">
+                                                                        <th>
+                                                                        @if($invoicePaymentStatus == 'paid')
+                                                                        @else
+                                                                              <form method="get"
+                                                                                    action="{{ route('add-invoice-row',  [$invoiceRef]) }}"
+                                                                                    name="submit"
+                                                                                    enctype="multipart/form-data">
+                                                                                    @csrf
+                                                                                    {{csrf_field()}}
+                                                                                    <input type="hidden" name="vendor" value="{{ $vendorID }}">
+                                                                                    <button type="submit"
+                                                                                          class="btn btn-block btn-success text-dark"><i
+                                                                                                class="fa  fa-plus"></i>
+                                                                                          Add New Row </button>
+                                                                              </form>
+                                                                              @endif  
+                                                                        </th>
+                                                                        <th class="text-end">
                                                                               <h6>Total (₦)</h6>
                                                                         </th>
 
@@ -420,29 +444,31 @@
                                                                               </p>
                                                                         </th>
                                                                         <th>
-                                                                              <form action="{{ route('update-merge-invoice-payout') }}"
-                                                                                    method="post" name="submit"
-                                                                                    enctype="multipart/form-data">
-                                                                                    @csrf
-                                                                                    {{csrf_field()}}
-                                                                                    <input type="hidden" name="order"
-                                                                                          value="{{$data->id}}">
+                                                                              @if($invoicePaymentStatus == 'paid')
+                                                                              {{number_format($payout, 2)}}
+                                                                              @else
 
-                                                                                    <input type="hidden" name="vendor"
-                                                                                          value="{{$data->vendor_id}}">
+                                                                              <input type="hidden" id="order"
+                                                                                    value="{{$data->id}}">
 
-                                                                                    <div class="input-group">
-                                                                                          <input type="text"
-                                                                                                name="amount_payout"
-                                                                                                class="form-control bg-secondary fw-bold"
-                                                                                                value="{{number_format($payout, 2)}}">
-                                                                                          <button type="submit"
-                                                                                                class="btn text-success"><i
-                                                                                                      class="fa fa-check"></i></button>
-                                                                                    </div>
-                                                                              </form>
+                                                                              <input type="hidden" id="vendor"
+                                                                                    value="{{$data->vendor_id}}">
+
+                                                                              <div class="input-group">
+                                                                                    <input type="text"
+                                                                                          id="amount_payout"
+                                                                                          class="form-control bg-secondary fw-bold"
+                                                                                          value="{{$payout}}">
+                                                                                    <button onclick="updatePayout()"
+                                                                                          class="btn text-success"><i
+                                                                                                class="fa fa-check"></i></button>
+                                                                              </div>
+
+                                                                              @endif
+
                                                                         </th>
-                                                                        <th></th>
+
+                                                                        <th> <span id="response"></span></th>
                                                                   </tr>
                                                             </tbody>
                                                       </table>
@@ -483,8 +509,79 @@
 <script src="{{ asset('assets/js/select2.js')}}"></script>
 
 <script>
-function mydelete() {
-      alert("Sure you want to delete?");
+function deleteOrderRow() {
+      document.getElementById('delete_order').style.display = 'none';
+      var id = document.getElementById('order_id').value;
+      var showRoute = "{{ route('delete-order', ':id') }}";
+      url = showRoute.replace(':id', id);
+
+      //window.location = url;
+      $.ajaxSetup({
+            headers: {
+                  'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+            }
+      });
+      $.ajax({
+            method: 'POST',
+            enctype: 'multipart/form-data',
+            url: url,
+            data: {
+                  //you can more data here
+                  'order': id
+            },
+            success: function(data) {
+                  console.log(data.message);
+                  document.getElementById('delete_order').style.display = '';
+                  document.getElementById('delete_order').style.color = 'green';
+                  document.getElementById('delete_order').innerHTML = data.message;
+            },
+            error: function(data) {
+                  console.log(data);
+            }
+      });
+      location.reload();
+
 }
 </script>
+
+<script type="text/javascript">
+function updatePayout() {
+      document.getElementById('response').style.display = 'none';
+      var amount_payout = document.getElementById('amount_payout').value;
+      var order = document.getElementById('order').value;
+      var vendor = document.getElementById('vendor').value;
+      var url = "{{ route('update-merge-invoice-payout') }}";
+      // url = showRoute;
+
+      //window.location = url;
+      $.ajaxSetup({
+            headers: {
+                  'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+            }
+      });
+      $.ajax({
+            method: 'POST',
+            enctype: 'multipart/form-data',
+            url: url,
+            data: {
+                  //you can more data here
+                  'amount_payout': amount_payout,
+                  'order': order
+            },
+            success: function(data) {
+                  console.log(data.message);
+                  document.getElementById('response').style.display = '';
+                  document.getElementById('response').style.color = 'green';
+                  document.getElementById('response').innerHTML = data.message;
+            },
+            error: function(data) {
+                  console.log(data);
+            }
+      });
+
+}
+</script>
+
+
+
 @endsection

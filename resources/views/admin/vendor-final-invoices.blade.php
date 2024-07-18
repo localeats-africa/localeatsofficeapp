@@ -94,24 +94,31 @@
                                           id="orders">
                                           <thead>
                                                 <tr>
-                                                      <th class="w-1"><input class="form-check-input m-0 align-middle"
-                                                                  type="checkbox" aria-label="Select all product">
-                                                      </th>
-                                                      <th>Date Created</th>
+                                                      <th> Import  Date </th>
                                                       <th>Vendor</th>
                                                       <th>Invoice  Ref.</th>
+                                                      <th>Payment  Status</th>
                                                       <th></th>
                                                 </tr>
                                           </thead>
                                           <tbody>
                                                 @foreach($orders as $data)
                                                 <tr>
-                                                      <td><input class="form-check-input m-0 align-middle"
-                                                                  type="checkbox" aria-label="Select"></td>
-                                                      <td>{{ date('Y/m/d', strtotime($data->created_at))}}</td>
+                                             
+                                                      <td>{{ date('d/m/Y', strtotime($data->created_at))}}</td>
                                                   
                                                       <td class="text-sm">{{$data->vendor_name}} </td>
                                                       <td>{{ $data->invoice_ref}}</td>
+                                                      <td>
+                                                            @if( $data->payment_status  =='unpaid')
+                                                            <span class="badge badge-round bg-warning  text-dark text-capitalize"> {{ $data->payment_status}}</span>
+                                                            @endif 
+
+                                                            @if( $data->payment_status  =='paid')
+                                                           <span class="badge badge-round bg-success  text-dark text-capitalize"> {{ $data->payment_status}}</span>
+                                                            @endif 
+
+                                                      </td>
 
                                                       <td class="">
                                                             <a href="invoice/{{$data->invoice_ref}}/{{$data->id}}"

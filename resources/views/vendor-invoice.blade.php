@@ -78,12 +78,11 @@
 
                                           <li class="breadcrumb-item">
 
-
+<!-- 
                                                 <input type="hidden" value="{{$invoice_ref}}" name="ref" id="ref">
                                                 <input type="hidden" value="{{$vendor}}" name="vendor" id="vendor">
-                                                <button onclick="mypdf()"
-                                                      class="btn btn-outline-dark  text-dark">
-                                                      send email</button>
+                                                <button onclick="mypdf()" class="btn btn-outline-dark  text-dark">
+                                                      send email</button> -->
 
 
                                           </li>
@@ -174,8 +173,14 @@
                                                             <p></p>
                                                             <div class="mt-1">
                                                                   <h4 id="invoice_ref">Invoice ID: {{$invoice_ref}}</h4>
+
+                                                                  @if($payment_status == 'paid')
+                                                                  <h3 class="text-success text-uppercase">
+                                                                        {{$payment_status}}</h3>
+                                                                  @else
                                                                   <h3 class="text-info text-uppercase">
                                                                         {{$payment_status}}</h3>
+                                                                  @endif
                                                             </div>
                                                       </div>
                                                 </div>
@@ -206,7 +211,7 @@
                                                                                     {!! nl2br($data->description) !!}
                                                                               </small></td>
                                                                         <td><small>{{$data->order_ref}}</small></td>
-                                                                        <td><small>{{ date('m/d/Y', strtotime($data->delivery_date))}}</small>
+                                                                        <td><small>{{ date('d/m/Y', strtotime($data->delivery_date))}}</small>
                                                                         </td>
                                                                         <td><small>{{number_format(floatval($data->food_price))}}</small>
                                                                         </td>
@@ -225,9 +230,28 @@
 
                                                                   </tr>
                                                                   <tr>
+                                                                        <th colspan="3" class="text-end">
+                                                                             @auth 
+                                                                             @if(Auth::user()->role_id =='2')
+                                                                             @if($payment_status == 'paid')
+                                                                              @else
+                                                                              <input type="hidden" value="{{$vendor}}"
+                                                                                    id="vendor_id">
+                                                                              <input type="hidden"
+                                                                                    value="{{ $invoice_ref}}"
+                                                                                    id="invoice_ref">
+                                                                              <button onclick="markAsPaid()"
+                                                                                    class="btn btn-block btn-success text-dark">Mark
+                                                                                    This Invoice As Paid</button>
+                                                                              @endif
+                                                                             @else 
+                                                                             @endif
+                                                                             @endauth 
+                                                                        </th>
 
-                                                                        <th colspan="4" class="text-end">
+                                                                        <th class="text-end">
                                                                               <h6>Total Amount (₦)</h6>
+                                                                              <span id="response"></span>
                                                                         </th>
                                                                         <th>{{number_format($payout, 2)}}
                                                                         </th>
@@ -240,7 +264,6 @@
                                                                               <h6>Total Order (s)</h6>
                                                                         </th>
                                                                         <th>{{$orders->count() }}</th>
-                                                                        <th></th>
 
                                                                   </tr>
                                                             </tbody>
@@ -277,6 +300,42 @@
 </script>
 <script type="text/javascript" src="https://html2canvas.hertzen.com/dist/html2canvas.js"></script>
 
+
+<script>
+function markAsPaid() {
+      document.getElementById('response').style.display = 'none';
+      var id = document.getElementById('invoice_ref').value;
+      var vendor_id = document.getElementById('vendor_id').value;
+      var showRoute = "{{ route('mark-invoice-paid', ':id') }}";
+      url = showRoute.replace(':id', id);
+
+      //window.location = url;
+      $.ajaxSetup({
+            headers: {
+                  'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+            }
+      });
+      $.ajax({
+            method: 'POST',
+            enctype: 'multipart/form-data',
+            url: url,
+            data: {
+                  //you can more data here
+                  'vendor_id': vendor_id
+            },
+            success: function(data) {
+                  console.log(data.message);
+                  document.getElementById('response').style.display = '';
+                  document.getElementById('response').style.color = 'green';
+                  document.getElementById('response').innerHTML = data.message;
+            },
+            error: function(data) {
+                  console.log(data);
+            }
+      });
+      location.reload();
+}
+</script>
 
 <script>
 function exportInvoice() {
@@ -342,17 +401,19 @@ function getPDF() {
 </script>
 
 <script>
-      function mypdf(){
-            html2canvas($('#print_invoice')[0]).then(function(canvas) {
+function mypdf() {
+      html2canvas($('#print_invoice')[0]).then(function(canvas) {
             var dataUrl = canvas.toDataURL();
-            var newDataURL = dataUrl.replace(/^data:image\/png/, "data:application/octet-stream"); //do this to clean the url.
-           $("#saveBtn").attr("download", "your_pic_name.png").attr("href", newDataURL); //incase you want to create a download link to save the pic locally.
-      
-      //   var newDataURL = dataUrl.replace(/^data:application\/pdf/); //do this to clean the url.
-      //      $("#saveBtn").attr("download", "your_pic_name.png").attr("href", newDataURL); //incase you want to create a download link to save the pic locally.
-      
-           //data:application/pdf;base64,JVBERi0xLjQKJcOkw7zDtsOfCjIgMCBvYmoKPDwvTGVuZ3RoIDMgMCBSL0ZpbHRlci9GbGF0ZURlY29kZT4+CnN0cmVhbQp4nO1cyY4ktxG911fUWUC3kjsTaBTQ1Ytg32QN4IPgk23JMDQ2LB/0+2YsZAQzmZk1PSPIEB...
-           var id = document.getElementById('ref').value;
+            var newDataURL = dataUrl.replace(/^data:image\/png/,
+                  "data:application/octet-stream"); //do this to clean the url.
+            $("#saveBtn").attr("download", "your_pic_name.png").attr("href",
+                  newDataURL); //incase you want to create a download link to save the pic locally.
+
+            //   var newDataURL = dataUrl.replace(/^data:application\/pdf/); //do this to clean the url.
+            //      $("#saveBtn").attr("download", "your_pic_name.png").attr("href", newDataURL); //incase you want to create a download link to save the pic locally.
+
+            //data:application/pdf;base64,JVBERi0xLjQKJcOkw7zDtsOfCjIgMCBvYmoKPDwvTGVuZ3RoIDMgMCBSL0ZpbHRlci9GbGF0ZURlY29kZT4+CnN0cmVhbQp4nO1cyY4ktxG911fUWUC3kjsTaBTQ1Ytg32QN4IPgk23JMDQ2LB/0+2YsZAQzmZk1PSPIEB...
+            var id = document.getElementById('ref').value;
             var showRoute = "{{ route('send-email-pdf', ':id') }}";
             url = showRoute.replace(':id', id);
             // $token = document.getElementsByName("_token")[0].value;
@@ -361,24 +422,24 @@ function getPDF() {
                         'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
                   }
             });
-        $.ajax({
-            method: 'POST',
+            $.ajax({
+                  method: 'POST',
                   enctype: 'multipart/form-data',
                   url: url,
-            data: {
-                //you can more data here
-                'img':dataUrl
-            },
-            success: function(data){
-                console.log(data);
-            },
-            error: function(data){
-                console.log(data);
-            }
-        });
-        
-        });
-      }
+                  data: {
+                        //you can more data here
+                        'img': dataUrl
+                  },
+                  success: function(data) {
+                        console.log(data);
+                  },
+                  error: function(data) {
+                        console.log(data);
+                  }
+            });
+
+      });
+}
 </script>
 
 <script>
@@ -415,7 +476,7 @@ function sendEmail() {
             // pdf.save("invoice-{{$invoice_ref}}.pdf");
 
             var blob = pdf.output('blob');
-           
+
 
 
             var id = document.getElementById('ref').value;
@@ -427,21 +488,21 @@ function sendEmail() {
                         'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
                   }
             });
-        $.ajax({
-            method: 'POST',
+            $.ajax({
+                  method: 'POST',
                   enctype: 'multipart/form-data',
                   url: url,
-            data: {
-                //you can more data here
-                'img':blob
-            },
-            success: function(data){
-                console.log(data);
-            },
-            error: function(data){
-                console.log(data);
-            }
-        });
+                  data: {
+                        //you can more data here
+                        'img': blob
+                  },
+                  success: function(data) {
+                        console.log(data);
+                  },
+                  error: function(data) {
+                        console.log(data);
+                  }
+            });
       });
 
 

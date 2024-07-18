@@ -111,8 +111,8 @@ Route::controller(HomeController::class)->group(function () {
     Route::post('export-invoice/{id}', 'exportInvoice')->name('export-invoice');
     Route::get('email-invoice/{id}', 'emailPdfInvoice')->name('email-invoice');
     Route::post('send-email-pdf/{id}', 'sendEmailPdfInvoice')->name('send-email-pdf');
-
-   
+    Route::get('add-invoice-row/{id}', 'addInvoiceRow')->name('add-invoice-row');
+    Route::post('update-invoice-newrow', 'storeAddNewInvoiceRow')->name('update-invoice-newrow');
 });
 
 Route::controller(SuperAdminController::class)->group(function () {
@@ -134,6 +134,9 @@ Route::controller(AdminController::class)->group(function () {
     Route::get('all-staff',  'allUser')->name('all-staff');
     Route::post('vendor-platform-ref/{id}',  'updateVendorPlatformRef')->name('vendor-platform-ref');
     Route::get('all-orders',  'allOrders')->name('all-orders');
+    //delete all merge Invoice with same ref.
+    Route::post('delete-invoice/{id}',  'deleteInvoice')->name('delete-invoice');
+    Route::post('mark-invoice-paid/{id}',  'markInvoicePaid')->name('mark-invoice-paid');
    
 });
 
