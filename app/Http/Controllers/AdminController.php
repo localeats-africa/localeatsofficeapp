@@ -616,7 +616,7 @@ class AdminController extends Controller
         if($order){
             $data = [
                 'status' => true,
-                'message'=> 'Record Deleted'
+                'message'=> 'Record deleted successfully'
             ];
             return response()->json($data);
             //return redirect()->back()->with('invoice', 'Record Deleted');
