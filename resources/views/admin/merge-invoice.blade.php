@@ -432,15 +432,14 @@
                                                                               {{number_format($payout, 2)}}
                                                                               @else
                                                                              
-                                                                                    <input type="hidden" name="order" id="order"
+                                                                                    <input type="hidden"  id="order"
                                                                                           value="{{$data->id}}">
 
-                                                                                    <input type="hidden" name="vendor" id="vendor"
+                                                                                    <input type="hidden" id="vendor"
                                                                                           value="{{$data->vendor_id}}">
 
                                                                                     <div class="input-group">
-                                                                                          <input type="text"
-                                                                                                name="amount_payout" id="amount_payout"
+                                                                                          <input type="text" id="amount_payout"
                                                                                                 class="form-control bg-secondary fw-bold"
                                                                                                 value="{{$payout}}">
                                                                                           <button onclick="updatePayout()"
@@ -449,8 +448,10 @@
                                                                                     </div>
                                                                             
                                                                               @endif
+                                                                             
                                                                         </th>
-                                                                        <th></th>
+                                                                     
+                                                                        <th> <span id="response"></span></th>
                                                                   </tr>
                                                             </tbody>
                                                       </table>
@@ -503,8 +504,8 @@ function updatePayout() {
       var amount_payout = document.getElementById('amount_payout').value;
       var order = document.getElementById('order').value;
       var vendor = document.getElementById('vendor').value;
-      var showRoute = "{{ route('update-merge-invoice-payout') }}";
-      url = showRoute;
+      var url = "{{ route('update-merge-invoice-payout') }}";
+      // url = showRoute;
 
       //window.location = url;
       $.ajaxSetup({
@@ -519,8 +520,7 @@ function updatePayout() {
             data: {
                   //you can more data here
                   'amount_payout': amount_payout,
-                  'order': order,
-                  'vendor': vendor
+                  'order': order
             },
             success: function(data) {
                   console.log(data.message);
@@ -532,7 +532,6 @@ function updatePayout() {
                   console.log(data);
             }
       });
-      location.reload();
 
 }
 </script>

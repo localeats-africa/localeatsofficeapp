@@ -1092,15 +1092,11 @@ class HomeController extends Controller
      }
 
      public function updateVendorInvoicePayout(Request $request){
-        $this->validate($request, [ 
-            'amount_payout'          => 'required|max:255',
-        ]);
+
         $amount         = $request->amount_payout;
         $order_id       = $request->order;
-        $vendor         = $request->vendor;
 
          $updateOrder = Orders::where('id', $order_id)
-         ->where('vendor_id', $vendor)
          ->update([
              'payout'     => $amount,
          ]);
