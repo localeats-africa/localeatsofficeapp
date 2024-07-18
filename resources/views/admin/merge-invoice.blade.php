@@ -226,7 +226,6 @@
                                                                               </div> -->
 
                                                                               @endif
-                                                                              <p id="delete_order"></p>
                                                                         </td>
 
                                                                         <td>
