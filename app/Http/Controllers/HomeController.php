@@ -180,7 +180,7 @@ class HomeController extends Controller
             $foodType = $request->food_type;
             $vendorStatus = 'pending';
 
-            $vendorName = $foodType. '-' .$request->area;
+            $vendorName = $request->area. '-' .$foodType;
        
             $addVendor = new Vendor();
             $addVendor->vendor_ref                  = $vendorRef;
@@ -419,8 +419,10 @@ class HomeController extends Controller
     public function updateVendor(Request $request, $id)
     {
         $this->validate($request, [
-            'first_name'  => 'max:255',
-            'last_name'  => 'max:255',
+            'vendor_name'    => 'max:255',
+            'store_area'     => 'max:255',
+            'first_name'    => 'max:255',
+            'last_name'     => 'max:255',
             'email'         => 'max:255',  
             'phone'         => 'max:255',
             'bank_name'     => 'max:255',
@@ -428,6 +430,8 @@ class HomeController extends Controller
             'account_number' => 'max:255',
             ]);
             $vendor = Vendor::find($id);
+            $vendor->vendor_name    = $request->vendor_name;
+            $vendor->store_area     = $request->store_area;
             $vendor->contact_fname  = $request->first_name;
             $vendor->contact_lname  = $request->last_name;
             $vendor->email          = $request->email;
