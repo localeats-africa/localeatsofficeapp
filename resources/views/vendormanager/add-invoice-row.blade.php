@@ -97,7 +97,7 @@
             </div>
             <p></p>
 
-            <form method="post" action="{{ route('setup') }}" name="submit" enctype="multipart/form-data">
+            <form method="post" action="{{ route('update-invoice-newrow') }}" name="submit" enctype="multipart/form-data">
                   @csrf
                   {{csrf_field()}}
                   <div class="row">
@@ -214,7 +214,7 @@
                                     <div class="card-body">
                                           <div class="form-label ">Delivery Date <i class="text-danger">*</i>
                                           </div>
-                                          <input type="text" class="form-control" name="delivery_date">
+                                          <input type="text" class="form-control" name="delivery_date" id="datepicker">
                                           @error('delivery_date')
                                           <div class="alert alert-danger alert-dismissible" role="alert">
                                                 <div class="d-flex">
@@ -333,7 +333,15 @@
       </footer>
 </div>
 <!-- main-panel -->
-
+<link rel="stylesheet" href="https://code.jquery.com/ui/1.13.3/themes/base/jquery-ui.css">
+  <link rel="stylesheet" href="/resources/demos/style.css">
+  <script src="https://code.jquery.com/jquery-3.7.1.js"></script>
+  <script src="https://code.jquery.com/ui/1.13.3/jquery-ui.js"></script>
+  <script>
+  $( function() {
+    $( "#datepicker" ).datepicker();
+  } );
+  </script>
 <script src="{{ asset('assets/vendors/select2/select2.min.js')}}"></script>
 <script src="{{ asset('assets/vendors/typeahead.js/typeahead.bundle.min.js')}}"></script>
 
