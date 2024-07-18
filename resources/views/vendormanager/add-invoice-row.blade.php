@@ -109,7 +109,7 @@
                                           <textarea name="item" id="" class="form-control"></textarea>
 
 
-                                          @error('platform')
+                                          @error('item')
                                           <div class="alert alert-danger alert-dismissible" role="alert">
                                                 <div class="d-flex">
                                                       <div>
@@ -146,7 +146,7 @@
                                                 <input type="text" name="order_reference" class="form-control">
 
                                           </div>
-                                          @error('vendor')
+                                          @error('order_reference')
                                           <div class="alert alert-danger alert-dismissible" role="alert">
                                                 <div class="d-flex">
                                                       <div>
@@ -180,7 +180,7 @@
                                           <div class="form-label ">Amount <i class="text-danger">*</i>
                                           </div>
                                           <input type="text" class="form-control" name="order_amount">
-                                          @error('reference')
+                                          @error('order_amount')
                                           <div class="alert alert-danger alert-dismissible" role="alert">
                                                 <div class="d-flex">
                                                       <div>
@@ -214,7 +214,7 @@
                                           <div class="form-label ">Delivery Date <i class="text-danger">*</i>
                                           </div>
                                           <input type="text" class="form-control" name="delivery_date">
-                                          @error('reference')
+                                          @error('delivery_date')
                                           <div class="alert alert-danger alert-dismissible" role="alert">
                                                 <div class="d-flex">
                                                       <div>
@@ -255,7 +255,7 @@
                                                 </option>
                                                 @endforeach
                                           </select>
-                                          @error('reference')
+                                          @error('platform')
                                           <div class="alert alert-danger alert-dismissible" role="alert">
                                                 <div class="d-flex">
                                                       <div>
