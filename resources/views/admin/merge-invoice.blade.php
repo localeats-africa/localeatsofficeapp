@@ -211,13 +211,13 @@
                                                                               @if($invoicePaymentStatus == 'paid')
                                                                               @else
 
-                                                                              <div class="input-group">
+                                                                              <!-- <div class="input-group">
                                                                                     <input type="hidden" id="order_id"
                                                                                           value="{{$data->id}}">
                                                                                     <button onclick="deleteOrderRow()"
                                                                                           class="text-danger"><i
                                                                                                 class="fa fa-trash"></i></button>
-                                                                              </div>
+                                                                              </div> -->
 
                                                                               @endif
                                                                               <p id="delete_order"></p>
