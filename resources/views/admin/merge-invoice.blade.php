@@ -172,9 +172,15 @@
                                                                                     name="invoice">
                                                                               <input type="hidden" value="{{$vendorID}}"
                                                                                     name="vendor">
+                                                                                    @if($invoicePaymentStatus == 'paid')
+                                                                                    <button type="submit" name="submit"
+                                                                                    class="btn bg-gradient-primary text-white">View
+                                                                                    Invoice</button>
+                                                                                    @else
                                                                               <button type="submit" name="submit"
                                                                                     class="btn bg-gradient-primary text-white">Generate
                                                                                     Invoice</button>
+                                                                                    @endif 
                                                                         </form>
 
                                                                   </li>
@@ -386,6 +392,8 @@
                                                                   @endforeach
                                                                   <tr>
                                                                         <th>
+                                                                        @if($invoicePaymentStatus == 'paid')
+                                                                        @else
                                                                               <form method="get"
                                                                                     action="{{ route('add-invoice-row',  [$invoiceRef]) }}"
                                                                                     name="submit"
@@ -398,6 +406,7 @@
                                                                                                 class="fa  fa-plus"></i>
                                                                                           Add New Row </button>
                                                                               </form>
+                                                                              @endif  
                                                                         </th>
                                                                         <th class="text-end">
                                                                               <h6>Total (₦)</h6>
