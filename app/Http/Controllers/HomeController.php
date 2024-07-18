@@ -1650,10 +1650,19 @@ class HomeController extends Controller
         ->join('users', 'users.role_id', 'role.id')
         ->where('users.id', $user_id)
         ->pluck('role_name')->first();
+        
         $vendor = $request->vendor;
         $platform = Platforms::all();
         $vendorName = Vendor::where('id', $vendor)
         ->get()->pluck('vendor_name')->first();
+
+        $request->validate([
+            'item'                  => 'required',
+            'order_reference'       => 'required|string|max:255',
+            'order_amount'          => 'required|string|max:255',
+            'delivery_date'         => 'required|string|max:255',
+            'platform'              => 'required|string|max:255',
+          ]);
 
         return view('vendormanager.add-invoice-row', compact('role','invoice_ref',
          'vendor', 'platform', 'vendorName'));
