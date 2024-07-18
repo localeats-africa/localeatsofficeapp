@@ -8,7 +8,8 @@
       <div class="content-wrapper">
             <div class="page-header">
                   <h3 class="page-title">
-                        Add New Row To >>> <span class="text-info">{{$vendorName}}</span> >>> Invoice Number >>> <span class="text-info">{{$invoice_ref}}</span> 
+                        Add New Row To >>> <span class="text-info">{{$vendorName}}</span> >>> Invoice Number >>> <span
+                              class="text-info">{{$invoice_ref}}</span>
                   </h3>
             </div>
             <!--Alert here--->
@@ -246,8 +247,7 @@
                                     <div class="card-body">
                                           <div class="form-label ">Platform <i class="text-danger">*</i>
                                           </div>
-                                          <select class="js-example-basic-single" 
-                                                style="width:100%" name="platform">
+                                          <select class="js-example-basic-single" style="width:100%" name="platform">
                                                 @foreach($platform
                                                 as $data)
                                                 <option value="{{$data->id}}">
@@ -292,7 +292,8 @@
                         <div class="col-md-6">
                         </div>
                         <div class="col-md-6 col-12 grid-margin stretch-card justify-content-end">
-
+                              <input type="hidden" name="invoice_ref" value="{{$invoice_ref}}">
+                              <input type="hidden" name="vendor" value="{{$vendor}}">
                               <!-- send button here -->
                               <div class="card-footer bg-transparent mt-auto">
                                     <div class="btn-list ">
