@@ -602,5 +602,36 @@ class AdminController extends Controller
         'sumAllOrders', 'countAllOrder', 'countPlatformWhereOrderCame',
         'countAllPlate'));
     }
+
+
+    public function deleteInvoice(Request $request, $id){
+        $today = Carbon::now();
+        $vendor_id = $request->vendor_id;
+        // $order=  Orders::findOrFail($id);
+        // $order->deleted_at  = $today ;
+        // $order->update();
+        $order = Orders::whereIn('invoice_ref', $id)
+       // ->whereIn('vendor_id', $vendor_id)
+        ->update([
+            'deleted_at' =>$today
+        ]);
+
+        if($order){
+            $data = [
+                'status' => true,
+                'message'=> 'Record Deleted'
+            ];
+            return response()->json($data);
+            //return redirect()->back()->with('invoice', 'Record Deleted');
+        }
+        else{
+            $data = [
+                'status' => false,
+                'message'=> 'Opps! something went wrong'
+            ];
+            return response()->json($data);
+           // return redirect()->back()->with('merge-error', 'Opps! something went wrong'); 
+        }
+    }
   
 }//class
