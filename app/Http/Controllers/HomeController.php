@@ -1664,6 +1664,17 @@ class HomeController extends Controller
             'platform'              => 'required|string|max:255',
           ]);
 
+          $storeOrder = new Orders();
+          $storeOrder->invoice_ref     = $invoice_ref; 
+          $storeOrder->added_by        = $user_id;
+          $storeOrder->platform_id     = $request->platform;
+          $storeOrder->vendor_id       = $request->vendor;
+          $storeOrder->order_ref       = $request->order_reference;
+          $storeOrder->order_amount    = $request->order_amount;
+          $storeOrder->description     = $request->item;
+          $storeOrder->delivery_date   = $request->delivery_date;
+          $storeOrder->save();
+
         return view('vendormanager.add-invoice-row', compact('role','invoice_ref',
          'vendor', 'platform', 'vendorName'));
 
