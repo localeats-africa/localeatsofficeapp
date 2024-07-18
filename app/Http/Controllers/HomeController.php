@@ -1721,11 +1721,7 @@ class HomeController extends Controller
             'payment_status' => 'unpaid',
             ]);
 
-            Orders::where('invoice_ref', $invoice_ref)
-            ->update([
-            'number_of_order_merge' => $numberOfRow,
-            'payment_status' => 'unpaid',
-            ]);
+       
 
             return redirect('computed-invoice/'.$vendor.'/'.$numberOfRow.'/'.$invoice_ref)->with('invoice', 'New Row Added'); 
         }
