@@ -125,11 +125,11 @@
                                                                         </a>
                                                                         <br>
                                                                         <div class="dropdown-item text-danger">
-                                                                        <form action="">
+                                                                     
                                                                               <input type="hidden" id="vendor_id" value="{{$data->vendor_id}}">
                                                                               <input type="hidden" id="invoice_ref" value="{{$data->invoice_ref}}">
                                                                               <button onclick="deleteInvoice()" class="text-danger"> Delete</button>
-                                                                        </form>
+                                                                     
                                                                         </div>
                                                                    
                                                                   </div>
