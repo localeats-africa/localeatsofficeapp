@@ -111,7 +111,7 @@ Route::controller(HomeController::class)->group(function () {
     Route::post('export-invoice/{id}', 'exportInvoice')->name('export-invoice');
     Route::get('email-invoice/{id}', 'emailPdfInvoice')->name('email-invoice');
     Route::post('send-email-pdf/{id}', 'sendEmailPdfInvoice')->name('send-email-pdf');
-    Route::get('add-invoice-row/{id}/{vendor}', 'addInvoiceRow')->name('add-invoice-row');
+    Route::get('add-invoice-row/{id}', 'addInvoiceRow')->name('add-invoice-row');
    
 });
 
