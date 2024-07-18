@@ -15,7 +15,7 @@
             <div class="row">
                   <div class="col-12">
 
-                        @if(session('add-menu'))
+                        @if(session('update-vendor'))
                         <div class="alert  alert-success alert-dismissible" role="alert">
                               <div class="d-flex">
                                     <div>
@@ -30,14 +30,14 @@
                                                 <path d="M12 17h.01" />
                                           </svg>
                                     </div>
-                                    <div> {!! session('add-menu') !!}</div>
+                                    <div> {!! session('update-vendor') !!}</div>
                               </div>
                               <a class="btn-close" data-bs-dismiss="alert" aria-label="close"></a>
                         </div>
                         @endif
 
-                        @if(session('food-status'))
-                        <div class="alert  alert-success alert-dismissible" role="alert">
+                        @if(session('update-error'))
+                        <div class="alert  alert-danger alert-dismissible" role="alert">
                               <div class="d-flex">
                                     <div>
                                           <!-- Download SVG icon from http://tabler-icons.io/i/alert-triangle -->
@@ -51,7 +51,7 @@
                                                 <path d="M12 17h.01" />
                                           </svg>
                                     </div>
-                                    <div> {!! session('food-status') !!}</div>
+                                    <div> {!! session('update-error') !!}</div>
                               </div>
                               <a class="btn-close" data-bs-dismiss="alert" aria-label="close"></a>
                         </div>
@@ -101,7 +101,7 @@
                                                 <p><h5>Store:</h5></p>
                                                 <div class="col-md-6">
                                                       <div class="form-group">
-                                                            <h6>Name </h6>
+                                                            <h6>Name:  <small class="text-danger">(Enter this excatly how it should appear)</small></h6>
                                                             <input type="text" value="{{$vendor->vendor_name}}" name="vendor_name"
                                                                   class="form-control">
                                                       </div>

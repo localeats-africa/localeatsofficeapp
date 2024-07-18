@@ -442,11 +442,11 @@ class HomeController extends Controller
             $vendor->update();
 
             if($vendor){
-                return redirect('all-vendor')->with('update-vendor', 'Record Updated');
+                return redirect()->back()->with('update-vendor', 'Record Updated');
   
             }
             else{
-                return redirect('all-vendor')->with('update-error', 'Opps! something went wrong'); 
+                return redirect()->back()->with('update-error', 'Opps! something went wrong'); 
             }
     }
 
