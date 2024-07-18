@@ -94,14 +94,15 @@
                               <div class="card">
                                     <div class="card-header">
                                           <h3 class="card-title"> </h3>
+                                          <h5>All field with <i class="text-danger">*</i> are required</h5>
                                     </div>
                                     <div class="card-body py-3">
 
                                     <div class="row">
-                                                <p><h5>Store:</h5></p>
+                                                <p><h5>Store: </h5></p>
                                                 <div class="col-md-6">
                                                       <div class="form-group">
-                                                            <h6>Name:  <small class="text-danger">(Enter this excatly how it should appear)</small></h6>
+                                                            <h6>Name:<i class="text-danger">*</i> <br>  <small class="text-danger">(Enter this excatly how it should appear)</small></h6>
                                                             <input type="text" value="{{$vendor->vendor_name}}" name="vendor_name"
                                                                   class="form-control">
                                                       </div>
@@ -109,8 +110,8 @@
 
                                                 <div class="col-md-6">
                                                       <div class="form-group">
-                                                            <h6>Store Area: <small class="text-danger">(this is not address. <b class="text-dark">Example Ikeja or Ojota</b>)</small> </h6>
-                                                            <input type="text" value="{{$vendor->area}}"
+                                                            <h6>Store Area / Location:<i class="text-danger">*</i> <br> <small class="text-danger">(this is not address. <b class="text-dark">Example  Enter Ikeja or Ojota</b>)</small> </h6>
+                                                            <input type="text" value="{{$vendor->store_area}}"
                                                                   name="store_area" class="form-control">
                                                       </div>
                                                 </div>
@@ -137,7 +138,7 @@
 
                                                 <div class="col-md-3">
                                                       <div class="form-group">
-                                                            <h6>Phone </h6>
+                                                            <h6>Phone <i class="text-danger">*</i> </h6>
                                                             <input type="text" value="{{$vendor->contact_phone}}"
                                                                   name="phone" class="form-control">
                                                       </div>
