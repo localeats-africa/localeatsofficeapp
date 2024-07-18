@@ -248,6 +248,7 @@
                                           <div class="form-label ">Platform <i class="text-danger">*</i>
                                           </div>
                                           <select class="js-example-basic-single" style="width:100%" name="platform">
+                                                <option value="">Search</option>
                                                 @foreach($platform
                                                 as $data)
                                                 <option value="{{$data->id}}">
