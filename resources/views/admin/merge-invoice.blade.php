@@ -208,8 +208,8 @@
                                                                   <tr>
                                                                         <td class="align-items-center">
                                                                               <small>{{$loop->iteration}} </small>
-                                                                              @if($data->payment_status == 'paid')
-                                                                              @else 
+                                                                              @if($invoicePaymentStatus == 'paid')
+                                                                              @else
 
                                                                               <form action="{{ route('delete-order', [$data->id]) }}"
                                                                                     method="post" name="submit"
@@ -224,7 +224,7 @@
                                                                                                       class="fa fa-trash"></i></button>
                                                                                     </div>
                                                                               </form>
-                                                                              @endif 
+                                                                              @endif
 
                                                                         </td>
 
@@ -252,6 +252,8 @@
                                                                               <p> {{number_format(floatval($data->food_price))}}
                                                                               </p>
                                                                               <p> </p>
+                                                                              @if($invoicePaymentStatus == 'paid')
+                                                                              @else
                                                                               <form action="{{ route('update-merge-invoice-food') }}"
                                                                                     method="post" name="submit"
                                                                                     enctype="multipart/form-data">
@@ -294,7 +296,6 @@
                                                                                     </div>
                                                                               </form>
 
-
                                                                               <div
                                                                                     class="d-flex flex-column align-items-center text-center">
                                                                                     <!-- Reset food prie ----->
@@ -309,12 +310,15 @@
 
                                                                                     </form>
                                                                               </div>
+                                                                              @endif
 
                                                                         </td>
 
                                                                         <td>
                                                                               <p> {{number_format(floatval($data->extra))}}
                                                                               </p>
+                                                                              @if($invoicePaymentStatus == 'paid')
+                                                                              @else
                                                                               <form action="{{ route('update-merge-invoice-extra') }}"
                                                                                     method="post" name="submit"
                                                                                     enctype="multipart/form-data">
@@ -334,7 +338,7 @@
                                                                                                 @endforeach
                                                                                           </select>
                                                                                     </div>
-                                          
+
                                                                                     <div
                                                                                           class="d-flex flex-column align-items-center text-center">
                                                                                           <input type="hidden"
@@ -370,7 +374,7 @@
 
                                                                                     </form>
                                                                               </div>
-
+                                                                              @endif
                                                                         </td>
 
                                                                         <td class="table-success">
@@ -424,6 +428,9 @@
                                                                               </p>
                                                                         </th>
                                                                         <th>
+                                                                              @if($invoicePaymentStatus == 'paid')
+                                                                              {{number_format($payout, 2)}}
+                                                                              @else
                                                                               <form action="{{ route('update-merge-invoice-payout') }}"
                                                                                     method="post" name="submit"
                                                                                     enctype="multipart/form-data">
@@ -445,6 +452,7 @@
                                                                                                       class="fa fa-check"></i></button>
                                                                                     </div>
                                                                               </form>
+                                                                              @endif
                                                                         </th>
                                                                         <th></th>
                                                                   </tr>

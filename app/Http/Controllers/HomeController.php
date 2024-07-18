@@ -922,10 +922,11 @@ class HomeController extends Controller
             ->pluck('invoice_ref')->first();
 
             $invoicePaymentStatus =  DB::table('orders')
-            ->where('orders.vendor_id', $vendor)
-            ->where('orders.invoice_ref', $invoice_ref)
-            ->select('orders.payment_status')
-            ->pluck('payment_status')->first();
+            ->where('vendor_id', $vendor)
+            ->where('invoice_ref', $invoice_ref)
+            ->get('payment_status')
+            ->pluck('payment_status')->last();
+           // dd($invoicePaymentStatus);
 
             $orders = DB::table('orders')
             ->Join('platforms', 'orders.platform_id', '=', 'platforms.id')
