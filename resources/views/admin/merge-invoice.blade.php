@@ -431,27 +431,23 @@
                                                                               @if($invoicePaymentStatus == 'paid')
                                                                               {{number_format($payout, 2)}}
                                                                               @else
-                                                                              <form action="{{ route('update-merge-invoice-payout') }}"
-                                                                                    method="post" name="submit"
-                                                                                    enctype="multipart/form-data">
-                                                                                    @csrf
-                                                                                    {{csrf_field()}}
-                                                                                    <input type="hidden" name="order"
+                                                                             
+                                                                                    <input type="hidden" name="order" id="order"
                                                                                           value="{{$data->id}}">
 
-                                                                                    <input type="hidden" name="vendor"
+                                                                                    <input type="hidden" name="vendor" id="vendor"
                                                                                           value="{{$data->vendor_id}}">
 
                                                                                     <div class="input-group">
                                                                                           <input type="text"
-                                                                                                name="amount_payout"
+                                                                                                name="amount_payout" id="amount_payout"
                                                                                                 class="form-control bg-secondary fw-bold"
-                                                                                                value="{{number_format($payout, 2)}}">
-                                                                                          <button type="submit"
+                                                                                                value="{{$payout}}">
+                                                                                          <button onclick="updatePayout()"
                                                                                                 class="btn text-success"><i
                                                                                                       class="fa fa-check"></i></button>
                                                                                     </div>
-                                                                              </form>
+                                                                            
                                                                               @endif
                                                                         </th>
                                                                         <th></th>
@@ -497,6 +493,47 @@
 <script>
 function mydelete() {
       alert("Sure you want to delete?");
+}
+</script>
+
+
+<script type="text/javascript">
+function updatePayout() {
+      document.getElementById('response').style.display = 'none';
+      var amount_payout = document.getElementById('amount_payout').value;
+      var order = document.getElementById('order').value;
+      var vendor = document.getElementById('vendor').value;
+      var showRoute = "{{ route('update-merge-invoice-payout') }}";
+      url = showRoute;
+
+      //window.location = url;
+      $.ajaxSetup({
+            headers: {
+                  'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+            }
+      });
+      $.ajax({
+            method: 'POST',
+            enctype: 'multipart/form-data',
+            url: url,
+            data: {
+                  //you can more data here
+                  'amount_payout': amount_payout,
+                  'order': order,
+                  'vendor': vendor
+            },
+            success: function(data) {
+                  console.log(data.message);
+                  document.getElementById('response').style.display = '';
+                  document.getElementById('response').style.color = 'green';
+                  document.getElementById('response').innerHTML = data.message;
+            },
+            error: function(data) {
+                  console.log(data);
+            }
+      });
+      location.reload();
+
 }
 </script>
 
