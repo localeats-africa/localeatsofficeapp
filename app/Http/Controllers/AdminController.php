@@ -630,5 +630,37 @@ class AdminController extends Controller
            // return redirect()->back()->with('merge-error', 'Opps! something went wrong'); 
         }
     }
+
+    public function markInvoicePaid(Request $request, $invoice_ref){
+        $vendor = $request->vendor_id;
+        // $payment_status = DB::table('orders')
+        //   ->where('orders.vendor_id', $vendor)
+        //  ->where('orders.invoice_ref', $invoice_ref)
+        //  ->where('orders.payment_status', '!=', null)
+        //  ->pluck('payment_status')->first();
+
+        $paid =  DB::table('orders')
+            ->where('orders.vendor_id', $vendor)
+            ->where('orders.invoice_ref', $invoice_ref)
+            ->where('orders.payment_status', '!=', null)
+            ->update([
+            'payment_status' => 'paid'
+            ]);
+
+        if($paid){
+            $data = [
+                'status' => true,
+                'message'=> 'Invoice Number' .$invoice_ref.' paid successfully'
+            ];
+            return response()->json($data);
+        }
+        else{
+            $data = [
+                'status' => false,
+                'message'=> 'Opps! something went wrong'
+            ];
+            return response()->json($data);
+        }
+    }
   
 }//class

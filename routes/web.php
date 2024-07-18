@@ -136,6 +136,7 @@ Route::controller(AdminController::class)->group(function () {
     Route::get('all-orders',  'allOrders')->name('all-orders');
     //delete all merge Invoice with same ref.
     Route::post('delete-invoice/{id}',  'deleteInvoice')->name('delete-invoice');
+    Route::post('mark-invoice-paid/{id}',  'markInvoicePaid')->name('mark-invoice-paid');
    
 });
 
