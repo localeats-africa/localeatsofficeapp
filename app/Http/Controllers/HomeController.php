@@ -1715,7 +1715,9 @@ class HomeController extends Controller
             ->update([
             'number_of_order_merge' => $numberOfRow
             ]);
-            Orders::where('id', $storeOrder->id)
+            Orders::where('number_of_order_merge', $countRow)
+            ->where('vendor_id', $vendor)
+            ->where('invoice_ref', $invoice_ref)
             ->update([
             'number_of_order_merge' => $numberOfRow,
             'payment_status' => 'unpaid',
