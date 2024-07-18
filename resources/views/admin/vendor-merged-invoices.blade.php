@@ -124,6 +124,8 @@
                                                                               href="computed-invoice/{{$data->id}}/{{$data->number_of_order_merge}}/{{$data->invoice_ref}}">View
                                                                         </a>
                                                                         <br>
+                                                                        @if($data->payment_status == 'paid')
+                                                                        @else 
                                                                         <div class="dropdown-item text-danger">
                                                                      
                                                                               <input type="hidden" id="vendor_id" value="{{$data->vendor_id}}">
@@ -131,6 +133,7 @@
                                                                               <button onclick="deleteInvoice()" class="text-danger"> Delete</button>
                                                                      
                                                                         </div>
+                                                                        @endif 
                                                                    
                                                                   </div>
                                                             </span>
