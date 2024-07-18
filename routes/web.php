@@ -134,6 +134,8 @@ Route::controller(AdminController::class)->group(function () {
     Route::get('all-staff',  'allUser')->name('all-staff');
     Route::post('vendor-platform-ref/{id}',  'updateVendorPlatformRef')->name('vendor-platform-ref');
     Route::get('all-orders',  'allOrders')->name('all-orders');
+    //delete all merge Invoice with same ref.
+    Route::post('delete-invoice/{id}',  'deleteOrder')->name('delete-invoice');
    
 });
 
