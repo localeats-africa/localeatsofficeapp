@@ -96,6 +96,7 @@
                                                 <tr>
                                                       <th>Import Date</th>
                                                       <th>Vendor</th>
+                                                      <th>Order Date</th>
                                                       <th>Invoice Ref.</th>
 
                                                       <th></th>
@@ -106,6 +107,7 @@
                                                 <tr>
                                                       <td>{{date('Y/m/d',  strtotime($data->created_at))}}</td>
                                                       <td class="text-sm">{{$data->vendor_name}} </td>
+                                                      <td>{{date('Y/m/d',  strtotime($data->delivery_date))}}</td>
                                                       <td>{{ $data->invoice_ref}}</td>
 
                                                       @auth
@@ -255,6 +257,7 @@ function deleteInvoice() {
                   console.log(data);
             }
       });
+      location.reload();
 
 }
 </script>
