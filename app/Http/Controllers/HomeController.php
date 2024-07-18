@@ -1133,7 +1133,7 @@ class HomeController extends Controller
         $search = $request->input('search');
 
         $orders = DB::table('orders')->distinct()
-       ->join('merge_invoices', 'merge_invoices.number_of_order_merge', '=', 'orders.number_of_order_merge')
+      // ->join('merge_invoices', 'merge_invoices.number_of_order_merge', '=', 'orders.number_of_order_merge')
         ->join('vendor', 'orders.vendor_id', '=', 'vendor.id')
         ->where('orders.deleted_at', null)
         ->where('orders.payment_status', 'unpaid')
@@ -1281,12 +1281,13 @@ class HomeController extends Controller
 
 
         $orders = DB::table('orders')->distinct()
-        ->join('merge_invoices', 'orders.number_of_order_merge', '=', 'merge_invoices.number_of_order_merge')
+        //->join('merge_invoices', 'orders.number_of_order_merge', '=', 'merge_invoices.number_of_order_merge')
         ->join('vendor', 'orders.vendor_id', '=', 'vendor.id')
+        ->where('orders.deleted_at', null)
+        ->where('orders.payment_status', '!=', null)
+        ->orderBy('orders.created_at', 'desc')
         ->select(['orders.*', 
         'vendor.vendor_name', 'vendor.id' ])
-        ->where('orders.deleted_at', null)
-        ->orderBy('orders.created_at', 'desc')
         ->where(function ($query) use ($search) {  // <<<
         $query->where('orders.created_at', 'LIKE', '%'.$search.'%')
                ->orWhere('vendor.vendor_name', 'LIKE', '%'.$search.'%')
@@ -1294,7 +1295,8 @@ class HomeController extends Controller
                ->orderBy('orders.created_at', 'desc');
         })->paginate($perPage, $columns = ['*'], $pageName = 'orders'
         )->appends(['per_page'   => $perPage]);
-    
+
+     
         $pagination = $orders->appends ( array ('search' => $search) );
             if (count ( $pagination ) > 0){
                 return view('admin.vendor-final-invoices',  compact(
