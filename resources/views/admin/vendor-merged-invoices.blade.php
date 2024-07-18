@@ -104,7 +104,7 @@
                                           <tbody>
                                                 @foreach($orders as $data)
                                                 <tr>
-                                                      <td>{{date('Y/m/d',  strtotime($data->created_at))}}</td>
+                                                      <td>{{date('d/m/Y',  strtotime($data->created_at))}}</td>
                                                       <td class="text-sm">{{$data->vendor_name}} </td>
                                                       <td>{{ $data->invoice_ref}}</td>
 
