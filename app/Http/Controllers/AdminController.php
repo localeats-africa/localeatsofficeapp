@@ -57,7 +57,6 @@ class AdminController extends Controller
         ->where('users.id', $id)
         ->pluck('role_name')->first();
 
-
         $sumAllOrders = Orders::where('deleted_at', null)
         ->where('orders.order_amount', '!=', null)
         ->where('orders.order_ref', '!=', null)
@@ -90,7 +89,8 @@ class AdminController extends Controller
         $payouts = Orders::all()
         ->sum('payout');
 
-        $commission = Commission::all()->sum('localeats_comm');
+        $commission = (int)$sumAllOrders - (int)$payouts ;
+        //Commission::all()->sum('localeats_comm');
 
 
         $countPlatforms = Platforms::all();
