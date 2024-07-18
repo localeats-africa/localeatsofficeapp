@@ -1105,10 +1105,20 @@ class HomeController extends Controller
              'payout'     => $amount,
          ]);
          if($updateOrder){
-             return redirect()->back()->with('invoice', 'Update successful');
+            $data = [
+                'status' => true,
+                'message'=> 'Record updated successfully'
+            ];
+            return response()->json($data);
+             //return redirect()->back()->with('invoice', 'Update successful');
          }
          else{
-             return redirect()->back()->with('merge-error', 'Opps! something went wrong');
+            $data = [
+                'status' => false,
+                'message'=> 'Opps! something happen'
+            ];
+            return response()->json($data);
+            //return redirect()->back()->with('merge-error', 'Opps! something went wrong');
           
          }
      }
