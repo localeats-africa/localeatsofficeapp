@@ -8,7 +8,7 @@
       <div class="content-wrapper">
             <div class="page-header">
                   <h3 class="page-title">
-                       Add New Row To >>> Invoice Number >>> {{$invoice_ref}}
+                        Add New Row To >>> Invoice Number >>> {{$invoice_ref}}
                   </h3>
             </div>
             <!--Alert here--->
@@ -90,7 +90,7 @@
             <div class="row">
                   <div class="col-12">
                         <h6 class="page-title">
-                         
+
                         </h6>
                   </div>
             </div>
@@ -100,13 +100,14 @@
                   @csrf
                   {{csrf_field()}}
                   <div class="row">
-                  <div class="col-md-12 grid-margin stretch-card">
+                        <div class="col-md-12 grid-margin stretch-card">
                               <div class="card">
                                     <div class="card-body">
-                                          <div class="form-label required">Order Item / description <i class="text-danger">*</i>
+                                          <div class="form-label required">Order Item / description <i
+                                                      class="text-danger">*</i>
                                           </div>
                                           <textarea name="item" id="" class="form-control"></textarea>
-                                  
+
 
                                           @error('platform')
                                           <div class="alert alert-danger alert-dismissible" role="alert">
@@ -142,7 +143,7 @@
                                           <div class="form-group">
 
                                                 <label>Order ID / Reference <i class="text-danger">*</i></label>
-                                              <input type="text" name="order_reference" class="form-control">
+                                                <input type="text" name="order_reference" class="form-control">
 
                                           </div>
                                           @error('vendor')
@@ -245,7 +246,15 @@
                                     <div class="card-body">
                                           <div class="form-label ">Platform <i class="text-danger">*</i>
                                           </div>
-                                          <input type="text" class="form-control" name="delivery_date">
+                                          <select class="js-example-basic-single" 
+                                                style="width:100%" name="platform">
+                                                @foreach($platform
+                                                as $data)
+                                                <option value="{{$data->id}}">
+                                                      {{$data->name}}
+                                                </option>
+                                                @endforeach
+                                          </select>
                                           @error('reference')
                                           <div class="alert alert-danger alert-dismissible" role="alert">
                                                 <div class="d-flex">
