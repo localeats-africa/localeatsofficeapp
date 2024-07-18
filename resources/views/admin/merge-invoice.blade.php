@@ -228,7 +228,7 @@
                                                                         <td>
                                                                               <p><small>{{$data->order_ref}}</small></p>
                                                                               <p><small>{{$data->name}}</small></p>
-                                                                              <p><small>{{ date('m/d/Y', strtotime($data->delivery_date))}}</small>
+                                                                              <p><small>{{ date('d/m/Y', strtotime($data->delivery_date))}}</small>
                                                                               </p>
                                                                         </td>
                                                                         <td class="table-info">
