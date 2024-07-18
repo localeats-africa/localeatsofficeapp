@@ -1312,10 +1312,23 @@ class HomeController extends Controller
         //  $order = Orders::find($id);
         //  $order->delete();
         if($order){
-            return redirect()->back()->with('invoice', 'Record Deleted');
+            $data = [
+                'status'=> true,
+                'message'=> 'Record Deleted'
+            ] ;
+              
+            return response()->json($data);
+            //return redirect()->back()->with('invoice', 'Record Deleted');
         }
         else{
-            return redirect()->back()->with('merge-error', 'Opps! something went wrong'); 
+             
+            $data = [
+                'status'=> false,
+                'message'=> 'Opps! somthing happend'
+            ] ;
+              
+            return response()->json($data);
+            //return redirect()->back()->with('merge-error', 'Opps! something went wrong'); 
         }
     }
 

@@ -211,21 +211,16 @@
                                                                               @if($invoicePaymentStatus == 'paid')
                                                                               @else
 
-                                                                              <form action="{{ route('delete-order', [$data->id]) }}"
-                                                                                    method="post" name="submit"
-                                                                                    enctype="multipart/form-data">
-                                                                                    @csrf
-
                                                                                     <div class="input-group">
-                                                                                          <input type="hidden"
+                                                                                          <input type="hidden" id="order_id"
                                                                                                 value="{{$data->id}}">
-                                                                                          <button type="submit"
+                                                                                          <button onclick="deleteOrderRow()"
                                                                                                 class="text-danger"><i
                                                                                                       class="fa fa-trash"></i></button>
                                                                                     </div>
-                                                                              </form>
+                                                                             
                                                                               @endif
-
+                                                                             <p id="delete_order"></p> 
                                                                         </td>
 
                                                                         <td>
@@ -492,11 +487,40 @@
 <script src="{{ asset('assets/js/select2.js')}}"></script>
 
 <script>
-function mydelete() {
-      alert("Sure you want to delete?");
+function deleteOrderRow() {
+      document.getElementById('delete_order').style.display = 'none';
+      var id = document.getElementById('order_id').value;
+      var showRoute = "{{ route('delete-order', ':id') }}";
+      url = showRoute.replace(':id', id);
+
+      //window.location = url;
+      $.ajaxSetup({
+            headers: {
+                  'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+            }
+      });
+      $.ajax({
+            method: 'POST',
+            enctype: 'multipart/form-data',
+            url: url,
+            data: {
+                  //you can more data here
+                  'order': id
+            },
+            success: function(data) {
+                  console.log(data.message);
+                  document.getElementById('delete_order').style.display = '';
+                  document.getElementById('delete_order').style.color = 'green';
+                  document.getElementById('delete_order').innerHTML = data.message;
+            },
+            error: function(data) {
+                  console.log(data);
+            }
+      });
+      location.reload();
+
 }
 </script>
-
 
 <script type="text/javascript">
 function updatePayout() {
@@ -535,5 +559,7 @@ function updatePayout() {
 
 }
 </script>
+
+
 
 @endsection
