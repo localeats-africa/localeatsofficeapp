@@ -211,16 +211,16 @@
                                                                               @if($invoicePaymentStatus == 'paid')
                                                                               @else
 
-                                                                                    <div class="input-group">
-                                                                                          <input type="hidden" id="order_id"
-                                                                                                value="{{$data->id}}">
-                                                                                          <button onclick="deleteOrderRow()"
-                                                                                                class="text-danger"><i
-                                                                                                      class="fa fa-trash"></i></button>
-                                                                                    </div>
-                                                                             
+                                                                              <div class="input-group">
+                                                                                    <input type="hidden" id="order_id"
+                                                                                          value="{{$data->id}}">
+                                                                                    <button onclick="deleteOrderRow()"
+                                                                                          class="text-danger"><i
+                                                                                                class="fa fa-trash"></i></button>
+                                                                              </div>
+
                                                                               @endif
-                                                                             <p id="delete_order"></p> 
+                                                                              <p id="delete_order"></p>
                                                                         </td>
 
                                                                         <td>
@@ -385,8 +385,20 @@
 
                                                                   @endforeach
                                                                   <tr>
-
-                                                                        <th colspan="2" class="text-end">
+                                                                        <th>
+                                                                              <form method="get"
+                                                                                    action="{{ route('add-invoice-row',  [$invoiceRef]) }}"
+                                                                                    name="submit"
+                                                                                    enctype="multipart/form-data">
+                                                                                    @csrf
+                                                                                    {{csrf_field()}}
+                                                                                    <button type="submit"
+                                                                                          class="btn btn-block btn-success text-dark"><i
+                                                                                                class="fa  fa-plus"></i>
+                                                                                          Add New Row </button>
+                                                                              </form>
+                                                                        </th>
+                                                                        <th class="text-end">
                                                                               <h6>Total (₦)</h6>
                                                                         </th>
 
@@ -426,26 +438,27 @@
                                                                               @if($invoicePaymentStatus == 'paid')
                                                                               {{number_format($payout, 2)}}
                                                                               @else
-                                                                             
-                                                                                    <input type="hidden"  id="order"
-                                                                                          value="{{$data->id}}">
 
-                                                                                    <input type="hidden" id="vendor"
-                                                                                          value="{{$data->vendor_id}}">
+                                                                              <input type="hidden" id="order"
+                                                                                    value="{{$data->id}}">
 
-                                                                                    <div class="input-group">
-                                                                                          <input type="text" id="amount_payout"
-                                                                                                class="form-control bg-secondary fw-bold"
-                                                                                                value="{{$payout}}">
-                                                                                          <button onclick="updatePayout()"
-                                                                                                class="btn text-success"><i
-                                                                                                      class="fa fa-check"></i></button>
-                                                                                    </div>
-                                                                            
+                                                                              <input type="hidden" id="vendor"
+                                                                                    value="{{$data->vendor_id}}">
+
+                                                                              <div class="input-group">
+                                                                                    <input type="text"
+                                                                                          id="amount_payout"
+                                                                                          class="form-control bg-secondary fw-bold"
+                                                                                          value="{{$payout}}">
+                                                                                    <button onclick="updatePayout()"
+                                                                                          class="btn text-success"><i
+                                                                                                class="fa fa-check"></i></button>
+                                                                              </div>
+
                                                                               @endif
-                                                                             
+
                                                                         </th>
-                                                                     
+
                                                                         <th> <span id="response"></span></th>
                                                                   </tr>
                                                             </tbody>
