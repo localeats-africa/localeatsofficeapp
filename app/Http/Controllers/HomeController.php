@@ -1643,13 +1643,14 @@ class HomeController extends Controller
 
     }
 
-    public function addInvoiceRow(Request $request, $invoice_ref, $vendor){
+    public function addInvoiceRow(Request $request, $invoice_ref){
         $name = Auth::user()->name;
         $user_id = Auth::user()->id;
         $role = DB::table('role')->select('role_name')
         ->join('users', 'users.role_id', 'role.id')
         ->where('users.id', $user_id)
         ->pluck('role_name')->first();
+        $vendor = $request->vendor;
 
         return view('vendormanager.add-invoice-row', compact('role','invoice_ref', 'vendor'));
 
