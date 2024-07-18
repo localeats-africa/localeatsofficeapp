@@ -1727,7 +1727,10 @@ class HomeController extends Controller
             'payment_status' => 'unpaid',
             ]);
 
-            return redirect();
+            return redirect('computed-invoice/'.$vendor.'/'.$numberOfRow.'/'.$invoice_ref)->with('invoice', 'New Row Added'); 
+        }
+        else{
+            return redirect()->back()->with('merge-error', 'Something went wrong');
         }
 
 
