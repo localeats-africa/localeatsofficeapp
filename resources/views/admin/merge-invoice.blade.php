@@ -208,6 +208,8 @@
                                                                   <tr>
                                                                         <td class="align-items-center">
                                                                               <small>{{$loop->iteration}} </small>
+                                                                              @if($data->payment_status == 'paid')
+                                                                              @else 
 
                                                                               <form action="{{ route('delete-order', [$data->id]) }}"
                                                                                     method="post" name="submit"
@@ -222,6 +224,7 @@
                                                                                                       class="fa fa-trash"></i></button>
                                                                                     </div>
                                                                               </form>
+                                                                              @endif 
 
                                                                         </td>
 
