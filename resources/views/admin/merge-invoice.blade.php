@@ -392,7 +392,7 @@
                                                                                     enctype="multipart/form-data">
                                                                                     @csrf
                                                                                     {{csrf_field()}}
-                                                                                    <input type="hidden" name="vendor" value="{{ v$endorID }}">
+                                                                                    <input type="hidden" name="vendor" value="{{ $vendorID }}">
                                                                                     <button type="submit"
                                                                                           class="btn btn-block btn-success text-dark"><i
                                                                                                 class="fa  fa-plus"></i>
