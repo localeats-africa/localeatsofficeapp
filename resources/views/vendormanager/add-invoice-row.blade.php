@@ -8,7 +8,7 @@
       <div class="content-wrapper">
             <div class="page-header">
                   <h3 class="page-title">
-                       Add New Row To >>> {{$invoice_ref}}
+                       Add New Row To >>> Invoice Number >>> {{$invoice_ref}}
                   </h3>
             </div>
             <!--Alert here--->
@@ -90,7 +90,7 @@
             <div class="row">
                   <div class="col-12">
                         <h6 class="page-title">
-                              Manual Setup:
+                         
                         </h6>
                   </div>
             </div>
@@ -100,12 +100,13 @@
                   @csrf
                   {{csrf_field()}}
                   <div class="row">
-                        <div class="col-md-6 grid-margin stretch-card">
+                  <div class="col-md-12 grid-margin stretch-card">
                               <div class="card">
                                     <div class="card-body">
-                                          <div class="form-label required">Order Item <i class="text-danger">*</i>
+                                          <div class="form-label required">Order Item / description <i class="text-danger">*</i>
                                           </div>
-                                       <input type="text" name="item" class="form-control">
+                                          <textarea name="item" id="" class="form-control"></textarea>
+                                  
 
                                           @error('platform')
                                           <div class="alert alert-danger alert-dismissible" role="alert">
@@ -133,8 +134,9 @@
                                     </div>
                               </div>
                         </div>
-
-                        <div class="col-md-3 grid-margin stretch-card">
+                  </div>
+                  <div class="row">
+                        <div class="col-md-4 grid-margin stretch-card">
                               <div class="card">
                                     <div class="card-body">
                                           <div class="form-group">
@@ -171,7 +173,7 @@
                         </div>
 
 
-                        <div class="col-md-3 grid-margin stretch-card">
+                        <div class="col-md-4 grid-margin stretch-card">
                               <div class="card">
                                     <div class="card-body">
                                           <div class="form-label ">Amount <i class="text-danger">*</i>
@@ -205,7 +207,7 @@
                         </div>
 
 
-                        <div class="col-md-3 grid-margin stretch-card">
+                        <div class="col-md-4 grid-margin stretch-card">
                               <div class="card">
                                     <div class="card-body">
                                           <div class="form-label ">Delivery Date <i class="text-danger">*</i>
