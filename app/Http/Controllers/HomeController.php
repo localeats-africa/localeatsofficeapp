@@ -1664,16 +1664,53 @@ class HomeController extends Controller
             'platform'              => 'required|string|max:255',
           ]);
 
+          $platformName = Platforms::where('id', $request->platform)
+          ->get()->pluck('name')->first();
+
           $storeOrder = new Orders();
           $storeOrder->invoice_ref     = $invoice_ref; 
           $storeOrder->added_by        = $user_id;
           $storeOrder->platform_id     = $request->platform;
-          $storeOrder->vendor_id       = $request->vendor;
+          $storeOrder->vendor_id       = $vendor;
           $storeOrder->order_ref       = $request->order_reference;
           $storeOrder->order_amount    = $request->order_amount;
           $storeOrder->description     = $request->item;
           $storeOrder->delivery_date   = $request->delivery_date;
           $storeOrder->save();
+
+          $commission = new Commission();
+          $commission->order_id               = $storeOrder->id;
+          $commission->vendor_id              = $vendor;
+          $commission->platform_id            = $request->platform;
+          $commission->platform_name          = $platformNam;
+          $commission->save();
+
+          $insert = new MergeInvoice();
+          $insert->vendor_id = $vendor;
+          $insert->order_id =  $storeOrder->id;
+          $insert->save();
+
+        if($insert){
+            $countRow =Orders::where('invoice_ref', $invoice_ref)
+            ->count();
+            $numberOfRow = $countRow + 1;
+            //count the number of order taht was merge to create invoice
+            MergeInvoice::where('order_id', $insert->id)
+            ->update([
+            'number_of_order_merge' => $numberOfRow
+            ]);
+            Orders::where('id', $storeOrder->id)
+            ->update([
+            'number_of_order_merge' => $numberOfRow,
+            'payment_status' => 'unpaid',
+            ]);
+
+            Orders::where('invoice_ref', $invoice_ref)
+            ->update([
+            'number_of_order_merge' => $numberOfRow,
+            'payment_status' => 'unpaid',
+            ]);
+        }
 
         return view('vendormanager.add-invoice-row', compact('role','invoice_ref',
          'vendor', 'platform', 'vendorName'));
