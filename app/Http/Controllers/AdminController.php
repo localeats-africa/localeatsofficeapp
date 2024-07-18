@@ -608,23 +608,10 @@ class AdminController extends Controller
         $today = Carbon::now();
         $vendor_id = $request->vendor_id;
 
-        // $order=  Orders::findOrFail($id);
-        // $order->deleted_at  = $today ;
-        // $order->update();
-
-        // $order = Orders::where('invoice_ref', $id)
-        // ->update([
-        //     'deleted_at' => $today,
-        // ]);
-
         $order = DB::table('orders')
         ->where('invoice_ref', '=', $id)
+        ->where('vendor_id', '=', $vendor_id)
         ->update(array('deleted_at' => $today));
-
-        // $order = Orders::where('id',$id)
-        // ->update([
-        //     'deleted_at' =>  'deleted'
-        // ]);
 
         if($order){
             $data = [
