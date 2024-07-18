@@ -1656,6 +1656,19 @@ class HomeController extends Controller
         $vendorName = Vendor::where('id', $vendor)
         ->get()->pluck('vendor_name')->first();
 
+        return view('vendormanager.add-invoice-row', compact('role','invoice_ref',
+         'vendor', 'platform', 'vendorName'));
+
+    }
+
+    public function storeAddNewInvoiceRow(Request $request){
+        $name = Auth::user()->name;
+        $user_id = Auth::user()->id;
+        $role = DB::table('role')->select('role_name')
+        ->join('users', 'users.role_id', 'role.id')
+        ->where('users.id', $user_id)
+        ->pluck('role_name')->first();
+        
         $request->validate([
             'item'                  => 'required',
             'order_reference'       => 'required|string|max:255',
@@ -1663,6 +1676,9 @@ class HomeController extends Controller
             'delivery_date'         => 'required|string|max:255',
             'platform'              => 'required|string|max:255',
           ]);
+
+          $invoice_ref = $request->invoice_ref;
+          $vendor = $request->vendor;
 
           $platformName = Platforms::where('id', $request->platform)
           ->get()->pluck('name')->first();
@@ -1710,10 +1726,10 @@ class HomeController extends Controller
             'number_of_order_merge' => $numberOfRow,
             'payment_status' => 'unpaid',
             ]);
+
+            return redirect();
         }
 
-        return view('vendormanager.add-invoice-row', compact('role','invoice_ref',
-         'vendor', 'platform', 'vendorName'));
 
     }
 }//class
