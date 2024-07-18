@@ -1701,27 +1701,27 @@ class HomeController extends Controller
           $commission->platform_name          = $platformName;
           $commission->save();
 
-          $insert = new MergeInvoice();
-          $insert->vendor_id = $vendor;
-          $insert->order_id =  $storeOrder->id;
-          $insert->save();
+        
 
-        if($insert){
+        if($commission){
+              //count the number of order taht was merge to create invoice
             $countRow =Orders::where('invoice_ref', $invoice_ref)
             ->count();
-            $numberOfRow = $countRow + 1;
-            //count the number of order taht was merge to create invoice
-            MergeInvoice::where('order_id', $insert->id)
-            ->update([
-            'number_of_order_merge' => $numberOfRow
-            ]);
-            Orders::where('number_of_order_merge', $countRow)
-            ->where('vendor_id', $vendor)
+
+            $numberOfRow = $countRow - 1;
+
+            Orders::where('number_of_order_merge', $numberOfRow)
             ->where('invoice_ref', $invoice_ref)
             ->update([
-            'number_of_order_merge' => $numberOfRow,
+            'number_of_order_merge' => $countRow,
             'payment_status' => 'unpaid',
             ]);
+
+            $insert = new MergeInvoice();
+            $insert->vendor_id              = $vendor;
+            $insert->order_id               =  $storeOrder->id;
+            $insert->number_of_order_merge  = $countRow;
+            $insert->save();
 
        
 
