@@ -96,8 +96,30 @@
                                           <h3 class="card-title"> </h3>
                                     </div>
                                     <div class="card-body py-3">
+
+                                    <div class="row">
+                                                <p><h5>Store:</h5></p>
+                                                <div class="col-md-6">
+                                                      <div class="form-group">
+                                                            <h6>Name </h6>
+                                                            <input type="text" value="{{$vendor->vendor_name}}" name="vendor_name"
+                                                                  class="form-control">
+                                                      </div>
+                                                </div>
+
+                                                <div class="col-md-6">
+                                                      <div class="form-group">
+                                                            <h6>Store Area: <small class="text-danger">(this is not address. <b class="text-dark">Example Ikeja or Ojota</b>)</small> </h6>
+                                                            <input type="text" value="{{$vendor->area}}"
+                                                                  name="store_area" class="form-control">
+                                                      </div>
+                                                </div>
+
+                                             
+                                          </div>
+                                          <!--- row-->
                                           <div class="row">
-                                                <p>Contact Person:</p>
+                                                <p><h5>Contact Person:</h5></p>
                                                 <div class="col-md-3">
                                                       <div class="form-group">
                                                             <h6>First Name </h6>
