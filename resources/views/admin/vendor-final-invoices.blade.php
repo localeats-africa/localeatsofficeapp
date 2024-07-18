@@ -94,10 +94,7 @@
                                           id="orders">
                                           <thead>
                                                 <tr>
-                                                      <th class="w-1"><input class="form-check-input m-0 align-middle"
-                                                                  type="checkbox" aria-label="Select all product">
-                                                      </th>
-                                                      <th>Date Created</th>
+                                                      <th> Import  Date </th>
                                                       <th>Vendor</th>
                                                       <th>Invoice  Ref.</th>
                                                       <th></th>
@@ -106,9 +103,8 @@
                                           <tbody>
                                                 @foreach($orders as $data)
                                                 <tr>
-                                                      <td><input class="form-check-input m-0 align-middle"
-                                                                  type="checkbox" aria-label="Select"></td>
-                                                      <td>{{ date('Y/m/d', strtotime($data->created_at))}}</td>
+                                             
+                                                      <td>{{ date('d/m/Y', strtotime($data->created_at))}}</td>
                                                   
                                                       <td class="text-sm">{{$data->vendor_name}} </td>
                                                       <td>{{ $data->invoice_ref}}</td>
