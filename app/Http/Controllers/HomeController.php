@@ -921,6 +921,12 @@ class HomeController extends Controller
             ->select('orders.invoice_ref')
             ->pluck('invoice_ref')->first();
 
+            $invoicePaymentStatus =  DB::table('orders')
+            ->where('orders.vendor_id', $vendor)
+            ->where('orders.invoice_ref', $invoice_ref)
+            ->select('orders.payment_status')
+            ->pluck('payment_status')->first();
+
             $orders = DB::table('orders')
             ->Join('platforms', 'orders.platform_id', '=', 'platforms.id')
             ->Join('commission', 'orders.id', '=', 'commission.order_id')
@@ -938,7 +944,7 @@ class HomeController extends Controller
         'vendorAddress','vendorState', 'vendorCountry', 'vendorPhone',
          'vendorEmail', 'vendorFname', 'vendorLname', 'orders',
          'totalComm', 'totalPlatformComm', 'sumAmount', 'sumFoodPrice', 'sumExtra',
-        'vendorFoodPrice', 'payout', 'invoiceRef', 'vendorID') );
+        'vendorFoodPrice', 'payout', 'invoiceRef', 'vendorID', 'invoicePaymentStatus') );
     }
 
     public function updateMergeInvoiceFood(Request $request){
