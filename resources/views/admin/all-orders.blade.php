@@ -218,7 +218,7 @@
                                                       <td>{{$data->invoice_ref}}</td>
                                                       <td class="text-capitalize">{{$data->vendor_name}}</td>
                                                       <td class="text-capitalize">{{$data->name}}</td>
-                                                      <td width="50%" style="white-space:wrap">   {!! nl2br($data->description) !!}</td>
+                                                      <td width="50%" style="white-space:wrap; line-height:1.6">   {!! nl2br($data->description) !!}</td>
                                                       <td>{{$data->order_amount}}</td>
                                                       <td>{{$data->food_price}}</td>
                                                       <td>{{$data->extra}}</td>
