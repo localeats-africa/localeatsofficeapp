@@ -97,6 +97,7 @@
                                                       <th> Import  Date </th>
                                                       <th>Vendor</th>
                                                       <th>Invoice  Ref.</th>
+                                                      <th>Payment  Status</th>
                                                       <th></th>
                                                 </tr>
                                           </thead>
@@ -108,6 +109,16 @@
                                                   
                                                       <td class="text-sm">{{$data->vendor_name}} </td>
                                                       <td>{{ $data->invoice_ref}}</td>
+                                                      <td>
+                                                            @if( $data->payment_status  =='unpaid')
+                                                            <span class="badge badge-round bg-warning  text-dark text-capitalize"> {{ $data->payment_status}}</span>
+                                                            @endif 
+
+                                                            @if( $data->payment_status  =='paid')
+                                                           <span class="badge badge-round bg-success  text-dark text-capitalize"> {{ $data->payment_status}}</span>
+                                                            @endif 
+
+                                                      </td>
 
                                                       <td class="">
                                                             <a href="invoice/{{$data->invoice_ref}}/{{$data->id}}"
