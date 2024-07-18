@@ -1651,8 +1651,10 @@ class HomeController extends Controller
         ->where('users.id', $user_id)
         ->pluck('role_name')->first();
         $vendor = $request->vendor;
+        $platform = Platforms::all();
 
-        return view('vendormanager.add-invoice-row', compact('role','invoice_ref', 'vendor'));
+        return view('vendormanager.add-invoice-row', compact('role','invoice_ref',
+         'vendor', 'platform'));
 
     }
 }//class
