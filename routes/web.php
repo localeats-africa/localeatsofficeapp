@@ -9,6 +9,7 @@ use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\Auth\LogoutController;
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\VendorManagerController;
+use App\Http\Controllers\CashierController;
 use App\Http\Controllers\TwitterController;
 
 
@@ -154,8 +155,7 @@ Route::controller(AuditorController::class)->group(function () {
 
 Route::controller(VendorManagerController::class)->group(function () {
     Route::get('vendormanager',  'index')->name('vendor_manager');
-
 });
-// Route::get('create-invoice', function () {
-//     return view('upload-order');
-// });
+Route::controller(CashierController::class)->group(function () {
+    Route::get('cashier',  'index')->name('cashier');
+});
