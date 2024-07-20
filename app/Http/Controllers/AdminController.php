@@ -507,11 +507,12 @@ class AdminController extends Controller
         $search = $request->input('search');    
         $user=  DB::table('users')
         ->join('role', 'role.id', '=', 'users.role_id')
+        ->join('vendor', 'vendor.id', '=', 'user.vendor')
         ->where('users.deleted_at', null)
         ->where('users.email_verified_at', '!=', null)
         ->where('users.role_id', '!=', '1')
         ->where('users.role_id', '!=', '2')//except self
-        ->select(['users.*', 'role.role_name' ])
+        ->select(['users.*', 'role.role_name', 'vendor.vendor_name' ])
         ->orderBy('created_at', 'desc')
         ->where(function ($query) use ($search) {  // <<<
         $query->where('users.fullname', 'LIKE', '%'.$search.'%')
