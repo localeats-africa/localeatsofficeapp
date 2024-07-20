@@ -705,6 +705,9 @@ class AdminController extends Controller
         if($updateUser){
             return redirect('all-staff')->with('staff-assign', $userName. 'successfully assigned to ' .$vendor );
         }
+        else{
+            return redirect('all-staff')->with('staff-status', 'Opps! something went wrong' ); 
+        }
 
     }
 }//class
