@@ -189,26 +189,15 @@
 
                         </a>
                   </li>
+
                   <li class="nav-item">
-                        <a class="nav-link" data-bs-toggle="collapse" href="#user" aria-expanded="false"
-                              aria-controls="user">
+                        <a class="nav-link" href="{{ url('all-staff')}}" target="">
                               <span class="menu-title">Staff (s)</span>
-                              <i class="menu-arrow"></i>
-                              <i class="mdi mdi-account-multiple menu-icon fs-24"></i>
+                              <i class="mdi mdi-account-multiple fs-24 menu-icon"></i>
+
                         </a>
-                        <div class="collapse" id="user">
-                              <ul class="nav flex-column sub-menu">
-                                    <li class="nav-item">
-                                          <a class="nav-link" href="{{ url('new-staff')}}">Add New</a>
-                                    </li>
-                                    <li class="nav-item">
-                                          <a class="nav-link" href="{{ url('all-staff')}}">All Staff (s)</a>
-                                    </li>
-
-                              </ul>
-                        </div>
                   </li>
-
+                  
 
                   <li class="nav-item">
                         <a class="nav-link" href="" target="">
