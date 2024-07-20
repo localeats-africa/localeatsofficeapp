@@ -687,6 +687,24 @@ class AdminController extends Controller
     }
 
     public function storeAsignVendor(Request $request){
-        
+        $this->validate($request, [ 
+            'vendor'  => 'required|max:255'      
+        ]);
+
+        $userName = User::where('id', $request->user)
+        ->get('*')->pluck('fullname')->first();
+
+        $vendor = Vendor::where('id', $request->vendor)
+        ->get('*')->pluck('vendor_name')->first();
+
+        $updateUser = User::where('id', $request->user)
+        ->update([
+            'vendor'    => $request->vendor
+        ]);
+
+        if($updateUser){
+            return redirect('all-staff')->with('staff-assign', $userName. 'successfully assigned to ' .$vendor );
+        }
+
     }
 }//class
