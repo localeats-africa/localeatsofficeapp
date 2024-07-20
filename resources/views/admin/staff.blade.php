@@ -176,7 +176,7 @@
                                           </div>
                                           <select class="js-example-basic-single text-secondary " style="width:100%"
                                                 name="role" id="role">
-                                                <option> Search
+                                                <option value=""> Search
                                                 </option>
                                                 @foreach($userRole as $data)
                                                 <option value="{{$data->id}}">
