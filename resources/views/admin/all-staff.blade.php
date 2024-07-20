@@ -18,8 +18,8 @@
                               <div class="col-md-4 stretch-card grid-margin">
                                     <div class="card bg-gradient-danger card-img-holder text-white">
                                           <div class="card-body">
-                                                <img src="{{ asset('assets/images/dashboard/circle.svg')}}" class="card-img-absolute"
-                                                      alt="circle-image">
+                                                <img src="{{ asset('assets/images/dashboard/circle.svg')}}"
+                                                      class="card-img-absolute" alt="circle-image">
                                                 <h4 class="font-weight-normal">Staff (s) <i
                                                             class="mdi mdi-account-multiple  mdi-24px float-end"></i>
                                                 </h4>
@@ -123,6 +123,9 @@
                                           <span class="badge bg-warning">{{$data->email}}</span>
                                           @elseif($data->role_id =='6')
                                           <span class="badge bg-danger">{{$data->email}}</span>
+                                        
+                                          @elseif($data->role_id =='7')
+                                          <span class="badge bg-success">{{$data->email}}</span>
                                           @else
                                           <span class="badge bg-secondary">{{$data->email}}</span>
                                           @endif
@@ -140,7 +143,6 @@
                                                       d="M3 7a2 2 0 0 1 2 -2h14a2 2 0 0 1 2 2v10a2 2 0 0 1 -2 2h-14a2 2 0 0 1 -2 -2v-10z" />
                                                 <path d="M3 7l9 6l9 -6" />
                                           </svg>
-                                          Email
                                     </a>
                                     <a href="tel:{{ $data->phone}}" class="card-btn">
                                           <!-- Download SVG icon from http://tabler-icons.io/i/phone -->
@@ -152,8 +154,12 @@
                                                 <path
                                                       d="M5 4h4l2 5l-2.5 1.5a11 11 0 0 0 5 5l1.5 -2.5l5 2v4a2 2 0 0 1 -2 2a16 16 0 0 1 -15 -15a2 2 0 0 1 2 -2" />
                                           </svg>
-                                          Call
                                     </a>
+                                    @if($data->role_id =='7')
+                                    <a href="" class="card-btn" title="Assign To A Vendor">
+                                    <i class="mdi mdi-pot-steam icon me-2  text-muted"></i> 
+                                    </a>
+                                    @endif 
                               </div>
 
 
