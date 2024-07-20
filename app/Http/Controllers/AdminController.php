@@ -664,7 +664,20 @@ class AdminController extends Controller
     }
   
 
-    public function assignVendorToUser(Request $request){
-        
+    public function assignVendorToUser(Request $request, $uid){
+        $name = Auth::user()->name;
+        $id = Auth::user()->id;
+        $role = DB::table('role')->select('role_name')
+        ->join('users', 'users.role_id', 'role.id')
+        ->where('users.id', $id)
+        ->pluck('role_name')->first();
+
+       $user = User::where('id', $uid)
+       ->get('*')->pluck('fullname')->first();
+       $vendor = Vendor::all();
+
+       return view('admin.assign-vendor-to-user', compact('role', 'user',
+        'uid', 'vendor'));
+
     }
 }//class
