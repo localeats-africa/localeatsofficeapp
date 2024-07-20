@@ -86,12 +86,12 @@
                                     <div class="card-body">
                                           <div class="form-label ">Vendor <i class="text-danger">*</i>
                                           </div>
-                                          <select class="js-example-basic-single" style="width:100%" name="vendor">
-                                                <option value="">Choose</option>
-                                                @foreach($vendor
-                                                as $data)
+                                          
+                                          <select class="js-example-basic-single text-secondary" style="width:100%" name="vendor" id="vendor">
+                                                <option>Choose</option>
+                                                @foreach($vendor as $data)
                                                 <option value="{{$data->id}}">
-                                                      {{$data->name}}
+                                                      {{$data->vendor_name}}
                                                 </option>
                                                 @endforeach
                                           </select>
@@ -162,7 +162,6 @@
       </footer>
 </div>
 <!-- main-panel -->
-
 <script src="{{ asset('assets/vendors/select2/select2.min.js')}}"></script>
 <script src="{{ asset('assets/vendors/typeahead.js/typeahead.bundle.min.js')}}"></script>
 
