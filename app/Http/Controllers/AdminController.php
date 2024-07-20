@@ -507,7 +507,7 @@ class AdminController extends Controller
         $search = $request->input('search');    
         $user=  DB::table('users')
         ->join('role', 'role.id', '=', 'users.role_id')
-        ->join('vendor', 'vendor.id', '=', 'user.vendor')
+        ->join('vendor', 'vendor.id', '=', 'users.vendor')
         ->where('users.deleted_at', null)
         ->where('users.email_verified_at', '!=', null)
         ->where('users.role_id', '!=', '1')
