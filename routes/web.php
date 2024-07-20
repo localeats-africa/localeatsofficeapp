@@ -138,8 +138,9 @@ Route::controller(AdminController::class)->group(function () {
     //delete all merge Invoice with same ref.
     Route::post('delete-invoice/{id}',  'deleteInvoice')->name('delete-invoice');
     Route::post('mark-invoice-paid/{id}',  'markInvoicePaid')->name('mark-invoice-paid');
-   Route::get('assign-vendor/{id}', 'assignVendorToUser')->name('assign-vendor');
-   Route::post('assign-user-vendor', 'storeAsignVendor')->name('assign-user-vendor');
+    Route::get('assign-vendor/{id}', 'assignVendorToUser')->name('assign-vendor');
+    Route::post('assign-user-vendor', 'storeAsignVendor')->name('assign-user-vendor');
+    Route::get('expenses-list', 'expensesList')->name('expenses-list');
 });
 
 Route::controller(ManagerController::class)->group(function () {
