@@ -122,7 +122,7 @@
                               </div>
                         </div>
                         <div class="col-md-6 col-12 grid-margin stretch-card ">
-                              <input type="hidden" value="{{$uid}}">
+                              <input type="hidden" value="{{$uid}}" name="user">
                               <!-- send button here -->
                               <div class="card-footer bg-transparent mt-auto">
                                     <div class="btn-list ">
