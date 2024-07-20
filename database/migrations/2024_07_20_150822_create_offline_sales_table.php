@@ -16,6 +16,11 @@ return new class extends Migration
         Schema::create('offline_sales', function (Blueprint $table) {
             $table->id();
             $table->timestamps();
+            $table->string('deleted_at')->nullable();
+            $table->string('added_by')->nullable();
+            $table->string('vendor_id')->nullable();
+            $table->string('sales_item')->nullable();
+            $table->string('price')->nullable();
         });
     }
 
