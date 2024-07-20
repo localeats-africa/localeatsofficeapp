@@ -157,6 +157,11 @@
                                           <span class="badge bg-secondary">{{$data->email}}</span>
                                           @endif
                                     </div>
+                                    <div class="mt-3">
+                                    @if(!empty($data->vendor))
+                                          <small>Assigned To: <span>{{ $data->vendor_name}}</span> </small>
+                                          @endif 
+                                    </div>
                               </div>
                               <div class="d-flex">
                                     <a href="mailto:{{$data->email}}" class="card-btn">
