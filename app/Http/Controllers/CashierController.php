@@ -32,4 +32,7 @@ use DateTime;
 class CashierController extends Controller
 {
     //
+    public function __construct(){
+        $this->middleware(['auth', 'user-access:7', 'verified']);
+    }
 }
