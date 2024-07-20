@@ -49,7 +49,7 @@ class CashierController extends Controller
         ->pluck('role_name')->first();
 
       
-                return view('cashier.cashier-dashboard',  compact('name', 'role', 
+        return view('cashier.cashier-dashboard',  compact('name', 'role', 
          ));
        }
     }
