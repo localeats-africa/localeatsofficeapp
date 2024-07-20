@@ -183,9 +183,14 @@
                                           </svg>
                                     </a>
                                     @if($data->role_id =='7')
+
+                                    @if(empty($data->vendor))
                                     <a href="{{ url('assign-vendor', [$data->id]) }}" class="card-btn" title="Assign To A Vendor">
                                     <i class="mdi mdi-pot-steam icon me-2  text-muted"></i> 
                                     </a>
+                                    @else
+                                    @endif 
+                                  
                                     @endif 
                               </div>
 
