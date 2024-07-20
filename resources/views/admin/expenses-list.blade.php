@@ -12,29 +12,8 @@
                   </h3>
             </div>
             <p></p>
-            <div class="row ">
-                  <div class="col-12">
-                        <div class="row row-cards">
-                              <div class="col-md-4 stretch-card grid-margin">
-                                    <div class="card bg-gradient-danger card-img-holder text-white">
-                                          <div class="card-body">
-                                                <img src="{{ asset('assets/images/dashboard/circle.svg')}}" class="card-img-absolute"
-                                                      alt="circle-image">
-                                                <h4 class="font-weight-normal">Expenses Cost <i
-                                                            class="mdi mdi-cloud-braces mdi-24px float-end"></i>
-                                                </h4>
-                                                <h2 class="mb-5"></h2>
-                                                <hr class="w-100">
-                                                <h6 class="card-text"> </h6>
-                                          </div>
-                                    </div>
-                              </div>
-                        </div>
-                  </div>
-            </div>
-            <p></p>
-            <!--Alert here--->
-            <div class="row ">
+               <!--Alert here--->
+               <div class="row ">
                   <div class="col-12">
                         @if(session('add-platform'))
                         <div class="alert alert-important alert-success alert-dismissible" role="alert">
@@ -83,6 +62,32 @@
                   </div>
             </div>
             <!---end Alert --->
+            <div class="row ">
+                 
+            </div>
+
+                 
+            <div class="row ">
+                  <div class="col-12">
+                        <div class="row row-cards">
+                              <div class="col-md-4 stretch-card grid-margin">
+                                    <div class="card bg-gradient-danger card-img-holder text-white">
+                                          <div class="card-body">
+                                                <img src="{{ asset('assets/images/dashboard/circle.svg')}}" class="card-img-absolute"
+                                                      alt="circle-image">
+                                                <h4 class="font-weight-normal">Expenses Cost <i
+                                                            class="mdi mdi-cloud-braces mdi-24px float-end"></i>
+                                                </h4>
+                                                <h2 class="mb-5"></h2>
+                                                <hr class="w-100">
+                                                <h6 class="card-text"> </h6>
+                                          </div>
+                                    </div>
+                              </div>
+                        </div>
+                  </div>
+            </div>
+         
             <p></p>
             <div class="row ">
                  
