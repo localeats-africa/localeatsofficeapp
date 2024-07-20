@@ -159,6 +159,7 @@
 
                         </div>
                         <!--card  --->
+                        <br>
                   </div>
                   @endforeach
                   <p></p>
