@@ -201,8 +201,8 @@
 
                   <li class="nav-item">
                         <a class="nav-link" href="" target="">
-                              <!-- <span class="menu-title">Role / Level</span>
-                                    <i class="mdi mdi-account-key fs-24 menu-icon"></i> -->
+                              <span class="menu-title">Expenses</span>
+                                    <i class=" fa fa-money fs-24 menu-icon"></i>
 
                         </a>
                   </li>
