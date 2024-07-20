@@ -8,7 +8,8 @@
       <div class="content-wrapper">
             <div class="page-header">
                   <h3 class="page-title">
-                        Assign Vendor To  >>> <span class="text-info">{{$user}}</span>
+                        Assign Vendor To >>> <span class="text-info"> {{$role}}</span> >>> <span
+                              class="text-info">{{$user}}</span>
                   </h3>
             </div>
             <!--Alert here--->
@@ -31,27 +32,6 @@
                                           </svg>
                                     </div>
                                     <div> {!! session('setup-vendor') !!}</div>
-                              </div>
-                              <a class="btn-close" data-bs-dismiss="alert" aria-label="close"></a>
-                        </div>
-                        @endif
-
-                        @if(session('setup-error'))
-                        <div class="alert  alert-danger alert-dismissible" role="alert">
-                              <div class="d-flex">
-                                    <div>
-                                          <!-- Download SVG icon from http://tabler-icons.io/i/alert-triangle -->
-                                          <svg xmlns="http://www.w3.org/2000/svg" class="icon alert-icon" width="24"
-                                                height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"
-                                                fill="none" stroke-linecap="round" stroke-linejoin="round">
-                                                <path stroke="none" d="M0 0h24v24H0z" fill="none" />
-                                                <path
-                                                      d="M10.24 3.957l-8.422 14.06a1.989 1.989 0 0 0 1.7 2.983h16.845a1.989 1.989 0 0 0 1.7 -2.983l-8.423 -14.06a1.989 1.989 0 0 0 -3.4 0z" />
-                                                <path d="M12 9v4" />
-                                                <path d="M12 17h.01" />
-                                          </svg>
-                                    </div>
-                                    <div> {!! session('setup-error') !!}</div>
                               </div>
                               <a class="btn-close" data-bs-dismiss="alert" aria-label="close"></a>
                         </div>
@@ -96,166 +76,26 @@
             </div>
             <p></p>
 
-            <form method="post" action="{{ route('update-invoice-newrow') }}" name="submit" enctype="multipart/form-data">
+            <form method="post" action="{{ route('update-invoice-newrow') }}" name="submit"
+                  enctype="multipart/form-data">
                   @csrf
                   {{csrf_field()}}
                   <div class="row">
-                        <div class="col-md-12 grid-margin stretch-card">
-                              <div class="card">
-                                    <div class="card-body">
-                                          <div class="form-label required">Order Item / description <i
-                                                      class="text-danger">*</i>
-                                          </div>
-                                          <textarea name="item" id="" class="form-control"></textarea>
-
-
-                                          @error('item')
-                                          <div class="alert alert-danger alert-dismissible" role="alert">
-                                                <div class="d-flex">
-                                                      <div>
-                                                            <!-- Download SVG icon from http://tabler-icons.io/i/alert-circle -->
-                                                            <svg xmlns="http://www.w3.org/2000/svg"
-                                                                  class="icon alert-icon" width="24" height="24"
-                                                                  viewBox="0 0 24 24" stroke-width="2"
-                                                                  stroke="currentColor" fill="none"
-                                                                  stroke-linecap="round" stroke-linejoin="round">
-                                                                  <path stroke="none" d="M0 0h24v24H0z" fill="none" />
-                                                                  <path d="M3 12a9 9 0 1 0 18 0a9 9 0 0 0 -18 0" />
-                                                                  <path d="M12 8v4" />
-                                                                  <path d="M12 16h.01" />
-                                                            </svg>
-                                                      </div>
-                                                      <div>
-                                                            {{ $message }}
-                                                      </div>
-                                                </div>
-                                                <a class="btn-close" data-bs-dismiss="alert" aria-label="close"></a>
-                                          </div>
-                                          @enderror
-                                    </div>
-                              </div>
-                        </div>
-                  </div>
-                  <div class="row">
                         <div class="col-md-3 grid-margin stretch-card">
                               <div class="card">
                                     <div class="card-body">
-                                          <div class="form-group">
-
-                                                <label>Order ID / Reference <i class="text-danger">*</i></label>
-                                                <input type="text" name="order_reference" class="form-control">
-
+                                          <div class="form-label ">Vendor <i class="text-danger">*</i>
                                           </div>
-                                          @error('order_reference')
-                                          <div class="alert alert-danger alert-dismissible" role="alert">
-                                                <div class="d-flex">
-                                                      <div>
-                                                            <!-- Download SVG icon from http://tabler-icons.io/i/alert-circle -->
-                                                            <svg xmlns="http://www.w3.org/2000/svg"
-                                                                  class="icon alert-icon" width="24" height="24"
-                                                                  viewBox="0 0 24 24" stroke-width="2"
-                                                                  stroke="currentColor" fill="none"
-                                                                  stroke-linecap="round" stroke-linejoin="round">
-                                                                  <path stroke="none" d="M0 0h24v24H0z" fill="none" />
-                                                                  <path d="M3 12a9 9 0 1 0 18 0a9 9 0 0 0 -18 0" />
-                                                                  <path d="M12 8v4" />
-                                                                  <path d="M12 16h.01" />
-                                                            </svg>
-                                                      </div>
-                                                      <div>
-                                                            {{ $message }}
-                                                      </div>
-                                                </div>
-                                                <a class="btn-close" data-bs-dismiss="alert" aria-label="close"></a>
-                                          </div>
-                                          @enderror
-                                    </div>
-                              </div>
-                        </div>
-
-
-                        <div class="col-md-3 grid-margin stretch-card">
-                              <div class="card">
-                                    <div class="card-body">
-                                          <div class="form-label ">Amount <i class="text-danger">*</i>
-                                          </div>
-                                          <input type="text" class="form-control" name="order_amount">
-                                          @error('order_amount')
-                                          <div class="alert alert-danger alert-dismissible" role="alert">
-                                                <div class="d-flex">
-                                                      <div>
-                                                            <!-- Download SVG icon from http://tabler-icons.io/i/alert-circle -->
-                                                            <svg xmlns="http://www.w3.org/2000/svg"
-                                                                  class="icon alert-icon" width="24" height="24"
-                                                                  viewBox="0 0 24 24" stroke-width="2"
-                                                                  stroke="currentColor" fill="none"
-                                                                  stroke-linecap="round" stroke-linejoin="round">
-                                                                  <path stroke="none" d="M0 0h24v24H0z" fill="none" />
-                                                                  <path d="M3 12a9 9 0 1 0 18 0a9 9 0 0 0 -18 0" />
-                                                                  <path d="M12 8v4" />
-                                                                  <path d="M12 16h.01" />
-                                                            </svg>
-                                                      </div>
-                                                      <div>
-                                                            {{ $message }}
-                                                      </div>
-                                                </div>
-                                                <a class="btn-close" data-bs-dismiss="alert" aria-label="close"></a>
-                                          </div>
-                                          @enderror
-                                    </div>
-                              </div>
-                        </div>
-
-
-                        <div class="col-md-3 grid-margin stretch-card">
-                              <div class="card">
-                                    <div class="card-body">
-                                          <div class="form-label ">Delivery Date <i class="text-danger">*</i>
-                                          </div>
-                                          <input type="text" class="form-control" name="delivery_date" id="datepicker">
-                                          @error('delivery_date')
-                                          <div class="alert alert-danger alert-dismissible" role="alert">
-                                                <div class="d-flex">
-                                                      <div>
-                                                            <!-- Download SVG icon from http://tabler-icons.io/i/alert-circle -->
-                                                            <svg xmlns="http://www.w3.org/2000/svg"
-                                                                  class="icon alert-icon" width="24" height="24"
-                                                                  viewBox="0 0 24 24" stroke-width="2"
-                                                                  stroke="currentColor" fill="none"
-                                                                  stroke-linecap="round" stroke-linejoin="round">
-                                                                  <path stroke="none" d="M0 0h24v24H0z" fill="none" />
-                                                                  <path d="M3 12a9 9 0 1 0 18 0a9 9 0 0 0 -18 0" />
-                                                                  <path d="M12 8v4" />
-                                                                  <path d="M12 16h.01" />
-                                                            </svg>
-                                                      </div>
-                                                      <div>
-                                                            {{ $message }}
-                                                      </div>
-                                                </div>
-                                                <a class="btn-close" data-bs-dismiss="alert" aria-label="close"></a>
-                                          </div>
-                                          @enderror
-                                    </div>
-                              </div>
-                        </div>
-
-                        <div class="col-md-3 grid-margin stretch-card">
-                              <div class="card">
-                                    <div class="card-body">
-                                          <div class="form-label ">Platform <i class="text-danger">*</i>
-                                          </div>
-                                          <select class="js-example-basic-single" style="width:100%" name="platform">
-                                                <option value="">Search</option>
-                                                @foreach($platform
+                                          <select class="js-example-basic-single" style="width:100%" name="vendor">
+                                                <option value="">Choose</option>
+                                                @foreach($vendor
                                                 as $data)
                                                 <option value="{{$data->id}}">
                                                       {{$data->name}}
                                                 </option>
                                                 @endforeach
                                           </select>
-                                          @error('platform')
+                                          @error('vendor')
                                           <div class="alert alert-danger alert-dismissible" role="alert">
                                                 <div class="d-flex">
                                                       <div>
@@ -281,19 +121,8 @@
                                     </div>
                               </div>
                         </div>
+                        <div class="col-md-6 col-12 grid-margin stretch-card ">
 
-
-
-                  </div>
-                  <!--- row---->
-
-                  <!-- row -->
-                  <div class="row">
-                        <div class="col-md-6">
-                        </div>
-                        <div class="col-md-6 col-12 grid-margin stretch-card justify-content-end">
-                              <input type="hidden" name="invoice_ref" value="{{$invoice_ref}}">
-                              <input type="hidden" name="vendor" value="{{$vendor}}">
                               <!-- send button here -->
                               <div class="card-footer bg-transparent mt-auto">
                                     <div class="btn-list ">
@@ -333,15 +162,7 @@
       </footer>
 </div>
 <!-- main-panel -->
-<link rel="stylesheet" href="https://code.jquery.com/ui/1.13.3/themes/base/jquery-ui.css">
-  <link rel="stylesheet" href="/resources/demos/style.css">
-  <script src="https://code.jquery.com/jquery-3.7.1.js"></script>
-  <script src="https://code.jquery.com/ui/1.13.3/jquery-ui.js"></script>
-  <script>
-  $( function() {
-    $( "#datepicker" ).datepicker();
-  } );
-  </script>
+
 <script src="{{ asset('assets/vendors/select2/select2.min.js')}}"></script>
 <script src="{{ asset('assets/vendors/typeahead.js/typeahead.bundle.min.js')}}"></script>
 
