@@ -663,4 +663,8 @@ class AdminController extends Controller
         }
     }
   
+
+    public function assignVendorToUser(Request $request){
+        
+    }
 }//class
