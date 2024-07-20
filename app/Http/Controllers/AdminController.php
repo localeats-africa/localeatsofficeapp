@@ -685,4 +685,8 @@ class AdminController extends Controller
         'uid', 'vendor'));
 
     }
+
+    public function storeAsignVendor(Request $request){
+        
+    }
 }//class
