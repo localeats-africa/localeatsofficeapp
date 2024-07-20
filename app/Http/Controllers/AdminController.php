@@ -709,6 +709,15 @@ class AdminController extends Controller
         else{
             return redirect('all-staff')->with('staff-status', 'Opps! something went wrong' ); 
         }
+    }
+
+    public function expensesList(Request $request){
+        $id = Auth::user()->id;
+        $role = DB::table('role')->select('role_name')
+        ->join('users', 'users.role_id', 'role.id')
+        ->where('users.id', $id)
+        ->pluck('role_name')->first();
+        return view('admin.expenses-list', compact('role'));
 
     }
 }//class
