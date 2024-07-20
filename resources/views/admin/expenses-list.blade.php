@@ -12,8 +12,8 @@
                   </h3>
             </div>
             <p></p>
-               <!--Alert here--->
-               <div class="row ">
+            <!--Alert here--->
+            <div class="row ">
                   <div class="col-12">
                         @if(session('add-platform'))
                         <div class="alert alert-important alert-success alert-dismissible" role="alert">
@@ -63,18 +63,34 @@
             </div>
             <!---end Alert --->
             <div class="row ">
-                 
-            </div>
+                  <div class="col-12">
+                        <form class="row">
+                              <label for="date" class="col-1 col-form-label">Filter</label>
+                              <div class="col-4">
+                                    <div class="input-group date" id="datepicker">
+                                          <input type="text" class="form-control" id="date" />
+                                          <span class="input-group-append">
+                                                <span class="input-group-text bg-light d-block">
+                                                      <i class="fa fa-calendar"></i>
+                                                </span>
+                                          </span>
+                                    </div>
+                              </div>
 
-                 
+                        </form>
+                  </div> <!---end col-12 --->
+
+            </div> <!---end row --->
+
+
             <div class="row ">
                   <div class="col-12">
                         <div class="row row-cards">
                               <div class="col-md-4 stretch-card grid-margin">
                                     <div class="card bg-gradient-danger card-img-holder text-white">
                                           <div class="card-body">
-                                                <img src="{{ asset('assets/images/dashboard/circle.svg')}}" class="card-img-absolute"
-                                                      alt="circle-image">
+                                                <img src="{{ asset('assets/images/dashboard/circle.svg')}}"
+                                                      class="card-img-absolute" alt="circle-image">
                                                 <h4 class="font-weight-normal">Expenses Cost <i
                                                             class="mdi mdi-cloud-braces mdi-24px float-end"></i>
                                                 </h4>
@@ -87,16 +103,16 @@
                         </div>
                   </div>
             </div>
-         
+
             <p></p>
             <div class="row ">
-                 
+
             </div>
 
       </div>
       <!--- content wrapper---->
-         <!-- partial -->
-         <footer class="footer">
+      <!-- partial -->
+      <footer class="footer">
             <div class="d-sm-flex justify-content-center justify-content-sm-between">
                   <span class="text-muted text-center text-sm-left d-block d-sm-inline-block">Copyright ©
                         LocalEats Africa {{ date('Y')}} </a>. All rights
@@ -107,4 +123,20 @@
       </footer>
 </div>
 <!-- main-panel -->
+<script src="https://code.jquery.com/jquery-3.7.1.js"></script>
+  <script src="https://code.jquery.com/ui/1.13.3/jquery-ui.js"></script>
+  <script>
+  $( function() {
+    $( "#datepicker" ).datepicker();
+  } );
+  </script>
+<script src="{{ asset('assets/vendors/select2/select2.min.js')}}"></script>
+<script src="{{ asset('assets/vendors/typeahead.js/typeahead.bundle.min.js')}}"></script>
+
+<!-- endinject -->
+<!-- Custom js for this page -->
+<script src="{{ asset('assets/js/file-upload.js')}}"></script>
+<script src="{{ asset('assets/js/typeahead.js')}}"></script>
+<script src="{{ asset('assets/js/select2.js')}}"></script>
+<!-- End custom js for this page -->
 @endsection
