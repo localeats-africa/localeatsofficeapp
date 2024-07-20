@@ -141,22 +141,22 @@
 
                                     <span class="avatar avatar-xl mb-3 rounded">{{$initials}}</span>
                                     <h3 class="m-0 mb-1">{{$data->fullname }}</h3>
-                                    <div class="text-secondary">{{ $data->role_name}}</div>
+                                    <div class="text-info"></div>
 
                                     <div class="mt-3">
                                           @if($data->role_id =='3')
-                                          <span class="badge bg-primary">{{$data->email}}</span>
+                                          <span class="badge bg-primary">{{$data->role_name}}</span>
                                           @elseif ($data->role_id =='4')
-                                          <span class="badge bg-info">{{$data->email}}</span>
+                                          <span class="badge bg-info">{{$data->role_name}}</span>
                                           @elseif($data->role_id =='5')
-                                          <span class="badge bg-warning">{{$data->email}}</span>
+                                          <span class="badge bg-warning">{{$data->role_name}}</span>
                                           @elseif($data->role_id =='6')
-                                          <span class="badge bg-danger">{{$data->email}}</span>
+                                          <span class="badge bg-danger">{{$data->role_name}}</span>
 
                                           @elseif($data->role_id =='7')
-                                          <span class="badge bg-success">{{$data->email}}</span>
+                                          <span class="badge bg-success">{{$data->role_name}}</span>
                                           @else
-                                          <span class="badge bg-secondary">{{$data->email}}</span>
+                                          <span class="badge bg-secondary">{{$data->role_name}}</span>
                                           @endif
                                     </div>
 
