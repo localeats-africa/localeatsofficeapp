@@ -16,6 +16,9 @@ return new class extends Migration
         Schema::create('expenses_list', function (Blueprint $table) {
             $table->id();
             $table->timestamps();
+            $table->string('deleted_at')->nullable();
+            $table->string('vendor_id')->nullable();
+            $table->string('item')->nullable();
         });
     }
 
