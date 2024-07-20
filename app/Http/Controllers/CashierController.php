@@ -35,4 +35,22 @@ class CashierController extends Controller
     public function __construct(){
         $this->middleware(['auth', 'user-access:7', 'verified']);
     }
+
+    public function index(Request $request){
+        if ((Auth::user()->password_change_at == null)) {
+            return redirect(route('show-change-password'));
+         }
+       else{
+        $name = Auth::user()->name;
+        $id = Auth::user()->id;
+        $role = DB::table('role')->select('role_name')
+        ->join('users', 'users.role_id', 'role.id')
+        ->where('users.id', $id)
+        ->pluck('role_name')->first();
+
+      
+                return view('cashier.cashier-dashboard',  compact('name', 'role', 
+         ));
+       }
+    }
 }
