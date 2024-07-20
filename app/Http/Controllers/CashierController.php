@@ -48,6 +48,8 @@ class CashierController extends Controller
         ->where('users.id', $id)
         ->pluck('role_name')->first();
 
+        //a cashier should only see things for the vendor assigned to him
+
       
         return view('cashier.cashier-dashboard',  compact('name', 'role', 
          ));
