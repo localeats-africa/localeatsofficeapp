@@ -674,9 +674,14 @@ class AdminController extends Controller
 
        $user = User::where('id', $uid)
        ->get('*')->pluck('fullname')->first();
+
+       $userRole = DB::table('role')->select('role_name')
+       ->join('users', 'users.role_id', 'role.id')
+       ->where('users.id', $uid)
+       ->pluck('role_name')->first();
        $vendor = Vendor::all();
 
-       return view('admin.assign-vendor-to-user', compact('role', 'user',
+       return view('admin.assign-vendor-to-user', compact('role', 'user', 'userRole',
         'uid', 'vendor'));
 
     }
