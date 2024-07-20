@@ -101,7 +101,7 @@
 
                   @foreach($user as $data)
                   @php
-                  $words = explode(" ", $data->name, 2 );
+                  $words = explode(" ", $data->fullname, 2 );
                   $initials = null;
                   foreach ($words as $w) {
                   $initials .= $w[0];
@@ -112,7 +112,7 @@
                               <div class="card-body p-4 text-center">
 
                                     <span class="avatar avatar-xl mb-3 rounded">{{$initials}}</span>
-                                    <h3 class="m-0 mb-1">{{$data->name }}</h3>
+                                    <h3 class="m-0 mb-1">{{$data->fullname }}</h3>
                                     <div class="text-secondary">{{ $data->role_name}}</div>
                                     <div class="mt-3">
                                           @if($data->role_id =='3')
