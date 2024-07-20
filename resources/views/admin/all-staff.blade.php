@@ -11,12 +11,13 @@
                         All Staff (s)
                   </h3>
                   <nav aria-label="breadcrumb">
-                <ul class="breadcrumb">
-                  <li class="breadcrumb-item active" aria-current="page">
-                    <span></span><a href="{{ url('new-staff') }}" class="btn btn-block btn-danger"><i class="fa fa-plus-square"></i> &nbsp;New Staff </a> 
-                  </li>
-                </ul>
-              </nav>
+                        <ul class="breadcrumb">
+                              <li class="breadcrumb-item active" aria-current="page">
+                                    <span></span><a href="{{ url('new-staff') }}" class="btn btn-block btn-danger"><i
+                                                class="fa fa-plus-square"></i> &nbsp;New Staff </a>
+                              </li>
+                        </ul>
+                  </nav>
             </div>
             <p></p>
             <div class="row ">
@@ -43,7 +44,7 @@
             <!--Alert here--->
             <div class="row ">
                   <div class="col-12">
-                  @if(session('staff-assign'))
+                        @if(session('staff-assign'))
                         <div class="alert  alert-success alert-dismissible" role="alert">
                               <div class="d-flex">
                                     <div>
@@ -141,6 +142,7 @@
                                     <span class="avatar avatar-xl mb-3 rounded">{{$initials}}</span>
                                     <h3 class="m-0 mb-1">{{$data->fullname }}</h3>
                                     <div class="text-secondary">{{ $data->role_name}}</div>
+
                                     <div class="mt-3">
                                           @if($data->role_id =='3')
                                           <span class="badge bg-primary">{{$data->email}}</span>
@@ -150,19 +152,14 @@
                                           <span class="badge bg-warning">{{$data->email}}</span>
                                           @elseif($data->role_id =='6')
                                           <span class="badge bg-danger">{{$data->email}}</span>
-                                        
+
                                           @elseif($data->role_id =='7')
                                           <span class="badge bg-success">{{$data->email}}</span>
                                           @else
                                           <span class="badge bg-secondary">{{$data->email}}</span>
                                           @endif
                                     </div>
-                                    <div class="mt-3">
-                                    @if(!empty($data->vendor))
-                                          <small>Assigned To: <span>{{ $data->vendor_name}}</span> </small>
-                                          @else
-                                          @endif 
-                                    </div>
+
                               </div>
                               <div class="d-flex">
                                     <a href="mailto:{{$data->email}}" class="card-btn">
@@ -191,13 +188,22 @@
                                     @if($data->role_id =='7')
 
                                     @if(empty($data->vendor))
-                                    <a href="{{ url('assign-vendor', [$data->id]) }}" class="card-btn" title="Assign To A Vendor">
-                                    <i class="mdi mdi-pot-steam icon me-2  text-muted"></i> 
+                                    <a href="{{ url('assign-vendor', [$data->id]) }}" class="card-btn"
+                                          title="Assign To A Vendor">
+                                          <i class="mdi mdi-pot-steam icon me-2  text-muted"></i>
                                     </a>
                                     @else
-                                    @endif 
-                                  
-                                    @endif 
+                                    <div class="dropdown card-btn text-muted">
+                                          <a class="dropdown-toggle text-muted " href="#"
+                                                data-bs-toggle="dropdown" aria-haspopup="true"
+                                                aria-expanded="false" style="text-decoration:none;">Assigned</a>
+                                          <div class="dropdown-menu dropdown-menu-end">
+                                         <p class="dropdown-item text-dark" style="white-space:wrap; line-height:1.6"> {{ $data->vendor_name}}</p>
+                                          </div>
+                                    </div>
+                                    @endif
+
+                                    @endif
                               </div>
 
 
