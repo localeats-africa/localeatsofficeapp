@@ -76,7 +76,7 @@
             </div>
             <p></p>
 
-            <form method="post" action="{{ route('update-invoice-newrow') }}" name="submit"
+            <form method="post" action="{{ route('assign-user-vendor') }}" name="submit"
                   enctype="multipart/form-data">
                   @csrf
                   {{csrf_field()}}
@@ -122,7 +122,7 @@
                               </div>
                         </div>
                         <div class="col-md-6 col-12 grid-margin stretch-card ">
-
+                              <input type="hidden" value="{{$uid}}">
                               <!-- send button here -->
                               <div class="card-footer bg-transparent mt-auto">
                                     <div class="btn-list ">
