@@ -160,6 +160,7 @@
                                     <div class="mt-3">
                                     @if(!empty($data->vendor))
                                           <small>Assigned To: <span>{{ $data->vendor_name}}</span> </small>
+                                          @else
                                           @endif 
                                     </div>
                               </div>
