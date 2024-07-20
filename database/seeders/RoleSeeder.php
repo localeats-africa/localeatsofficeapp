@@ -40,5 +40,8 @@ class RoleSeeder extends Seeder
         DB::table('role')->insert([
             'role_name' => 'vendormanager',
         ]);
+        DB::table('role')->insert([
+            'role_name' => 'cashier',
+        ]);
     }
 }
