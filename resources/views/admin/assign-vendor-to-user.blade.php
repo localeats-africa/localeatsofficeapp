@@ -8,8 +8,8 @@
       <div class="content-wrapper">
             <div class="page-header">
                   <h3 class="page-title">
-                        Assign Vendor To >>> <span class="text-info"> {{$role}}</span> >>> <span
-                              class="text-info">{{$user}}</span>
+                        Assign Vendor To >>> <span class="text-info text-capitalize"> {{$userRole}}</span> >>> <span
+                              class="text-info text-capitalize">{{$user}}</span>
                   </h3>
             </div>
             <!--Alert here--->
