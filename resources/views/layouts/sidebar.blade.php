@@ -200,7 +200,7 @@
                   
 
                   <li class="nav-item">
-                        <a class="nav-link" href="" target="">
+                        <a class="nav-link" href="{{ url('expenses-list') }}" target="">
                               <span class="menu-title">Expenses</span>
                                     <i class=" fa fa-money fs-24 menu-icon"></i>
 
