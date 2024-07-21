@@ -10,16 +10,24 @@
                   <h3 class="page-title">
                         All Staff (s)
                   </h3>
+                  <nav aria-label="breadcrumb">
+                        <ul class="breadcrumb">
+                              <li class="breadcrumb-item active" aria-current="page">
+                                    <span></span><a href="{{ url('new-staff') }}" class="btn btn-block btn-danger"><i
+                                                class="fa fa-plus-square"></i> &nbsp;New Staff </a>
+                              </li>
+                        </ul>
+                  </nav>
             </div>
             <p></p>
             <div class="row ">
                   <div class="col-12">
                         <div class="row row-cards">
                               <div class="col-md-4 stretch-card grid-margin">
-                                    <div class="card bg-gradient-danger card-img-holder text-white">
+                                    <div class="card bg-gradient-info card-img-holder text-white">
                                           <div class="card-body">
-                                                <img src="{{ asset('assets/images/dashboard/circle.svg')}}" class="card-img-absolute"
-                                                      alt="circle-image">
+                                                <img src="{{ asset('assets/images/dashboard/circle.svg')}}"
+                                                      class="card-img-absolute" alt="circle-image">
                                                 <h4 class="font-weight-normal">Staff (s) <i
                                                             class="mdi mdi-account-multiple  mdi-24px float-end"></i>
                                                 </h4>
@@ -36,6 +44,26 @@
             <!--Alert here--->
             <div class="row ">
                   <div class="col-12">
+                        @if(session('staff-assign'))
+                        <div class="alert  alert-success alert-dismissible" role="alert">
+                              <div class="d-flex">
+                                    <div>
+                                          <!-- Download SVG icon from http://tabler-icons.io/i/alert-triangle -->
+                                          <svg xmlns="http://www.w3.org/2000/svg" class="icon alert-icon" width="24"
+                                                height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"
+                                                fill="none" stroke-linecap="round" stroke-linejoin="round">
+                                                <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                                                <path
+                                                      d="M10.24 3.957l-8.422 14.06a1.989 1.989 0 0 0 1.7 2.983h16.845a1.989 1.989 0 0 0 1.7 -2.983l-8.423 -14.06a1.989 1.989 0 0 0 -3.4 0z" />
+                                                <path d="M12 9v4" />
+                                                <path d="M12 17h.01" />
+                                          </svg>
+                                    </div>
+                                    <div> {!! session('staff-assign') !!}</div>
+                              </div>
+                              <a class="btn-close" data-bs-dismiss="alert" aria-label="close"></a>
+                        </div>
+                        @endif
 
                         @if(session('staff-status'))
                         <div class="alert  alert-danger alert-dismissible" role="alert">
@@ -101,7 +129,7 @@
 
                   @foreach($user as $data)
                   @php
-                  $words = explode(" ", $data->name, 2 );
+                  $words = explode(" ", $data->fullname, 2 );
                   $initials = null;
                   foreach ($words as $w) {
                   $initials .= $w[0];
@@ -112,21 +140,26 @@
                               <div class="card-body p-4 text-center">
 
                                     <span class="avatar avatar-xl mb-3 rounded">{{$initials}}</span>
-                                    <h3 class="m-0 mb-1">{{$data->name }}</h3>
-                                    <div class="text-secondary">{{ $data->role_name}}</div>
+                                    <h3 class="m-0 mb-1">{{$data->fullname }}</h3>
+                                    <div class="text-info"></div>
+
                                     <div class="mt-3">
                                           @if($data->role_id =='3')
-                                          <span class="badge bg-primary">{{$data->email}}</span>
+                                          <span class="badge bg-primary">{{$data->role_name}}</span>
                                           @elseif ($data->role_id =='4')
-                                          <span class="badge bg-info">{{$data->email}}</span>
+                                          <span class="badge bg-info">{{$data->role_name}}</span>
                                           @elseif($data->role_id =='5')
-                                          <span class="badge bg-warning">{{$data->email}}</span>
+                                          <span class="badge bg-warning">{{$data->role_name}}</span>
                                           @elseif($data->role_id =='6')
-                                          <span class="badge bg-danger">{{$data->email}}</span>
+                                          <span class="badge bg-danger">{{$data->role_name}}</span>
+
+                                          @elseif($data->role_id =='7')
+                                          <span class="badge bg-success">{{$data->role_name}}</span>
                                           @else
-                                          <span class="badge bg-secondary">{{$data->email}}</span>
+                                          <span class="badge bg-secondary">{{$data->role_name}}</span>
                                           @endif
                                     </div>
+
                               </div>
                               <div class="d-flex">
                                     <a href="mailto:{{$data->email}}" class="card-btn">
@@ -140,7 +173,6 @@
                                                       d="M3 7a2 2 0 0 1 2 -2h14a2 2 0 0 1 2 2v10a2 2 0 0 1 -2 2h-14a2 2 0 0 1 -2 -2v-10z" />
                                                 <path d="M3 7l9 6l9 -6" />
                                           </svg>
-                                          Email
                                     </a>
                                     <a href="tel:{{ $data->phone}}" class="card-btn">
                                           <!-- Download SVG icon from http://tabler-icons.io/i/phone -->
@@ -152,13 +184,32 @@
                                                 <path
                                                       d="M5 4h4l2 5l-2.5 1.5a11 11 0 0 0 5 5l1.5 -2.5l5 2v4a2 2 0 0 1 -2 2a16 16 0 0 1 -15 -15a2 2 0 0 1 2 -2" />
                                           </svg>
-                                          Call
                                     </a>
+                                    @if($data->role_id =='7')
+
+                                    @if(empty($data->vendor))
+                                    <a href="{{ url('assign-vendor', [$data->id]) }}" class="card-btn"
+                                          title="Assign To A Vendor">
+                                          <i class="mdi mdi-pot-steam icon me-2  text-muted"></i>
+                                    </a>
+                                    @else
+                                    <div class="dropdown card-btn text-muted">
+                                          <a class="dropdown-toggle text-muted " href="#"
+                                                data-bs-toggle="dropdown" aria-haspopup="true"
+                                                aria-expanded="false" style="text-decoration:none;">Assigned</a>
+                                          <div class="dropdown-menu dropdown-menu-end">
+                                         <p class="dropdown-item text-dark" style="white-space:wrap; line-height:1.6"> {{ $data->vendor_name}}</p>
+                                          </div>
+                                    </div>
+                                    @endif
+
+                                    @endif
                               </div>
 
 
                         </div>
                         <!--card  --->
+                        <br>
                   </div>
                   @endforeach
                   <p></p>

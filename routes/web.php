@@ -9,6 +9,7 @@ use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\Auth\LogoutController;
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\VendorManagerController;
+use App\Http\Controllers\CashierController;
 use App\Http\Controllers\TwitterController;
 
 
@@ -137,7 +138,11 @@ Route::controller(AdminController::class)->group(function () {
     //delete all merge Invoice with same ref.
     Route::post('delete-invoice/{id}',  'deleteInvoice')->name('delete-invoice');
     Route::post('mark-invoice-paid/{id}',  'markInvoicePaid')->name('mark-invoice-paid');
-   
+    Route::get('assign-vendor/{id}', 'assignVendorToUser')->name('assign-vendor');
+    Route::post('assign-user-vendor', 'storeAsignVendor')->name('assign-user-vendor');
+    Route::get('expenses-list', 'expensesList')->name('expenses-list');
+    Route::get('new-expenses', 'newExpenses')->name('new-expenses');
+    Route::post('add-expenses', 'addExpenses')->name('add-expenses');
 });
 
 Route::controller(ManagerController::class)->group(function () {
@@ -154,8 +159,11 @@ Route::controller(AuditorController::class)->group(function () {
 
 Route::controller(VendorManagerController::class)->group(function () {
     Route::get('vendormanager',  'index')->name('vendor_manager');
+});
+Route::controller(CashierController::class)->group(function () {
+    Route::get('cashier',  'index')->name('cashier');
+    Route::get('add-expenses', 'addVendorExpenses')->name('add-expenses');
+    Route::post('add-expenses-list', 'addExpensesList')->name('add-expenses-list');
+    Route::post('add-vendor-expenses', 'storeVendorDailyExpenses')->name('add-vendor-expenses');
 
 });
-// Route::get('create-invoice', function () {
-//     return view('upload-order');
-// });

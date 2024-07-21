@@ -207,7 +207,7 @@
                                                                   @foreach($orders as $data)
 
                                                                   <tr>
-                                                                        <td width="50%" style="white-space:wrap"><small>
+                                                                        <td width="50%" style="white-space:wrap; line-height:1.6"><small>
                                                                                     {!! nl2br($data->description) !!}
                                                                               </small></td>
                                                                         <td><small>{{$data->order_ref}}</small></td>

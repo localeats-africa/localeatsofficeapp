@@ -67,7 +67,10 @@ class LoginController extends Controller
                 return redirect()->route('auditor');
             }else if (auth()->user()->role_id == '6') {
                 return redirect()->route('vendor_manager');
-            }else{
+            }else if (auth()->user()->role_id == '7') {
+                return redirect()->route('cashier');
+            }
+            else{
                 return redirect()->route('home');
             }
         }else{

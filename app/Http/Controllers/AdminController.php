@@ -29,6 +29,9 @@ use App\Imports\FoodMenuImportClass;
 use App\Imports\OrdersImportClass;
 use App\Models\Invoice;
 use App\Models\Payout;
+use App\Models\ExpensesList;
+use App\Models\OfflineSales;
+use App\Models\VendorExpenses;
 
 use Excel;
 use Auth;
@@ -507,11 +510,12 @@ class AdminController extends Controller
         $search = $request->input('search');    
         $user=  DB::table('users')
         ->join('role', 'role.id', '=', 'users.role_id')
+        ->leftjoin('vendor', 'vendor.id', '=', 'users.vendor')
         ->where('users.deleted_at', null)
         ->where('users.email_verified_at', '!=', null)
         ->where('users.role_id', '!=', '1')
         ->where('users.role_id', '!=', '2')//except self
-        ->select(['users.*', 'role.role_name' ])
+        ->select(['users.*', 'role.role_name', 'vendor.vendor_name' ])
         ->orderBy('created_at', 'desc')
         ->where(function ($query) use ($search) {  // <<<
         $query->where('users.fullname', 'LIKE', '%'.$search.'%')
@@ -663,4 +667,95 @@ class AdminController extends Controller
         }
     }
   
+
+    public function assignVendorToUser(Request $request, $uid){
+        $name = Auth::user()->name;
+        $id = Auth::user()->id;
+        $role = DB::table('role')->select('role_name')
+        ->join('users', 'users.role_id', 'role.id')
+        ->where('users.id', $id)
+        ->pluck('role_name')->first();
+
+       $user = User::where('id', $uid)
+       ->get('*')->pluck('fullname')->first();
+
+       $userRole = DB::table('role')->select('role_name')
+       ->join('users', 'users.role_id', 'role.id')
+       ->where('users.id', $uid)
+       ->pluck('role_name')->first();
+       $vendor = Vendor::all();
+
+       return view('admin.assign-vendor-to-user', compact('role', 'user', 'userRole',
+        'uid', 'vendor'));
+
+    }
+
+    public function storeAsignVendor(Request $request){
+        $this->validate($request, [ 
+            'vendor'  => 'required|max:255'      
+        ]);
+
+        $userName = User::where('id', $request->user)
+        ->get('*')->pluck('fullname')->first();
+
+        $vendor = Vendor::where('id', $request->vendor)
+        ->get('*')->pluck('vendor_name')->first();
+
+        $updateUser = User::where('id', $request->user)
+        ->update([
+            'vendor'    => $request->vendor
+        ]);
+
+        if($updateUser){
+            return redirect('all-staff')->with('staff-assign',' ' .$userName. ' successfully assigned to ' .$vendor );
+        }
+        else{
+            return redirect('all-staff')->with('staff-status', 'Opps! something went wrong' ); 
+        }
+    }
+
+    public function expensesList(Request $request){
+        $id = Auth::user()->id;
+        $role = DB::table('role')->select('role_name')
+        ->join('users', 'users.role_id', 'role.id')
+        ->where('users.id', $id)
+        ->pluck('role_name')->first();
+        $vendor = Vendor::all();
+        return view('admin.expenses-list', compact('role', 'vendor'));
+
+    }
+
+    public function newExpenses(Request $request){
+        $id = Auth::user()->id;
+        $role = DB::table('role')->select('role_name')
+        ->join('users', 'users.role_id', 'role.id')
+        ->where('users.id', $id)
+        ->pluck('role_name')->first();
+        $vendor = Vendor::all();
+        return view('admin.new-expenses', compact('role', 'vendor'));
+    }
+
+    public function addExpenses(Request $request){
+        $this->validate($request, [ 
+            'vendor'  => 'required|max:255',
+            'item'   => 'required|string|max:255'      
+        ]);
+
+        $storeExpense = new ExpensesList();
+        $storeExpense->vendor_id    = $request->vendor;
+        $storeExpense->item         = $request->item;
+        $storeExpense->added_by     = Auth::user()->id;
+        $storeExpense->save();
+
+        if($storeExpense){
+            return redirect()->back()->with('expense-status', 'Expense added successfully');
+        }
+        else{
+            return redirect()->back()->with('expense-error', 'Opps! something went wrong');
+        
+        }
+
+
+        return view('admin.new-expenses', compact('role', 'vendor'));
+    }
 }//class
