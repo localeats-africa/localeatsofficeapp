@@ -29,6 +29,9 @@ use App\Imports\FoodMenuImportClass;
 use App\Imports\OrdersImportClass;
 use App\Models\Invoice;
 use App\Models\Payout;
+use App\Models\ExpensesList;
+use App\Models\OfflineSales;
+use App\Models\VendorExpenses;
 
 use Excel;
 use Auth;
@@ -717,7 +720,42 @@ class AdminController extends Controller
         ->join('users', 'users.role_id', 'role.id')
         ->where('users.id', $id)
         ->pluck('role_name')->first();
-        return view('admin.expenses-list', compact('role'));
+        $vendor = Vendor::all();
+        return view('admin.expenses-list', compact('role', 'vendor'));
 
+    }
+
+    public function newExpenses(Request $request){
+        $id = Auth::user()->id;
+        $role = DB::table('role')->select('role_name')
+        ->join('users', 'users.role_id', 'role.id')
+        ->where('users.id', $id)
+        ->pluck('role_name')->first();
+        $vendor = Vendor::all();
+        return view('admin.new-expenses', compact('role', 'vendor'));
+    }
+
+    public function addExpenses(Request $request){
+        $this->validate($request, [ 
+            'vendor'  => 'required|max:255',
+            'item'   => 'required|string|max:255'      
+        ]);
+
+        $storeExpense = new ExpensesList();
+        $storeExpense->vendor_id    = $request->vendor;
+        $storeExpense->item         = $request->item;
+        $storeExpense->added_by     = Auth::user()->id;
+        $storeExpense->save();
+
+        if($storeExpense){
+            return redirect()->back()->with('expense-status', 'Expense added successfully');
+        }
+        else{
+            return redirect()->back()->with('expense-error', 'Opps! something went wrong');
+        
+        }
+
+
+        return view('admin.new-expenses', compact('role', 'vendor'));
     }
 }//class

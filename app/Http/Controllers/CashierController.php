@@ -17,6 +17,10 @@ use App\Models\FoodMenu;
 use App\Models\RestaurantType;
 use App\Models\Vendor;
 use App\Models\Area;
+use App\Models\ExpensesList;
+use App\Models\OfflineSales;
+use App\Models\VendorExpenses;
+
 use Excel;
 use Carbon\Carbon;
 use Carbon\CarbonPeriod;
@@ -41,7 +45,7 @@ class CashierController extends Controller
             return redirect(route('show-change-password'));
          }
        else{
-        $name = Auth::user()->name;
+        $name = Auth::user()->fullname;
         $id = Auth::user()->id;
         $role = DB::table('role')->select('role_name')
         ->join('users', 'users.role_id', 'role.id')
@@ -49,10 +53,90 @@ class CashierController extends Controller
         ->pluck('role_name')->first();
 
         //a cashier should only see things for the vendor assigned to him
+        $vendorName = Vendor::join('users', 'users.vendor', 'vendor.id')
+        ->where('users.id', $id)
+        ->get('vendor.vendor_name')->pluck('vendor_name')->first();
 
-      
         return view('cashier.cashier-dashboard',  compact('name', 'role', 
-         ));
+         'vendorName'));
        }
     }
-}
+
+    public function addVendorExpenses(Request $request){
+        $name = Auth::user()->fullname;
+        $id = Auth::user()->id;
+        $role = DB::table('role')->select('role_name')
+        ->join('users', 'users.role_id', 'role.id')
+        ->where('users.id', $id)
+        ->pluck('role_name')->first();
+
+        //a cashier should only see things for the vendor assigned to him
+        $vendorName = Vendor::join('users', 'users.vendor', 'vendor.id')
+        ->where('users.id', $id)
+        ->get('vendor.vendor_name')->pluck('vendor_name')->first();
+
+        $vendor_id = Vendor::join('users', 'users.vendor', 'vendor.id')
+        ->where('users.id', $id)
+        ->get('vendor.id')->pluck('id')->first();
+
+        $expensesList = ExpensesList::where('vendor_id', $vendor_id)
+        ->orderBy('created_at', 'desc')
+        ->get();
+
+        return view('cashier.expenses',  compact('name', 'role', 
+         'vendorName','expensesList', 'vendor_id'));
+    }
+
+    public function addExpensesList(Request $request){
+        $this->validate($request, [ 
+            'vendor'  => 'required|max:255',
+            'item'   => 'required|string|max:255'      
+        ]);
+
+        $storeExpense = new ExpensesList();
+        $storeExpense->vendor_id    = $request->vendor;
+        $storeExpense->item         = $request->item;
+        $storeExpense->added_by     = Auth::user()->id;
+        $storeExpense->save();
+
+        if($storeExpense){
+            $data = [
+                'status' => true,
+                'message'=> 'New list added successfully.'
+            ];
+            return response()->json($data);
+        }
+        else{
+            $data = [
+                'status' => false,
+                'message'=> 'Something went wrong'
+            ];
+            return response()->json($data);
+        
+        }
+    }
+
+
+    public function storeVendorDailyExpenses(Request $request){
+        $this->validate($request, [ 
+            'vendor'        => 'required|max:255',
+            'item'          => 'required|string|max:255',  
+            'price'         => 'required|string|max:255'        
+        ]);
+
+        $expenses = new VendorExpenses();
+        $expenses->vendor_id        = $request->vendor;
+        $expenses->description      = $request->item;
+        $expenses->cost             = $request->price;
+        $expenses->added_by         = Auth::user()->id;
+        $expenses->save();
+
+        if($expenses){
+            return redirect()->back()->with('expense-status', 'You have successfully added an Expenses');
+        }
+        else{
+            return redirect()->back()->with('expense-error', 'Opps! something happend');
+        
+        }
+    }
+}//class

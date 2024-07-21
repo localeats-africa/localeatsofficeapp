@@ -9,43 +9,15 @@
       <div class="content-wrapper">
             <div class="page-header">
                   <h3 class="page-title">
-                        Vendor (s) Expenses
+                       Create New Expenses
                   </h3>
-                  <nav aria-label="breadcrumb">
-                        <ul class="breadcrumb">
-                              <li class="breadcrumb-item active" aria-current="page">
-                                    <span></span><a href="{{ url('new-expenses') }}" class="btn btn-block btn-danger"><i
-                                                class="fa fa-plus-square"></i> &nbsp;Create New Expense Item </a>
-                              </li>
-                        </ul>
-                  </nav>
             </div>
 
-            <div class="row ">
-                  <div class="col-12">
-                        <div class="row row-cards">
-                              <div class="col-md-4 stretch-card grid-margin">
-                                    <div class="card bg-gradient-danger card-img-holder text-white">
-                                          <div class="card-body">
-                                                <img src="{{ asset('assets/images/dashboard/circle.svg')}}"
-                                                      class="card-img-absolute" alt="circle-image">
-                                                <h4 class="font-weight-normal">Total Expenses <i
-                                                            class="fa fa-money mdi-24px float-end"></i>
-                                                </h4>
-                                                <h2 class="mb-5"></h2>
-                                                <hr class="w-100">
-                                                <h6 class="card-text"> </h6>
-                                          </div>
-                                    </div>
-                              </div>
-                        </div>
-                  </div>
-            </div>
             <p></p>
             <!--Alert here--->
             <div class="row ">
                   <div class="col-12">
-                        @if(session('add-platform'))
+                        @if(session('expense-status'))
                         <div class="alert alert-important alert-success alert-dismissible" role="alert">
                               <div class="d-flex">
                                     <div>
@@ -60,14 +32,14 @@
                                                 <path d="M12 17h.01" />
                                           </svg>
                                     </div>
-                                    <div> {!! session('add-platform') !!}</div>
+                                    <div> {!! session('expense-status') !!}</div>
                               </div>
                               <a class="btn-close" data-bs-dismiss="alert" aria-label="close"></a>
                         </div>
                         @endif
 
 
-                        @if(session('platform-status'))
+                        @if(session('expense-error'))
                         <div class="alert  alert-danger alert-dismissible" role="alert">
                               <div class="d-flex">
                                     <div>
@@ -82,7 +54,7 @@
                                                 <path d="M12 17h.01" />
                                           </svg>
                                     </div>
-                                    <div> {!! session('platform-status') !!}</div>
+                                    <div> {!! session('expense-error') !!}</div>
                               </div>
                               <a class="btn-close" data-bs-dismiss="alert" aria-label="close"></a>
                         </div>
@@ -95,64 +67,46 @@
 
             <div class="row ">
 
-                  <form action="">
+            <form method="post" action="{{ route('add-expenses') }}" name="submit" enctype="multipart/form-data">
+                  @csrf
+                  {{csrf_field()}}
                         <div class="row">
                               <div class="col-md-4 col-12">
                                     <div class="form-group">
-                                          <label for="">Vendor</label>
-                                          <select class="js-example-basic-single text-secondary" style="width:100%"
-                                                name="vendor" id="vendor">
-                                                <option>Choose</option>
-                                                @foreach($vendor as $data)
-                                                <option value="{{$data->id}}">
-                                                      {{$data->vendor_name}}
-                                                </option>
-                                                @endforeach
-                                          </select>
+                                    <label for="">Vendor</label>
+                                    <br>
+                                    <select class="js-example-basic-single text-secondary" style="width:100%"
+                                          name="vendor" id="vendor">
+                                          <option>Choose</option>
+                                          @foreach($vendor as $data)
+                                          <option value="{{$data->id}}">
+                                                {{$data->vendor_name}}
+                                          </option>
+                                          @endforeach
+                                    </select>
                                     </div>
                               </div>
 
-                              <div class="col-md-4 col-12">
+                              <div class="col-md-8 col-12">
                                     <div class="form-group">
-                                          <label for="">From</label>
-                                          <div class="input-group date">
-                                                <input type="text" class="form-control" placeholder="" id="from" />
-                                                <span class="input-group-append">
-                                                      <span class="input-group-text bg-light d-block">
-                                                            <i class="fa fa-calendar"></i>
-                                                      </span>
-                                                </span>
-                                          </div>
+                                    <label for="">Expenses / Item</label>
+                                    <br>
+                                    <div class="input-group date">
+                                          <input type="text" class="form-control" name="item" placeholder="Enter expenses" />
+                                          <button type="submit" name="submit"
+                                          class="btn bg-gradient-primary btn-sm  text-white">Submit</button>
+                                    </div>
                                     </div>
                               </div>
 
-                              <div class="col-md-4 col-12">
-                                    <div class="form-group">
+                              
 
-                                          <label for="">To</label>
-                                          <div class="input-group date">
-                                                <input type="text" class="form-control" placeholder="" id="to" />
-                                                <span class="input-group-append">
-                                                      <span class="input-group-text bg-light d-block">
-                                                            <i class="fa fa-calendar"></i>
-                                                      </span>
-                                                </span>
-                                                <button type="submit" name="submit"
-                                                      class="btn bg-gradient-dark btn-sm  text-white">GO!</button>
-                                          </div>
-                                    </div>
-                              </div>
                         </div>
                         <!---end row--->
                   </form>
             </div>
             <!---end row --->
 
-
-            <p></p>
-            <div class="row ">
-
-            </div>
 
       </div>
       <!--- content wrapper---->

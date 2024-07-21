@@ -320,7 +320,7 @@
                               <ul class="nav flex-column sub-menu">
                                   
                                     <li class="nav-item">
-                                          <a class="nav-link" href="">Expenses</a>
+                                          <a class="nav-link" href="{{ url('add-expenses') }}">Expenses</a>
                                     </li>
 
                                     <li class="nav-item">

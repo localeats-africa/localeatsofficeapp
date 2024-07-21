@@ -141,6 +141,8 @@ Route::controller(AdminController::class)->group(function () {
     Route::get('assign-vendor/{id}', 'assignVendorToUser')->name('assign-vendor');
     Route::post('assign-user-vendor', 'storeAsignVendor')->name('assign-user-vendor');
     Route::get('expenses-list', 'expensesList')->name('expenses-list');
+    Route::get('new-expenses', 'newExpenses')->name('new-expenses');
+    Route::post('add-expenses', 'addExpenses')->name('add-expenses');
 });
 
 Route::controller(ManagerController::class)->group(function () {
@@ -160,4 +162,8 @@ Route::controller(VendorManagerController::class)->group(function () {
 });
 Route::controller(CashierController::class)->group(function () {
     Route::get('cashier',  'index')->name('cashier');
+    Route::get('add-expenses', 'addVendorExpenses')->name('add-expenses');
+    Route::post('add-expenses-list', 'addExpensesList')->name('add-expenses-list');
+    Route::post('add-vendor-expenses', 'storeVendorDailyExpenses')->name('add-vendor-expenses');
+
 });
