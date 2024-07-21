@@ -58,8 +58,27 @@ class CashierController extends Controller
         ->where('users.id', $id)
         ->get('vendor.vendor_name')->pluck('vendor_name')->first();
 
+        $vendor_id = Vendor::join('users', 'users.vendor', 'vendor.id')
+        ->where('users.id', $id)
+        ->get('vendor.id')->pluck('id')->first();
+
+        $today = Carbon::now()->format('Y-m-d');
+
+        $countDailyExpense = VendorExpenses::where('vendor_id', $vendor_id)
+        ->where('vendor_expenses.created_at', $today)
+        ->count();
+
+        $countDailySales = OfflineSales::where('vendor_id', $vendor_id)
+        ->whereDate('created_at', $today)
+        ->count();
+
+        $sumDailySales = OfflineSales::where('vendor_id', $vendor_id)
+        ->whereDate('created_at', $today)
+        ->sum('price');
+        //dd($countDailySales);
+
         return view('cashier.cashier-dashboard',  compact('name', 'role', 
-         'vendorName'));
+         'vendorName', 'countDailyExpense', 'countDailySales', 'sumDailySales'));
        }
     }
 

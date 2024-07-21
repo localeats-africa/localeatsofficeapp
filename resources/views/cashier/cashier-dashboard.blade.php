@@ -44,7 +44,7 @@
                                                                   </svg>
                                                             </i>
                                                       </h4>
-                                                      <h2 class="mb-5">₦0</h2>
+                                                      <h2 class="mb-5">₦{{number_format($sumDailySales)}}</h2>
                                                       <hr class="w-100">
                                                       <h6 class="card-text">weekly average <span style="float:right;">₦0
                                                             </span></h6>
@@ -59,7 +59,7 @@
                                                 <h4 class="font-weight-normal">Number Of Sales Today <i
                                                             class="fa fa-cutlery  mdi-24px float-end"></i>
                                                 </h4>
-                                                <h2 class="mb-5">0</h2>
+                                                <h2 class="mb-5">{{ $countDailySales}}</h2>
                                                 <hr class="w-100">
                                                 <h6 class="card-text">weekly average<span class="text-dark"></span>
                                                       <span style="float:right;">0</span>
