@@ -165,5 +165,8 @@ Route::controller(CashierController::class)->group(function () {
     Route::get('add-expenses', 'addVendorExpenses')->name('add-expenses');
     Route::post('add-expenses-list', 'addExpensesList')->name('add-expenses-list');
     Route::post('add-vendor-expenses', 'storeVendorDailyExpenses')->name('add-vendor-expenses');
+    Route::get('offline-sales', 'offlineSales')->name('offline-sales');
+    Route::post('offline-sales-list', 'OfflineSaleList')->name('offline-sales-list');
+    Route::post('add-vendor-offline-sales', 'storeVendorOfflineSale')->name('add-vendor-offline-sales');
 
 });

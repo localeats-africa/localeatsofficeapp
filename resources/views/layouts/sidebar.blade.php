@@ -324,7 +324,7 @@
                                     </li>
 
                                     <li class="nav-item">
-                                          <a class="nav-link" href="">Sales</a>
+                                          <a class="nav-link" href="{{ url('offline-sales') }}">Sales</a>
                                     </li>
 
                               </ul>
