@@ -143,6 +143,8 @@ Route::controller(AdminController::class)->group(function () {
     Route::get('expenses-list', 'expensesList')->name('expenses-list');
     Route::get('new-expenses', 'newExpenses')->name('new-expenses');
     Route::post('add-expenses', 'addExpenses')->name('add-expenses');
+    Route::post('merge-invoice-commission-paid',  'vendorInvoiceCommisionPaid')->name('merge-invoice-commission-paid');     
+    
 });
 
 Route::controller(ManagerController::class)->group(function () {
