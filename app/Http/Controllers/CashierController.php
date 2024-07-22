@@ -117,12 +117,12 @@ class CashierController extends Controller
         $pagination = $platform->appends ( array ('search' => $search) );
             if (count ( $pagination ) > 0){
                 return view('cashier.expenses',  compact('name', 'role', 
-                'vendorName','expensesList', 'vendor_id', 'perPage'))->withDetails( $pagination );     
+                'vendorName','expensesList', 'vendor_id', 'perPage', 'expenses'))->withDetails( $pagination );     
             } 
         else{return redirect()->back()->with('expenses-status', 'No record order found'); }
 
         return view('cashier.expenses',  compact('name', 'role', 
-         'vendorName','expensesList', 'vendor_id', 'perPage'));
+         'vendorName','expensesList', 'vendor_id', 'perPage', 'expenses'));
     }
 
     public function addExpensesList(Request $request){
