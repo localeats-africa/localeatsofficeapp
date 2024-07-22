@@ -113,8 +113,8 @@ class CashierController extends Controller
         ->orWhere('cost', 'LIKE', '%'.$search.'%')
         ->orWhere('created_at', 'LIKE', '%'.$search.'%');
         })
-        ->paginate($perPage,  $pageName = 'expenses')->appends(['per_page'   => $perPage]);
-        $pagination = $platform->appends ( array ('search' => $search) );
+        ->paginate($perPage)->appends(['per_page'   => $perPage]);
+        $pagination = $expenses->appends ( array ('search' => $search) );
             if (count ( $pagination ) > 0){
                 return view('cashier.expenses',  compact('name', 'role', 
                 'vendorName','expensesList', 'vendor_id', 'perPage', 'expenses'))->withDetails( $pagination );     
