@@ -1129,6 +1129,33 @@ class HomeController extends Controller
      }
 
 
+     public function vendorInvoiceCommisionPaid(Request $request){
+
+        $commission     = $request->commission_paid;
+        $order_id       = $request->order_id;
+
+         $updateOrder = Orders::where('id', $order_id)
+         ->update([
+             'commission'     => $commission,
+         ]);
+         if($updateOrder){
+            $data = [
+                'status' => true,
+                'message'=> 'Record updated successfully'
+            ];
+            return response()->json($data);
+        }
+         else{
+            $data = [
+                'status' => false,
+                'message'=> 'Opps! something happen'
+            ];
+            return response()->json($data);
+         }
+     }
+
+
+
      public function vendorMergedInvoices(Request $request){
         $name = Auth::user()->name;
         $user_id = Auth::user()->id;
