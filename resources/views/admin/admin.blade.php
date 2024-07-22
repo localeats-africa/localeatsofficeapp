@@ -144,9 +144,9 @@
                                                                   </svg>
                                                             </i>
                                                       </h4>
-                                                      <h2 class="mb-5">₦{{number_format($sumAllOrders)}}</h2>
+                                                      <h2 class="mb-5">₦{{number_format($sumAllOrders, 2)}}</h2>
                                                       <hr class="w-100">
-                                                      <h6 class="card-text">weekly average <span style="float:right;">₦0
+                                                      <h6 class="card-text">weekly average <span style="float:right;">₦{{number_format($averageWeeklySales, 2)}}
                                                             </span></h6>
                                                 </div>
                                           </div>
@@ -160,7 +160,7 @@
                                                       <h4 class="font-weight-normal">Actual Payouts
                                                             <i class="mdi mdi-cash mdi-24px float-end"></i>
                                                       </h4>
-                                                      <h2 class="mb-5">₦{{number_format($payouts)}}</h2>
+                                                      <h2 class="mb-5">₦{{number_format($payouts, 2)}}</h2>
                                                       <hr class="w-100">
                                                       <h6 class="card-text">weekly average <span style="float:right;">₦0
                                                             </span> </h6>
@@ -176,7 +176,7 @@
                                                       <h4 class="font-weight-normal"> Expected Commission
                                                             <i class="mdi mdi-hand-coin mdi-24px float-end"></i>
                                                       </h4>
-                                                      <h2 class="mb-5">₦ {{number_format($commission) }}</h2>
+                                                      <h2 class="mb-5">₦ {{number_format($commission, 2) }}</h2>
                                                       <hr class="w-100">
                                                       <h6 class="card-text">weekly average<span style="float:right;">₦0
                                                             </span> </h6>
@@ -193,7 +193,7 @@
                                                       <h4 class="font-weight-normal">  Commission Paid
                                                             <i class="mdi mdi-hand-coin mdi-24px float-end"></i>
                                                       </h4>
-                                                      <h2 class="mb-5">₦ {{number_format($commissionPaid) }}</h2>
+                                                      <h2 class="mb-5">₦ {{number_format($commissionPaid, 2) }}</h2>
                                                       <hr class="w-100">
                                                       <h6 class="card-text">weekly average<span style="float:right;">₦0
                                                             </span> </h6>
