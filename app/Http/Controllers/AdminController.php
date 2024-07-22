@@ -112,7 +112,6 @@ class AdminController extends Controller
         $substring = 'plate';
         $countAllPlate = substr_count($string, $substring);
 
-
         $countPlatformWhereOrderCame = DB::table('orders')
         ->Join('platforms', 'orders.platform_id', '=', 'platforms.id')->distinct()
         ->where('orders.deleted_at', null)
@@ -123,8 +122,22 @@ class AdminController extends Controller
         $payouts = Orders::all()
         ->sum('payout');
 
+        $averageWeeklyPayouts = DB::table('orders')
+        ->where('deleted_at', null)
+        ->where('orders.order_amount', '!=', null)
+        ->where('orders.order_ref', '!=', null)
+        ->whereDate('delivery_date', '>=', $lastSevenDays)->get()
+        ->avg('payout');
+
         $commissionPaid = Orders::all()
         ->sum('commission');
+
+        $averageWeeklyCommissionPaid = DB::table('orders')
+        ->where('deleted_at', null)
+        ->where('orders.order_amount', '!=', null)
+        ->where('orders.order_ref', '!=', null)
+        ->whereDate('delivery_date', '>=', $lastSevenDays)->get()
+        ->avg('commission');
 
         $commission = (int)$sumAllOrders - (int)$payouts ;
         //Commission::all()->sum('localeats_comm');
@@ -190,7 +203,7 @@ class AdminController extends Controller
          'edenlifeVendor',  'countPlatforms',  'payouts',
          'commission',   'sumAllOrders', 'countAllOrder', 'countPlatformWhereOrderCame',
          'countAllPlate', 'commissionPaid', 'orderStart', 'orderEnd',
-        'averageWeeklySales'));
+        'averageWeeklySales', 'averageWeeklyPayouts'));
       }
     }
 
