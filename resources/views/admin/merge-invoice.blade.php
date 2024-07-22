@@ -470,6 +470,35 @@
 
                                                                         <th> <span id="response"></span></th>
                                                                   </tr>
+
+                                                                  <tr>
+                                                                        <th row colspan="7" class="text-end">
+                                                                              <h6> Commission Paid (₦)</h6>
+                                                                              <span id="comm-result"></span>
+                                                                        </th>
+                                                                        <th>
+                                                                              {{number_format($payout, 2)}}
+                                                                          
+
+                                                                              <input type="hidden" id="order_id"
+                                                                                    value="{{$data->id}}">
+
+
+                                                                              <div class="input-group">
+                                                                                    <input type="text"
+                                                                                          id="commission_paid"
+                                                                                          class="form-control bg-secondary fw-bold"
+                                                                                          value="{{$payout}}">
+                                                                                    <button onclick="commissionPaid()"
+                                                                                          class="btn text-success"><i
+                                                                                                class="fa fa-check"></i></button>
+                                                                              </div>
+
+                                                                              @endif
+
+                                                                        </th>
+
+                                                                  </tr>
                                                             </tbody>
                                                       </table>
                                                 </div>
@@ -586,8 +615,7 @@ function updatePayout() {
 function commissionPaid() {
       document.getElementById('comm_result').style.display = 'none';
       var commission_paid = document.getElementById('commission_paid').value;
-      var order = document.getElementById('order').value;
-      var vendor = document.getElementById('vendor').value;
+      var order_id = document.getElementById('order_id').value;
       var url = "{{ route('merge-invoice-commission-paid') }}";
       // url = showRoute;
 
@@ -604,7 +632,7 @@ function commissionPaid() {
             data: {
                   //you can more data here
                   'commission_paid': commission_paid,
-                  'order': order
+                  'order_id': order_id
             },
             success: function(data) {
                   console.log(data.message);
