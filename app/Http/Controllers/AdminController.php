@@ -141,6 +141,7 @@ class AdminController extends Controller
 
         $commission = (int)$sumAllOrders - (int)$payouts ;
         //Commission::all()->sum('localeats_comm');
+        $averageComm =$averageWeeklySales - $averageWeeklyPayouts ;
 
         $countPlatforms = Platforms::all();
         // a platform is ative is it has one or more active vendor
@@ -203,7 +204,8 @@ class AdminController extends Controller
          'edenlifeVendor',  'countPlatforms',  'payouts',
          'commission',   'sumAllOrders', 'countAllOrder', 'countPlatformWhereOrderCame',
          'countAllPlate', 'commissionPaid', 'orderStart', 'orderEnd',
-        'averageWeeklySales', 'averageWeeklyPayouts', 'averageWeeklyCommissionPaid'));
+        'averageWeeklySales', 'averageWeeklyPayouts', 'averageWeeklyCommissionPaid',
+    'averageComm'));
       }
     }
 
