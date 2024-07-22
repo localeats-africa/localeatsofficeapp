@@ -126,7 +126,7 @@ class AdminController extends Controller
         ->where('deleted_at', null)
         ->where('orders.order_amount', '!=', null)
         ->where('orders.order_ref', '!=', null)
-        ->whereDate('delivery_date', '>=', $lastSevenDays)->get()
+        //->whereDate('delivery_date', '>=', $lastSevenDays)->get()
         ->avg('payout');
 
         $commissionPaid = Orders::all()
@@ -136,7 +136,7 @@ class AdminController extends Controller
         ->where('deleted_at', null)
         ->where('orders.order_amount', '!=', null)
         ->where('orders.order_ref', '!=', null)
-        ->whereDate('delivery_date', '>=', $lastSevenDays)->get()
+       // ->whereDate('delivery_date', '>=', $lastSevenDays)->get()
         ->avg('commission');
 
         $commission = (int)$sumAllOrders - (int)$payouts ;
