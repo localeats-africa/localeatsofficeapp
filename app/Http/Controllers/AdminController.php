@@ -77,20 +77,20 @@ class AdminController extends Controller
         $orderStart = date("d-M-Y ", strtotime($allOrderStart)) ;
         $orderEnd = date("d-M-Y ", strtotime($allOrderEnd)) ;
 
-        $weekStart = Carbon::now()->startOfWeek();
-        $weekEnd = Carbon::now()->endOfWeek();
+        $weekStartMonday = Carbon::now()->startOfWeek();// Monday
+        $weekEndSunday = Carbon::now()->endOfWeek(); //Snnday
+        //current week
+        $startOfWeek = $weekStartMonday->format('Y-m-d');
+        $endOfWeek =   $weekEndSunday->format('Y-m-d');
 
-        $startOfWeek = $weekStart->format('Y-m-d');
-        $endOfWeek =   $weekEnd->format('Y-m-d');
+        $lastSevenDays = Carbon::now()->subDays(7)->startOfDay();
 
-      $averageWeeklySales = DB::table('orders')
+        $averageWeeklySales = DB::table('orders')
         ->where('deleted_at', null)
         ->where('orders.order_amount', '!=', null)
         ->where('orders.order_ref', '!=', null)
-        ->whereBetween('delivery_date', [$weekStart,   $endOfWeek])
+        ->whereDate('delivery_date', '>=', $lastSevenDays)->get()
         ->avg('order_amount');
-
-        dd($averageWeeklySales);
 
         $sumAllOrders = Orders::where('deleted_at', null)
         ->where('orders.order_amount', '!=', null)
@@ -189,7 +189,8 @@ class AdminController extends Controller
          'glovoVendor', 'activeGlovoVendor',   'activeEdenlifeVendor', 
          'edenlifeVendor',  'countPlatforms',  'payouts',
          'commission',   'sumAllOrders', 'countAllOrder', 'countPlatformWhereOrderCame',
-         'countAllPlate', 'commissionPaid', 'orderStart', 'orderEnd'));
+         'countAllPlate', 'commissionPaid', 'orderStart', 'orderEnd',
+        'averageWeeklySales'));
       }
     }
 
