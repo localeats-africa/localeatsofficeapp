@@ -77,6 +77,21 @@ class AdminController extends Controller
         $orderStart = date("d-M-Y ", strtotime($allOrderStart)) ;
         $orderEnd = date("d-M-Y ", strtotime($allOrderEnd)) ;
 
+        $weekStart = Carbon::now()->startOfWeek();
+        $weekEnd = Carbon::now()->endOfWeek();
+
+        $startOfWeek = $weekStart->format('Y-m-d');
+        $endOfWeek =   $weekEnd->format('Y-m-d');
+
+      $averageWeeklySales = DB::table('orders')
+        ->where('deleted_at', null)
+        ->where('orders.order_amount', '!=', null)
+        ->where('orders.order_ref', '!=', null)
+        ->whereBetween('delivery_date', [$weekStart,   $endOfWeek])
+        ->avg('order_amount');
+
+        dd($averageWeeklySales);
+
         $sumAllOrders = Orders::where('deleted_at', null)
         ->where('orders.order_amount', '!=', null)
         ->where('orders.order_ref', '!=', null)
