@@ -182,7 +182,7 @@
                                                       <h4 class="font-weight-normal">  Commission Paid
                                                             <i class="mdi mdi-hand-coin mdi-24px float-end"></i>
                                                       </h4>
-                                                      <h2 class="mb-5">₦ {{number_format($commission) }}</h2>
+                                                      <h2 class="mb-5">₦ {{number_format($commissionPaid) }}</h2>
                                                       <hr class="w-100">
                                                       <h6 class="card-text">weekly average<span style="float:right;">₦0
                                                             </span> </h6>
