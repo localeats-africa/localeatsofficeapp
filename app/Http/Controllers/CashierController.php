@@ -119,7 +119,7 @@ class CashierController extends Controller
                 return view('cashier.expenses',  compact('name', 'role', 
                 'vendorName','expensesList', 'vendor_id', 'perPage', 'expenses'))->withDetails( $pagination );     
             } 
-        else{return redirect()->back()->with('expenses-status', 'No record order found'); }
+        //else{return redirect()->back()->with('expenses-status', 'No record order found'); }
 
         return view('cashier.expenses',  compact('name', 'role', 
          'vendorName','expensesList', 'vendor_id', 'perPage', 'expenses'));
@@ -196,9 +196,27 @@ class CashierController extends Controller
         $salesList = OfflineFoodMenu::where('vendor_id', $vendor_id)
         ->orderBy('created_at', 'desc')
         ->get();
+        $perPage = $request->perPage ?? 10;
+        $search = $request->input('search');
+
+        $sales = OfflineSales::where('vendor_id', $vendor_id)
+        ->orderBy('created_at', 'desc')
+        ->where(function ($query) use ($search) {  // <<<
+        $query->where('sales_item', 'LIKE', '%'.$search.'%')
+        ->orWhere('price', 'LIKE', '%'.$search.'%')
+        ->orWhere('created_at', 'LIKE', '%'.$search.'%');
+        })
+        ->paginate($perPage)->appends(['per_page'   => $perPage]);
+        $pagination = $sales->appends ( array ('search' => $search) );
+            if (count ( $pagination ) > 0){
+                return view('cashier.sales',  compact('name', 'role', 
+                'vendorName','salesList', 'vendor_id', 'perPage', 'sales'))->withDetails( $pagination );     
+            } 
+        // else{return redirect()->back()->with('expenses-status', 'No record order found'); }
+
 
         return view('cashier.sales',  compact('name', 'role', 
-        'vendorName','salesList', 'vendor_id'));
+        'vendorName','salesList', 'vendor_id', 'sales', 'perPage'));
     }
 
     public function OfflineSaleList(Request $request){

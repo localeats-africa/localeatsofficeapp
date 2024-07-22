@@ -74,7 +74,7 @@
                               <div class="col-md-6 col-12">
                                     <div class="form-group">
                                           <label for="">Expenses List</label>
-
+<br>
                                           <select id="item" class="" name="item" type="text" style="width:90%">
                                                 <option value=""></option>
                                                 @foreach($expensesList as $data)
@@ -83,6 +83,7 @@
                                                 </option>
                                                 @endforeach
                                           </select>
+                                          <br>
                                           <span id="response"></span>
                                     </div>
 
@@ -155,7 +156,7 @@
                                                 Search:
                                                 <div class="ms-2 d-inline-block">
 
-                                                      <form action="{{ route('all-platform') }}" method="GET" role="search">
+                                                      <form action="{{ route('add-expenses') }}" method="GET" role="search">
                                                             {{ csrf_field() }}
                                                             <div class="input-group mb-2">
                                                                   <input type="text" class="form-control"
@@ -184,7 +185,7 @@
                                                 @foreach($expenses as $data)
                                                 <tr>
                                                       <td>{{$loop->iteration}}</td>
-                                                      <td>{{strtotime($data->created_at)}}</td>
+                                                      <td>{{ date('d/m/Y', strtotime($data->created_at))}}</td>
                                                       <td class="text-capitalize">{{$data->description}}</td>
                                                       <td>{{$data->cost}}</td>
 
