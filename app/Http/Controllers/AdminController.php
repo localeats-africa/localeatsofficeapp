@@ -73,8 +73,8 @@ class AdminController extends Controller
         ->where('orders.order_ref', '!=', null)
         ->get()->pluck('delivery_date')->last();
 
-        $orderStart = date("M-d-Y ", strtotime($allOrderStart)) ;
-        $orderEnd = date("M-d-Y ", strtotime($allOrderEnd)) ;
+        $orderStart = date("d-M-Y ", strtotime($allOrderStart)) ;
+        $orderEnd = date("d-M-Y ", strtotime($allOrderEnd)) ;
 
         $sumAllOrders = Orders::where('deleted_at', null)
         ->where('orders.order_amount', '!=', null)
