@@ -755,8 +755,32 @@ class AdminController extends Controller
             return redirect()->back()->with('expense-error', 'Opps! something went wrong');
         
         }
-
-
         return view('admin.new-expenses', compact('role', 'vendor'));
     }
+
+    public function vendorInvoiceCommisionPaid(Request $request){
+
+        $commission     = $request->commission_paid;
+        $order_id       = $request->order_id;
+
+         $updateOrder = Orders::where('id', $order_id)
+         ->update([
+             'commission'     => $commission,
+         ]);
+         if($updateOrder){
+            $data = [
+                'status' => true,
+                'message'=> 'Record updated successfully'
+            ];
+            return response()->json($data);
+        }
+         else{
+            $data = [
+                'status' => false,
+                'message'=> 'Opps! something happen'
+            ];
+            return response()->json($data);
+         }
+     }
+
 }//class
