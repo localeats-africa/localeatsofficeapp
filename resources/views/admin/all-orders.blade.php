@@ -201,9 +201,10 @@
                                           id="orders">
                                           <thead>
                                                 <tr>
-                                                      <th>Invoice Ref.</th>
-                                                      <th>Vendors</th>
+                                                      <th>Order Ref.</th>
                                                       <th>Platform</th>
+                                                      <th>Vendors</th>
+                                                     
                                                       <th>Item  (s)</th>
                                                       <th>Amount</th>
                                                       <th>Food Price</th>
@@ -215,9 +216,10 @@
                                           <tbody>
                                                 @foreach($orders as $data)
                                                 <tr>
-                                                      <td>{{$data->invoice_ref}}</td>
-                                                      <td class="text-capitalize">{{$data->vendor_name}}</td>
+                                                      <td>{{$data->order_ref}}</td>
                                                       <td class="text-capitalize">{{$data->name}}</td>
+                                                      <td class="text-capitalize">{{$data->vendor_name}}</td>
+                                                  
                                                       <td width="50%" style="white-space:wrap; line-height:1.6">   {!! nl2br($data->description) !!}</td>
                                                       <td>{{$data->order_amount}}</td>
                                                       <td>{{$data->food_price}}</td>
