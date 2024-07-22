@@ -89,8 +89,8 @@ class AdminController extends Controller
         ->where('deleted_at', null)
         ->where('orders.order_amount', '!=', null)
         ->where('orders.order_ref', '!=', null)
-        ->whereDate('delivery_date', '>=', $lastSevenDays)->get()
-        ->avg('order_amount');
+        ->whereDate('delivery_date', '>=', $lastSevenDays)
+        ->sum('order_amount');
 
         $sumAllOrders = Orders::where('deleted_at', null)
         ->where('orders.order_amount', '!=', null)
@@ -136,12 +136,12 @@ class AdminController extends Controller
         ->where('deleted_at', null)
         ->where('orders.order_amount', '!=', null)
         ->where('orders.order_ref', '!=', null)
-       // ->whereDate('delivery_date', '>=', $lastSevenDays)->get()
-        ->avg('commission');
+        ->whereDate('delivery_date', '>=', $lastSevenDays)->get()
+        ->sum('commission');
 
         $commission = (int)$sumAllOrders - (int)$payouts ;
         //Commission::all()->sum('localeats_comm');
-        $averageComm =$averageWeeklySales - $averageWeeklyPayouts ;
+        $averageWeeklyComm =$averageWeeklySales - $averageWeeklyPayouts ;
 
         $countPlatforms = Platforms::all();
         // a platform is ative is it has one or more active vendor
@@ -205,7 +205,7 @@ class AdminController extends Controller
          'commission',   'sumAllOrders', 'countAllOrder', 'countPlatformWhereOrderCame',
          'countAllPlate', 'commissionPaid', 'orderStart', 'orderEnd',
         'averageWeeklySales', 'averageWeeklyPayouts', 'averageWeeklyCommissionPaid',
-    'averageComm'));
+    'averageWeeklyComm'));
       }
     }
 
