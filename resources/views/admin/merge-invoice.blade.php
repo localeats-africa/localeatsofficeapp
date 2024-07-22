@@ -582,6 +582,44 @@ function updatePayout() {
 }
 </script>
 
+<script type="text/javascript">
+function commissionPaid() {
+      document.getElementById('comm_result').style.display = 'none';
+      var commission_paid = document.getElementById('commission_paid').value;
+      var order = document.getElementById('order').value;
+      var vendor = document.getElementById('vendor').value;
+      var url = "{{ route('merge-invoice-commission-paid') }}";
+      // url = showRoute;
+
+      //window.location = url;
+      $.ajaxSetup({
+            headers: {
+                  'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+            }
+      });
+      $.ajax({
+            method: 'POST',
+            enctype: 'multipart/form-data',
+            url: url,
+            data: {
+                  //you can more data here
+                  'commission_paid': commission_paid,
+                  'order': order
+            },
+            success: function(data) {
+                  console.log(data.message);
+                  document.getElementById('comm_result').style.display = '';
+                  document.getElementById('comm_result').style.color = 'green';
+                  document.getElementById('comm_result').innerHTML = data.message;
+            },
+            error: function(data) {
+                  console.log(data);
+            }
+      });
+
+}
+</script>
+
 
 
 @endsection
