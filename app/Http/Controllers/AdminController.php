@@ -83,13 +83,14 @@ class AdminController extends Controller
         $startOfWeek = $weekStartMonday->format('Y-m-d');
         $endOfWeek =   $weekEndSunday->format('Y-m-d');
 
-        $lastSevenDays = Carbon::now()->subDays(7)->startOfDay();
+        $today = Carbon::now()->format('Y-m-d');
+        $lastSevenDays = Carbon::now()->subDays(7)->startOfDay()->format('Y-m-d');
 
         $averageWeeklySales = DB::table('orders')
         ->where('deleted_at', null)
         ->where('orders.order_amount', '!=', null)
         ->where('orders.order_ref', '!=', null)
-        ->whereDate('delivery_date', '>=', $lastSevenDays)
+        ->whereBetween('delivery_date',  [$lastSevenDays, $today])
         ->sum('order_amount');
 
         $sumAllOrders = Orders::where('deleted_at', null)
@@ -119,15 +120,19 @@ class AdminController extends Controller
         ->where('orders.order_ref', '!=', null)
         ->count('platforms.id');
 
-        $payouts = Orders::all()
+        $payouts = DB::table('orders')
+        ->where('deleted_at', null)
+        ->where('orders.order_amount', '!=', null)
+        ->where('orders.order_ref', '!=', null)
         ->sum('payout');
 
         $averageWeeklyPayouts = DB::table('orders')
         ->where('deleted_at', null)
-        ->where('orders.order_amount', '!=', null)
-        ->where('orders.order_ref', '!=', null)
-        //->whereDate('delivery_date', '>=', $lastSevenDays)->get()
-        ->avg('payout');
+        // ->where('orders.order_amount', '!=', null)
+        // ->where('orders.order_ref', '!=', null)
+       ->where('payout', '!=', null)
+        ->whereBetween('updated_at',  [$lastSevenDays, $today])
+        ->sum('payout');
 
         $commissionPaid = Orders::all()
         ->sum('commission');
@@ -136,7 +141,8 @@ class AdminController extends Controller
         ->where('deleted_at', null)
         ->where('orders.order_amount', '!=', null)
         ->where('orders.order_ref', '!=', null)
-        ->whereDate('delivery_date', '>=', $lastSevenDays)->get()
+        //->whereDate('delivery_date', '>=', $lastSevenDays)->get()
+        ->whereBetween('updated_at',  [$lastSevenDays, $today])
         ->sum('commission');
 
         $commission = (int)$sumAllOrders - (int)$payouts ;
