@@ -174,63 +174,20 @@
                                           id="orders">
                                           <thead>
                                                 <tr>
-                                                      <th class="w-1"><input class="form-check-input m-0 align-middle"
-                                                                  type="checkbox" aria-label="Select all product">
-                                                      </th>
-                                                      <th>Logo</th>
-                                                      <th>Platform</th>
-                                                      <th>Vendors</th>
-                                                      <th>Order (s)</th>
-                                                      <th></th>
+                                                      <th class="w-1">SN</th>
+                                                      <th>Date</th>
+                                                      <th>Item</th>
+                                                      <th>Cost</th>
                                                 </tr>
                                           </thead>
                                           <tbody>
-                                                @foreach($platform as $data)
+                                                @foreach($expenses as $data)
                                                 <tr>
-                                                      <td><input class="form-check-input m-0 align-middle"
-                                                                  type="checkbox" aria-label="Select"></td>
-                                                      <td class="py-1">
-                                                            @if(empty($data->img_url))
-                                                            None
-                                                            @else
-                                                            <img src="{{ asset($data->img_url) }}" class="cursor"
-                                                                  style="">
-                                                            @endif
-                                                      </td>
+                                                      <td>{{$loop->iteration}}</td>
+                                                      <td>{{strtotime($data->created_at)}}</td>
+                                                      <td class="text-capitalize">{{$data->description}}</td>
+                                                      <td>{{$data->cost}}</td>
 
-                                                      <td class="text-capitalize">{{$data->name}}</td>
-
-                                                      <td>
-                                                            @if($data->name == 'Chowdeck')
-                                                            {{$activeChowdeckVendor->count()}}
-                                                            @endif
-
-                                                            @if($data->name == 'Glovo')
-                                                            {{$activeGlovoVendor->count()}}
-                                                            @endif
-
-                                                            @if($data->name == 'Edenlife')
-                                                            {{$activeEdenlifeVendor->count()}}
-                                                            @endif
-                                                      </td>
-                                                     
-                                                      <td>0</td>
-
-                                                      <td class="text-end">
-                                                            <span class="dropdown">
-                                                                  <button
-                                                                        class="btn dropdown-toggle align-text-top text-danger"
-                                                                        data-bs-boundary="viewport"
-                                                                        data-bs-toggle="dropdown">Actions</button>
-                                                                  <div class="dropdown-menu ">
-                                                                        <a class="dropdown-item text-capitalize text-dark"
-                                                                              href="delete-platform/{{$data->id}}">
-                                                                              <small>Delete</small>
-                                                                        </a>
-
-                                                                  </div>
-                                                            </span>
-                                                      </td>
 
                                                 </tr>
                                                 @endforeach
@@ -243,18 +200,18 @@
                                     <p class="m-0 text-secondary">
 
                                           Showing
-                                          {{ ($platform->currentPage() - 1) * $platform->perPage() + 1; }} to
-                                          {{ min($platform->currentPage()* $platform->perPage(), $platform->total()) }}
+                                          {{ ($expenses->currentPage() - 1) * $expenses->perPage() + 1; }} to
+                                          {{ min($expenses->currentPage()* $expenses->perPage(), $expenses->total()) }}
                                           of
-                                          {{$platform->total()}} entries
+                                          {{$expenses->total()}} entries
                                     </p>
 
                                     <ul class="pagination m-0 ms-auto">
-                                          @if(isset($platform))
-                                          @if($platform->currentPage() > 1)
+                                          @if(isset($expenses))
+                                          @if($expenses->currentPage() > 1)
                                           <li class="page-item ">
                                                 <a class="page-link text-danger"
-                                                      href="{{ $platform->previousPageUrl() }}" tabindex="-1"
+                                                      href="{{ $expenses->previousPageUrl() }}" tabindex="-1"
                                                       aria-disabled="true">
                                                       <!-- Download SVG icon from http://tabler-icons.io/i/chevron-left -->
                                                       <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24"
@@ -271,11 +228,11 @@
 
 
                                           <li class="page-item">
-                                                {{ $platform->appends(compact('perPage'))->links()  }}
+                                                {{ $expenses->appends(compact('perPage'))->links()  }}
                                           </li>
-                                          @if($platform->hasMorePages())
+                                          @if($expenses->hasMorePages())
                                           <li class="page-item">
-                                                <a class="page-link text-danger" href="{{ $platform->nextPageUrl() }}">
+                                                <a class="page-link text-danger" href="{{ $expenses->nextPageUrl() }}">
                                                       next
                                                       <!-- Download SVG icon from http://tabler-icons.io/i/chevron-right -->
                                                       <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24"
