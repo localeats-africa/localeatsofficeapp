@@ -172,15 +172,15 @@
                                                                                     name="invoice">
                                                                               <input type="hidden" value="{{$vendorID}}"
                                                                                     name="vendor">
-                                                                                    @if($invoicePaymentStatus == 'paid')
-                                                                                    <button type="submit" name="submit"
+                                                                              @if($invoicePaymentStatus == 'paid')
+                                                                              <button type="submit" name="submit"
                                                                                     class="btn bg-gradient-primary text-white">View
                                                                                     Invoice</button>
-                                                                                    @else
+                                                                              @else
                                                                               <button type="submit" name="submit"
                                                                                     class="btn bg-gradient-primary text-white">Generate
                                                                                     Invoice</button>
-                                                                                    @endif 
+                                                                              @endif
                                                                         </form>
 
                                                                   </li>
@@ -391,21 +391,22 @@
                                                                   @endforeach
                                                                   <tr>
                                                                         <th>
-                                                                        @if($invoicePaymentStatus == 'paid')
-                                                                        @else
+                                                                              @if($invoicePaymentStatus == 'paid')
+                                                                              @else
                                                                               <form method="get"
                                                                                     action="{{ route('add-invoice-row',  [$invoiceRef]) }}"
                                                                                     name="submit"
                                                                                     enctype="multipart/form-data">
                                                                                     @csrf
                                                                                     {{csrf_field()}}
-                                                                                    <input type="hidden" name="vendor" value="{{ $vendorID }}">
+                                                                                    <input type="hidden" name="vendor"
+                                                                                          value="{{ $vendorID }}">
                                                                                     <button type="submit"
                                                                                           class="btn btn-block btn-success text-dark"><i
                                                                                                 class="fa  fa-plus"></i>
                                                                                           Add New Row </button>
                                                                               </form>
-                                                                              @endif  
+                                                                              @endif
                                                                         </th>
                                                                         <th class="text-end">
                                                                               <h6>Total (₦)</h6>
@@ -470,6 +471,8 @@
 
                                                                         <th> <span id="response"></span></th>
                                                                   </tr>
+                                                                  @auth
+                                                                  @if(Auth::user()->role_id =='2')
 
                                                                   <tr>
                                                                         <th row colspan="7" class="text-end">
@@ -477,28 +480,22 @@
                                                                               <span id="comm-result"></span>
                                                                         </th>
                                                                         <th>
-                                                                              {{number_format($payout, 2)}}
-                                                                          
-
                                                                               <input type="hidden" id="order_id"
                                                                                     value="{{$data->id}}">
-
-
                                                                               <div class="input-group">
                                                                                     <input type="text"
                                                                                           id="commission_paid"
                                                                                           class="form-control bg-secondary fw-bold"
-                                                                                          value="{{$payout}}">
+                                                                                          value="{{$commissionPiad}}">
                                                                                     <button onclick="commissionPaid()"
                                                                                           class="btn text-success"><i
                                                                                                 class="fa fa-check"></i></button>
                                                                               </div>
 
-                                                                              @endif
-
                                                                         </th>
-
                                                                   </tr>
+                                                                  @endif
+                                                                  @endauth
                                                             </tbody>
                                                       </table>
                                                 </div>
