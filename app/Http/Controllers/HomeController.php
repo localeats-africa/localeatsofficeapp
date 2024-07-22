@@ -953,7 +953,8 @@ class HomeController extends Controller
         'vendorAddress','vendorState', 'vendorCountry', 'vendorPhone',
          'vendorEmail', 'vendorFname', 'vendorLname', 'orders',
          'totalComm', 'totalPlatformComm', 'sumAmount', 'sumFoodPrice', 'sumExtra',
-        'vendorFoodPrice', 'payout', 'invoiceRef', 'vendorID', 'invoicePaymentStatus') );
+        'vendorFoodPrice', 'payout', 'invoiceRef', 'vendorID', 'invoicePaymentStatus',
+        'commissionPiad') );
     }
 
     public function updateMergeInvoiceFood(Request $request){
