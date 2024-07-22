@@ -61,6 +61,21 @@ class AdminController extends Controller
         ->where('users.id', $id)
         ->pluck('role_name')->first();
 
+        $allOrderStart = DB::table('orders')
+        ->where('orders.deleted_at', null)
+        ->where('orders.order_amount', '!=', null)
+        ->where('orders.order_ref', '!=', null)
+        ->get()->pluck('delivery_date')->first();
+
+        $allOrderEnd = DB::table('orders')
+        ->where('orders.deleted_at', null)
+        ->where('orders.order_amount', '!=', null)
+        ->where('orders.order_ref', '!=', null)
+        ->get()->pluck('delivery_date')->last();
+
+        $orderStart = date("M-d-Y ", strtotime($allOrderStart)) ;
+        $orderEnd = date("M-d-Y ", strtotime($allOrderEnd)) ;
+
         $sumAllOrders = Orders::where('deleted_at', null)
         ->where('orders.order_amount', '!=', null)
         ->where('orders.order_ref', '!=', null)
@@ -70,7 +85,6 @@ class AdminController extends Controller
         ->where('orders.order_amount', '!=', null)
         ->where('orders.order_ref', '!=', null)
         ->count();
-
 
         $getOrderItem = DB::table('orders')
         ->where('deleted_at', null)
@@ -159,7 +173,7 @@ class AdminController extends Controller
          'glovoVendor', 'activeGlovoVendor',   'activeEdenlifeVendor', 
          'edenlifeVendor',  'countPlatforms',  'payouts',
          'commission',   'sumAllOrders', 'countAllOrder', 'countPlatformWhereOrderCame',
-         'countAllPlate', 'commissionPaid'));
+         'countAllPlate', 'commissionPaid', 'orderStart', 'orderEnd'));
       }
     }
 
@@ -340,10 +354,7 @@ class AdminController extends Controller
               
               return response()->json($data);
         }
-
     }
-
-
     
     public function restaurant(Request $request){
         $name = Auth::user()->name;
@@ -416,7 +427,6 @@ class AdminController extends Controller
             } 
         else{return redirect()->back()->with('error', 'No record order found'); }
 
-
         return view('admin.food-type', compact('perPage', 'role', 'name', 'foodType'));
     }
 
@@ -433,7 +443,6 @@ class AdminController extends Controller
            return redirect()->back()->with('add-food-type', 'Food Type Added!');
         }
         else{return redirect()->back()->with('error', 'Opps! something went wrong.'); }
-
     }
 
     public function newUser(Request $request){
