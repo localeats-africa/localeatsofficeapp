@@ -65,7 +65,8 @@ class AdminController extends Controller
         ->where('orders.deleted_at', null)
         ->where('orders.order_amount', '!=', null)
         ->where('orders.order_ref', '!=', null)
-        ->get()->pluck('delivery_date')->first();
+        //->min('delivery_date');
+         ->get()->pluck('delivery_date')->first();
 
         $allOrderEnd = DB::table('orders')
         ->where('orders.deleted_at', null)
@@ -602,6 +603,7 @@ class AdminController extends Controller
         $query->where('orders.created_at', 'LIKE', '%'.$search.'%')
                ->orWhere('vendor.vendor_name', 'LIKE', '%'.$search.'%')
                ->orWhere('orders.invoice_ref', 'LIKE', '%'.$search.'%')
+               ->orWhere('orders.delivery_date', 'LIKE', '%'.$search.'%')
                ->orderBy('orders.created_at', 'desc');
         })->paginate($perPage, $columns = ['*'], $pageName = 'orders'
         )->appends(['per_page'   => $perPage]);
