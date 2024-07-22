@@ -477,7 +477,7 @@
                                                                   <tr>
                                                                         <th row colspan="7" class="text-end">
                                                                               <h6> Commission Paid (₦)</h6>
-                                                                              <span id="comm-result"></span>
+                                                                              <span id="comm_result"></span>
                                                                         </th>
                                                                         <th>
                                                                               <input type="hidden" id="order_id"
