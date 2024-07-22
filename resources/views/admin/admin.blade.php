@@ -8,12 +8,12 @@
       <div class="content-wrapper">
             <div class="page-header">
                   <h3 class="page-title">
-                        Overview 
+                        Overview >>>   <span class="text-info">{{$orderStart}}</span> -  <span class="text-info">{{$orderEnd}}</span>   
                   </h3>
                   <nav aria-label="breadcrumb">
                         <ul class="breadcrumb">
                               <li class="breadcrumb-item active" aria-current="page">
-                              <span class="text-info">{{$orderStart}}</span> -  <span class="text-info">{{$orderEnd}}</span>   
+                             
                               </li>
 
                               <li class="breadcrumb-item active" aria-current="page">
