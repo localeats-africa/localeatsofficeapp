@@ -103,8 +103,26 @@ class CashierController extends Controller
         ->orderBy('created_at', 'desc')
         ->get();
 
+        $perPage = $request->perPage ?? 10;
+        $search = $request->input('search');
+
+        $expenses = VendorExpenses::where('vendor_id', $vendor_id)
+        ->orderBy('created_at', 'desc')
+        ->where(function ($query) use ($search) {  // <<<
+        $query->where('description', 'LIKE', '%'.$search.'%')
+        ->orWhere('cost', 'LIKE', '%'.$search.'%')
+        ->orWhere('created_at', 'LIKE', '%'.$search.'%');
+        })
+        ->paginate($perPage,  $pageName = 'expenses')->appends(['per_page'   => $perPage]);
+        $pagination = $platform->appends ( array ('search' => $search) );
+            if (count ( $pagination ) > 0){
+                return view('cashier.expenses',  compact('name', 'role', 
+                'vendorName','expensesList', 'vendor_id', 'perPage'))->withDetails( $pagination );     
+            } 
+        else{return redirect()->back()->with('expenses-status', 'No record order found'); }
+
         return view('cashier.expenses',  compact('name', 'role', 
-         'vendorName','expensesList', 'vendor_id'));
+         'vendorName','expensesList', 'vendor_id', 'perPage'));
     }
 
     public function addExpensesList(Request $request){
