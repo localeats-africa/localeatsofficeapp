@@ -203,7 +203,7 @@ class AdminController extends Controller
          'edenlifeVendor',  'countPlatforms',  'payouts',
          'commission',   'sumAllOrders', 'countAllOrder', 'countPlatformWhereOrderCame',
          'countAllPlate', 'commissionPaid', 'orderStart', 'orderEnd',
-        'averageWeeklySales', 'averageWeeklyPayouts'));
+        'averageWeeklySales', 'averageWeeklyPayouts', 'averageWeeklyCommissionPaid'));
       }
     }
 
