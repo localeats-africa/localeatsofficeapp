@@ -914,6 +914,13 @@ class HomeController extends Controller
             ->get('*')
             ->value('payout');
             $payout = (int)$getpayout;
+
+            $getcommission =  DB::table('orders')
+            ->where('vendor_id', $vendor)
+            ->where('invoice_ref', $invoice_ref)
+            ->get('*')
+            ->value('commission');
+            $commissionPiad = (int)$getcommission;
             
             $invoiceRef =  DB::table('orders')
             ->where('orders.vendor_id', $vendor)
