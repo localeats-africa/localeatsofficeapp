@@ -600,8 +600,7 @@ class AdminController extends Controller
         ->select(['orders.*', 'vendor.vendor_name', 'platforms.name', 'users.fullname'])
         ->orderBy('orders.created_at', 'desc')
         ->where(function ($query) use ($search) {  // <<<
-        $query->where('orders.created_at', 'LIKE', '%'.$search.'%')
-               ->orWhere('vendor.vendor_name', 'LIKE', '%'.$search.'%')
+        $query->where('vendor.vendor_name', 'LIKE', '%'.$search.'%')
                ->orWhere('orders.invoice_ref', 'LIKE', '%'.$search.'%')
                ->orWhere('orders.delivery_date', 'LIKE', '%'.$search.'%')
                ->orderBy('orders.created_at', 'desc');
