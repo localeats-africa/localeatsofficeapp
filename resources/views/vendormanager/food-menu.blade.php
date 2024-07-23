@@ -243,7 +243,7 @@
                         <!-- <p> <img src="/assets/images/bulk-upload-food-menu.png" alt="" style="width:100%;"></p> -->
 
                   </div>
-<p></p>
+                  <p></p>
             </div>
             <form method="post" action="{{ route('import-food-menu') }}" name="submit" enctype="multipart/form-data">
                   @csrf
