@@ -216,14 +216,17 @@
                                                                               <small>{{$loop->iteration}} </small>
                                                                               @if($invoicePaymentStatus == 'paid')
                                                                               @else
+                                                                              @auth
+                                                                              @if(Auth::user()->role_id =='2')
+                                                                              &nbsp; &nbsp; 
+                                                                              <input type="hidden" id="order_id"
+                                                                                    value="{{$data->id}}">
+                                                                              <button onclick="deleteOrderRow()"
+                                                                                    class="text-danger"><i
+                                                                                          class="fa fa-trash"></i></button>
 
-                                                                              <!-- <div class="input-group">
-                                                                                    <input type="hidden" id="order_id"
-                                                                                          value="{{$data->id}}">
-                                                                                    <button onclick="deleteOrderRow()"
-                                                                                          class="text-danger"><i
-                                                                                                class="fa fa-trash"></i></button>
-                                                                              </div> -->
+                                                                              @endif
+                                                                              @endauth
 
                                                                               @endif
                                                                         </td>
