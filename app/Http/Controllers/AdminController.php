@@ -215,6 +215,51 @@ class AdminController extends Controller
          ->where('sales_platform.platform_name', 'edenlife')
          ->get('sales_platform.vendor_id');
 
+            $chartYearlyTotalSales = Orders::select(
+            \DB::raw('YEAR(delivery_date) as year'),
+            )
+            ->where('deleted_at', null)
+            ->where('orders.order_amount', '!=', null)
+            ->where('orders.order_ref', '!=', null)
+            ->groupby('year')
+            ->get();
+          
+            // $result[] = ['Year', 'Sales'];
+            // foreach ($ssChartyear as $key => $value) {
+            // $result[++$key] = [$value->year,  (int)$value->total_sales ];
+            // }
+
+          $chartMonthlyTotalSales =   Orders::select(
+                \DB::raw("COUNT(*) as total_sales"), 
+                \DB::raw('DATE_FORMAT(delivery_date,"%M ") as month'),
+                \DB::raw('SUM(order_amount) as sales_volume'),
+                )
+                ->where('deleted_at', null)
+                ->where('orders.order_amount', '!=', null)
+                ->where('orders.order_ref', '!=', null)
+                ->groupby('month')
+                ->get();
+                $chartSalesMonth = Arr::pluck($chartMonthlyTotalSales, 'month');
+                $chartSalesVolume = Arr::pluck($chartMonthlyTotalSales, 'sales_volume');
+                $chartSalesTotal = Arr::pluck($chartMonthlyTotalSales, 'total_sales');
+
+                $salesYear =  Arr::pluck($chartYearlyTotalSales, 'year');
+              
+                $data = [
+                    'month' =>  $chartSalesMonth ,
+                    'sales' =>  $chartSalesVolume,
+                    'total' =>  $chartSalesTotal,
+                ];
+
+                // $data[] = ['Month', 'Total', 'Sales'];
+                // foreach ($chartMonthlyTotalSales as $key => $value) {
+                // $data[++$key] = ["month", $value->month];
+                // $data[++$key] = ["total", number_format($value->total_sales)];
+                // $data[++$key] = ["sales", number_format($value->sales_volume)];
+                // }
+                //dd($data['month']);
+
+
         return view('admin.admin', compact('name', 'role', 'countVendor',
          'countActiveVendor', 'countPlatforms', 'activePlatform',
          'activeChowdeckVendor', 'chowdeckVendor',
@@ -223,7 +268,7 @@ class AdminController extends Controller
          'commission',   'sumAllOrders', 'countAllOrder', 'countPlatformWhereOrderCame',
          'countAllPlate', 'commissionPaid', 'orderStart', 'orderEnd',
         'averageWeeklySales', 'averageWeeklyPayouts', 'averageWeeklyCommissionPaid',
-    'averageWeeklyComm'));
+        'averageWeeklyComm', 'data', 'salesYear'));
       }
     }
 
@@ -651,6 +696,7 @@ class AdminController extends Controller
         ->where(function ($query) use ($search) {  // <<<
         $query->where('vendor.vendor_name', 'LIKE', '%'.$search.'%')
                ->orWhere('orders.invoice_ref', 'LIKE', '%'.$search.'%')
+               ->orWhere('platforms.name', 'LIKE', '%'.$search.'%')
                ->orWhere('orders.delivery_date', 'LIKE', '%'.$search.'%')
                ->orderBy('orders.created_at', 'desc');
         })->paginate($perPage, $columns = ['*'], $pageName = 'orders'
