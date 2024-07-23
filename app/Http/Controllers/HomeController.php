@@ -616,6 +616,15 @@ class HomeController extends Controller
         }
         
     }
+    public function bulkDeleteFoodMenu(Request $request){
+        $today = Carbon::now();
+        $ids = $request->ids;
+        DB::table("food_menu")->whereIn('id',explode(",",$ids))
+        ->update([
+            'deleted_at' => $today
+        ]);
+        return response()->json(['success'=>"Menu Deleted successfully."]);
+    }
 
     public function setupApprovedVendor(Request $request){
         $name = Auth::user()->name;
