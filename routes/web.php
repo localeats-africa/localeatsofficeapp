@@ -144,7 +144,8 @@ Route::controller(AdminController::class)->group(function () {
     Route::get('new-expenses', 'newExpenses')->name('new-expenses');
     Route::post('add-expenses', 'addExpenses')->name('add-expenses');
     Route::post('merge-invoice-commission-paid',  'vendorInvoiceCommisionPaid')->name('merge-invoice-commission-paid');     
-    
+    Route::get('profit-and-loss', 'profitAndLoss')->name('profit-and-loss'); 
+    Route::get('vendor-sales-list', 'salesList')->name('vendor-sales-list');
 });
 
 Route::controller(ManagerController::class)->group(function () {

@@ -763,7 +763,7 @@ class AdminController extends Controller
             return redirect('all-staff')->with('staff-status', 'Opps! something went wrong' ); 
         }
     }
-
+    //view expeses list per vendor
     public function expensesList(Request $request){
         $id = Auth::user()->id;
         $role = DB::table('role')->select('role_name')
@@ -771,10 +771,29 @@ class AdminController extends Controller
         ->where('users.id', $id)
         ->pluck('role_name')->first();
         $vendor = Vendor::all();
-        return view('admin.expenses-list', compact('role', 'vendor'));
 
+        $vendor_id      =  $request->vendor_id;
+        $startDate      =   date("Y-m-d", strtotime($request->from)) ;
+        $endDate        =  date("Y-m-d", strtotime($request->to));
+        
+        $vendorName = Vendor::where('id', $vendor_id)
+        ->get()->pluck('vendor_name')->first();
+        
+        $vendorExpense = VendorExpenses::where('vendor_id',  $vendor_id)
+        ->whereDate('vendor_expenses.created_at', '>=', $startDate)                                 
+        ->whereDate('vendor_expenses.created_at', '<=', $endDate) 
+        ->get(['vendor_expenses.*']);
+
+        $vendorTotalExpense = VendorExpenses::where('vendor_id',  $vendor_id)
+        ->whereDate('created_at', '>=', $startDate)                                 
+        ->whereDate('created_at', '<=', $endDate) 
+        ->sum('cost');
+
+        return view('admin.expenses-list', compact('role', 'vendor',
+        'vendorExpense', 'vendorTotalExpense', 'vendorName', 'startDate', 'endDate'));
     }
 
+    // page to add more expenses to the list
     public function newExpenses(Request $request){
         $id = Auth::user()->id;
         $role = DB::table('role')->select('role_name')
@@ -802,9 +821,73 @@ class AdminController extends Controller
         }
         else{
             return redirect()->back()->with('expense-error', 'Opps! something went wrong');
-        
         }
         return view('admin.new-expenses', compact('role', 'vendor'));
+    }
+
+        //view sales list per vendor
+        public function salesList(Request $request){
+            $id = Auth::user()->id;
+            $role = DB::table('role')->select('role_name')
+            ->join('users', 'users.role_id', 'role.id')
+            ->where('users.id', $id)
+            ->pluck('role_name')->first();
+            $vendor = Vendor::all();
+            $vendor_id      =  $request->vendor_id;
+            $startDate      =   date("Y-m-d", strtotime($request->from)) ;
+            $endDate        =  date("Y-m-d", strtotime($request->to));
+ 
+            $vendorName = Vendor::where('id', $vendor_id)
+            ->get()->pluck('vendor_name')->first();
+            
+            $vendorSales = OfflineSales::where('vendor_id',  $vendor_id)
+            ->whereDate('created_at', '>=', $startDate)                                 
+            ->whereDate('created_at', '<=', $endDate) 
+            ->get(['*']);
+    
+            $vendorTotalSales = OfflineSales::where('vendor_id',  $vendor_id)
+            ->whereDate('created_at', '>=', $startDate)                                 
+            ->whereDate('created_at', '<=', $endDate) 
+            ->sum('price');
+        
+            return view('admin.vendor-sales-list', compact('role', 'vendor',
+            'vendorSales', 'vendorTotalSales', 'vendorName',
+            'startDate', 'endDate',  'vendorSales', 'vendorTotalSales'));
+        }
+
+    public function profitAndLoss(Request $request){
+        $id = Auth::user()->id;
+        $role = DB::table('role')->select('role_name')
+        ->join('users', 'users.role_id', 'role.id')
+        ->where('users.id', $id)
+        ->pluck('role_name')->first();
+        $vendor = Vendor::all();
+
+        $today = Carbon::now()->format('Y-m-d');
+        $lastSevenDays = Carbon::now()->subDays(7)->startOfDay()->format('Y-m-d');
+
+        $vendor_id      = $request->vendor_id;
+        $startDate      =   date("Y-m-d", strtotime($request->from)) ;
+        $endDate        =  date("Y-m-d", strtotime($request->to));
+
+        $vendorName = Vendor::where('id', $vendor_id)
+        ->get()->pluck('vendor_name')->first();
+
+        $vendorTotalExpense = VendorExpenses::where('vendor_id',  $vendor_id)
+        ->whereDate('created_at', '>=', $startDate)                                 
+        ->whereDate('created_at', '<=', $endDate) 
+        ->sum('cost');
+
+        $vendorTotalSales = OfflineSales::where('vendor_id',  $vendor_id)
+        ->whereDate('created_at', '>=', $startDate)                                 
+        ->whereDate('created_at', '<=', $endDate) 
+        ->sum('price');
+
+        $profitAndLoss = $vendorTotalSales - $vendorTotalExpense;
+
+        return view('admin.profit-and-loss', compact('role', 'vendor',
+       'vendorTotalExpense', 'vendorTotalSales', 'profitAndLoss', 
+        'vendorName', 'startDate', 'endDate'));
     }
 
     public function vendorInvoiceCommisionPaid(Request $request){
