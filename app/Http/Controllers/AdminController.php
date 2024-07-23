@@ -60,23 +60,6 @@ class AdminController extends Controller
         ->join('users', 'users.role_id', 'role.id')
         ->where('users.id', $id)
         ->pluck('role_name')->first();
-
-        $allOrderStart = DB::table('orders')
-        ->where('orders.deleted_at', null)
-        ->where('orders.order_amount', '!=', null)
-        ->where('orders.order_ref', '!=', null)
-        //->min('delivery_date');
-         ->get()->pluck('delivery_date')->first();
-
-        $allOrderEnd = DB::table('orders')
-        ->where('orders.deleted_at', null)
-        ->where('orders.order_amount', '!=', null)
-        ->where('orders.order_ref', '!=', null)
-        ->get()->pluck('delivery_date')->last();
-
-        $orderStart = date("d-M-Y ", strtotime($allOrderStart)) ;
-        $orderEnd = date("d-M-Y ", strtotime($allOrderEnd)) ;
-
         $weekStartMonday = Carbon::now()->startOfWeek();// Monday
         $weekEndSunday = Carbon::now()->endOfWeek(); //Snnday
         //current week
@@ -84,13 +67,37 @@ class AdminController extends Controller
         $endOfWeek =   $weekEndSunday->format('Y-m-d');
 
         $today = Carbon::now()->format('Y-m-d');
-        $lastSevenDays = Carbon::now()->subDays(7)->startOfDay()->format('Y-m-d');
 
+        $sevenDaysBack = Carbon::now()->subDays(7)->startOfDay();
+        $lastSevenDays  =  date('Y-m-d', strtotime($sevenDaysBack));
+
+        //dd();
+        $allOrderStart = DB::table('orders')
+        ->where('orders.deleted_at', null)
+        ->where('orders.order_amount', '!=', null)
+        ->where('orders.order_ref', '!=', null)
+        ->whereDate('delivery_date', '<=', $today) 
+         ->get()->pluck('delivery_date')->first();
+
+        $allOrderEnd = DB::table('orders')
+        ->where('orders.deleted_at', null)
+        ->where('orders.order_amount', '!=', null)
+        ->where('orders.order_ref', '!=', null)
+        ->whereDate('delivery_date', '<=', $today) 
+        ->get()->pluck('delivery_date')->last();
+        //dd($allOrderEnd);
+
+        $orderStart = date("d-M-Y ", strtotime($allOrderStart)) ;
+        $orderEnd = date("d-M-Y ", strtotime($allOrderEnd)) ;
+
+      
         $averageWeeklySales = DB::table('orders')
         ->where('deleted_at', null)
         ->where('orders.order_amount', '!=', null)
         ->where('orders.order_ref', '!=', null)
-        ->whereBetween('delivery_date',  [$lastSevenDays, $today])
+        ->whereDate('delivery_date', '>=', $lastSevenDays)                                 
+        ->whereDate('delivery_date', '<=', $today) 
+       // ->whereBetween('delivery_date',  [$lastSevenDays, $today])
         ->sum('order_amount');
 
         $sumAllOrders = Orders::where('deleted_at', null)
@@ -128,10 +135,12 @@ class AdminController extends Controller
 
         $averageWeeklyPayouts = DB::table('orders')
         ->where('deleted_at', null)
-        // ->where('orders.order_amount', '!=', null)
-        // ->where('orders.order_ref', '!=', null)
+        ->where('orders.order_amount', '!=', null)
+        ->where('orders.order_ref', '!=', null)
        ->where('payout', '!=', null)
-        ->whereBetween('updated_at',  [$lastSevenDays, $today])
+        //->whereBetween('updated_at',  [$lastSevenDays, $today])
+        ->whereDate('updated_at', '>=', $lastSevenDays)                                 
+        ->whereDate('updated_at', '<=', $today) 
         ->sum('payout');
 
         $commissionPaid = Orders::all()
@@ -141,8 +150,9 @@ class AdminController extends Controller
         ->where('deleted_at', null)
         ->where('orders.order_amount', '!=', null)
         ->where('orders.order_ref', '!=', null)
-        //->whereDate('delivery_date', '>=', $lastSevenDays)->get()
-        ->whereBetween('updated_at',  [$lastSevenDays, $today])
+       // ->whereBetween('updated_at',  [$lastSevenDays, $today])
+        ->whereDate('updated_at', '>=', $lastSevenDays)                                 
+        ->whereDate('updated_at', '<=', $today) 
         ->sum('commission');
 
         $commission = (int)$sumAllOrders - (int)$payouts ;
