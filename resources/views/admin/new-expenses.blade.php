@@ -107,7 +107,146 @@
             </div>
             <!---end row --->
 
+<!---bulk Upload--->
+<p>
+            <h4>Bulk Upload:</h4>
+            </p>
+            <div class="row">
+                  <div class="col-md-12  text-danger ">
+                        <small><b>How to upload bulk expenses list; A single spreedsheet with "one" column; item only, saved with
+                              vendor/store name</b></small>
+                        <!-- <p> <img src="/assets/images/bulk-upload-food-menu.png" alt="" style="width:100%;"></p> -->
 
+                  </div>
+                  <p></p>
+            </div>
+            <form method="post" action="{{ route('import-food-menu') }}" name="submit" enctype="multipart/form-data">
+                  @csrf
+                  <div class="row ">
+                        <div class="col-md-6 grid-margin stretch-card">
+                              <div class="card">
+                                    <div class="card-body ">
+                                          <div class="form-label ">Choose a vendor <i class="text-danger">*</i>
+                                          </div>
+                                          <select class="js-example-basic-single2" style="width:100%" name="vendor_name"
+                                                id="vendor2">
+                                                <option> search </option>
+                                                @foreach($vendor as $data)
+                                                <option value="{{$data->id}}">
+                                                      {{$data->vendor_name}}</option>
+                                                @endforeach
+                                          </select>
+
+                                    </div>
+                                    @error('vendor_name')
+                                    <div class="alert alert-danger alert-dismissible" role="alert">
+                                          <div class="d-flex">
+                                                <div>
+                                                      <!-- Download SVG icon from http://tabler-icons.io/i/alert-circle -->
+                                                      <svg xmlns="http://www.w3.org/2000/svg" class="icon alert-icon"
+                                                            width="24" height="24" viewBox="0 0 24 24" stroke-width="2"
+                                                            stroke="currentColor" fill="none" stroke-linecap="round"
+                                                            stroke-linejoin="round">
+                                                            <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                                                            <path d="M3 12a9 9 0 1 0 18 0a9 9 0 0 0 -18 0" />
+                                                            <path d="M12 8v4" />
+                                                            <path d="M12 16h.01" />
+                                                      </svg>
+                                                </div>
+                                                <div>
+                                                      {{ $message }}
+                                                </div>
+                                          </div>
+                                          <a class="btn-close" data-bs-dismiss="alert" aria-label="close"></a>
+                                    </div>
+                                    @enderror
+                              </div>
+                        </div>
+                        <div class="col-md-6 grid-margin stretch-card">
+
+                              <div class="card">
+                                    <div class="card-body">
+                                          <div class="form-group">
+
+                                                <label>Import Excel File <i class="text-danger">*</i></label>
+                                                <input type="file" name="file" accept=".xlsx,.xls"
+                                                      class="file-upload-default" id="file">
+                                                <div class="input-group col-xs-12">
+                                                      <input type="text" class="form-control file-upload-info"
+                                                            disabled="" placeholder=". xlsx, .xls">
+                                                      <span class="input-group-append">
+                                                            <button
+                                                                  class="file-upload-browse btn btn-sm  bg-gradient-dark  text-white py-3"
+                                                                  type="button"> <i
+                                                                        class="mdi mdi-cloud-braces fs-24 menu-icon"></i></button>
+                                                      </span>
+                                                </div>
+
+
+                                          </div>
+                                          @error('file')
+                                          <div class="alert alert-danger alert-dismissible" role="alert">
+                                                <div class="d-flex">
+                                                      <div>
+                                                            <!-- Download SVG icon from http://tabler-icons.io/i/alert-circle -->
+                                                            <svg xmlns="http://www.w3.org/2000/svg"
+                                                                  class="icon alert-icon" width="24" height="24"
+                                                                  viewBox="0 0 24 24" stroke-width="2"
+                                                                  stroke="currentColor" fill="none"
+                                                                  stroke-linecap="round" stroke-linejoin="round">
+                                                                  <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                                                                  <path d="M3 12a9 9 0 1 0 18 0a9 9 0 0 0 -18 0" />
+                                                                  <path d="M12 8v4" />
+                                                                  <path d="M12 16h.01" />
+                                                            </svg>
+                                                      </div>
+                                                      <div>
+                                                            {{ $message }}
+                                                      </div>
+                                                </div>
+                                                <a class="btn-close" data-bs-dismiss="alert" aria-label="close"></a>
+                                          </div>
+                                          @enderror
+                                    </div>
+                              </div>
+
+
+                        </div>
+                  </div>
+                  <!-- row -->
+
+                  <!-- row -->
+                  <div class="row">
+                        <div class="col-md-6">
+                        </div>
+                        <div class="col-md-6 col-12 grid-margin stretch-card justify-content-end">
+
+                              <!-- send button here -->
+                              <div class="card-footer bg-transparent mt-auto">
+                                    <div class="btn-list ">
+                                          <button type="submit" name="submit"
+                                                class="btn bg-gradient-primary  text-white">
+                                                <svg xmlns="http://www.w3.org/2000/svg"
+                                                      class="icon icon-tabler icon-tabler-device-floppy" width="24"
+                                                      height="24" viewBox="0 0 24 24" stroke-width="1.5"
+                                                      stroke="currentColor" fill="none" stroke-linecap="round"
+                                                      stroke-linejoin="round">
+                                                      <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                                                      <path
+                                                            d="M6 4h10l4 4v10a2 2 0 0 1 -2 2h-12a2 2 0 0 1 -2 -2v-12a2 2 0 0 1 2 -2" />
+                                                      <path d="M12 14m-2 0a2 2 0 1 0 4 0a2 2 0 1 0 -4 0" />
+                                                      <path d="M14 4l0 4l-6 0l0 -4" />
+                                                </svg>
+                                                Add Expenses List
+                                          </button>
+                                    </div>
+                              </div>
+
+                        </div>
+                  </div>
+                  <!-- row -->
+            </form>
+            <p></p>
       </div>
       <!--- content wrapper---->
       <!-- partial -->
