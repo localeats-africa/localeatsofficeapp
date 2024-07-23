@@ -106,31 +106,13 @@
                         </a>
                   </li>
 
-
-
-
                   <li class="nav-item">
-                        <a class="nav-link" data-bs-toggle="collapse" href="#food-menu" aria-expanded="false"
-                              aria-controls="food-menu">
+                        <a class="nav-link" href="{{ url('all-food-menu') }}" >
                               <span class="menu-title">Food Menu</span>
-                              <i class="menu-arrow"></i>
                               <i class="mdi mdi-menu   menu-icon fs-24"></i>
 
                         </a>
-                        <div class="collapse" id="food-menu">
-                              <ul class="nav flex-column sub-menu">
-                                    <li class="nav-item">
-                                          <a class="nav-link" href="{{ url('food-menu') }}">Add New </a>
-                                    </li>
-
-                                    <li class="nav-item">
-                                          <a class="nav-link" href="{{ url('all-food-menu') }}">All Food Menu</a>
-                                    </li>
-
-                              </ul>
-                        </div>
                   </li>
-
 
 
                   <li class="nav-item">
@@ -268,25 +250,11 @@
                   </li>
 
                   <li class="nav-item">
-                        <a class="nav-link" data-bs-toggle="collapse" href="#food-menu" aria-expanded="false"
-                              aria-controls="food-menu">
+                        <a class="nav-link" href="{{ url('all-food-menu') }}" >
                               <span class="menu-title">Food Menu</span>
-                              <i class="menu-arrow"></i>
                               <i class="mdi mdi-menu   menu-icon fs-24"></i>
 
                         </a>
-                        <div class="collapse" id="food-menu">
-                              <ul class="nav flex-column sub-menu">
-                                    <li class="nav-item">
-                                          <a class="nav-link" href="{{ url('food-menu')}}">Add New </a>
-                                    </li>
-
-                                    <li class="nav-item">
-                                          <a class="nav-link" href="{{ url('all-food-menu')}}">All Food Menu</a>
-                                    </li>
-
-                              </ul>
-                        </div>
                   </li>
 
                   <li class="nav-item">
