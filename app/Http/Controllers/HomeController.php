@@ -616,6 +616,15 @@ class HomeController extends Controller
         }
         
     }
+    public function bulkDeleteFoodMenu(Request $request){
+        $today = Carbon::now();
+        $ids = $request->ids;
+        DB::table("food_menu")->whereIn('id',explode(",",$ids))
+        ->update([
+            'deleted_at' => $today
+        ]);
+        return response()->json(['success'=>"Menu Deleted successfully."]);
+    }
 
     public function setupApprovedVendor(Request $request){
         $name = Auth::user()->name;
@@ -914,6 +923,13 @@ class HomeController extends Controller
             ->get('*')
             ->value('payout');
             $payout = (int)$getpayout;
+
+            $getcommission =  DB::table('orders')
+            ->where('vendor_id', $vendor)
+            ->where('invoice_ref', $invoice_ref)
+            ->get('*')
+            ->value('commission');
+            $commissionPiad = (int)$getcommission;
             
             $invoiceRef =  DB::table('orders')
             ->where('orders.vendor_id', $vendor)
@@ -946,7 +962,8 @@ class HomeController extends Controller
         'vendorAddress','vendorState', 'vendorCountry', 'vendorPhone',
          'vendorEmail', 'vendorFname', 'vendorLname', 'orders',
          'totalComm', 'totalPlatformComm', 'sumAmount', 'sumFoodPrice', 'sumExtra',
-        'vendorFoodPrice', 'payout', 'invoiceRef', 'vendorID', 'invoicePaymentStatus') );
+        'vendorFoodPrice', 'payout', 'invoiceRef', 'vendorID', 'invoicePaymentStatus',
+        'commissionPiad') );
     }
 
     public function updateMergeInvoiceFood(Request $request){

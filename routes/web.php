@@ -86,6 +86,8 @@ Route::controller(HomeController::class)->group(function () {
     Route::get('edit-food-menu/{id}', 'editFoodMenu')->name('edit-food-menu');
     Route::post('update-food-menu/{id}',  'updateFoodMenu')->name('update-food-menu');
     Route::post('delete-food-menu/{id}', 'deleteFoodMenu')->name('delete-food-menu');
+    Route::post('bulk-delete-foodmenu', 'bulkDeleteFoodMenu')->name('bulk-delete-foodmenu');
+   
     Route::post('add-food-menu',  'addFoodMenu')->name('add-food-menu');
     Route::get('show-change-password', 'showChangePassword')->name('show-change-password');
     Route::post('import-food-menu', 'importFoodMenu')->name('import-food-menu');
@@ -143,6 +145,13 @@ Route::controller(AdminController::class)->group(function () {
     Route::get('expenses-list', 'expensesList')->name('expenses-list');
     Route::get('new-expenses', 'newExpenses')->name('new-expenses');
     Route::post('add-expenses', 'addExpenses')->name('add-expenses');
+    Route::post('merge-invoice-commission-paid',  'vendorInvoiceCommisionPaid')->name('merge-invoice-commission-paid');     
+    Route::get('profit-and-loss', 'profitAndLoss')->name('profit-and-loss'); 
+    Route::get('vendor-sales-list', 'salesList')->name('vendor-sales-list');
+    Route::post('import-expenses-list', 'importExpensesList')->name('import-expenses-list');
+   
+    
+
 });
 
 Route::controller(ManagerController::class)->group(function () {
@@ -165,5 +174,8 @@ Route::controller(CashierController::class)->group(function () {
     Route::get('add-expenses', 'addVendorExpenses')->name('add-expenses');
     Route::post('add-expenses-list', 'addExpensesList')->name('add-expenses-list');
     Route::post('add-vendor-expenses', 'storeVendorDailyExpenses')->name('add-vendor-expenses');
+    Route::get('offline-sales', 'offlineSales')->name('offline-sales');
+    Route::post('offline-sales-list', 'OfflineSaleList')->name('offline-sales-list');
+    Route::post('add-vendor-offline-sales', 'storeVendorOfflineSale')->name('add-vendor-offline-sales');
 
 });

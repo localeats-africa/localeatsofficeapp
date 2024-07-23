@@ -27,11 +27,14 @@ use App\Mail\NewUserEmail;
 use App\Imports\OrderList;
 use App\Imports\FoodMenuImportClass;
 use App\Imports\OrdersImportClass;
+use App\Imports\ImportExpensesList;
+
 use App\Models\Invoice;
 use App\Models\Payout;
 use App\Models\ExpensesList;
 use App\Models\OfflineSales;
 use App\Models\VendorExpenses;
+use App\Models\OfflineFoodMenu;
 
 use Excel;
 use Auth;
@@ -59,6 +62,45 @@ class AdminController extends Controller
         ->join('users', 'users.role_id', 'role.id')
         ->where('users.id', $id)
         ->pluck('role_name')->first();
+        $weekStartMonday = Carbon::now()->startOfWeek();// Monday
+        $weekEndSunday = Carbon::now()->endOfWeek(); //Snnday
+        //current week
+        $startOfWeek = $weekStartMonday->format('Y-m-d');
+        $endOfWeek =   $weekEndSunday->format('Y-m-d');
+
+        $today = Carbon::now()->format('Y-m-d');
+
+        $sevenDaysBack = Carbon::now()->subDays(7)->startOfDay();
+        $lastSevenDays  =  date('Y-m-d', strtotime($sevenDaysBack));
+
+        //dd();
+        $allOrderStart = DB::table('orders')
+        ->where('orders.deleted_at', null)
+        ->where('orders.order_amount', '!=', null)
+        ->where('orders.order_ref', '!=', null)
+        ->whereDate('delivery_date', '<=', $today) 
+         ->get()->pluck('delivery_date')->first();
+
+        $allOrderEnd = DB::table('orders')
+        ->where('orders.deleted_at', null)
+        ->where('orders.order_amount', '!=', null)
+        ->where('orders.order_ref', '!=', null)
+        ->whereDate('delivery_date', '<=', $today) 
+        ->get()->pluck('delivery_date')->last();
+        //dd($allOrderEnd);
+
+        $orderStart = date("d-M-Y ", strtotime($allOrderStart)) ;
+        $orderEnd = date("d-M-Y ", strtotime($allOrderEnd)) ;
+
+      
+        $averageWeeklySales = DB::table('orders')
+        ->where('deleted_at', null)
+        ->where('orders.order_amount', '!=', null)
+        ->where('orders.order_ref', '!=', null)
+        ->whereDate('delivery_date', '>=', $lastSevenDays)                                 
+        ->whereDate('delivery_date', '<=', $today) 
+       // ->whereBetween('delivery_date',  [$lastSevenDays, $today])
+        ->sum('order_amount');
 
         $sumAllOrders = Orders::where('deleted_at', null)
         ->where('orders.order_amount', '!=', null)
@@ -70,7 +112,6 @@ class AdminController extends Controller
         ->where('orders.order_ref', '!=', null)
         ->count();
 
-
         $getOrderItem = DB::table('orders')
         ->where('deleted_at', null)
         ->where('orders.order_amount', '!=', null)
@@ -81,7 +122,6 @@ class AdminController extends Controller
         $substring = 'plate';
         $countAllPlate = substr_count($string, $substring);
 
-
         $countPlatformWhereOrderCame = DB::table('orders')
         ->Join('platforms', 'orders.platform_id', '=', 'platforms.id')->distinct()
         ->where('orders.deleted_at', null)
@@ -89,12 +129,37 @@ class AdminController extends Controller
         ->where('orders.order_ref', '!=', null)
         ->count('platforms.id');
 
-        $payouts = Orders::all()
+        $payouts = DB::table('orders')
+        ->where('deleted_at', null)
+        ->where('orders.order_amount', '!=', null)
+        ->where('orders.order_ref', '!=', null)
         ->sum('payout');
+
+        $averageWeeklyPayouts = DB::table('orders')
+        ->where('deleted_at', null)
+        ->where('orders.order_amount', '!=', null)
+        ->where('orders.order_ref', '!=', null)
+       ->where('payout', '!=', null)
+        //->whereBetween('updated_at',  [$lastSevenDays, $today])
+        ->whereDate('updated_at', '>=', $lastSevenDays)                                 
+        ->whereDate('updated_at', '<=', $today) 
+        ->sum('payout');
+
+        $commissionPaid = Orders::all()
+        ->sum('commission');
+
+        $averageWeeklyCommissionPaid = DB::table('orders')
+        ->where('deleted_at', null)
+        ->where('orders.order_amount', '!=', null)
+        ->where('orders.order_ref', '!=', null)
+       // ->whereBetween('updated_at',  [$lastSevenDays, $today])
+        ->whereDate('updated_at', '>=', $lastSevenDays)                                 
+        ->whereDate('updated_at', '<=', $today) 
+        ->sum('commission');
 
         $commission = (int)$sumAllOrders - (int)$payouts ;
         //Commission::all()->sum('localeats_comm');
-
+        $averageWeeklyComm =$averageWeeklySales - $averageWeeklyPayouts ;
 
         $countPlatforms = Platforms::all();
         // a platform is ative is it has one or more active vendor
@@ -156,7 +221,9 @@ class AdminController extends Controller
          'glovoVendor', 'activeGlovoVendor',   'activeEdenlifeVendor', 
          'edenlifeVendor',  'countPlatforms',  'payouts',
          'commission',   'sumAllOrders', 'countAllOrder', 'countPlatformWhereOrderCame',
-         'countAllPlate'));
+         'countAllPlate', 'commissionPaid', 'orderStart', 'orderEnd',
+        'averageWeeklySales', 'averageWeeklyPayouts', 'averageWeeklyCommissionPaid',
+    'averageWeeklyComm'));
       }
     }
 
@@ -337,10 +404,7 @@ class AdminController extends Controller
               
               return response()->json($data);
         }
-
     }
-
-
     
     public function restaurant(Request $request){
         $name = Auth::user()->name;
@@ -413,7 +477,6 @@ class AdminController extends Controller
             } 
         else{return redirect()->back()->with('error', 'No record order found'); }
 
-
         return view('admin.food-type', compact('perPage', 'role', 'name', 'foodType'));
     }
 
@@ -430,7 +493,6 @@ class AdminController extends Controller
            return redirect()->back()->with('add-food-type', 'Food Type Added!');
         }
         else{return redirect()->back()->with('error', 'Opps! something went wrong.'); }
-
     }
 
     public function newUser(Request $request){
@@ -587,9 +649,9 @@ class AdminController extends Controller
         ->select(['orders.*', 'vendor.vendor_name', 'platforms.name', 'users.fullname'])
         ->orderBy('orders.created_at', 'desc')
         ->where(function ($query) use ($search) {  // <<<
-        $query->where('orders.created_at', 'LIKE', '%'.$search.'%')
-               ->orWhere('vendor.vendor_name', 'LIKE', '%'.$search.'%')
+        $query->where('vendor.vendor_name', 'LIKE', '%'.$search.'%')
                ->orWhere('orders.invoice_ref', 'LIKE', '%'.$search.'%')
+               ->orWhere('orders.delivery_date', 'LIKE', '%'.$search.'%')
                ->orderBy('orders.created_at', 'desc');
         })->paginate($perPage, $columns = ['*'], $pageName = 'orders'
         )->appends(['per_page'   => $perPage]);
@@ -713,7 +775,7 @@ class AdminController extends Controller
             return redirect('all-staff')->with('staff-status', 'Opps! something went wrong' ); 
         }
     }
-
+    //view expeses list per vendor
     public function expensesList(Request $request){
         $id = Auth::user()->id;
         $role = DB::table('role')->select('role_name')
@@ -721,10 +783,29 @@ class AdminController extends Controller
         ->where('users.id', $id)
         ->pluck('role_name')->first();
         $vendor = Vendor::all();
-        return view('admin.expenses-list', compact('role', 'vendor'));
 
+        $vendor_id      =  $request->vendor_id;
+        $startDate      =   date("Y-m-d", strtotime($request->from)) ;
+        $endDate        =  date("Y-m-d", strtotime($request->to));
+        
+        $vendorName = Vendor::where('id', $vendor_id)
+        ->get()->pluck('vendor_name')->first();
+        
+        $vendorExpense = VendorExpenses::where('vendor_id',  $vendor_id)
+        ->whereDate('vendor_expenses.created_at', '>=', $startDate)                                 
+        ->whereDate('vendor_expenses.created_at', '<=', $endDate) 
+        ->get(['vendor_expenses.*']);
+
+        $vendorTotalExpense = VendorExpenses::where('vendor_id',  $vendor_id)
+        ->whereDate('created_at', '>=', $startDate)                                 
+        ->whereDate('created_at', '<=', $endDate) 
+        ->sum('cost');
+
+        return view('admin.expenses-list', compact('role', 'vendor',
+        'vendorExpense', 'vendorTotalExpense', 'vendorName', 'startDate', 'endDate'));
     }
 
+    // page to add more expenses to the list
     public function newExpenses(Request $request){
         $id = Auth::user()->id;
         $role = DB::table('role')->select('role_name')
@@ -752,10 +833,121 @@ class AdminController extends Controller
         }
         else{
             return redirect()->back()->with('expense-error', 'Opps! something went wrong');
-        
         }
-
-
         return view('admin.new-expenses', compact('role', 'vendor'));
     }
+
+        //view sales list per vendor
+        public function salesList(Request $request){
+            $id = Auth::user()->id;
+            $role = DB::table('role')->select('role_name')
+            ->join('users', 'users.role_id', 'role.id')
+            ->where('users.id', $id)
+            ->pluck('role_name')->first();
+            $vendor = Vendor::all();
+            $vendor_id      =  $request->vendor_id;
+            $startDate      =   date("Y-m-d", strtotime($request->from)) ;
+            $endDate        =  date("Y-m-d", strtotime($request->to));
+ 
+            $vendorName = Vendor::where('id', $vendor_id)
+            ->get()->pluck('vendor_name')->first();
+            
+            $vendorSales = OfflineSales::where('vendor_id',  $vendor_id)
+            ->whereDate('created_at', '>=', $startDate)                                 
+            ->whereDate('created_at', '<=', $endDate) 
+            ->get(['*']);
+    
+            $vendorTotalSales = OfflineSales::where('vendor_id',  $vendor_id)
+            ->whereDate('created_at', '>=', $startDate)                                 
+            ->whereDate('created_at', '<=', $endDate) 
+            ->sum('price');
+        
+            return view('admin.vendor-sales-list', compact('role', 'vendor',
+            'vendorSales', 'vendorTotalSales', 'vendorName',
+            'startDate', 'endDate',  'vendorSales', 'vendorTotalSales'));
+        }
+
+    public function profitAndLoss(Request $request){
+        $id = Auth::user()->id;
+        $role = DB::table('role')->select('role_name')
+        ->join('users', 'users.role_id', 'role.id')
+        ->where('users.id', $id)
+        ->pluck('role_name')->first();
+        $vendor = Vendor::all();
+
+        $today = Carbon::now()->format('Y-m-d');
+        $lastSevenDays = Carbon::now()->subDays(7)->startOfDay()->format('Y-m-d');
+
+        $vendor_id      = $request->vendor_id;
+        $startDate      =   date("Y-m-d", strtotime($request->from)) ;
+        $endDate        =  date("Y-m-d", strtotime($request->to));
+
+        $vendorName = Vendor::where('id', $vendor_id)
+        ->get()->pluck('vendor_name')->first();
+
+        $vendorTotalExpense = VendorExpenses::where('vendor_id',  $vendor_id)
+        ->whereDate('created_at', '>=', $startDate)                                 
+        ->whereDate('created_at', '<=', $endDate) 
+        ->sum('cost');
+
+        $vendorTotalSales = OfflineSales::where('vendor_id',  $vendor_id)
+        ->whereDate('created_at', '>=', $startDate)                                 
+        ->whereDate('created_at', '<=', $endDate) 
+        ->sum('price');
+
+        $profitAndLoss = $vendorTotalSales - $vendorTotalExpense;
+
+        return view('admin.profit-and-loss', compact('role', 'vendor',
+       'vendorTotalExpense', 'vendorTotalSales', 'profitAndLoss', 
+        'vendorName', 'startDate', 'endDate'));
+    }
+
+    public function vendorInvoiceCommisionPaid(Request $request){
+
+        $commission     = $request->commission_paid;
+        $order_id       = $request->order_id;
+
+         $updateOrder = Orders::where('id', $order_id)
+         ->update([
+             'commission'     => $commission,
+         ]);
+         if($updateOrder){
+            $data = [
+                'status' => true,
+                'message'=> 'Record updated successfully'
+            ];
+            return response()->json($data);
+        }
+         else{
+            $data = [
+                'status' => false,
+                'message'=> 'Opps! something happen'
+            ];
+            return response()->json($data);
+         }
+     }
+
+     public function importExpensesList(Request $request)
+     {
+         // Validate the uploaded file
+         $request->validate([
+             'file' => 'required|mimes:xlsx,xls',
+             'vendor_name'=>'required|string|max:255',
+         ]);
+         // Get the uploaded file
+         $file = $request->file('file');
+         $vendor_id = $request->vendor_name;
+      
+         // Process the Excel file
+       $import =  Excel::import(new ImportExpensesList($vendor_id), $file);
+ 
+       if($import){
+         return redirect()->back()->with('expense-status', 'File imported successfully!');
+       }
+       else{
+         return redirect()->back()->with('expense-error', 'Opps!');
+       }
+  
+     }
+
 }//class

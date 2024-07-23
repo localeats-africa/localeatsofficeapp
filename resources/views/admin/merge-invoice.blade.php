@@ -172,15 +172,15 @@
                                                                                     name="invoice">
                                                                               <input type="hidden" value="{{$vendorID}}"
                                                                                     name="vendor">
-                                                                                    @if($invoicePaymentStatus == 'paid')
-                                                                                    <button type="submit" name="submit"
+                                                                              @if($invoicePaymentStatus == 'paid')
+                                                                              <button type="submit" name="submit"
                                                                                     class="btn bg-gradient-primary text-white">View
                                                                                     Invoice</button>
-                                                                                    @else
+                                                                              @else
                                                                               <button type="submit" name="submit"
                                                                                     class="btn bg-gradient-primary text-white">Generate
                                                                                     Invoice</button>
-                                                                                    @endif 
+                                                                              @endif
                                                                         </form>
 
                                                                   </li>
@@ -391,21 +391,22 @@
                                                                   @endforeach
                                                                   <tr>
                                                                         <th>
-                                                                        @if($invoicePaymentStatus == 'paid')
-                                                                        @else
+                                                                              @if($invoicePaymentStatus == 'paid')
+                                                                              @else
                                                                               <form method="get"
                                                                                     action="{{ route('add-invoice-row',  [$invoiceRef]) }}"
                                                                                     name="submit"
                                                                                     enctype="multipart/form-data">
                                                                                     @csrf
                                                                                     {{csrf_field()}}
-                                                                                    <input type="hidden" name="vendor" value="{{ $vendorID }}">
+                                                                                    <input type="hidden" name="vendor"
+                                                                                          value="{{ $vendorID }}">
                                                                                     <button type="submit"
                                                                                           class="btn btn-block btn-success text-dark"><i
                                                                                                 class="fa  fa-plus"></i>
                                                                                           Add New Row </button>
                                                                               </form>
-                                                                              @endif  
+                                                                              @endif
                                                                         </th>
                                                                         <th class="text-end">
                                                                               <h6>Total (₦)</h6>
@@ -470,6 +471,31 @@
 
                                                                         <th> <span id="response"></span></th>
                                                                   </tr>
+                                                                  @auth
+                                                                  @if(Auth::user()->role_id =='2')
+
+                                                                  <tr>
+                                                                        <th row colspan="7" class="text-end">
+                                                                              <h6> Commission Paid (₦)</h6>
+                                                                              <span id="comm_result"></span>
+                                                                        </th>
+                                                                        <th>
+                                                                              <input type="hidden" id="order_id"
+                                                                                    value="{{$data->id}}">
+                                                                              <div class="input-group">
+                                                                                    <input type="text"
+                                                                                          id="commission_paid"
+                                                                                          class="form-control bg-secondary fw-bold"
+                                                                                          value="{{$commissionPiad}}">
+                                                                                    <button onclick="commissionPaid()"
+                                                                                          class="btn text-success"><i
+                                                                                                class="fa fa-check"></i></button>
+                                                                              </div>
+
+                                                                        </th>
+                                                                  </tr>
+                                                                  @endif
+                                                                  @endauth
                                                             </tbody>
                                                       </table>
                                                 </div>
@@ -573,6 +599,43 @@ function updatePayout() {
                   document.getElementById('response').style.display = '';
                   document.getElementById('response').style.color = 'green';
                   document.getElementById('response').innerHTML = data.message;
+            },
+            error: function(data) {
+                  console.log(data);
+            }
+      });
+
+}
+</script>
+
+<script type="text/javascript">
+function commissionPaid() {
+      document.getElementById('comm_result').style.display = 'none';
+      var commission_paid = document.getElementById('commission_paid').value;
+      var order_id = document.getElementById('order_id').value;
+      var url = "{{ route('merge-invoice-commission-paid') }}";
+      // url = showRoute;
+
+      //window.location = url;
+      $.ajaxSetup({
+            headers: {
+                  'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+            }
+      });
+      $.ajax({
+            method: 'POST',
+            enctype: 'multipart/form-data',
+            url: url,
+            data: {
+                  //you can more data here
+                  'commission_paid': commission_paid,
+                  'order_id': order_id
+            },
+            success: function(data) {
+                  console.log(data.message);
+                  document.getElementById('comm_result').style.display = '';
+                  document.getElementById('comm_result').style.color = 'green';
+                  document.getElementById('comm_result').innerHTML = data.message;
             },
             error: function(data) {
                   console.log(data);

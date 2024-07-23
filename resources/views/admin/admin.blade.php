@@ -8,10 +8,21 @@
       <div class="content-wrapper">
             <div class="page-header">
                   <h3 class="page-title">
-                        Overview
+                        Overview >>>   <span class="text-info">{{$orderStart}}</span> -  <span class="text-info">{{date('d-M-Y')}}</span>   
                   </h3>
+                  <nav aria-label="breadcrumb">
+                        <ul class="breadcrumb">
+                              <li class="breadcrumb-item active" aria-current="page">
+                             
+                              </li>
+
+                              <li class="breadcrumb-item active" aria-current="page">
+                              
+                              </li>
+                        </ul>
+                  </nav>
             </div>
-            <div class="container ">
+            <!-- <div class="container "> -->
                   <div class="row ">
                         <div class="col-12">
                               <div class="row row-cards">
@@ -57,7 +68,7 @@
                                                 <div class="card-body">
                                                       <img src="{{ asset('assets/images/dashboard/circle.svg') }}"
                                                             class="card-img-absolute" alt="circle-image">
-                                                      <h4 class="font-weight-normal">Number Of Sales <i
+                                                      <h4 class="font-weight-normal">Number Of Orders <i
                                                                   class="mdi mdi-shopping  mdi-24px float-end"></i>
                                                       </h4>
                                                       <h2 class="mb-5">{{$countAllOrder}}</h2>
@@ -105,7 +116,7 @@
                               <div class="row row-cards">
 
 
-                                    <div class="col-md-4 stretch-card grid-margin">
+                                    <div class="col-md-3 stretch-card grid-margin">
                                           <div class="card bg-gradient-info card-img-holder text-white">
                                                 <div class="card-body">
                                                       <img src="{{ asset('assets/images/dashboard/circle.svg')}}"
@@ -133,41 +144,58 @@
                                                                   </svg>
                                                             </i>
                                                       </h4>
-                                                      <h2 class="mb-5">₦{{number_format($sumAllOrders)}}</h2>
+                                                      <h2 class="mb-5">₦{{number_format($sumAllOrders, 2)}}</h2>
                                                       <hr class="w-100">
-                                                      <h6 class="card-text">weekly average <span style="float:right;">₦0
+                                                      <h6 class="card-text">last 7 days <span style="float:right;">₦{{number_format($averageWeeklySales, 2)}}
                                                             </span></h6>
                                                 </div>
                                           </div>
                                     </div>
 
-                                    <div class="col-sm-4  col-12 stretch-card grid-margin">
-                                          <div class="card bg-success card-img-holder text-white">
+                                    <div class="col-sm-3 col-12 stretch-card grid-margin">
+                                          <div class="card bg-gradient-primary card-img-holder text-white">
                                                 <div class="card-body">
                                                       <img src="{{ asset('assets/images/dashboard/circle.svg')}}"
                                                             class="card-img-absolute" alt="circle-image">
                                                       <h4 class="font-weight-normal">Actual Payouts
                                                             <i class="mdi mdi-cash mdi-24px float-end"></i>
                                                       </h4>
-                                                      <h2 class="mb-5">₦{{number_format($payouts)}}</h2>
+                                                      <h2 class="mb-5">₦{{number_format($payouts, 2)}}</h2>
                                                       <hr class="w-100">
-                                                      <h6 class="card-text">weekly average <span style="float:right;">₦0
+                                                      <h6 class="card-text">last 7 days <span style="float:right;">₦{{number_format($averageWeeklyPayouts, 2)}}
                                                             </span> </h6>
                                                 </div>
                                           </div>
                                     </div>
 
-                                    <div class="col-sm-4  col-12 stretch-card grid-margin">
+                                    <div class="col-sm-3  col-12 stretch-card grid-margin">
                                           <div class="card bg-primary card-img-holder text-white">
                                                 <div class="card-body">
                                                       <img src="{{ asset('assets/images/dashboard/circle.svg')}}"
                                                             class="card-img-absolute" alt="circle-image">
-                                                      <h4 class="font-weight-normal"> Commission
+                                                      <h4 class="font-weight-normal"> Expected Commission
                                                             <i class="mdi mdi-hand-coin mdi-24px float-end"></i>
                                                       </h4>
-                                                      <h2 class="mb-5">₦ {{number_format($commission) }}</h2>
+                                                      <h2 class="mb-5">₦ {{number_format($commission, 2) }}</h2>
                                                       <hr class="w-100">
-                                                      <h6 class="card-text">weekly average<span style="float:right;">₦0
+                                                      <h6 class="card-text">last 7 days<span style="float:right;">₦{{number_format($averageWeeklyComm, 2)}}
+                                                            </span> </h6>
+                                                </div>
+                                          </div>
+                                    </div>
+
+
+                                    <div class="col-sm-3  col-12 stretch-card grid-margin">
+                                          <div class="card bg-success card-img-holder text-white">
+                                                <div class="card-body">
+                                                      <img src="{{ asset('assets/images/dashboard/circle.svg')}}"
+                                                            class="card-img-absolute" alt="circle-image">
+                                                      <h4 class="font-weight-normal">  Commission Paid
+                                                            <i class="mdi mdi-hand-coin mdi-24px float-end"></i>
+                                                      </h4>
+                                                      <h2 class="mb-5">₦ {{number_format($commissionPaid, 2) }}</h2>
+                                                      <hr class="w-100">
+                                                      <h6 class="card-text">last 7 days<span style="float:right;">₦{{number_format($averageWeeklyCommissionPaid,2)}}
                                                             </span> </h6>
                                                 </div>
                                           </div>
@@ -179,10 +207,10 @@
                         </div>
                   </div>
                   <!--row-deck-->
-            </div>
+            <!-- </div> -->
             <p></p>
             <!--Alert here--->
-            <div class="container ">
+            <!-- <div class="container "> -->
                   <div class="row ">
                         <div class="col-12">
                               @if(session('add-vendor'))
@@ -263,7 +291,7 @@
                               </div>
                         </div>
                   </div>
-            </div>
+            <!-- </div> -->
       </div>
       <!--content wrapper-->
       <footer class="footer">

@@ -123,6 +123,14 @@
                                                       <td class="">
                                                             <a href="invoice/{{$data->invoice_ref}}/{{$data->id}}"
                                                                   class="text-danger"><i class="fa fa-eye"></i></a>
+                                                            @auth 
+                                                            @if(Auth::user()->role_id =='2')
+                                                              <span class="text-end">  
+                                                                  &nbsp;      &nbsp;
+                                                                   <a href="computed-invoice/{{$data->id}}/{{$data->number_of_order_merge}}/{{$data->invoice_ref}}"
+                                                              class="text-danger"><i class="fa fa-edit"></i></a></span> 
+                                                              @endif 
+                                                              @endauth 
                                                       </td>
 
                                                 </tr>

@@ -9,20 +9,12 @@
       <div class="content-wrapper">
             <div class="page-header">
                   <h3 class="page-title">
-                        Vendor (s) Expenses
+                        Vendor (s) Sales
                   </h3>
-                  <nav aria-label="breadcrumb">
-                        <ul class="breadcrumb">
-                              <li class="breadcrumb-item active" aria-current="page">
-                                    <span></span><a href="{{ url('new-expenses') }}" class="btn btn-block btn-danger"><i
-                                                class="fa fa-plus-square"></i> &nbsp;Create New Expense Item </a>
-                              </li>
-                        </ul>
-                  </nav>
             </div>
 
-  <!--Alert here--->
-  <div class="row ">
+            <!--Alert here--->
+            <div class="row ">
                   <div class="col-12">
                         @if(session('add-platform'))
                         <div class="alert alert-important alert-success alert-dismissible" role="alert">
@@ -74,7 +66,7 @@
 
             <div class="row ">
 
-                  <form method="GET" action="{{ route('expenses-list') }}" name="submit"
+                  <form method="GET" action="{{ route('vendor-sales-list') }}" name="submit"
                         enctype="multipart/form-data">
                         @csrf
                         {{csrf_field()}}
@@ -98,8 +90,8 @@
                                     <div class="form-group">
                                           <label for="">From</label>
                                           <div class="input-group date">
-                                                <input type="text" value="{{ date('Y-m-d')}}" name="from" class="form-control" placeholder=""
-                                                      id="from" />
+                                                <input type="text" value="{{ date('Y-m-d')}}" name="from"
+                                                      class="form-control" placeholder="" id="from" />
                                                 <span class="input-group-append">
                                                       <span class="input-group-text bg-light d-block">
                                                             <i class="fa fa-calendar"></i>
@@ -114,8 +106,8 @@
 
                                           <label for="">To</label>
                                           <div class="input-group date">
-                                                <input type="text" value="{{ date('Y-m-d')}}" name="to" class="form-control" placeholder=""
-                                                      id="to" />
+                                                <input type="text" value="{{ date('Y-m-d')}}" name="to"
+                                                      class="form-control" placeholder="" id="to" />
                                                 <span class="input-group-append">
                                                       <span class="input-group-text bg-light d-block">
                                                             <i class="fa fa-calendar"></i>
@@ -132,11 +124,12 @@
             </div>
             <!---end row --->
 
-            
+
 
             <div class="row ">
                   <div class="col-12">
-                        <h4><span class="text-info">{{$vendorName}}</span> Expenses for <span class="text-info">{{$startDate}} - {{$endDate}}</span></h4>
+                        <h4><span class="text-info">{{$vendorName}}</span> Sales for <span class="text-info">
+                                    {{$startDate}} - {{$endDate}}</span></h4>
                         <p></p>
                         <div class="row row-cards">
                               <div class="col-md-4 stretch-card grid-margin">
@@ -144,10 +137,10 @@
                                           <div class="card-body">
                                                 <img src="{{ asset('assets/images/dashboard/circle.svg')}}"
                                                       class="card-img-absolute" alt="circle-image">
-                                                <h4 class="font-weight-normal">Total Expenses <i
+                                                <h4 class="font-weight-normal">Total Sales <i
                                                             class="fa fa-money mdi-24px float-end"></i>
                                                 </h4>
-                                                <h2 class="mb-5"> {{$vendorTotalExpense}}</h2>
+                                                <h2 class="mb-5"> {{$vendorTotalSales}}</h2>
                                                 <hr class="w-100">
                                                 <h6 class="card-text"> </h6>
                                           </div>
@@ -157,31 +150,32 @@
                   </div>
             </div>
             <p></p>
-          
+
 
             <p></p>
             <div class="row ">
-               <div class="table-responsive">
-               <table class="table table-striped">
-                        <thead>
-                              <th>SN</th>
-                              <th>Date</th>
-                              <th>Expenses</th>
-                              <th>Cost</th>
-                        </thead>
-                        <tbody>
-                              @foreach($vendorExpense as $data)
-                              <tr>
-                                    <td>{{$loop->iteration}}</td>
-                                    <td>{{ date('Y-m-d', strtotime($data->created_at)) }}</td>
-                                    <td>{{$data->description}}</td>
-                                    <td>{{$data->cost}}</td>
-                              </tr>
-                              @endforeach
-                        </tbody>
-                  </table>
-               </div>
-            </div><!---row--->
+                  <div class="table-responsive">
+                        <table class="table table-striped">
+                              <thead>
+                                    <th>SN</th>
+                                    <th>Date</th>
+                                    <th>Expenses</th>
+                                    <th>Cost</th>
+                              </thead>
+                              <tbody>
+                                    @foreach($vendorSales as $data)
+                                    <tr>
+                                          <td>{{$loop->iteration}}</td>
+                                          <td>{{ date('Y-m-d', strtotime($data->created_at)) }}</td>
+                                          <td>{{$data->sales_item}}</td>
+                                          <td>{{$data->price}}</td>
+                                    </tr>
+                                    @endforeach
+                              </tbody>
+                        </table>
+                  </div>
+            </div>
+            <!---row--->
 
       </div>
       <!--- content wrapper---->

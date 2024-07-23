@@ -8,8 +8,16 @@
       <div class="content-wrapper">
             <div class="page-header">
                   <h3 class="page-title">
-                       All Food Menu
+                        All Food Menu
                   </h3>
+                  <nav aria-label="breadcrumb">
+                        <ul class="breadcrumb">
+                              <li class="breadcrumb-item active" aria-current="page">
+                                    <span></span><a href="{{ url('food-menu') }}" class="btn btn-block btn-danger"><i
+                                                class="fa fa-plus-square"></i> &nbsp;Create New Food Menu </a>
+                              </li>
+                        </ul>
+                  </nav>
             </div>
             <!--Alert here--->
             <div class="row">
@@ -93,6 +101,7 @@
                               <div class="card-header">
                                     <h3 class="card-title">Menu </h3>
                               </div>
+
                               <div class="card-body border-bottom py-3">
                                     <div class="d-flex">
                                           <div class="text-secondary">
@@ -114,6 +123,12 @@
                                                       </select>
                                                 </div>
                                                 records
+                                                &nbsp; &nbsp;
+                                    <span class="card-title">
+                                          <button class="btn btn-outline-danger btn-sm delete_all"
+                                                data-url="{{ url('bulk-delete-foodmenu') }}">Delete All
+                                                Selected</button>
+                                    </span>
                                           </div>
                                           <div class="ms-auto text-secondary">
                                                 Search:
@@ -133,12 +148,16 @@
                                     </div>
                               </div>
 
+                            
                               <div class="table-responsive " id="card">
+                                  
                                     <table class="table table-striped card-table table-vcenter text-nowrap datatable"
                                           id="orders">
                                           <thead>
                                                 <tr>
-                                                      <th></th>
+                                                      <th class="w-1"><input id="master" class="form-check-input "
+                                                                  type="checkbox" aria-label="Select all item">
+                                                      </th>
                                                       <th>Posted by</th>
                                                       <th>Item</th>
                                                       <th>Price </th>
@@ -148,11 +167,17 @@
                                           </thead>
                                           <tbody>
                                                 @foreach($foodMenu as $data)
-                                                <tr>
-                                                      <td><a class="dropdown-item text-capitalize text-danger"
-                                                                              href="edit-food-menu/{{$data->id}}">
-                                                                             <i class="fa fa-edit"></i>
-                                                                        </a></td>
+                                                <tr id="tr_{{$data->id}}">
+                                                      <td class="text-end">
+                                                            <div class="input-group">
+                                                                  <input class="form-check-input form-check-info"
+                                                                        type="checkbox" 
+                                                                        data-id="{{$data->id}}"
+                                                                        style="border-color:#444;">
+                                                            </div>
+                                                      </td>
+
+
                                                       <td class="text-sm"><small>{{$data->fullname}}</small></td>
                                                       <td><small>{{$data->item}}</small></td>
                                                       <td class="text-capitalize"><small>{{$data->price}}</small> </td>
@@ -160,23 +185,37 @@
                                                       <td><small>{{$data->vendor_name}}</small></td>
 
                                                       <!--- admin approve/edit --->
-                                                    
                                                       <td class="text-end">
-                                                                        <form action="{{ route('delete-food-menu', [$data->id]) }}"
-                                                                                    method="post" name="submit"
-                                                                                    enctype="multipart/form-data">
-                                                                                    @csrf
+                                                            <span class="dropdown">
+                                                                  <button
+                                                                        class="btn dropdown-toggle align-text-top text-danger"
+                                                                        data-bs-boundary="viewport"
+                                                                        data-bs-toggle="dropdown">Actions</button>
+                                                                  <div class="dropdown-menu text-center ">
 
-                                                                                    <div class="input-group">
-                                                                                          <input type="hidden"
-                                                                                                value="{{$data->id}}">
-                                                                                          <button type="submit"
-                                                                                                class="text-danger btn btn-block"><i class="fa fa-trash"></i></button>
-                                                                                    </div>
-                                                                              </form>
-                                                                     
+                                                                        <form action="{{ route('delete-food-menu', [$data->id]) }}"
+                                                                              method="post" name="submit"
+                                                                              enctype="multipart/form-data">
+                                                                              @csrf
+
+                                                                                    <input type="hidden"
+                                                                                          value="{{$data->id}}">
+                                                                                    <button type="submit"
+                                                                                          class="text-dark btn btn-block">Delete</button>
+                                                                             
+                                                                        </form>
+                                                                      
+                                                                        <a class="dropdown-item btn btn-sm text-capitalize text-dark"
+                                                                              href="edit-food-menu/{{$data->id}}">
+                                                                              Edit
+                                                                        </a>
+
+                                                                  </div>
+                                                            </span>
                                                       </td>
-                                                 
+
+
+
                                                 </tr>
                                                 @endforeach
 
@@ -243,4 +282,73 @@
       </div>
 </div>
 
+
+<script type="text/javascript">
+$(document).ready(function() {
+
+      $('#master').on('click', function(e) {
+            if ($(this).is(':checked', true)) {
+                  $(".form-check-input").prop('checked', true);
+            } else {
+                  $(".form-check-input").prop('checked', false);
+            }
+      });
+
+      $('.delete_all').on('click', function(e) {
+
+            var allVals = [];
+            $(".form-check-input:checked").each(function() {
+                  allVals.push($(this).attr('data-id'));
+            });
+
+            if (allVals.length <= 0) {
+                  alert("Please select row.");
+            } else {
+
+                  var check = confirm("Are you sure you want to delete this row?");
+                  if (check == true) {
+
+                        var join_selected_values = allVals.join(",");
+
+
+                        $.ajax({
+                              url: $(this).data('url'),
+                              method: 'POST',
+                              enctype: 'multipart/form-data',
+                              headers: {
+                                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]')
+                                          .attr('content')
+                              },
+                              data: 'ids=' + join_selected_values,
+                              success: function(data) {
+                                    if (data['success']) {
+                                          $(".form-check-input:checked").each(
+                                                function() {
+                                                      $(this).parents(
+                                                                  "tr")
+                                                            .remove();
+                                                });
+                                          alert(data['success']);
+                                    } else if (data['error']) {
+                                          alert(data['error']);
+                                    } else {
+                                          alert(
+                                                'Whoops Something went wrong!!'
+                                          );
+                                    }
+                              },
+                              error: function(data) {
+                                    alert(data.responseText);
+                              }
+                        });
+
+                        $.each(allVals, function(index, value) {
+                              $('table tr').filter("[data-row-id='" + value + "']")
+                                    .remove();
+                        });
+                  }
+            }
+      });
+});
+</script>
 @endsection
