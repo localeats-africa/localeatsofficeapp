@@ -10,6 +10,14 @@
                   <h3 class="page-title">
                        All Food Menu
                   </h3>
+                  <nav aria-label="breadcrumb">
+                        <ul class="breadcrumb">
+                              <li class="breadcrumb-item active" aria-current="page">
+                                    <span></span><a href="{{ url('food-menu') }}" class="btn btn-block btn-danger"><i
+                                                class="fa fa-plus-square"></i> &nbsp;Create New Food Menu </a>
+                              </li>
+                        </ul>
+                  </nav>
             </div>
             <!--Alert here--->
             <div class="row">
