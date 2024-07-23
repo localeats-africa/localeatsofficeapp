@@ -120,7 +120,7 @@
                   </div>
                   <p></p>
             </div>
-            <form method="post" action="{{ route('import-food-menu') }}" name="submit" enctype="multipart/form-data">
+            <form method="post" action="{{ route('import-expenses-list') }}" name="submit" enctype="multipart/form-data">
                   @csrf
                   <div class="row ">
                         <div class="col-md-6 grid-margin stretch-card">
@@ -275,12 +275,7 @@ $(function() {
 });
 </script>
 <script src="{{ asset('assets/vendors/select2/select2.min.js')}}"></script>
-<script src="{{ asset('assets/vendors/typeahead.js/typeahead.bundle.min.js')}}"></script>
 
-<!-- endinject -->
-<!-- Custom js for this page -->
-<script src="{{ asset('assets/js/file-upload.js')}}"></script>
-<script src="{{ asset('assets/js/typeahead.js')}}"></script>
 <script src="{{ asset('assets/js/select2.js')}}"></script>
 <!-- End custom js for this page -->
 @endsection

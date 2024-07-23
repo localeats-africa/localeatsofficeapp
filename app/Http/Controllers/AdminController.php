@@ -27,6 +27,8 @@ use App\Mail\NewUserEmail;
 use App\Imports\OrderList;
 use App\Imports\FoodMenuImportClass;
 use App\Imports\OrdersImportClass;
+use App\Imports\ImportExpensesList;
+
 use App\Models\Invoice;
 use App\Models\Payout;
 use App\Models\ExpensesList;
@@ -923,6 +925,29 @@ class AdminController extends Controller
             ];
             return response()->json($data);
          }
+     }
+
+     public function importExpensesList(Request $request)
+     {
+         // Validate the uploaded file
+         $request->validate([
+             'file' => 'required|mimes:xlsx,xls',
+             'vendor_name'=>'required|string|max:255',
+         ]);
+         // Get the uploaded file
+         $file = $request->file('file');
+         $vendor_id = $request->vendor_name;
+      
+         // Process the Excel file
+       $import =  Excel::import(new ImportExpensesList($vendor_id), $file);
+ 
+       if($import){
+         return redirect()->back()->with('expense-status', 'File imported successfully!');
+       }
+       else{
+         return redirect()->back()->with('expense-error', 'Opps!');
+       }
+  
      }
 
 }//class
