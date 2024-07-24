@@ -169,6 +169,16 @@
                                                                   <i class="fa fa-phone"></i>
                                                                   {{$vendorPhone}}</small>
                                                                   </p>
+
+                                                                  <p class="text-secondary mb-1">
+                                                                
+                                                                  <h6>Bank Name::&nbsp;&nbsp; {{$vendorBankName}}</h6>
+                                                                  <h6>Account Number::&nbsp;&nbsp;{{$vendorAccountNumber}}</h6>
+                                                                  <h6>Account Name::&nbsp;&nbsp;{{$vendorAccountName}}</h6>
+
+                                                                  <i class="fa fa-phone"></i>
+                                                                  {{$vendorPhone}}</small>
+                                                                  </p>
                                                             </div>
                                                             <p></p>
                                                             <div class="mt-1">
