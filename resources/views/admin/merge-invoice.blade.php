@@ -210,25 +210,30 @@
                                                             </thead>
                                                             <tbody>
                                                                   @foreach($orders as $data)
-
+                                                                  <span id="delete_order"></span> 
                                                                   <tr>
                                                                         <td class="align-items-center">
                                                                               <small>{{$loop->iteration}} </small>
+                                                                            
                                                                               @if($invoicePaymentStatus == 'paid')
                                                                               @else
-
-                                                                              <!-- <div class="input-group">
-                                                                                    <input type="hidden" id="order_id"
-                                                                                          value="{{$data->id}}">
-                                                                                    <button onclick="deleteOrderRow()"
-                                                                                          class="text-danger"><i
-                                                                                                class="fa fa-trash"></i></button>
-                                                                              </div> -->
+                                                                              @auth
+                                                                              @if(Auth::user()->role_id =='2')
+                                                                              &nbsp; &nbsp; 
+                                                                              <input type="hidden" id="order_id"
+                                                                                    value="{{$data->id}}">
+                                                                              <button onclick="deleteOrderRow()"
+                                                                                    class="text-danger"><i
+                                                                                          class="fa fa-trash"></i></button>
 
                                                                               @endif
-                                                                        </td>
+                                                                              @endauth
 
-                                                                        <td>
+                                                                              @endif
+                                                                             
+                                                                        </td>
+                                                                     
+                                                                        <td>  
                                                                               <p><small>{{$data->order_ref}}</small></p>
                                                                               <p><small>{{$data->name}}</small></p>
                                                                               <p><small>{{ date('d/m/Y', strtotime($data->delivery_date))}}</small>
@@ -565,7 +570,7 @@ function deleteOrderRow() {
                   console.log(data);
             }
       });
-      location.reload();
+     location.reload();
 
 }
 </script>

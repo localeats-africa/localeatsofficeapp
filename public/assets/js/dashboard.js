@@ -125,7 +125,7 @@
       }]
     });
   }
-
+ 
   if ($("#traffic-chart").length) {
     const ctx = document.getElementById('traffic-chart');
     //chowdeck
