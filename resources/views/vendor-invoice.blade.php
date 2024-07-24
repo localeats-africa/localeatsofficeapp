@@ -136,16 +136,16 @@
                                                       <img src="{{ asset('assets/images/logo.png') }}" alt="Admin"
                                                             class="rounded-circle " width="110">
                                                       <h4>LocalEats Africa</h4>
-                                                      <div class="mt-1 text-secondary">
+                                                      <div class="mt-1 text-secondary" style="line-height:1.7">
                                                             <small>2nd floor,10 Hughes Avenue, <br>
                                                                   Alagomeji, Yaba Lagos</small>
-                                                            <p>
+                                                            <br>
                                                                   <small> <i class="mdi mdi-email"></i>
                                                                         hi@localeats.africa
                                                                         <br>
                                                                         <i class="mdi mdi-web-check"></i>
                                                                         www.localeats.africa</small>
-                                                            </p>
+                                                            
 
                                                       </div>
                                                 </div>
@@ -163,27 +163,25 @@
 
                                                                   <p class="text-secondary mb-1">
                                                                   <h6></h6>
-                                                                  <h6>Contact:&nbsp;&nbsp;
+                                                                  <h6><span class="text-dark mb-1">Contact:</span> &nbsp;&nbsp;
                                                                         {{$vendorFname}}&nbsp;{{$vendorLname}}</h6>
 
                                                                   <i class="fa fa-phone"></i>
                                                                   {{$vendorPhone}}</small>
                                                                   </p>
 
-                                                                  <p class="text-secondary mb-1">
-                                                                
-                                                                  <h6>Bank Name::&nbsp;&nbsp; {{$vendorBankName}}</h6>
-                                                                  <h6>Account Number::&nbsp;&nbsp;{{$vendorAccountNumber}}</h6>
-                                                                  <h6>Account Name::&nbsp;&nbsp;{{$vendorAccountName}}</h6>
+                                                                  <p>
+                                                                  <h6><span class="text-dark mb-1">Bank Name:</span> &nbsp;&nbsp; {{$vendorBankName}}</h6>
+                                                                  <h6> <span class="text-dark mb-1">Account Number:</span>  &nbsp;&nbsp;{{$vendorAccountNumber}}</h6>
+                                                                  <h6><span class="text-dark mb-1">Account Name:</span>  &nbsp;&nbsp;{{$vendorAccountName}}</h6>
 
-                                                                  <i class="fa fa-phone"></i>
-                                                                  {{$vendorPhone}}</small>
                                                                   </p>
                                                             </div>
                                                             <p></p>
+                                                            <br><br>
                                                             <div class="mt-1">
                                                                   <h4 id="invoice_ref">Invoice ID: {{$invoice_ref}}</h4>
-
+                                                                  
                                                                   @if($payment_status == 'paid')
                                                                   <h3 class="text-success text-uppercase">
                                                                         {{$payment_status}}</h3>
