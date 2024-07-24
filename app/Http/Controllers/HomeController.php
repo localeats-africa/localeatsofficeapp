@@ -881,15 +881,6 @@ class HomeController extends Controller
             $vendorLname = DB::table('vendor')->where('id', $vendor)
             ->select('*')->pluck('contact_lname')->first();
 
-            $vendorAccountNumber = DB::table('vendor')->where('id', $vendor)
-            ->select('*')->pluck('account_number')->first();
-
-            $vendorAccountName = DB::table('vendor')->where('id', $vendor)
-            ->select('*')->pluck('account_name')->first();
-
-            $vendorBankName = DB::table('vendor')->where('id', $vendor)
-            ->select('*')->pluck('bank_name')->first();
-
             $totalComm = DB::table('orders')
             ->leftJoin('commission', 'orders.id', '=', 'commission.order_id')
             ->where('orders.vendor_id', $vendor)
@@ -972,7 +963,7 @@ class HomeController extends Controller
          'vendorEmail', 'vendorFname', 'vendorLname', 'orders',
          'totalComm', 'totalPlatformComm', 'sumAmount', 'sumFoodPrice', 'sumExtra',
         'vendorFoodPrice', 'payout', 'invoiceRef', 'vendorID', 'invoicePaymentStatus',
-        'commissionPiad', 'vendorAccountNumber', 'vendorAccountName', 'vendorBankName') );
+        'commissionPiad') );
     }
 
     public function updateMergeInvoiceFood(Request $request){
@@ -1251,6 +1242,16 @@ class HomeController extends Controller
         $vendorLname = DB::table('vendor')->where('id', $vendor)
         ->select('*')->pluck('contact_lname')->first();
 
+        $vendorAccountNumber = DB::table('vendor')->where('id', $vendor)
+        ->select('*')->pluck('account_number')->first();
+
+        $vendorAccountName = DB::table('vendor')->where('id', $vendor)
+        ->select('*')->pluck('account_name')->first();
+
+        $vendorBankName = DB::table('vendor')->where('vendor.id', $vendor)
+        ->leftjoin('banks', 'banks.code', 'vendor.bank_name')
+        ->select('banks.*')->pluck('name')->first();
+
         $sumFoodPrice = DB::table('orders')
         ->where('orders.vendor_id', $vendor)
         ->where('orders.invoice_ref', $invoice_ref)
@@ -1290,7 +1291,8 @@ class HomeController extends Controller
             'vendorAddress','vendorState', 'vendorCountry', 'vendorPhone',
             'vendorEmail', 'vendorFname', 'vendorLname', 'orders',
             'sumFoodPrice', 'sumExtra','vendorFoodPrice', 'payout', 
-            'payment_status', 'invoice_ref', 'vendor'));
+            'payment_status', 'invoice_ref', 'vendor', 
+            'vendorAccountNumber', 'vendorAccountName', 'vendorBankName'));
 
      }
 
