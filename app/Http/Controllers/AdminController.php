@@ -69,6 +69,7 @@ class AdminController extends Controller
         $endOfWeek =   $weekEndSunday->format('Y-m-d');
 
         $today = Carbon::now()->format('Y-m-d');
+        $currentYear =  Carbon::now()->year;
 
         $sevenDaysBack = Carbon::now()->subDays(7)->startOfDay();
         $lastSevenDays  =  date('Y-m-d', strtotime($sevenDaysBack));
@@ -91,7 +92,6 @@ class AdminController extends Controller
 
         $orderStart = date("d-M-Y ", strtotime($allOrderStart)) ;
         $orderEnd = date("d-M-Y ", strtotime($allOrderEnd)) ;
-
       
         $averageWeeklySales = DB::table('orders')
         ->where('deleted_at', null)
@@ -100,22 +100,37 @@ class AdminController extends Controller
         ->whereDate('delivery_date', '>=', $lastSevenDays)                                 
         ->whereDate('delivery_date', '<=', $today) 
        // ->whereBetween('delivery_date',  [$lastSevenDays, $today])
+       ->whereYear('orders.delivery_date', '=', Carbon::now()->year)
         ->sum('order_amount');
 
         $sumAllOrders = Orders::where('deleted_at', null)
         ->where('orders.order_amount', '!=', null)
         ->where('orders.order_ref', '!=', null)
+        ->whereYear('orders.delivery_date', '=', Carbon::now()->year)
         ->sum('order_amount');
 
+
+        // $sumAllOrders = Orders::select(
+        //     \DB::raw('SUM(order_amount) as sales_volume'),
+        //     )->where('deleted_at', null)
+        //     ->where('orders.order_amount', '!=', null)
+        //     ->where('orders.order_ref', '!=', null)
+        //     ->whereYear('orders.delivery_date', '=', Carbon::now()->year)
+        //     // ->groupby('month')
+        //     ->get();
+
+          //  dd( $sumAllOrders );
         $countAllOrder = Orders::where('deleted_at', null)
         ->where('orders.order_amount', '!=', null)
         ->where('orders.order_ref', '!=', null)
+        ->whereYear('orders.delivery_date', '=', Carbon::now()->year)
         ->count();
 
         $getOrderItem = DB::table('orders')
         ->where('deleted_at', null)
         ->where('orders.order_amount', '!=', null)
         ->where('orders.order_ref', '!=', null)
+        ->whereYear('orders.delivery_date', '=', Carbon::now()->year)
         ->get('description')->pluck('description');
 
         $string =  $getOrderItem;
@@ -127,12 +142,14 @@ class AdminController extends Controller
         ->where('orders.deleted_at', null)
         ->where('orders.order_amount', '!=', null)
         ->where('orders.order_ref', '!=', null)
+        ->whereYear('orders.delivery_date', '=', Carbon::now()->year)
         ->count('platforms.id');
 
         $payouts = DB::table('orders')
         ->where('deleted_at', null)
         ->where('orders.order_amount', '!=', null)
         ->where('orders.order_ref', '!=', null)
+        ->whereYear('orders.delivery_date', '=', Carbon::now()->year)
         ->sum('payout');
 
         $averageWeeklyPayouts = DB::table('orders')
@@ -143,9 +160,10 @@ class AdminController extends Controller
         //->whereBetween('updated_at',  [$lastSevenDays, $today])
         ->whereDate('updated_at', '>=', $lastSevenDays)                                 
         ->whereDate('updated_at', '<=', $today) 
+        ->whereYear('orders.delivery_date', '=', Carbon::now()->year)
         ->sum('payout');
 
-        $commissionPaid = Orders::all()
+        $commissionPaid = Orders::whereYear('orders.delivery_date', '=', Carbon::now()->year)
         ->sum('commission');
 
         $averageWeeklyCommissionPaid = DB::table('orders')
@@ -155,6 +173,7 @@ class AdminController extends Controller
        // ->whereBetween('updated_at',  [$lastSevenDays, $today])
         ->whereDate('updated_at', '>=', $lastSevenDays)                                 
         ->whereDate('updated_at', '<=', $today) 
+        ->whereYear('orders.delivery_date', '=', Carbon::now()->year)
         ->sum('commission');
 
         $commission = (int)$sumAllOrders - (int)$payouts ;
@@ -176,99 +195,141 @@ class AdminController extends Controller
          ->where('sales_platform.vendor_status', 'active')
          ->get('sales_platform.vendor_id');
        
-         $chowdeckVendor = DB::table('sales_platform')
-         ->join('vendor', 'vendor.id', '=', 'sales_platform.vendor_id')
-         ->join('platforms', 'platforms.name', '=', 'sales_platform.platform_name')
-         ->where('sales_platform.platform_name', 'chowdeck')
-         ->get('sales_platform.vendor_id');
-     
-         $activeChowdeckVendor = DB::table('sales_platform')
-         ->join('vendor', 'vendor.id', '=', 'sales_platform.vendor_id')
-         ->join('platforms', 'platforms.name', '=', 'sales_platform.platform_name')
-         ->where('sales_platform.vendor_status', 'active')
-         ->where('sales_platform.platform_name', 'chowdeck')
-         ->get('sales_platform.vendor_id');
- 
-         $activeGlovoVendor = DB::table('sales_platform')
-         ->join('vendor', 'vendor.id', '=', 'sales_platform.vendor_id')
-         ->join('platforms', 'platforms.name', '=', 'sales_platform.platform_name')
-         ->where('sales_platform.vendor_status', 'active')
-         ->where('sales_platform.platform_name', 'glovo')
-         ->get('sales_platform.vendor_id');
- 
-         $glovoVendor = DB::table('sales_platform')
-         ->join('vendor', 'vendor.id', '=', 'sales_platform.vendor_id')
-         ->join('platforms', 'platforms.name', '=', 'sales_platform.platform_name')
-         ->where('sales_platform.platform_name', 'glovo')
-         ->get('sales_platform.vendor_id');
- 
-         $activeEdenlifeVendor = DB::table('sales_platform')
-         ->join('vendor', 'vendor.id', '=', 'sales_platform.vendor_id')
-         ->join('platforms', 'platforms.name', '=', 'sales_platform.platform_name')
-         ->where('sales_platform.vendor_status', 'active')
-         ->where('sales_platform.platform_name', 'edenlife')
-         ->get('sales_platform.vendor_id');
- 
-         $edenlifeVendor = DB::table('sales_platform')
-         ->join('vendor', 'vendor.id', '=', 'sales_platform.vendor_id')
-         ->join('platforms', 'platforms.name', '=', 'sales_platform.platform_name')
-         ->where('sales_platform.platform_name', 'edenlife')
-         ->get('sales_platform.vendor_id');
+        $chartYearlyTotalSales = Orders::select(
+        \DB::raw('YEAR(delivery_date) as year'),)
+        ->where('deleted_at', null)
+        ->where('orders.order_amount', '!=', null)
+        ->where('orders.order_ref', '!=', null)
+        ->whereYear('orders.delivery_date', '=', Carbon::now()->year)
+        ->groupby('year')
+        ->get();
 
-            $chartYearlyTotalSales = Orders::select(
-            \DB::raw('YEAR(delivery_date) as year'),
-            )
-            ->where('deleted_at', null)
-            ->where('orders.order_amount', '!=', null)
-            ->where('orders.order_ref', '!=', null)
-            ->groupby('year')
-            ->get();
-          
-            // $result[] = ['Year', 'Sales'];
-            // foreach ($ssChartyear as $key => $value) {
-            // $result[++$key] = [$value->year,  (int)$value->total_sales ];
-            // }
+        $chartMonthlyTotalSales = Orders::select(
+        \DB::raw("COUNT(*) as total_sales"), 
+        \DB::raw('DATE_FORMAT(delivery_date,"%M ") as month'),
+        \DB::raw('SUM(order_amount) as sales_volume'),
+        )->where('deleted_at', null)
+        ->where('orders.order_amount', '!=', null)
+        ->where('orders.order_ref', '!=', null)
+        ->whereYear('orders.delivery_date', '=', Carbon::now()->year)
+        ->groupby('month')
+        ->get();
+        $chartSalesMonth = Arr::pluck($chartMonthlyTotalSales, 'month');
+        $chartSalesVolume = Arr::pluck($chartMonthlyTotalSales, 'sales_volume');
+        $chartSalesTotal = Arr::pluck($chartMonthlyTotalSales, 'total_sales');
 
-          $chartMonthlyTotalSales =   Orders::select(
-                \DB::raw("COUNT(*) as total_sales"), 
-                \DB::raw('DATE_FORMAT(delivery_date,"%M ") as month'),
-                \DB::raw('SUM(order_amount) as sales_volume'),
-                )
-                ->where('deleted_at', null)
-                ->where('orders.order_amount', '!=', null)
-                ->where('orders.order_ref', '!=', null)
-                ->groupby('month')
-                ->get();
-                $chartSalesMonth = Arr::pluck($chartMonthlyTotalSales, 'month');
-                $chartSalesVolume = Arr::pluck($chartMonthlyTotalSales, 'sales_volume');
-                $chartSalesTotal = Arr::pluck($chartMonthlyTotalSales, 'total_sales');
+        $monthlist = array_map(fn($month) => Carbon::create(null, $month)->format('M'), range(1, 12));
+        $salesYear =  Arr::pluck($chartYearlyTotalSales, 'year');
+        $data = [
+         'month' =>  $monthlist ,
+         'sales' =>  $chartSalesVolume,
+         'total' =>  $chartSalesTotal,
+        ];
 
-                $salesYear =  Arr::pluck($chartYearlyTotalSales, 'year');
-              
-                $data = [
-                    'month' =>  $chartSalesMonth ,
-                    'sales' =>  $chartSalesVolume,
-                    'total' =>  $chartSalesTotal,
-                ];
+        $chowdeckOrderCount= DB::table('orders')
+        ->join('platforms', 'platforms.id', '=', 'orders.platform_id')
+        ->where('platforms.name', 'chowdeck')
+        ->where('orders.deleted_at', null)
+        ->where('orders.order_amount', '!=', null)
+        ->where('orders.order_ref', '!=', null)
+        ->whereYear('orders.delivery_date', '=', Carbon::now()->year)
+        ->get('orders.platform_id')->count();
 
-                // $data[] = ['Month', 'Total', 'Sales'];
-                // foreach ($chartMonthlyTotalSales as $key => $value) {
-                // $data[++$key] = ["month", $value->month];
-                // $data[++$key] = ["total", number_format($value->total_sales)];
-                // $data[++$key] = ["sales", number_format($value->sales_volume)];
-                // }
-                //dd($data['month']);
+        $glovoOrderCount= DB::table('orders')
+        ->join('platforms', 'platforms.id', '=', 'orders.platform_id')
+        ->where('platforms.name', 'glovo')
+        ->where('orders.deleted_at', null)
+        ->where('orders.order_amount', '!=', null)
+        ->where('orders.order_ref', '!=', null)
+        ->whereYear('orders.delivery_date', '=', Carbon::now()->year)
+        ->get('orders.platform_id')->count();
 
+        $edenOrderCount= DB::table('orders')
+        ->join('platforms', 'platforms.id', '=', 'orders.platform_id')
+        ->where('platforms.name', 'edenlife')
+        ->where('orders.deleted_at', null)
+        ->where('orders.order_amount', '!=', null)
+        ->where('orders.order_ref', '!=', null)
+        ->whereYear('orders.delivery_date', '=', Carbon::now()->year)
+        ->get('orders.platform_id')->count();
 
+        $platformOrders = DB::table('orders')
+        ->join('platforms', 'platforms.id', '=', 'orders.platform_id')->distinct()
+        ->where('platforms.deleted_at', null)
+        ->whereYear('orders.delivery_date', '=', Carbon::now()->year)
+        ->get(['platforms.*']);
+        
+        // bar chart
+        $chowdeckSalesPercentageChart = $chowdeckOrderCount / $countAllOrder * 100;
+        $glovoSalesPercentageChart = $glovoOrderCount / $countAllOrder * 100;
+        $edenSalesPercentageChart = $edenOrderCount / $countAllOrder * 100;
+
+        $piechartData = [            
+        'label' => ['Chowdeck', 'Glovo', 'Eden'],
+        'data' => [round($chowdeckSalesPercentageChart) , round($glovoSalesPercentageChart),  round($edenSalesPercentageChart)] ,
+    ];
+    //sales for barchart
+
+    $chowdeckOrder =  Orders::join('platforms', 'platforms.id', '=', 'orders.platform_id')
+    ->select(
+        \DB::raw('DATE_FORMAT(orders.delivery_date,"%M ") as month'),
+        \DB::raw('SUM(orders.order_amount) as sales'),
+        )
+        ->where('platforms.name', 'chowdeck')
+        ->where('orders.deleted_at', null)
+        ->where('orders.order_amount', '!=', null)
+        ->where('orders.order_ref', '!=', null)
+        ->whereYear('orders.delivery_date', '=', Carbon::now()->year)
+        ->groupby('month')
+        ->get();
+    $barChartChowdeckSales = Arr::pluck($chowdeckOrder, 'sales');
+
+    $glovoOrder = Orders::join('platforms', 'platforms.id', '=', 'orders.platform_id')
+    ->select(
+        \DB::raw('DATE_FORMAT(orders.delivery_date,"%M ") as month'),
+        \DB::raw('SUM(orders.order_amount) as sales'),
+        )
+        ->where('platforms.name', 'glovo')
+        ->where('orders.deleted_at', null)
+        ->where('orders.order_amount', '!=', null)
+        ->where('orders.order_ref', '!=', null)
+        ->whereYear('orders.delivery_date', '=', Carbon::now()->year)
+        ->groupby('month')
+        ->get();
+        $barChartGlovoSales = Arr::pluck($glovoOrder, 'sales');
+
+    $edenOrder=  Orders::join('platforms', 'platforms.id', '=', 'orders.platform_id')
+    ->select(
+        \DB::raw('DATE_FORMAT(orders.delivery_date,"%M ") as month'),
+        \DB::raw('SUM(orders.order_amount) as sales'),
+        )
+        ->where('platforms.name', 'edenlife')
+        ->where('orders.deleted_at', null)
+        ->where('orders.order_amount', '!=', null)
+        ->where('orders.order_ref', '!=', null)
+        ->whereYear('orders.delivery_date', '=', Carbon::now()->year)
+        ->groupby('month')
+        ->get();
+        $barChartEdenSales = Arr::pluck($edenOrder, 'sales');
+  
+    $barChartData = [
+        'months'        =>  $monthlist,
+        'chocdekSales'  =>  $barChartChowdeckSales,
+        'glovoSales'    =>  $barChartGlovoSales,
+        'edenSales'     =>  $barChartEdenSales,
+    ]; 
+    
+  
         return view('admin.admin', compact('name', 'role', 'countVendor',
          'countActiveVendor', 'countPlatforms', 'activePlatform',
-         'activeChowdeckVendor', 'chowdeckVendor',
-         'glovoVendor', 'activeGlovoVendor',   'activeEdenlifeVendor', 
-         'edenlifeVendor',  'countPlatforms',  'payouts',
-         'commission',   'sumAllOrders', 'countAllOrder', 'countPlatformWhereOrderCame',
-         'countAllPlate', 'commissionPaid', 'orderStart', 'orderEnd',
+        'countPlatforms',  'payouts', 'commission',   'sumAllOrders', 
+        'countAllOrder', 'countPlatformWhereOrderCame',
+        'countAllPlate', 'commissionPaid', 'orderStart', 'orderEnd',
         'averageWeeklySales', 'averageWeeklyPayouts', 'averageWeeklyCommissionPaid',
-        'averageWeeklyComm', 'data', 'salesYear'));
+        'averageWeeklyComm', 'data', 'salesYear', 'platformOrders',
+        'chowdeckOrderCount','glovoOrderCount', 'edenOrderCount', 'currentYear',
+        'chowdeckSalesPercentageChart', 'glovoSalesPercentageChart', 
+        'edenSalesPercentageChart', 'piechartData' ,  'barChartData'));
       }
     }
 

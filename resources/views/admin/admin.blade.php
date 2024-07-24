@@ -8,8 +8,7 @@
       <div class="content-wrapper">
             <div class="page-header">
                   <h3 class="page-title">
-                        Overview >>> <span class="text-info">{{$orderStart}}</span> - <span
-                              class="text-info">{{date('d-M-Y')}}</span>
+                        Overview >>> Year >>> <span class="text-info"> {{$currentYear}}</span>
                   </h3>
                   <nav aria-label="breadcrumb">
                         <ul class="breadcrumb">
@@ -263,11 +262,80 @@
 
             <!---end Alert --->
             <div class="row">
-                  <div class="col-md-12 grid-margin stretch-card">
+                  <div class="col-md-7 grid-margin stretch-card">
                         <div class="card">
                               <div class="card-body">
                                     <h4 class="card-title">Sales chart:</h4>
-                                    <canvas id="lineChart" style="height: 25px !important; width: 125px;"></canvas>
+                                    <canvas id="lineChart" style="height: 55px !important; width: 125px;"></canvas>
+                              </div>
+                        </div>
+                  </div>
+                  <div class="col-md-5 grid-margin stretch-card">
+                        <div class="card">
+                              <div class="card-body">
+                                    <h4 class="card-title">Sales platform: </h4>
+                                    <div class="table-responsive">
+                                          <table class="table">
+                                                <thead>
+                                                      <tr>
+                                                            <th> </th>
+                                                            <th> Name </th>
+                                                            <th> Orders</th>
+                                                            <th> Progress </th>
+                                                      </tr>
+                                                </thead>
+                                                <tbody>
+                                                      @foreach($platformOrders as $platform)
+                                                      <tr>
+                                                            <td>
+                                                                  @if(empty($platform->img_url))
+                                                                  None
+                                                                  @else
+                                                                  <img src="{{ asset($platform->img_url) }}"
+                                                                        class="cursor" style="">
+                                                                  @endif
+                                                            </td>
+                                                            <td>{{$platform->name}} </td>
+                                                            <td>
+                                                                  @if($platform->name == 'Chowdeck')
+                                                                  {{$chowdeckOrderCount}}
+                                                                  @endif
+
+                                                                  @if($platform->name == 'Glovo')
+                                                                  {{$glovoOrderCount}}
+                                                                  @endif
+                                                            </td>
+                                                            <td>
+                                                                  @if($platform->name == 'Chowdeck')
+
+                                                                  <div class="progress" role="progressbar">
+                                                                        <div class="progress-bar  progress-bar-striped progress-bar-animated bg-info"
+                                                                              role="progressbar"
+                                                                              style="width: {{ $chowdeckSalesPercentageChart}}%"
+                                                                              aria-valuenow="{{$chowdeckSalesPercentageChart}}"
+                                                                              aria-valuemin="0" aria-valuemax="100">
+                                                                        </div>
+                                                                  </div>
+                                                                  @endif
+
+                                                                  @if($platform->name == 'Glovo')
+
+                                                                  <div class="progress" role="progressbar">
+                                                                        <div class="progress-bar  progress-bar-striped progress-bar-animated bg-info"
+                                                                              role="progressbar"
+                                                                              style="width: {{$glovoSalesPercentageChart}}%"
+                                                                              aria-valuenow="{{$glovoSalesPercentageChart}}"
+                                                                              aria-valuemin="" aria-valuemax="100">
+                                                                        </div>
+                                                                  </div>
+                                                                  @endif
+                                                            </td>
+                                                      </tr>
+                                                      @endforeach
+
+                                                </tbody>
+                                          </table>
+                                    </div>
                               </div>
                         </div>
                   </div>
@@ -280,7 +348,7 @@
                         <div class="card">
                               <div class="card-body">
                                     <div class="clearfix">
-                                          <h4 class="card-title float-start">Platform Statistics: 2024</h4>
+                                          <h4 class="card-title float-start">Sales Performance</h4>
                                           <div id="visit-sale-chart-legend"
                                                 class="rounded-legend legend-horizontal legend-top-right float-end">
                                           </div>
@@ -292,13 +360,16 @@
                   <div class="col-md-5 grid-margin stretch-card">
                         <div class="card">
                               <div class="card-body">
-                                    <h4 class="card-title">Sales Platforms: {{$countPlatforms->count()}}</h4>
+                                    <h4 class="card-title">Sales Percentage: </h4>
                                     <p></p>
                                     <div class="doughnutjs-wrapper d-flex justify-content-center">
                                           <canvas id="traffic-chart"></canvas>
                                     </div>
                                     <div id="traffic-chart-legend"
-                                          class="rounded-legend legend-vertical legend-bottom-left pt-4"></div>
+                                          class="rounded-legend legend-vertical legend-bottom-left pt-4">
+
+
+                                    </div>
                               </div>
                         </div>
                   </div>
@@ -318,17 +389,283 @@
 </div>
 <!-- main-panel -->
 
-<script src="{{ asset('assets/js/dashboard.js') }}"></script>
-<script src="{{ asset('assets/js/chart.js') }}"></script>
+<!-- <script src="{{ asset('assets/js/dashboard.js') }}"></script> -->
+<!-- <script src="{{ asset('assets/js/chart.js') }}"></script> -->
 <!-- End custom js for this page -->
+
+<script>
+(function($) {
+      'use strict';
+      if ($("#visit-sale-chart").length) {
+            const ctx = document.getElementById('visit-sale-chart');
+            //chowdeck
+            var graphGradient1 = document.getElementById('visit-sale-chart').getContext("2d");
+            //glovo
+            var graphGradient2 = document.getElementById('visit-sale-chart').getContext("2d");
+            //eden
+            var graphGradient3 = document.getElementById('visit-sale-chart').getContext("2d");
+
+            var gradientStrokeViolet = graphGradient1.createLinearGradient(0, 0, 0, 181);
+            gradientStrokeViolet.addColorStop(0, 'rgba(12, 81, 63, 1)');
+            gradientStrokeViolet.addColorStop(1, 'rgba(12, 81, 63, 1)');
+            var gradientLegendViolet = 'linear-gradient(to right, rgba(12, 81, 63, 1), rgba(12, 81, 63, 1))';
+
+            var gradientStrokeBlue = graphGradient2.createLinearGradient(0, 0, 0, 360);
+            gradientStrokeBlue.addColorStop(0, 'rgba(255, 194, 68, 1)');
+            gradientStrokeBlue.addColorStop(1, 'rgba(255, 194, 68, 1)');
+            var gradientLegendBlue = 'linear-gradient(to right, rgba(255, 194, 68, 1), rgba(255, 194, 68, 1))';
+
+            var gradientStrokeRed = graphGradient3.createLinearGradient(0, 0, 0, 300);
+            gradientStrokeRed.addColorStop(0, 'rgba(162, 153, 149, 1)');
+            gradientStrokeRed.addColorStop(1, 'rgba(162, 153, 149, 1)');
+            var gradientLegendRed = 'linear-gradient(to right, rgba(162, 153, 149, 1), rgba(162, 153, 149, 1))';
+            const bgColor1 = ["rgba(12, 81, 63, 1)"];
+            const bgColor2 = ["rgba(255, 194, 68, 1"];
+            const bgColor3 = ["rgba(162, 153, 149, 1)"];
+
+            new Chart(ctx, {
+                  type: 'bar',
+                  data: {
+                        labels:  @json($barChartData['months']),
+                        datasets: [{
+                                    label: "Chowdeck",
+                                    borderColor: gradientStrokeViolet,
+                                    backgroundColor: gradientStrokeViolet,
+                                    fillColor: bgColor1,
+                                    hoverBackgroundColor: gradientStrokeViolet,
+                                    pointRadius: 0,
+                                    fill: false,
+                                    borderWidth: 1,
+                                    fill: 'origin',
+                                    data: @json($barChartData['chocdekSales']),
+                                    barPercentage: 0.5,
+                                    categoryPercentage: 0.5,
+                              },
+                              {
+                                    label: "Glovo",
+                                    borderColor: gradientStrokeBlue,
+                                    backgroundColor: gradientStrokeBlue,
+                                    hoverBackgroundColor: gradientStrokeBlue,
+                                    fillColor: bgColor2,
+                                    pointRadius: 0,
+                                    fill: false,
+                                    borderWidth: 1,
+                                    fill: 'origin',
+                                    data: @json($barChartData['glovoSales']),
+                                    barPercentage: 0.5,
+                                    categoryPercentage: 0.5,
+                              },
+                              {
+                                    label: "Eden",
+                                    borderColor: gradientStrokeRed,
+                                    backgroundColor: gradientStrokeRed,
+                                    hoverBackgroundColor: gradientStrokeRed,
+                                    fillColor: bgColor3,
+                                    pointRadius: 0,
+                                    fill: false,
+                                    borderWidth: 1,
+                                    fill: 'origin',
+                                    data: @json($barChartData['edenSales']),
+                                    barPercentage: 0.5,
+                                    categoryPercentage: 0.5,
+                              }
+                        ]
+                  },
+                  options: {
+                        responsive: true,
+                        maintainAspectRatio: true,
+                        elements: {
+                              line: {
+                                    tension: 0.4,
+                              },
+                        },
+                        scales: {
+                              y: {
+                                    display: false,
+                                    grid: {
+                                          display: true,
+                                          drawOnChartArea: true,
+                                          drawTicks: false,
+                                    },
+                              },
+                              x: {
+                                    display: true,
+                                    grid: {
+                                          display: false,
+                                    },
+                              }
+                        },
+                        plugins: {
+                              legend: {
+                                    display: false,
+                              }
+                        }
+                  },
+                  plugins: [{
+                        afterDatasetUpdate: function(chart, args, options) {
+                              const chartId = chart.canvas.id;
+                              var i;
+                              const legendId = `${chartId}-legend`;
+                              const ul = document.createElement('ul');
+                              for (i = 0; i < chart.data.datasets.length; i++) {
+                                    ul.innerHTML += `
+              <li>
+                <span style="background-color: ${chart.data.datasets[i].fillColor}"></span>
+                ${chart.data.datasets[i].label}
+              </li>
+            `;
+                              }
+                              // alert(chart.data.datasets[0].backgroundColor);
+                              return document.getElementById(legendId).appendChild(
+                                    ul);
+                        }
+                  }]
+            });
+      }
+      //Pie Chart
+      if ($("#traffic-chart").length) {
+            const ctx = document.getElementById('traffic-chart');
+            //chowdeck
+            var graphGradient1 = document.getElementById("traffic-chart").getContext('2d');
+            //glovo
+            var graphGradient2 = document.getElementById("traffic-chart").getContext('2d');
+            //eden
+            var graphGradient3 = document.getElementById("traffic-chart").getContext('2d');
+            //chowdeck
+            var gradientStrokeBlue = graphGradient1.createLinearGradient(0, 0, 0, 181);
+            gradientStrokeBlue.addColorStop(0, 'rgba(12, 81, 63, 1)');
+            gradientStrokeBlue.addColorStop(1, 'rgba(12, 81, 63, 1)');
+            var gradientLegendBlue = 'rgba(12, 81, 63, 1)';
+
+            //glovo
+            var gradientStrokeRed = graphGradient2.createLinearGradient(0, 0, 0, 50);
+            gradientStrokeRed.addColorStop(0, 'rgba(255, 194, 68, 1)');
+            gradientStrokeRed.addColorStop(1, 'rgba(255, 194, 68, 1)');
+            var gradientLegendRed = 'rgba(255, 194, 68, 1)';
+            //eden
+            var gradientStrokeGreen = graphGradient3.createLinearGradient(0, 0, 0, 300);
+            gradientStrokeGreen.addColorStop(0, 'rgba(162, 153, 149, 1)');
+            gradientStrokeGreen.addColorStop(1, 'rgba(162, 153, 149, 1)');
+            var gradientLegendGreen = 'rgba(162, 153, 149, 1)';
+
+            // const bgColor1 = ["rgba(54, 215, 232, 1)"];
+            // const bgColor2 = ["rgba(255, 191, 150, 1"];
+            // const bgColor3 = ["rgba(6, 185, 157, 1)"];
+
+            new Chart(ctx, {
+                  type: 'doughnut',
+                  data: {
+                        labels: @json($piechartData['label']),
+                        datasets: [{
+                              data: @json($piechartData['data']),
+                              backgroundColor: [gradientStrokeBlue, gradientStrokeRed,
+                                    gradientStrokeGreen
+                              ],
+                              hoverBackgroundColor: [
+                                    gradientStrokeBlue,
+                                    gradientStrokeRed,
+                                    gradientStrokeGreen
+
+                              ],
+                              borderColor: [
+                                    gradientStrokeBlue,
+                                    gradientStrokeRed,
+                                    gradientStrokeGreen
+
+                              ],
+                              legendColor: [
+                                    gradientLegendBlue,
+                                    gradientLegendRed,
+                                    gradientLegendGreen
+
+                              ]
+                        }]
+                  },
+                  options: {
+                        cutout: 50,
+                        animationEasing: "easeOutBounce",
+                        animateRotate: true,
+                        animateScale: false,
+                        responsive: true,
+                        maintainAspectRatio: true,
+                        showScale: true,
+                        legend: false,
+                        plugins: {
+                              legend: {
+                                    display: false,
+                              }
+                        }
+                  },
+                  plugins: [{
+                        afterDatasetUpdate: function(chart, args, options) {
+                              const chartId = chart.canvas.id;
+                              var i;
+                              const legendId = `${chartId}-legend`;
+                              const ul = document.createElement('ul');
+                              for (i = 0; i < chart.data.datasets[0].data
+                                    .length; i++) {
+                                    ul.innerHTML += `
+                <li>
+                  <span style="background-color: ${chart.data.datasets[0].legendColor[i]}"></span>
+                  ${chart.data.labels[i]}:  ${chart.data.datasets[0].data[i]} %
+                </li>
+              `;
+                              }
+                              return document.getElementById(legendId).appendChild(
+                                    ul);
+                        }
+                  }]
+            });
+      }
+
+
+
+      if ($("#inline-datepicker").length) {
+            $('#inline-datepicker').datepicker({
+                  enableOnReadonly: true,
+                  todayHighlight: true,
+            });
+      }
+      if ($.cookie('purple-pro-banner') != "true") {
+            document.querySelector('#proBanner').classList.add('d-flex');
+            document.querySelector('.navbar').classList.remove('fixed-top');
+      } else {
+            document.querySelector('#proBanner').classList.add('d-none');
+            document.querySelector('.navbar').classList.add('fixed-top');
+      }
+
+      if ($(".navbar").hasClass("fixed-top")) {
+            document.querySelector('.page-body-wrapper').classList.remove('pt-0');
+            document.querySelector('.navbar').classList.remove('pt-5');
+      } else {
+            document.querySelector('.page-body-wrapper').classList.add('pt-0');
+            document.querySelector('.navbar').classList.add('pt-5');
+            document.querySelector('.navbar').classList.add('mt-3');
+
+      }
+      document.querySelector('#bannerClose').addEventListener('click', function() {
+            document.querySelector('#proBanner').classList.add('d-none');
+            document.querySelector('#proBanner').classList.remove('d-flex');
+            document.querySelector('.navbar').classList.remove('pt-5');
+            document.querySelector('.navbar').classList.add('fixed-top');
+            document.querySelector('.page-body-wrapper').classList.add('proBanner-padding-top');
+            document.querySelector('.navbar').classList.remove('mt-3');
+            var date = new Date();
+            date.setTime(date.getTime() + 24 * 60 * 60 * 1000);
+            $.cookie('purple-pro-banner', "true", {
+                  expires: date
+            });
+      });
+})(jQuery);
+</script>
+
 <script>
 var ctx = document.getElementById('lineChart').getContext('2d');
 var myChart = new Chart(ctx, {
       type: 'line',
       data: {
             labels: @json($data['month']),
-            datasets: [{
-
+                  datasets: [{
                   label: @json($salesYear),
                   data: @json($data['sales']),
                   backgroundColor: [
@@ -339,9 +676,16 @@ var myChart = new Chart(ctx, {
                         'rgba(153, 102, 255, 0.2)',
                         'rgba(255, 159, 64, 0.2)'
                   ],
-                  borderColor: 'rgba(254,0,0,255)',
+                  borderColor: [
+                        'rgba(255,99,132,1)',
+                        'rgba(54, 162, 235, 1)',
+                        'rgba(255, 206, 86, 1)',
+                        'rgba(75, 192, 192, 1)',
+                        'rgba(153, 102, 255, 1)',
+                        'rgba(255, 159, 64, 1)'
+                  ],
                   borderWidth: 1,
-                  fill: true
+                  fill: false
             }]
       },
       options: {
