@@ -129,7 +129,7 @@
                                                                        
                                                                               <input type="hidden" id="vendor_id" value="{{$data->vendor_id}}">
                                                                               <input type="hidden" id="invoice_ref" value="{{$data->invoice_ref}}">
-                                                                              <button onclick="deleteInvoice()" class="text-danger"> Restore </button>
+                                                                              <button onclick="restoreInvoice()" class="text-danger"> Restore </button>
                                                                      
                                                                         </div>
                                                                    
@@ -139,13 +139,7 @@
 
                                                             @endif
 
-                                                            @if(Auth::user()->role_id == '6')
-
-                                                            <a href="computed-invoice/{{$data->id}}/{{$data->number_of_order_merge}}/{{$data->invoice_ref}}"
-                                                                  class="text-danger"><i class="fa fa-eye"></i></a>
-
-
-                                                            @endif
+                    
                                                             @endauth
                                                       </td>
                                                   
@@ -226,11 +220,11 @@
 </div>
 
 <script type="text/javascript">
-function deleteInvoice() {
+function restoreInvoice() {
       document.getElementById('response').style.display = 'none';
       var id = document.getElementById('invoice_ref').value;
       var vendor_id = document.getElementById('vendor_id').value;
-      var showRoute = "{{ route('delete-invoice', ':id') }}";
+      var showRoute = "{{ route('restore-invoice', ':id') }}";
       url = showRoute.replace(':id', id);
 
       //window.location = url;
