@@ -77,11 +77,11 @@
                                           </li>
 
                                           <li class="breadcrumb-item">
-                                                <!-- 
+                                                
                                                 <input type="hidden" value="{{$invoice_ref}}" name="ref" id="ref">
                                                 <input type="hidden" value="{{$vendor}}" name="vendor" id="vendor">
                                                 <button onclick="mypdf()" class="btn btn-outline-dark  text-dark">
-                                                      send email</button> -->
+                                                      send email</button>
 
                                           </li>
                                           <li class="breadcrumb-item">
@@ -414,11 +414,6 @@ function mypdf() {
                   "data:application/octet-stream"); //do this to clean the url.
             $("#saveBtn").attr("download", "your_pic_name.png").attr("href",
                   newDataURL); //incase you want to create a download link to save the pic locally.
-
-            //   var newDataURL = dataUrl.replace(/^data:application\/pdf/); //do this to clean the url.
-            //      $("#saveBtn").attr("download", "your_pic_name.png").attr("href", newDataURL); //incase you want to create a download link to save the pic locally.
-
-            //data:application/pdf;base64,JVBERi0xLjQKJcOkw7zDtsOfCjIgMCBvYmoKPDwvTGVuZ3RoIDMgMCBSL0ZpbHRlci9GbGF0ZURlY29kZT4+CnN0cmVhbQp4nO1cyY4ktxG911fUWUC3kjsTaBTQ1Ytg32QN4IPgk23JMDQ2LB/0+2YsZAQzmZk1PSPIEB...
             var id = document.getElementById('ref').value;
             var showRoute = "{{ route('send-email-pdf', ':id') }}";
             url = showRoute.replace(':id', id);
@@ -447,73 +442,5 @@ function mypdf() {
       });
 }
 </script>
-
-<script>
-function sendEmail() {
-
-      var HTML_Width = $(".print_invoice").width();
-      var HTML_Height = $(".print_invoice").height();
-      var top_left_margin = 15;
-      var PDF_Width = HTML_Width + (top_left_margin * 2);
-      var PDF_Height = (PDF_Width * 1.5) + (top_left_margin * 2);
-      var canvas_image_width = HTML_Width;
-      var canvas_image_height = HTML_Height;
-
-      var totalPDFPages = Math.ceil(HTML_Height / PDF_Height) - 1;
-
-
-      html2canvas($(".print_invoice")[0], {
-            allowTaint: true
-      }).then(function(canvas) {
-            canvas.getContext('2d');
-
-            console.log(canvas.height + "  " + canvas.width);
-            var imgData = canvas.toDataURL("image/jpeg", 1.0);
-            var pdf = new jsPDF('p', 'pt', [PDF_Width, PDF_Height]);
-            pdf.addImage(imgData, 'JPG', top_left_margin, top_left_margin, canvas_image_width,
-                  canvas_image_height);
-
-            for (var i = 1; i <= totalPDFPages; i++) {
-                  pdf.addPage(PDF_Width, PDF_Height);
-                  pdf.addImage(imgData, 'JPG', top_left_margin, -(PDF_Height * i) + (
-                        top_left_margin *
-                        4), canvas_image_width, canvas_image_height);
-            }
-            // pdf.save("invoice-{{$invoice_ref}}.pdf");
-
-            var blob = pdf.output('blob');
-
-
-
-            var id = document.getElementById('ref').value;
-            var showRoute = "{{ route('send-email-pdf', ':id') }}";
-            url = showRoute.replace(':id', id);
-            // $token = document.getElementsByName("_token")[0].value;
-            $.ajaxSetup({
-                  headers: {
-                        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-                  }
-            });
-            $.ajax({
-                  method: 'POST',
-                  enctype: 'multipart/form-data',
-                  url: url,
-                  data: {
-                        //you can more data here
-                        'img': blob
-                  },
-                  success: function(data) {
-                        console.log(data);
-                  },
-                  error: function(data) {
-                        console.log(data);
-                  }
-            });
-      });
-
-
-}
-</script>
-
 
 @endsection

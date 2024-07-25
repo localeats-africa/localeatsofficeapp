@@ -1638,41 +1638,34 @@ class HomeController extends Controller
     }
 
     public function sendEmailPdfInvoice(Request $request, $ref){
-        //$image =  $request->file("file");
-      
+
         $img = $request->img; //get the image string from ajax post
         $getimg = substr(explode(";",$img)[1], 7); //this extract the exact image
-        $target=time().'invoice.png'; //rename the image by time
-        $image = file_put_contents(public_path($target), base64_decode($getimg));
-        // $putImage = 
-     
+        $target= $ref.'-invoice.png'; //rename the image by time
+       // $image = file_put_contents(public_path($target), base64_decode($getimg));
+        $image = file_put_contents(public_path().'/assets/invoice/' . $target, base64_decode($getimg));
+        $path = '/assets/invoice/' . $target;
+
         $invoice_ref =  $ref;
-
         $vendor = DB::table('orders')
-       ->where('orders.invoice_ref', $invoice_ref)
-       ->pluck('vendor_id')->first();
-           if($image){
-               // $fileName =  'invoice-'.$invoice_ref['invoice_ref'] . '.' . 'pdf' ;
-                //$path = $getimg->move(public_path('assets/invoice/'), $target);
-                $pdf_path = "/".$target; 
-                //$pdf_path = $path. '/' .$fileName;
-
-                
-            }
-           else {
-            $pdf_path = "";
-            }
+        ->where('orders.invoice_ref', $invoice_ref)
+        ->pluck('vendor_id')->first();
+           
+        if($image){
+            $pdf_path =  $path; 
+        }
+        else {$pdf_path = "";}
 
         $storeInvoice = new Invoice();
-                $storeInvoice->reference       = $invoice_ref;
-                $storeInvoice->vendor_id       = $vendor;
-                $storeInvoice->invoice_url     = $pdf_path;
-                $storeInvoice->invoice_status  = 'email';
-                $storeInvoice->save();
+        $storeInvoice->reference       = $invoice_ref;
+        $storeInvoice->vendor_id       = $vendor;
+        $storeInvoice->invoice_url     = $pdf_path;
+        $storeInvoice->invoice_status  = 'email';
+        $storeInvoice->save();
 
-                if($storeInvoice){
-                    return redirect()->back()->with('save', 'save successfully .');
-                }
+        if($storeInvoice){
+        return redirect()->back()->with('save', 'save successfully .');
+        }
 
     }
 
