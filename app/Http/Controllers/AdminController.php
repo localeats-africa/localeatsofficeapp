@@ -1119,6 +1119,16 @@ class AdminController extends Controller
     }
 
     public function allDeletedRows(Request $request){
+        $name = Auth::user()->name;
+        $user_id = Auth::user()->id;
+        $role = DB::table('role')->select('role_name')
+        ->join('users', 'users.role_id', 'role.id')
+        ->where('users.id', $user_id)
+        ->pluck('role_name')->first();
+
+        $perPage = $request->perPage ?? 10;
+        $search = $request->input('search'); 
+         
         $orders = DB::table('orders')
         ->join('vendor', 'orders.vendor_id', '=', 'vendor.id')
         ->join('users', 'orders.added_by', '=', 'users.id')
