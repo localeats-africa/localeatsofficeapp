@@ -74,7 +74,7 @@
                                                 Search:
                                                 <div class="ms-2 d-inline-block">
 
-                                                      <form action="{{ route('vendor-merged-invoices') }}" method="GET"
+                                                      <form action="{{ route('show-deleted-invoice') }}" method="GET"
                                                             role="search">
                                                             {{ csrf_field() }}
                                                             <div class="input-group mb-2">
