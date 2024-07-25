@@ -1118,4 +1118,32 @@ class AdminController extends Controller
         }
     }
 
+    public function allDeletedRows(Request $request){
+        $orders = DB::table('orders')
+        ->join('vendor', 'orders.vendor_id', '=', 'vendor.id')
+        ->join('users', 'orders.added_by', '=', 'users.id')
+        ->Join('platforms', 'orders.platform_id', '=', 'platforms.id')
+        ->where('orders.deleted_at', '!=', null)
+        ->where('orders.order_amount', '!=', null)
+        ->where('orders.order_ref', '!=', null)
+        ->select(['orders.*', 'vendor.vendor_name', 'platforms.name', 'users.fullname'])
+        ->orderBy('orders.created_at', 'desc')
+        ->where(function ($query) use ($search) {  // <<<
+        $query->where('vendor.vendor_name', 'LIKE', '%'.$search.'%')
+               ->orWhere('orders.invoice_ref', 'LIKE', '%'.$search.'%')
+               ->orWhere('platforms.name', 'LIKE', '%'.$search.'%')
+               ->orWhere('orders.delivery_date', 'LIKE', '%'.$search.'%')
+               ->orderBy('orders.created_at', 'desc');
+        })->paginate($perPage, $columns = ['*'], $pageName = 'orders'
+        )->appends(['per_page'   => $perPage]);
+    
+        $pagination = $orders->appends ( array ('search' => $search) );
+            if (count ( $pagination ) > 0){
+                return view('admin.deleted-row',  compact(
+                'perPage', 'name', 'role', 'orders'))->withDetails( $pagination );     
+            } 
+            else{return redirect()->back()->with('order-status', 'No record order found');}
+        return view('admin.deleted-row', compact('name', 'role', 'orders'));
+    }
+
 }//class
