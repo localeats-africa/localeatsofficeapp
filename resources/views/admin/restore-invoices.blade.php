@@ -8,7 +8,7 @@
       <div class="content-wrapper">
             <div class="page-header">
                   <h3 class="page-title">
-                        Merged Invoices
+                        All  Deleted Invoices
                   </h3>
             </div>
 
@@ -46,7 +46,7 @@
                   <div class="col-12">
                         <div class="card">
                               <div class="card-header">
-                                    <h3 class="card-title"> </h3>
+                                    <h3 class="card-title"> Be sure before clicking "restore" button</h3>
                               </div>
                               <div class="card-body border-bottom py-3">
                                     <div class="d-flex">
@@ -125,16 +125,13 @@
                                                                               href="computed-invoice/{{$data->id}}/{{$data->number_of_order_merge}}/{{$data->invoice_ref}}">View
                                                                         </a>
                                                                         <br>
-                                                                        @if($data->payment_status == 'paid')
-                                                                        @else 
                                                                         <div class="dropdown-item text-danger">
                                                                        
                                                                               <input type="hidden" id="vendor_id" value="{{$data->vendor_id}}">
                                                                               <input type="hidden" id="invoice_ref" value="{{$data->invoice_ref}}">
-                                                                              <button onclick="deleteInvoice()" class="text-danger"> Delete</button>
+                                                                              <button onclick="deleteInvoice()" class="text-danger"> Restore </button>
                                                                      
                                                                         </div>
-                                                                        @endif 
                                                                    
                                                                   </div>
                                                             </span>
