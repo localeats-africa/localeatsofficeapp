@@ -116,7 +116,7 @@
                                                                   value="{{$data->vendor_id}}">
                                                             <input type="hidden" id="invoice_ref"
                                                                   value="{{$data->invoice_ref}}">
-                                                            <button onclick="restoreInvoice()" class="text-danger">
+                                                            <button onclick="restoreInvoice()" class="text-dark btn  btn-outline-danger">
                                                                   Restore </button>
                                                             <p id="response"></p>
 
