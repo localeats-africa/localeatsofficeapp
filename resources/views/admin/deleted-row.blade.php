@@ -11,93 +11,7 @@
                         Overview
                   </h3>
             </div>
-            <div class="container ">
-                  <div class="row ">
-                        <div class="col-12">
-                              <div class="row row-cards">
-                                    <div class="col-md-3 stretch-card grid-margin">
-                                          <div class="card bg-gradient-danger card-img-holder text-white">
-                                                <div class="card-body">
-                                                      <img src="{{ asset('assets/images/dashboard/circle.svg') }}"
-                                                            class="card-img-absolute" alt="circle-image">
-                                                      <h4 class="font-weight-normal">Number Of Orders <i
-                                                                  class="mdi mdi-pot-steam  mdi-24px float-end"></i>
-                                                      </h4>
-                                                      <h2 class="mb-5">{{$countAllOrder}}</h2>
-                                                      <hr class="w-100">
-                                                      <h6 class="card-text">From  <span class="text-dark">( {{$countPlatformWhereOrderCame}} )</span>
-                                                            <span
-                                                                  style="float:right;">platform (s)</span> 
-
-                                                      </h6>
-                                                </div>
-
-                                          </div>
-                                    </div>
-
-                                    <div class="col-md-3 stretch-card grid-margin">
-                                          <div class="card bg-gradient-success card-img-holder text-white">
-                                                <div class="card-body">
-                                                      <img src="{{ asset('assets/images/dashboard/circle.svg') }}"
-                                                            class="card-img-absolute" alt="circle-image">
-                                                      <h4 class="font-weight-normal">Number Of Plates <i
-                                                                  class="mdi mdi-pot-steam  mdi-24px float-end"></i>
-                                                      </h4>
-                                                      <h2 class="mb-5">{{$countAllPlate}}</h2>
-                                                      <hr class="w-100">
-                                                      <h6 class="card-text">From  <span class="text-dark">( {{$countAllOrder}} )</span>
-                                                            <span
-                                                                  style="float:right;">order (s)</span> 
-
-                                                      </h6>
-                                                </div>
-
-                                          </div>
-                                    </div>
-
-                                    <div class="col-md-3 stretch-card grid-margin">
-                                          <div class="card bg-gradient-info card-img-holder text-white">
-                                                <div class="card-body">
-                                                      <img src="{{ asset('assets/images/dashboard/circle.svg')}}"
-                                                            class="card-img-absolute" alt="circle-image">
-                                                      <h4 class="font-weight-normal">Sales <i
-                                                                  class="mdi mdi-24px float-end">
-                                                                  <svg xmlns="http://www.w3.org/2000/svg" class="icon"
-                                                                        width="24" height="24" viewBox="0 0 24 24"
-                                                                        stroke-width="2" stroke="currentColor"
-                                                                        fill="none" stroke-linecap="round"
-                                                                        stroke-linejoin="round">
-                                                                        <path stroke="none" d="M0 0h24v24H0z"
-                                                                              fill="none"></path>
-                                                                        <path
-                                                                              d="M9 14c0 1.657 2.686 3 6 3s6 -1.343 6 -3s-2.686 -3 -6 -3s-6 1.343 -6 3z">
-                                                                        </path>
-                                                                        <path
-                                                                              d="M9 14v4c0 1.656 2.686 3 6 3s6 -1.344 6 -3v-4">
-                                                                        </path>
-                                                                        <path
-                                                                              d="M3 6c0 1.072 1.144 2.062 3 2.598s4.144 .536 6 0c1.856 -.536 3 -1.526 3 -2.598c0 -1.072 -1.144 -2.062 -3 -2.598s-4.144 -.536 -6 0c-1.856 .536 -3 1.526 -3 2.598z">
-                                                                        </path>
-                                                                        <path d="M3 6v10c0 .888 .772 1.45 2 2"></path>
-                                                                        <path d="M3 11c0 .888 .772 1.45 2 2"></path>
-                                                                  </svg>
-                                                            </i>
-                                                      </h4>
-                                                      <h2 class="mb-5">₦{{number_format($sumAllOrders)}}</h2>
-                                                      <hr class="w-100">
-                                                      <h6 class="card-text">weekly average <span style="float:right;">₦0
-                                                            </span></h6>
-                                                </div>
-                                          </div>
-                                    </div>
-
          
-                              </div>
-                              <!--row--->
-                        </div>
-                  </div>
-                  <!--row-deck-->
-            </div>
             <p></p>
             <p></p>
             <!--Alert here--->
@@ -211,6 +125,7 @@
                                                       <th>Extra</th>
                                                       <th>Delivery Date</th>
                                                       <th>Posted By</th>
+                                                      <th></th>
                                                 </tr>
                                           </thead>
                                           <tbody>
@@ -227,7 +142,13 @@
                                                       <td>{{ date('d/m/Y', strtotime($data->delivery_date))}}
                                                           </td>
                                                       <td class="text-capitalize">{{$data->fullname}}</td>
-                                                
+                                                <td>
+                                                            <input type="hidden" id="invoice_ref"
+                                                                  value="{{$data->id}}">
+                                                            <button onclick="restoreRow()" class="text-dark btn  btn-outline-danger">
+                                                                  Restore </button>
+                                                            <p id="response"></p>
+                                                </td>
 
                                                 </tr>
                                                 @endforeach
