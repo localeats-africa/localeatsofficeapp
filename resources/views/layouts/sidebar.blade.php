@@ -76,7 +76,7 @@
                                     </li>
 
                                     <li class="nav-item">
-                                          <a class="nav-link" href="{{ url('show-deleted-rows') }}">Deleted Invoices</a>
+                                          <a class="nav-link" href="{{ url('show-deleted-rows') }}">Deleted Rows</a>
                                     </li>
 
                               </ul>
