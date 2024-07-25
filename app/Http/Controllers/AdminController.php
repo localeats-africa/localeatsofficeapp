@@ -1105,7 +1105,7 @@ class AdminController extends Controller
         if($order){
             $data = [
                 'status' => true,
-                'message'=> 'Invoice Number' .$invoice_ref.' restored successfully'
+                'message'=> 'Invoice Number' .$invoice_ref.' restored successfully. Check merge invoices'
             ];
             return response()->json($data);
         }
