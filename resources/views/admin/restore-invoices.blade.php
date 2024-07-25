@@ -108,41 +108,24 @@
                                                       <td class="text-sm">{{$data->vendor_name}} </td>
                                                       <td>{{ $data->invoice_ref}}</td>
 
-                                                    
+
                                                       <td class="">
-                                                      @auth
-                                                      @if(Auth::user()->role_id == '2')
-                                                            <span class="dropdown">
-                                                                  <button
-                                                                        class="btn dropdown-toggle align-text-top text-danger"
-                                                                        data-bs-boundary="viewport"
-                                                                        data-bs-toggle="dropdown"
-                                                                        style="padding:0;">Action</button>
-
-
-                                                                  <div class="dropdown-menu ">
-                                                                        <a class="dropdown-item text-danger"
-                                                                              href="computed-invoice/{{$data->id}}/{{$data->number_of_order_merge}}/{{$data->invoice_ref}}">View
-                                                                        </a>
-                                                                        <br>
-                                                                        <div class="dropdown-item text-danger">
-                                                                       
-                                                                              <input type="hidden" id="vendor_id" value="{{$data->vendor_id}}">
-                                                                              <input type="hidden" id="invoice_ref" value="{{$data->invoice_ref}}">
-                                                                              <button onclick="restoreInvoice()" class="text-danger"> Restore </button>
-                                                                     
-                                                                        </div>
-                                                                   
-                                                                  </div>
-                                                            </span>
+                                                            @auth
+                                                            @if(Auth::user()->role_id == '2')
+                                                            <input type="hidden" id="vendor_id"
+                                                                  value="{{$data->vendor_id}}">
+                                                            <input type="hidden" id="invoice_ref"
+                                                                  value="{{$data->invoice_ref}}">
+                                                            <button onclick="restoreInvoice()" class="text-danger">
+                                                                  Restore </button>
                                                             <p id="response"></p>
 
                                                             @endif
 
-                    
+
                                                             @endauth
                                                       </td>
-                                                  
+
                                                 </tr>
                                                 @endforeach
 
@@ -246,7 +229,7 @@ function restoreInvoice() {
                   document.getElementById('response').style.display = '';
                   document.getElementById('response').style.color = 'green';
                   document.getElementById('response').innerHTML = data.message;
-                 // location.reload();
+                  // location.reload();
             },
             error: function(data) {
                   console.log(data);
