@@ -8,7 +8,7 @@
       <div class="content-wrapper">
             <div class="page-header">
                   <h3 class="page-title">
-                        All  Deleted Invoices
+                        All Deleted Invoices
                   </h3>
             </div>
 
