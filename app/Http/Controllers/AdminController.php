@@ -1069,7 +1069,7 @@ class AdminController extends Controller
 
 
         $orders = DB::table('orders')->distinct()
-        //->join('merge_invoices', 'orders.number_of_order_merge', '=', 'merge_invoices.number_of_order_merge')
+        ->join('merge_invoices', 'orders.number_of_order_merge', '=', 'merge_invoices.number_of_order_merge')
         ->join('vendor', 'orders.vendor_id', '=', 'vendor.id')
         ->where('orders.deleted_at', '!=', null)
         ->orderBy('orders.created_at', 'desc')
