@@ -1093,22 +1093,21 @@ class AdminController extends Controller
         return view('admin.restore-invoices', compact('name', 'role', 'orders'));
      }
 
-     public function restoreDeletedInvoice(Request $request, $id){
+     public function restoreDeletedInvoice(Request $request, $invoice_ref){
         $today = Carbon::now();
         $vendor_id = $request->vendor_id;
  
         $order = DB::table('orders')
-        ->where('invoice_ref', '=', $id)
+        ->where('invoice_ref', '=', $invoice_ref)
         //->where('vendor_id', '=', $vendor_id)
-        ->update(array('deleted_at' => $today));
+        ->update(array('deleted_at' => null));
 
         if($order){
             $data = [
                 'status' => true,
-                'message'=> 'Invoice Number' .$id.' deleted successfully'
+                'message'=> 'Invoice Number' .$invoice_ref.' restored successfully'
             ];
             return response()->json($data);
-            //return redirect()->back()->with('invoice', 'Record Deleted');
         }
         else{
             $data = [
@@ -1116,7 +1115,6 @@ class AdminController extends Controller
                 'message'=> 'Opps! something went wrong'
             ];
             return response()->json($data);
-           // return redirect()->back()->with('merge-error', 'Opps! something went wrong'); 
         }
     }
 
