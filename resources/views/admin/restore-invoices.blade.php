@@ -46,7 +46,7 @@
                   <div class="col-12">
                         <div class="card">
                               <div class="card-header">
-                                    <h3 class="card-title"> Be sure before clicking "restore" button</h3>
+                                    <h5 class="text-danger"> Be sure before clicking "Restore" button</h5>
                               </div>
                               <div class="card-body border-bottom py-3">
                                     <div class="d-flex">
