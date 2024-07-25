@@ -153,6 +153,9 @@ Route::controller(AdminController::class)->group(function () {
     Route::get('show-deleted-invoice',  'showDeletedInvoice')->name('show-deleted-invoice');
     Route::post('restore-invoice/{id}',  'restoreDeletedInvoice')->name('restore-invoice');
     
+    Route::get('show-deleted-rows',  'allDeletedRows')->name('show-deleted-rows');
+    Route::post('restore-invoice/{id}',  'restoreDeletedInvoice')->name('restore-invoice');
+   
 });
 
 Route::controller(ManagerController::class)->group(function () {
