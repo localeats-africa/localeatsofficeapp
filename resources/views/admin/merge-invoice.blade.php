@@ -565,12 +565,13 @@ function deleteOrderRow() {
                   document.getElementById('delete_order').style.display = '';
                   document.getElementById('delete_order').style.color = 'green';
                   document.getElementById('delete_order').innerHTML = data.message;
+                  location.reload();
             },
             error: function(data) {
                   console.log(data);
             }
       });
-     location.reload();
+  
 
 }
 </script>
