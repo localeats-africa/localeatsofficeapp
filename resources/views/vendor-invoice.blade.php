@@ -99,7 +99,7 @@
             <div class="row">
                   <div class="col-lg-12">
 
-                        @if(session('save'))
+                        @if(session('email-sent'))
                         <div class="alert  alert-danger alert-dismissible" role="alert">
                               <div class="d-flex">
                                     <div>

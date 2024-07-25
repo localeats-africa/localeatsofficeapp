@@ -1507,133 +1507,6 @@ class HomeController extends Controller
         $vendorLname = DB::table('vendor')->where('id', $vendor)
         ->select('*')->pluck('contact_lname')->first();
 
-        $sumFoodPrice = DB::table('orders')
-        ->where('orders.vendor_id', $vendor)
-        ->where('orders.invoice_ref', $invoice_ref)
-        ->where('orders.deleted_at', null)
-        ->sum('food_price');
-
-         $sumExtra = DB::table('orders')
-         ->where('orders.vendor_id', $vendor)
-         ->where('orders.invoice_ref', $invoice_ref)
-         ->where('orders.deleted_at', null)
-         ->sum('extra');
-
-         $vendorFoodPrice =  $sumFoodPrice + $sumExtra;
-
-         $getpayout =  DB::table('orders')
-            ->where('vendor_id', $vendor)
-            ->where('invoice_ref', $invoice_ref)
-            ->get('*')
-            ->value('payout');
-            $payout = (int)$getpayout;
-
-         $payment_status = DB::table('orders')
-          ->where('orders.vendor_id', $vendor)
-         ->where('orders.invoice_ref', $invoice_ref)
-         ->where('orders.payment_status', '!=', null)
-         ->pluck('payment_status')->first();
-  
-          $order_description = DB::table('orders')
-          ->leftJoin('merge_invoices', 'orders.id', '=', 'merge_invoices.order_id')
-          ->where('orders.vendor_id', $vendor)
-          ->where('orders.invoice_ref', $invoice_ref)
-          ->where('orders.deleted_at', null)
-          ->get('orders.description');
-
-          $order_invoice_ref = DB::table('orders')
-          ->leftJoin('merge_invoices', 'orders.id', '=', 'merge_invoices.order_id')
-          ->where('orders.vendor_id', $vendor)
-          ->where('orders.invoice_ref', $invoice_ref)
-          ->where('orders.deleted_at', null)
-          ->get('orders.invoice_ref');
-
-
-          $order_date = DB::table('orders')
-          ->leftJoin('merge_invoices', 'orders.id', '=', 'merge_invoices.order_id')
-          ->where('orders.vendor_id', $vendor)
-          ->where('orders.invoice_ref', $invoice_ref)
-          ->where('orders.deleted_at', null)
-          ->get('orders.delivery_date');
-
-          $order_food = DB::table('orders')
-          ->leftJoin('merge_invoices', 'orders.id', '=', 'merge_invoices.order_id')
-          ->where('orders.vendor_id', $vendor)
-          ->where('orders.invoice_ref', $invoice_ref)
-          ->where('orders.deleted_at', null)
-          ->get('orders.food_price');
-
-          $order_extra = DB::table('orders')
-          ->leftJoin('merge_invoices', 'orders.id', '=', 'merge_invoices.order_id')
-          ->where('orders.vendor_id', $vendor)
-          ->where('orders.invoice_ref', $invoice_ref)
-          ->where('orders.deleted_at', null)
-          ->get('orders.extra');
-    
-        $data = [
-            [
-                'invoice_ref'               => $invoice_ref,
-                'business_name'             => $vendorBusinessName,
-                'address'                   => $vendorAddress,
-                'state'                     => $vendorState,
-                'country'                   => $vendorCountry,
-                'phone'                     => $vendorPhone,
-                'email'                     => $vendorEmail,
-                'first_name'                => $vendorFname,
-                'last_name'                 => $vendorLname,
-                'food_price'                => $sumFoodPrice,
-                'extra'                     => $sumExtra,
-                'extra'                     => $sumExtra,
-                'total_amount'              => $vendorFoodPrice,
-                'payout'                    => $payout,
-                'payment_status'            => $payment_status,
-                'description'               => $order_description,
-                'order_invoice_ref'         => $order_invoice_ref,
-                'delivery_date'             => $order_date,
-                'food_price'                => $order_food,
-                'extra'                     => $order_extra,
-            ]
-        ];
-       // dd( $data);
-     
-        $pdf = Pdf::loadView('email-vendor-invoice', array('data' =>  $data));
-        return $pdf->download('invoice-'.$invoice_ref.'pdf'); 
-
-     
-   
-
-        $vendorName = Vendor::where('id', $vendor)
-        ->get('*')->pluck('vendor_name')->first();
-
-        $vendorEmail = Vendor::where('id', $vendor)
-        ->get('email');
-
-        if (!empty($vendorEmail)){
-           
-         
-             $data = [
-                'vendor_name'   => $vendorName,
-                'title'         => 'Payment Invoice'
-            ]; 
-            //send email
-            $message = new EmailVendorInvoice($data);
-            $message->attachData($pdf->output(), 'invoice-'.$invoice_ref.'pdf');
-            $sendMail = Mail::to($vendorEmail)
-                        ->cc('admin@localeats.africa')
-                        ->send($message);
-            if($sendMail){
-                $storeInvoice = new Invoice();
-                $storeInvoice->reference       = $invoice_ref;
-                $storeInvoice->vendor_id       = $vendor;
-                $storeInvoice->invoice_url     = $image;
-                $storeInvoice->invoice_status  = 'email';
-                $storeInvoice->save();
-            }
-
-        }
-        else{
-            return redirect()->back()->with('email-error',  $vendorName.'has to email address');
-        }
     
     }
 
@@ -1650,6 +1523,10 @@ class HomeController extends Controller
         $vendor = DB::table('orders')
         ->where('orders.invoice_ref', $invoice_ref)
         ->pluck('vendor_id')->first();
+        $vendorEmail = DB::table('vendor')->where('id', $vendor)
+        ->select('*')->pluck('email')->first();
+        $vendorBusinessName = Vendor::where('id', $vendor)
+        ->get('*')->pluck('store_name')->first();
            
         if($image){
             $pdf_path =  $path; 
@@ -1664,7 +1541,35 @@ class HomeController extends Controller
         $storeInvoice->save();
 
         if($storeInvoice){
-        return redirect()->back()->with('save', 'save successfully .');
+            $data = array(
+                'vendor_name'     => $vendorBusinessName,
+                'email'           => $vendorEmail,      
+                );
+
+            $message = new EmailVendorInvoice($data);
+            $message->attachData($path);
+            $sendMail = Mail::to($vendorEmail)
+                        ->cc('admin@localeats.africa')
+                        ->send($message);
+          if($sendMail){
+            $jsondata = [
+                'status' => true,
+                'message'=> 'Email sent successfully'
+                ];
+                            
+                return response()->json($jsondata);
+          }
+          else{
+            $jsondata = [
+                'status' => false,
+                'message'=> 'Opps! something went wrong'
+                ];
+                            
+                return response()->json($jsondata);
+          }
+
+            
+            return redirect()->back()->with('email-sent', 'Email sent successfully .');
         }
 
     }

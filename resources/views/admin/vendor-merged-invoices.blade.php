@@ -128,7 +128,7 @@
                                                                         @if($data->payment_status == 'paid')
                                                                         @else 
                                                                         <div class="dropdown-item text-danger">
-                                                                     
+                                                                       
                                                                               <input type="hidden" id="vendor_id" value="{{$data->vendor_id}}">
                                                                               <input type="hidden" id="invoice_ref" value="{{$data->invoice_ref}}">
                                                                               <button onclick="deleteInvoice()" class="text-danger"> Delete</button>
@@ -255,12 +255,12 @@ function deleteInvoice() {
                   document.getElementById('response').style.display = '';
                   document.getElementById('response').style.color = 'green';
                   document.getElementById('response').innerHTML = data.message;
+                  location.reload();
             },
             error: function(data) {
                   console.log(data);
             }
       });
-      location.reload();
 
 }
 </script>

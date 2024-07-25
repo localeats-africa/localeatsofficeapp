@@ -780,10 +780,10 @@ class AdminController extends Controller
     public function deleteInvoice(Request $request, $id){
         $today = Carbon::now();
         $vendor_id = $request->vendor_id;
-
+ 
         $order = DB::table('orders')
         ->where('invoice_ref', '=', $id)
-        ->where('vendor_id', '=', $vendor_id)
+        //->where('vendor_id', '=', $vendor_id)
         ->update(array('deleted_at' => $today));
 
         if($order){
