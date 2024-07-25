@@ -150,8 +150,9 @@ Route::controller(AdminController::class)->group(function () {
     Route::get('vendor-sales-list', 'salesList')->name('vendor-sales-list');
     Route::post('import-expenses-list', 'importExpensesList')->name('import-expenses-list');
    
+    Route::get('show-deleted-invoice',  'showDeletedInvoice')->name('show-deleted-invoice');
+    Route::post('restore-invoice/{id}',  'restoreInvoice')->name('restore-invoice');
     
-
 });
 
 Route::controller(ManagerController::class)->group(function () {
