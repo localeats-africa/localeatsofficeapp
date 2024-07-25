@@ -1128,7 +1128,7 @@ class AdminController extends Controller
 
         $perPage = $request->perPage ?? 10;
         $search = $request->input('search'); 
-         
+
         $orders = DB::table('orders')
         ->join('vendor', 'orders.vendor_id', '=', 'vendor.id')
         ->join('users', 'orders.added_by', '=', 'users.id')
@@ -1154,6 +1154,30 @@ class AdminController extends Controller
             } 
             else{return redirect()->back()->with('order-status', 'No record order found');}
         return view('admin.deleted-row', compact('name', 'role', 'orders'));
+    }
+
+    public function restoreDeletedRow(Request $request, $id){
+        $today = Carbon::now();
+ 
+        $order = DB::table('orders')
+        ->where('id', '=', $id)
+        //->where('vendor_id', '=', $vendor_id)
+        ->update(array('deleted_at' => null));
+
+        if($order){
+            $data = [
+                'status' => true,
+                'message'=> 'Order  restored successfully. Check merge invoices'
+            ];
+            return response()->json($data);
+        }
+        else{
+            $data = [
+                'status' => false,
+                'message'=> 'Opps! something went wrong'
+            ];
+            return response()->json($data);
+        }
     }
 
 }//class

@@ -143,7 +143,7 @@
                                                           </td>
                                                       <td class="text-capitalize">{{$data->fullname}}</td>
                                                 <td>
-                                                            <input type="hidden" id="invoice_ref"
+                                                            <input type="hidden" id="id"
                                                                   value="{{$data->id}}">
                                                             <button onclick="restoreRow()" class="text-dark btn  btn-outline-danger">
                                                                   Restore </button>
@@ -218,4 +218,41 @@
       <!--- content wrapper---->
 </div>
 <!-- main-panel -->
+
+
+<script type="text/javascript">
+function restoreRow() {
+      document.getElementById('response').style.display = 'none';
+      var id = document.getElementById('id').value;
+      var showRoute = "{{ route('restore-row', ':id') }}";
+      url = showRoute.replace(':id', id);
+
+      //window.location = url;
+      $.ajaxSetup({
+            headers: {
+                  'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+            }
+      });
+      $.ajax({
+            method: 'POST',
+            enctype: 'multipart/form-data',
+            url: url,
+            data: {
+                  //you can more data here
+                  'vendor_id': vendor_id
+            },
+            success: function(data) {
+                  console.log(data.message);
+                  document.getElementById('response').style.display = '';
+                  document.getElementById('response').style.color = 'green';
+                  document.getElementById('response').innerHTML = data.message;
+                  // location.reload();
+            },
+            error: function(data) {
+                  console.log(data);
+            }
+      });
+
+}
+</script>
 @endsection
