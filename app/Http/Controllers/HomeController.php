@@ -39,6 +39,7 @@ use Session;
 use Carbon\Carbon;
 use Carbon\CarbonPeriod;
 use Mail;
+use Storage;
 
 class HomeController extends Controller
 {
@@ -1469,49 +1470,7 @@ class HomeController extends Controller
         return Excel::download(new ExportOrderList($invoice_ref), 'invoice-'.$invoice_ref.'.xlsx');
     }
 
-
-    public function saveImage(Request $request)
-{
-    $image = Image::make($request->get('imgBase64'));
-    $image->save('public/bar.jpg');
-}
-
-    public function emailPdfInvoice(Request $request, $invoice_ref )
-    {
-        $invoice_ref = $request->invoice_ref;
-        $vendor =   $request->vendor;
-
-        $vendorBusinessName = Vendor::where('id', $vendor)
-        ->get('*')->pluck('store_name')->first();
-
-        $vendorAddress = DB::table('vendor')->where('id', $vendor)
-        ->select('*')->pluck('address')->first();
-
-        $vendorState = DB::table('vendor')->where('vendor.id', $vendor)
-        ->join('state', 'state.id', '=', 'vendor.state_id')
-        ->select('state.state')->pluck('state')->first();
-
-        $vendorCountry = DB::table('vendor')->where('vendor.id', $vendor)
-        ->join('country', 'country.id', '=', 'vendor.country_id')
-        ->select('country.country')->pluck('country')->first();
-
-        $vendorPhone = DB::table('vendor')->where('id', $vendor)
-        ->select('*')->pluck('contact_phone')->first();
-
-        $vendorEmail = DB::table('vendor')->where('id', $vendor)
-        ->select('*')->pluck('email')->first();
-
-        $vendorFname = DB::table('vendor')->where('id', $vendor)
-        ->select('*')->pluck('contact_fname')->first();
-
-        $vendorLname = DB::table('vendor')->where('id', $vendor)
-        ->select('*')->pluck('contact_lname')->first();
-
-    
-    }
-
     public function sendEmailPdfInvoice(Request $request, $ref){
-
         $img = $request->img; //get the image string from ajax post
         $getimg = substr(explode(";",$img)[1], 7); //this extract the exact image
         $target= $ref.'-invoice.png'; //rename the image by time
@@ -1523,16 +1482,18 @@ class HomeController extends Controller
         $vendor = DB::table('orders')
         ->where('orders.invoice_ref', $invoice_ref)
         ->pluck('vendor_id')->first();
+
         $vendorEmail = DB::table('vendor')->where('id', $vendor)
         ->select('*')->pluck('email')->first();
+
         $vendorBusinessName = Vendor::where('id', $vendor)
         ->get('*')->pluck('store_name')->first();
            
         if($image){
             $pdf_path =  $path; 
         }
-        else {$pdf_path = "";}
-
+        else {$pdf_path = "";
+        }
         $storeInvoice = new Invoice();
         $storeInvoice->reference       = $invoice_ref;
         $storeInvoice->vendor_id       = $vendor;
@@ -1545,31 +1506,35 @@ class HomeController extends Controller
                 'vendor_name'     => $vendorBusinessName,
                 'email'           => $vendorEmail,      
                 );
+            $invoicePath = Invoice::where('reference', $invoice_ref)  
+            ->get()->pluck('invoice_url')->first();  
+            $pathInvoice = public_path($invoicePath);
 
             $message = new EmailVendorInvoice($data);
-            $message->attachData($path);
+            $message ->attach($pathInvoice, [
+                'as' => 'invoice-'.$invoice_ref.'.png',
+                'mime' => 'image/png',
+            ]);
             $sendMail = Mail::to($vendorEmail)
-                        ->cc('admin@localeats.africa')
+                        ->cc(Auth::user()->email)
+                        ->bcc('admin@localeats.africa')
                         ->send($message);
-          if($sendMail){
+        //   if($sendMail){
             $jsondata = [
                 'status' => true,
                 'message'=> 'Email sent successfully'
                 ];
                             
                 return response()->json($jsondata);
-          }
-          else{
-            $jsondata = [
-                'status' => false,
-                'message'=> 'Opps! something went wrong'
-                ];
+        //   }
+        //   else{
+        //     $jsondata = [
+        //         'status' => false,
+        //         'message'=> 'Opps! something went wrong'
+        //         ];
                             
-                return response()->json($jsondata);
-          }
-
-            
-            return redirect()->back()->with('email-sent', 'Email sent successfully .');
+        //         return response()->json($jsondata);
+        //   }
         }
 
     }

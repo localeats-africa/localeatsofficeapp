@@ -189,7 +189,7 @@
       }
 
       .btn-primary table td {
-            background-color: #D10024;
+            /* background-color: #D10024; */
       }
 
       .btn-primary a {
@@ -402,6 +402,7 @@
                                                                         </tbody>
                                                                   </table>
                                                                   <p>Thank you.</p>
+                                                                  <p>Management,</p>
                                                                   <p><a href="https://localeats.africa">Local Eats Africa.</a></p>
                                                             </td>
                                                       </tr>

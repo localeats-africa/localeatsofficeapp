@@ -50,6 +50,7 @@
                                           Excel</button>
                               </form>
                               <nav style="--bs-breadcrumb-divider: '';" aria-label="breadcrumb">
+                                    <p id="response"></p>
                                     <ol class="breadcrumb">
                                           <li class="breadcrumb-item">
                                                 <button class="btn btn-outline-dark  text-dark" onclick="printDiv()">
@@ -60,30 +61,20 @@
                                                       <i class="fa fa-download"></i></button>
                                           </li>
                                           <li class="breadcrumb-item">
-
-                                                <form action="{{ route('email-invoice', [$invoice_ref]) }}" method="get"
-                                                      name="submit" enctype="multipart/form-data">
-                                                      @csrf
-                                                      <input type="hidden" value="{{$invoice_ref}}" name="invoice_ref"
-                                                            id="invoice_ref">
-                                                      <input type="hidden" value="{{$vendor}}" name="vendor"
-                                                            id="vendor">
-                                                      <button type="submit" name="submit"
-                                                            class="btn btn-outline-dark  text-dark">
-                                                            <i class="fa fa-envelope"></i></button>
-                                                </form>
-
-
-                                          </li>
-
-                                          <li class="breadcrumb-item">
-                                                
                                                 <input type="hidden" value="{{$invoice_ref}}" name="ref" id="ref">
                                                 <input type="hidden" value="{{$vendor}}" name="vendor" id="vendor">
                                                 <button onclick="mypdf()" class="btn btn-outline-dark  text-dark">
-                                                      send email</button>
+                                                      <i class="fa fa-envelope"></i></button>
+                                                <div class="progress" id="show-progress" style="display:none;">
+                                                      <span class="progress-bar progress-bar-animated"> &nbsp; &nbsp; loading
+                                                            ...</span>
+                                                      <!-- <div class="progress-bar progress-bar-striped  progress-bar-animated"
+                                                            role="progressbar" aria-valuenow="75" aria-valuemin="0"
+                                                            aria-valuemax="100" style="width: 75%"></div> -->
+                                                </div>
 
                                           </li>
+
                                           <li class="breadcrumb-item">
                                                 <button class="btn btn-outline-dark  text-dark">
                                                       <i class="fa fa-whatsapp"></i></button>
@@ -138,12 +129,12 @@
                                                             <small>2nd floor,10 Hughes Avenue, <br>
                                                                   Alagomeji, Yaba Lagos</small>
                                                             <br>
-                                                                  <small> <i class="mdi mdi-email"></i>
-                                                                        hi@localeats.africa
-                                                                        <br>
-                                                                        <i class="mdi mdi-web-check"></i>
-                                                                        www.localeats.africa</small>
-                                                            
+                                                            <small> <i class="mdi mdi-email"></i>
+                                                                  hi@localeats.africa
+                                                                  <br>
+                                                                  <i class="mdi mdi-web-check"></i>
+                                                                  www.localeats.africa</small>
+
 
                                                       </div>
                                                 </div>
@@ -161,7 +152,8 @@
 
                                                                   <p class="text-secondary mb-1">
                                                                   <h6></h6>
-                                                                  <h6><span class="text-dark mb-1">Contact:</span> &nbsp;&nbsp;
+                                                                  <h6><span class="text-dark mb-1">Contact:</span>
+                                                                        &nbsp;&nbsp;
                                                                         {{$vendorFname}}&nbsp;{{$vendorLname}}</h6>
 
                                                                   <i class="fa fa-phone"></i>
@@ -169,9 +161,13 @@
                                                                   </p>
 
                                                                   <p>
-                                                                  <h6><span class="text-dark mb-1">Bank Name:</span> &nbsp;&nbsp; {{$vendorBankName}}</h6>
-                                                                  <h6> <span class="text-dark mb-1">Account Number:</span>  &nbsp;&nbsp;{{$vendorAccountNumber}}</h6>
-                                                                  <h6><span class="text-dark mb-1">Account Name:</span>  &nbsp;&nbsp;{{$vendorAccountName}}</h6>
+                                                                  <h6><span class="text-dark mb-1">Bank Name:</span>
+                                                                        &nbsp;&nbsp; {{$vendorBankName}}</h6>
+                                                                  <h6> <span class="text-dark mb-1">Account
+                                                                              Number:</span>
+                                                                        &nbsp;&nbsp;{{$vendorAccountNumber}}</h6>
+                                                                  <h6><span class="text-dark mb-1">Account Name:</span>
+                                                                        &nbsp;&nbsp;{{$vendorAccountName}}</h6>
 
                                                                   </p>
                                                             </div>
@@ -179,7 +175,7 @@
                                                             <br><br>
                                                             <div class="mt-1">
                                                                   <h4 id="invoice_ref">Invoice ID: {{$invoice_ref}}</h4>
-                                                                  
+
                                                                   @if($payment_status == 'paid')
                                                                   <h3 class="text-success text-uppercase">
                                                                         {{$payment_status}}</h3>
@@ -213,9 +209,12 @@
                                                                   @foreach($orders as $data)
 
                                                                   <tr>
-                                                                        <td width="50%" style="white-space:wrap; line-height:1.6"><small>
+                                                                        <td width="50%"
+                                                                              style="white-space:wrap; line-height:1.6">
+                                                                              <small>
                                                                                     {!! nl2br($data->description) !!}
-                                                                              </small></td>
+                                                                              </small>
+                                                                        </td>
                                                                         <td><small>{{$data->order_ref}}</small></td>
                                                                         <td><small>{{ date('d/m/Y', strtotime($data->delivery_date))}}</small>
                                                                         </td>
@@ -237,9 +236,9 @@
                                                                   </tr>
                                                                   <tr>
                                                                         <th colspan="3" class="text-end">
-                                                                             @auth 
-                                                                             @if(Auth::user()->role_id =='2')
-                                                                             @if($payment_status == 'paid')
+                                                                              @auth
+                                                                              @if(Auth::user()->role_id =='2')
+                                                                              @if($payment_status == 'paid')
                                                                               @else
                                                                               <input type="hidden" value="{{$vendor}}"
                                                                                     id="vendor_id">
@@ -250,9 +249,9 @@
                                                                                     class="btn btn-block btn-success text-dark">Mark
                                                                                     This Invoice As Paid</button>
                                                                               @endif
-                                                                             @else 
-                                                                             @endif
-                                                                             @endauth 
+                                                                              @else
+                                                                              @endif
+                                                                              @endauth
                                                                         </th>
 
                                                                         <th class="text-end">
@@ -382,7 +381,6 @@ function getPDF() {
 
       var totalPDFPages = Math.ceil(HTML_Height / PDF_Height) - 1;
 
-
       html2canvas($(".print_invoice")[0], {
             allowTaint: true
       }).then(function(canvas) {
@@ -402,12 +400,13 @@ function getPDF() {
             }
             pdf.save("invoice-{{$invoice_ref}}.pdf");
       });
-
 }
 </script>
 
 <script>
 function mypdf() {
+      document.getElementById('show-progress').style.display = '';
+      document.getElementById('response').style.display = 'none';
       html2canvas($('#print_invoice')[0]).then(function(canvas) {
             var dataUrl = canvas.toDataURL();
             var newDataURL = dataUrl.replace(/^data:image\/png/,
@@ -432,10 +431,17 @@ function mypdf() {
                         'img': dataUrl
                   },
                   success: function(data) {
-                        console.log(data);
+                        document.getElementById('show-progress').style.display = 'none';
+                        console.log(data.message);
+
+                        document.getElementById('response').style.display = '';
+                        document.getElementById('response').style.color = 'green';
+                        document.getElementById('response').innerHTML = data.message;
+
                   },
                   error: function(data) {
-                        console.log(data);
+                        console.log(data.message);
+                        document.getElementById('response').innerHTML = data.message;
                   }
             });
 
