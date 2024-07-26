@@ -802,12 +802,6 @@ class AdminController extends Controller
 
     public function markInvoicePaid(Request $request, $invoice_ref){
         $vendor = $request->vendor_id;
-        // $payment_status = DB::table('orders')
-        //   ->where('orders.vendor_id', $vendor)
-        //  ->where('orders.invoice_ref', $invoice_ref)
-        //  ->where('orders.payment_status', '!=', null)
-        //  ->pluck('payment_status')->first();
-
         $paid =  DB::table('orders')
             ->where('orders.vendor_id', $vendor)
             ->where('orders.invoice_ref', $invoice_ref)
