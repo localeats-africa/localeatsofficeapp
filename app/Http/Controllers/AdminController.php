@@ -168,7 +168,8 @@ class AdminController extends Controller
         ->where('orders.order_amount', '!=', null)
         ->where('orders.order_ref', '!=', null)
         ->where('payout', '!=', null)
-        ->whereDate('updated_at', '=', $lastSevenDays)   
+        //->whereDate('updated_at', '>=', $lastSevenDays)   
+        ->whereDate('updated_at', '<', $today)  
         ->whereYear('orders.delivery_date', '=', Carbon::now()->year)
         ->sum('commission');
 
