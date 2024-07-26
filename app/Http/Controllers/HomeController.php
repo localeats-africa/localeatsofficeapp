@@ -1524,22 +1524,22 @@ class HomeController extends Controller
                         ->cc(Auth::user()->email)
                         ->bcc('admin@localeats.africa')
                         ->send($message);
-        //   if($sendMail){
+          if($sendMail){
             $jsondata = [
                 'status' => true,
                 'message'=> 'Email sent successfully'
                 ];
                             
                 return response()->json($jsondata);
-        //   }
-        //   else{
-        //     $jsondata = [
-        //         'status' => false,
-        //         'message'=> 'Opps! something went wrong'
-        //         ];
+          }
+          else{
+            $jsondata = [
+                'status' => false,
+                'message'=> 'Opps! Email Not sent. Check if vendor has email address'
+                ];
                             
-        //         return response()->json($jsondata);
-        //   }
+                return response()->json($jsondata);
+          }
         }
 
     }
