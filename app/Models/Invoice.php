@@ -9,4 +9,11 @@ class Invoice extends Model
 {
     use HasFactory;
     protected $table = 'final_invoice';
+    protected $fillable = [
+        'vendor_id',
+        'invoice_url',
+        'invoice_status',
+        'reference',
+    ];
+    
 }
