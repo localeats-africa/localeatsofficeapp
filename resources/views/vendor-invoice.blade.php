@@ -240,11 +240,8 @@
                                                                               @if(Auth::user()->role_id =='2')
                                                                               @if($payment_status == 'paid')
                                                                               @else
-                                                                              <input type="hidden" value="{{$vendor}}"
-                                                                                    id="vendor_id">
-                                                                              <input type="hidden"
-                                                                                    value="{{ $invoice_ref}}"
-                                                                                    id="invoice_ref">
+                                                                              <input type="hidden" value="{{$vendor}}" id="vendor_id">
+                                                                              <input type="hidden" value="{{$invoice_ref}}" id="invoiceRef">
                                                                               <button onclick="markAsPaid()"
                                                                                     class="btn btn-block btn-success text-dark">Mark
                                                                                     This Invoice As Paid</button>
@@ -309,7 +306,7 @@
 <script>
 function markAsPaid() {
       document.getElementById('response').style.display = 'none';
-      var id = document.getElementById('invoice_ref').value;
+      var id = document.getElementById('invoiceRef').value;
       var vendor_id = document.getElementById('vendor_id').value;
       var showRoute = "{{ route('mark-invoice-paid', ':id') }}";
       url = showRoute.replace(':id', id);
