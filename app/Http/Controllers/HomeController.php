@@ -1494,12 +1494,17 @@ class HomeController extends Controller
         }
         else {$pdf_path = "";
         }
-        $storeInvoice = new Invoice();
-        $storeInvoice->reference       = $invoice_ref;
-        $storeInvoice->vendor_id       = $vendor;
-        $storeInvoice->invoice_url     = $pdf_path;
-        $storeInvoice->invoice_status  = 'email';
-        $storeInvoice->save();
+        $storeInvoice =  Invoice::updateOrCreate(
+            ['reference' => $invoice_ref, 'vendor_id' => $vendor],
+            ['invoice_url' => $pdf_path, 'invoice_status' => 'email']
+        );
+        
+        // new Invoice();
+        // $storeInvoice->reference       = $invoice_ref;
+        // $storeInvoice->vendor_id       = $vendor;
+        // $storeInvoice->invoice_url     = $pdf_path;
+        // $storeInvoice->invoice_status  = 'email';
+        // $storeInvoice->save();
 
         if($storeInvoice){
             $data = array(
