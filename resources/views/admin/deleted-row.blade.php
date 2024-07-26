@@ -143,7 +143,7 @@
                                                           </td>
                                                       <td class="text-capitalize">{{$data->fullname}}</td>
                                                 <td>
-                                                            <input type="hidden" id="id"
+                                                            <input type="hidden" id="order_id"
                                                                   value="{{$data->id}}">
                                                             <button onclick="restoreRow()" class="text-dark btn  btn-outline-danger">
                                                                   Restore </button>
@@ -223,7 +223,7 @@
 <script type="text/javascript">
 function restoreRow() {
       document.getElementById('response').style.display = 'none';
-      var id = document.getElementById('id').value;
+      var id = document.getElementById('order_id').value;
       var showRoute = "{{ route('restore-row', ':id') }}";
       url = showRoute.replace(':id', id);
 
@@ -239,14 +239,15 @@ function restoreRow() {
             url: url,
             data: {
                   //you can more data here
-                  'vendor_id': vendor_id
+                  'order_id': id
             },
             success: function(data) {
                   console.log(data.message);
-                  document.getElementById('response').style.display = '';
-                  document.getElementById('response').style.color = 'green';
-                  document.getElementById('response').innerHTML = data.message;
-                  // location.reload();
+                  alert(data.message);
+                  // document.getElementById('response').style.display = '';
+                  // document.getElementById('response').style.color = 'green';
+                  // document.getElementById('response').innerHTML = data.message;
+                  window.location.reload();
             },
             error: function(data) {
                   console.log(data);
