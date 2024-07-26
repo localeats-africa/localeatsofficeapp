@@ -314,7 +314,6 @@ function markAsPaid() {
       var showRoute = "{{ route('mark-invoice-paid', ':id') }}";
       url = showRoute.replace(':id', id);
 
-      //window.location = url;
       $.ajaxSetup({
             headers: {
                   'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
@@ -330,15 +329,16 @@ function markAsPaid() {
             },
             success: function(data) {
                   console.log(data.message);
-                  document.getElementById('response').style.display = '';
-                  document.getElementById('response').style.color = 'green';
-                  document.getElementById('response').innerHTML = data.message;
+                  alert(data.message);
+                  // document.getElementById('response').style.display = '';
+                  // document.getElementById('response').style.color = 'green';
+                  // document.getElementById('response').innerHTML = data.message;
+                  window.location.reload();
             },
             error: function(data) {
                   console.log(data);
             }
       });
-      location.reload();
 }
 </script>
 
