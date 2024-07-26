@@ -433,11 +433,11 @@ function mypdf() {
                   success: function(data) {
                         document.getElementById('show-progress').style.display = 'none';
                         console.log(data.message);
-
-                        document.getElementById('response').style.display = '';
-                        document.getElementById('response').style.color = 'green';
-                        document.getElementById('response').innerHTML = data.message;
-
+                        alert(data.message);
+                        // document.getElementById('response').style.display = '';
+                        // document.getElementById('response').style.color = 'green';
+                        // document.getElementById('response').innerHTML = data.message;
+                        window.location.reload();
                   },
                   error: function(data) {
                         console.log(data.message);
