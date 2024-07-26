@@ -333,7 +333,7 @@ function markAsPaid() {
                   // document.getElementById('response').style.display = '';
                   // document.getElementById('response').style.color = 'green';
                   // document.getElementById('response').innerHTML = data.message;
-                  //window.location.reload();
+                  window.location.reload();
             },
             error: function(data) {
                   console.log(data);
