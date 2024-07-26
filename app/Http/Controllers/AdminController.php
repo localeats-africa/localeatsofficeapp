@@ -156,8 +156,7 @@ class AdminController extends Controller
         ->where('orders.order_ref', '!=', null)
        ->where('payout', '!=', null)
         //->whereBetween('updated_at',  [$lastSevenDays, $today])
-        ->whereDate('updated_at', '=', $lastSevenDays)                                 
-        //->whereDate('updated_at', '<', $today) 
+        ->whereDate('updated_at', '=', $lastSevenDays)    
         ->whereYear('orders.delivery_date', '=', Carbon::now()->year)
         ->sum('payout');
 
@@ -168,8 +167,8 @@ class AdminController extends Controller
         ->where('deleted_at', null)
         ->where('orders.order_amount', '!=', null)
         ->where('orders.order_ref', '!=', null)
-        ->whereDate('updated_at', '>', $lastSevenDays)                                 
-        ->whereDate('updated_at', '<', $today) 
+        ->where('payout', '!=', null)
+        ->whereDate('updated_at', '=', $lastSevenDays)   
         ->whereYear('orders.delivery_date', '=', Carbon::now()->year)
         ->sum('commission');
 
