@@ -11,7 +11,7 @@
                         Overview
                   </h3>
             </div>
-         
+
             <p></p>
             <p></p>
             <!--Alert here--->
@@ -96,7 +96,8 @@
                                                 Search:
                                                 <div class="ms-2 d-inline-block">
 
-                                                      <form action="{{ route('all-orders') }}" method="GET" role="search">
+                                                      <form action="{{ route('all-orders') }}" method="GET"
+                                                            role="search">
                                                             {{ csrf_field() }}
                                                             <div class="input-group mb-2">
                                                                   <input type="text" class="form-control"
@@ -115,11 +116,12 @@
                                           id="orders">
                                           <thead>
                                                 <tr>
+                                                      <th>invoice_ref</th>
                                                       <th>Order Ref.</th>
-                                                      <th>Platform</th>
+
                                                       <th>Vendors</th>
-                                                     
-                                                      <th>Item  (s)</th>
+
+                                                      <th>Item (s)</th>
                                                       <th>Amount</th>
                                                       <th>Food Price</th>
                                                       <th>Extra</th>
@@ -131,24 +133,26 @@
                                           <tbody>
                                                 @foreach($orders as $data)
                                                 <tr>
+                                                      <td class="text-capitalize">{{$data->invoice_ref}}</td>
                                                       <td>{{$data->order_ref}}</td>
-                                                      <td class="text-capitalize">{{$data->name}}</td>
+
                                                       <td class="text-capitalize">{{$data->vendor_name}}</td>
-                                                  
-                                                      <td width="50%" style="white-space:wrap; line-height:1.6">   {!! nl2br($data->description) !!}</td>
+
+                                                      <td width="50%" style="white-space:wrap; line-height:1.6"> {!!
+                                                            nl2br($data->description) !!}</td>
                                                       <td>{{$data->order_amount}}</td>
                                                       <td>{{$data->food_price}}</td>
                                                       <td>{{$data->extra}}</td>
                                                       <td>{{ date('d/m/Y', strtotime($data->delivery_date))}}
-                                                          </td>
+                                                      </td>
                                                       <td class="text-capitalize">{{$data->fullname}}</td>
-                                                <td>
-                                                            <input type="hidden" id="order_id"
-                                                                  value="{{$data->id}}">
-                                                            <button onclick="restoreRow()" class="text-dark btn  btn-outline-danger">
+                                                      <td>
+                                                            <input type="hidden" id="order_id" value="{{$data->id}}">
+                                                            <button onclick="restoreRow()"
+                                                                  class="text-dark btn  btn-outline-danger">
                                                                   Restore </button>
                                                             <p id="response"></p>
-                                                </td>
+                                                      </td>
 
                                                 </tr>
                                                 @endforeach
@@ -171,9 +175,8 @@
                                           @if(isset($orders))
                                           @if($orders->currentPage() > 1)
                                           <li class="page-item ">
-                                                <a class="page-link text-danger"
-                                                      href="{{ $orders->previousPageUrl() }}" tabindex="-1"
-                                                      aria-disabled="true">
+                                                <a class="page-link text-danger" href="{{ $orders->previousPageUrl() }}"
+                                                      tabindex="-1" aria-disabled="true">
                                                       <!-- Download SVG icon from http://tabler-icons.io/i/chevron-left -->
                                                       <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24"
                                                             height="24" viewBox="0 0 24 24" stroke-width="2"
