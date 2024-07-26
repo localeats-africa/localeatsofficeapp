@@ -316,7 +316,6 @@ class AdminController extends Controller
         'edenSales'     =>  $barChartEdenSales,
     ]; 
     
-  
         return view('admin.admin', compact('name', 'role', 'countVendor',
          'countActiveVendor', 'countPlatforms', 'activePlatform',
         'countPlatforms',  'payouts', 'commission',   'sumAllOrders', 
