@@ -229,7 +229,7 @@
                                                       d="M5 4h4l2 5l-2.5 1.5a11 11 0 0 0 5 5l1.5 -2.5l5 2v4a2 2 0 0 1 -2 2a16 16 0 0 1 -15 -15a2 2 0 0 1 2 -2" />
                                           </svg>
                                     </a>
-                                    @if($data->role_id =='7')
+                                    @if($data->role_id == '7')
 
                                     @if(empty($data->vendor))
                                     <a href="{{ url('assign-vendor', [$data->id]) }}" class="card-btn"
@@ -246,7 +246,23 @@
                                           </div>
                                     </div>
                                     @endif
-
+                                   
+                                    @elseif($data->role_id == '8')
+                                    @if(empty($data->vendor))
+                                    <a href="{{ url('assign-vendor', [$data->id]) }}" class="card-btn"
+                                          title="Assign To A Vendor">
+                                          <i class="mdi mdi-pot-steam icon me-2  text-muted"></i>
+                                    </a>
+                                    @else
+                                    <div class="dropdown card-btn text-muted">
+                                          <a class="dropdown-toggle text-muted " href="#"
+                                                data-bs-toggle="dropdown" aria-haspopup="true"
+                                                aria-expanded="false" style="text-decoration:none;">Assigned</a>
+                                          <div class="dropdown-menu dropdown-menu-end">
+                                         <p class="dropdown-item text-dark" style="white-space:wrap; line-height:1.6"> {{ $data->vendor_name}}</p>
+                                          </div>
+                                    </div>
+                                    @endif
                                     @endif
                               </div>
 
