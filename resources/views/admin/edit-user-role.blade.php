@@ -123,9 +123,9 @@
                                                                   <option value="{{$userRole}}">
                                                                         {{$userRole}}
                                                                   </option>
-                                                                  @foreach($role as $data)
+                                                                  @foreach($userRole as $data)
                                                                   <option value="{{$data->id}}">
-                                                                        {{$data->name}}</option>
+                                                                        {{$data->role_name}}</option>
                                                                   @endforeach
                                                             </select>
                                                       </div>
