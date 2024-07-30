@@ -11,6 +11,7 @@ use App\Http\Controllers\AdminController;
 use App\Http\Controllers\VendorManagerController;
 use App\Http\Controllers\CashierController;
 use App\Http\Controllers\TwitterController;
+use App\Http\Controllers\AccountManagerController;
 
 
 /*
@@ -173,6 +174,10 @@ Route::controller(AuditorController::class)->group(function () {
 Route::controller(VendorManagerController::class)->group(function () {
     Route::get('vendormanager',  'index')->name('vendor_manager');
 });
+Route::controller(AccountManagerController::class)->group(function () {
+    Route::get('accountmanager',  'index')->name('account_manager');
+});
+
 Route::controller(CashierController::class)->group(function () {
     Route::get('cashier',  'index')->name('cashier');
     Route::get('add-expenses', 'addVendorExpenses')->name('add-expenses');
