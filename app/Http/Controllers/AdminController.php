@@ -1170,4 +1170,44 @@ class AdminController extends Controller
         }
     }
 
+    public function editUser(Request $request, $id){
+        if( Auth::user()){
+            $name = Auth::user()->name;
+            $user_id = Auth::user()->id;
+            $role = DB::table('role')->select('role_name')
+            ->join('users', 'users.role_id', 'role.id')
+            ->where('users.id', $user_id)
+            ->pluck('role_name')->first();
+
+            $userRole = Role::all();
+            $user = User::find($id);
+
+            return view('admin.edit-user-role', compact('userRole', 'user', 'role', 'name')); 
+        }
+          else { return Redirect::to('/login');
+        }
+  }
+
+    public function updateUser(Request $request, $id)
+    {
+        $this->validate($request, [
+            'fullname'      => 'max:255',
+            'email'         => 'max:255',
+            'role'          => 'max:255',
+            ]);
+            $user = User::find($id);
+            $user->fullname         = $request->fullname;
+            $user->email            = $request->email;
+            $user->role_id          = $request->role;
+            $user->update();
+
+            if($user){
+                return redirect()->back()->with('update-user', 'Record Updated');
+  
+            }
+            else{
+                return redirect()->back()->with('update-error', 'Opps! something went wrong'); 
+            }
+    }
+
 }//class
