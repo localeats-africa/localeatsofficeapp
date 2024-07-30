@@ -32,6 +32,10 @@ use App\Models\Payout;
 use App\Mail\NewUserEmail;
 use App\Mail\EmailVendorInvoice;
 use Barryvdh\DomPDF\Facade\Pdf;
+use App\Models\ExpensesList;
+use App\Models\OfflineSales;
+use App\Models\VendorExpenses;
+use App\Models\OfflineFoodMenu;
 
 use Excel;
 use Auth;
