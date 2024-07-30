@@ -8,14 +8,14 @@
       <div class="content-wrapper">
             <div class="page-header">
                   <h3 class="page-title">
-                        Edit >>> {{$vendor->vendor_name}}
+                        Edit >>> {{$user->fullname}}
                   </h3>
             </div>
             <!--Alert here--->
             <div class="row">
                   <div class="col-12">
 
-                        @if(session('update-vendor'))
+                        @if(session('update-user'))
                         <div class="alert  alert-success alert-dismissible" role="alert">
                               <div class="d-flex">
                                     <div>
@@ -30,7 +30,7 @@
                                                 <path d="M12 17h.01" />
                                           </svg>
                                     </div>
-                                    <div> {!! session('update-vendor') !!}</div>
+                                    <div> {!! session('update-user') !!}</div>
                               </div>
                               <a class="btn-close" data-bs-dismiss="alert" aria-label="close"></a>
                         </div>
@@ -89,106 +89,51 @@
 
             <div class="row ">
                   <div class="col-12">
-                        <form action="{{ route('update-vendor', [$vendor->id] )}}" method="post">
+                        <form action="{{ route('update-user', [$user->id] )}}" method="post">
                               @csrf
                               <div class="card">
                                     <div class="card-header">
                                           <h3 class="card-title"> </h3>
-                                          <h5>All field with <i class="text-danger">*</i> are required</h5>
                                     </div>
                                     <div class="card-body py-3">
 
                                     <div class="row">
-                                                <p><h5>Store: </h5></p>
-                                                <div class="col-md-6">
+                                                <p><h5>Staff: </h5></p>
+                                                <div class="col-md-4">
                                                       <div class="form-group">
-                                                            <h6>Name:<i class="text-danger">*</i> <br>  <small class="text-danger">(Enter this excatly how it should appear)</small></h6>
-                                                            <input type="text" value="{{$vendor->vendor_name}}" name="vendor_name"
-                                                                  class="form-control">
+                                                            <h6>Name</h6>
+                                                            <input type="text" value="{{$user->fullname}}" name="fullname"
+                                                                  class="form-control" disable>
                                                       </div>
                                                 </div>
 
-                                                <div class="col-md-6">
+                                                <div class="col-md-4">
                                                       <div class="form-group">
-                                                            <h6>Store Area / Location:<i class="text-danger">*</i> <br> <small class="text-danger">(this is not address. <b class="text-dark">Example  Enter Ikeja or Ojota</b>)</small> </h6>
-                                                            <input type="text" value="{{$vendor->store_area}}"
-                                                                  name="store_area" class="form-control">
+                                                            <h6>Email </h6>
+                                                            <input type="text" value="{{$user->email}}"
+                                                                  name="email" class="form-control">
+                                                      </div>
+                                                </div>
+
+                                                <div class="col-md-4">
+                                                      <div class="form-group">
+                                                            <h6>Assign a role </h6>
+                                                            <select class="js-example-basic-single" style="width:100%"
+                                                                  name="bank_name" id="bank">
+                                                                  <option value="{{$userRole}}">
+                                                                        {{$userRole}}
+                                                                  </option>
+                                                                  @foreach($role as $data)
+                                                                  <option value="{{$data->id}}">
+                                                                        {{$data->name}}</option>
+                                                                  @endforeach
+                                                            </select>
                                                       </div>
                                                 </div>
 
                                              
                                           </div>
-                                          <!--- row-->
-                                          <div class="row">
-                                                <p><h5>Contact Person:</h5></p>
-                                                <div class="col-md-3">
-                                                      <div class="form-group">
-                                                            <h6>First Name </h6>
-                                                            <input type="text" value="{{$vendor->contact_fname}}" name="first_name"
-                                                                  class="form-control">
-                                                      </div>
-                                                </div>
-                                                <div class="col-md-3">
-                                                      <div class="form-group">
-                                                            <h6>Last Name </h6>
-                                                            <input type="text" value="{{$vendor->contact_lname}}" name="first_name"
-                                                                  class="form-control">
-                                                      </div>
-                                                </div>
-
-                                                <div class="col-md-3">
-                                                      <div class="form-group">
-                                                            <h6>Phone <i class="text-danger">*</i> </h6>
-                                                            <input type="text" value="{{$vendor->contact_phone}}"
-                                                                  name="phone" class="form-control">
-                                                      </div>
-                                                </div>
-
-                                                <div class="col-md-3">
-                                                      <div class="form-group">
-                                                            <h6>Email </h6>
-                                                            <input type="email" value="{{$vendor->email}}" name="email"
-                                                                  class="form-control">
-                                                      </div>
-                                                </div>
-                                          </div>
-                                          <!--- row-->
-
-                                          <div class="row">
-                                                <p>Bank Details</p>
-                                                <div class="col-md-4">
-                                                      <div class="form-group">
-                                                            <h6>Bank Name </h6>
-                                                            <select class="js-example-basic-single" style="width:100%"
-                                                                  name="bank_name" id="bank">
-                                                                  <option value="{{$vendorBank}}">
-                                                                        {{$vendorBank}}
-                                                                  </option>
-                                                                  @foreach($selectBankName as $bank)
-                                                                  <option value="{{$bank->code}}">
-                                                                        {{$bank->name}}</option>
-                                                                  @endforeach
-                                                            </select>
-                                                      </div>
-                                                </div>
-                                                <div class="col-md-4">
-                                                      <div class="form-group">
-                                                            <h6>Account Number </h6>
-                                                            <input type="text" value="{{$vendor->account_number}}"
-                                                                  name="account_number" class="form-control">
-                                                      </div>
-                                                </div>
-
-                                                <div class="col-md-4">
-                                                      <div class="form-group">
-                                                            <h6>Account Name </h6>
-                                                            <input type="text" value="{{$vendor->account_name}}"
-                                                                  name="account_name" class="form-control">
-                                                      </div>
-                                                </div>
-
-                                          </div>
-                                          <!--- row-->
+                                 
 
                                           <div class="row">
                                                 <p></p>
