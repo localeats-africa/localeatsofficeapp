@@ -164,7 +164,9 @@ Route::controller(AdminController::class)->group(function () {
     
     Route::get('show-deleted-rows',  'allDeletedRows')->name('show-deleted-rows');
     Route::post('restore-row/{id}',  'restoreDeletedRow')->name('restore-row');
-   
+    Route::get('edit-user/{id}',  'editUser')->name('edit-user');
+    Route::post('update-user/{id}',  'updateUser')->name('update-user');
+    
 });
 
 Route::controller(ManagerController::class)->group(function () {
