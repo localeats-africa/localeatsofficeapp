@@ -1180,7 +1180,10 @@ class AdminController extends Controller
             ->pluck('role_name')->first();
 
             $user = User::find($id);
-            $userRole = Role::all();
+            $userRole = Role::where('id', '!=', '1')
+            ->get();
+            //->where('role.id', '!=', '2')//except admin
+         
             $staffRoleName = DB::table('role')->select('role_name')
             ->join('users', 'users.role_id', 'role.id')
             ->where('users.id', $id)
