@@ -1179,10 +1179,16 @@ class AdminController extends Controller
             ->where('users.id', $user_id)
             ->pluck('role_name')->first();
 
-            $userRole = Role::all();
             $user = User::find($id);
+            $userRole = Role::all();
+            $staffRoleName = DB::table('role')->select('role_name')
+            ->join('users', 'users.role_id', 'role.id')
+            ->where('users.id', $id)
+            ->pluck('role_name')->first();
+      
 
-            return view('admin.edit-user-role', compact('userRole', 'user', 'role', 'name')); 
+            return view('admin.edit-user-role', compact('userRole', 'user', 
+            'role', 'name', 'staffRoleName')); 
         }
           else { return Redirect::to('/login');
         }
