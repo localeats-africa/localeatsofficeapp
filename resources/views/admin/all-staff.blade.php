@@ -44,8 +44,8 @@
             <!--Alert here--->
             <div class="row ">
                   <div class="col-12">
-            
-                  @if(session(' add-user'))
+
+                        @if(session(' add-user'))
                         <div class="alert  alert-success alert-dismissible" role="alert">
                               <div class="d-flex">
                                     <div>
@@ -183,6 +183,28 @@
                         <div class="card" style=" border:2px;">
                               <div class="card-body p-4 text-center">
 
+                                    <div class="dropdown  text-muted text-end">
+                                          <a class="text-secondary" href="#" data-bs-toggle="dropdown"
+                                                aria-haspopup="true" aria-expanded="false">
+                                                <svg xmlns="http://www.w3.org/2000/svg"
+                                                      class="icon icon-tabler icon-tabler-dots-vertical" width="24"
+                                                      height="24" viewBox="0 0 24 24" stroke-width="1.5"
+                                                      stroke="currentColor" fill="none" stroke-linecap="round"
+                                                      stroke-linejoin="round">
+                                                      <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                                                      <path d="M12 12m-1 0a1 1 0 1 0 2 0a1 1 0 1 0 -2 0" />
+                                                      <path d="M12 19m-1 0a1 1 0 1 0 2 0a1 1 0 1 0 -2 0" />
+                                                      <path d="M12 5m-1 0a1 1 0 1 0 2 0a1 1 0 1 0 -2 0" />
+                                                </svg>
+                                          </a>
+                                          <div class="dropdown-menu dropdown-menu-end">
+                                                <a class="dropdown-item btn btn-sm text-capitalize text-danger"
+                                                      href="edit-user/{{$data->id}}">
+                                                     <i class=" fa fa-pencil"></i>
+                                                </a>
+                                          </div>
+                                    </div>
+
                                     <span class="avatar avatar-xl mb-3 rounded">{{$initials}}</span>
                                     <h3 class="m-0 mb-1">{{$data->fullname }}</h3>
                                     <div class="text-info"></div>
@@ -238,15 +260,17 @@
                                     </a>
                                     @else
                                     <div class="dropdown card-btn text-muted">
-                                          <a class="dropdown-toggle text-muted " href="#"
-                                                data-bs-toggle="dropdown" aria-haspopup="true"
-                                                aria-expanded="false" style="text-decoration:none;">Assigned</a>
+                                          <a class="dropdown-toggle text-muted " href="#" data-bs-toggle="dropdown"
+                                                aria-haspopup="true" aria-expanded="false"
+                                                style="text-decoration:none;">Assigned</a>
                                           <div class="dropdown-menu dropdown-menu-end">
-                                         <p class="dropdown-item text-dark" style="white-space:wrap; line-height:1.6"> {{ $data->vendor_name}}</p>
+                                                <p class="dropdown-item text-dark"
+                                                      style="white-space:wrap; line-height:1.6"> {{ $data->vendor_name}}
+                                                </p>
                                           </div>
                                     </div>
                                     @endif
-                                   
+
                                     @elseif($data->role_id == '8')
                                     @if(empty($data->vendor))
                                     <a href="{{ url('assign-vendor', [$data->id]) }}" class="card-btn"
@@ -255,11 +279,13 @@
                                     </a>
                                     @else
                                     <div class="dropdown card-btn text-muted">
-                                          <a class="dropdown-toggle text-muted " href="#"
-                                                data-bs-toggle="dropdown" aria-haspopup="true"
-                                                aria-expanded="false" style="text-decoration:none;">Assigned</a>
+                                          <a class="dropdown-toggle text-muted " href="#" data-bs-toggle="dropdown"
+                                                aria-haspopup="true" aria-expanded="false"
+                                                style="text-decoration:none;">Assigned</a>
                                           <div class="dropdown-menu dropdown-menu-end">
-                                         <p class="dropdown-item text-dark" style="white-space:wrap; line-height:1.6"> {{ $data->vendor_name}}</p>
+                                                <p class="dropdown-item text-dark"
+                                                      style="white-space:wrap; line-height:1.6"> {{ $data->vendor_name}}
+                                                </p>
                                           </div>
                                     </div>
                                     @endif
