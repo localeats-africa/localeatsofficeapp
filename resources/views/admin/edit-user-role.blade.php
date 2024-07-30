@@ -119,7 +119,7 @@
                                                       <div class="form-group">
                                                             <h6>Assign a role </h6>
                                                             <select class="js-example-basic-single" style="width:100%"
-                                                                  name="bank_name" id="bank">
+                                                                  name="role" id="bank">
                                                                   <option value="{{$staffRoleName}}">
                                                                         {{$staffRoleName}}
                                                                   </option>
