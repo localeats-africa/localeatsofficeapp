@@ -120,8 +120,8 @@
                                                             <h6>Assign a role </h6>
                                                             <select class="js-example-basic-single" style="width:100%"
                                                                   name="bank_name" id="bank">
-                                                                  <option value="{{$userRole}}">
-                                                                        {{$userRole}}
+                                                                  <option value="{{$staffRoleName}}">
+                                                                        {{$staffRoleName}}
                                                                   </option>
                                                                   @foreach($userRole as $data)
                                                                   <option value="{{$data->id}}">
