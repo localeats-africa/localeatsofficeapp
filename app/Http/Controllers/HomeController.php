@@ -1685,13 +1685,15 @@ class HomeController extends Controller
     public function addExpensesList(Request $request){
         $this->validate($request, [ 
             'vendor'  => 'required|max:255',
-            'item'   => 'required|string|max:255'      
+            'item'   => 'required|string|max:255',   
+            'date'   => 'required|string|max:255'   
         ]);
 
         $storeExpense = new ExpensesList();
         $storeExpense->vendor_id    = $request->vendor;
         $storeExpense->item         = $request->item;
         $storeExpense->added_by     = Auth::user()->id;
+        $storeExpense->expense_date = $request->date;
         $storeExpense->save();
 
         if($storeExpense){
