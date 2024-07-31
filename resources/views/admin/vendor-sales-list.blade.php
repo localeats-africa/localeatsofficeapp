@@ -166,7 +166,7 @@
                                     @foreach($vendorSales as $data)
                                     <tr>
                                           <td>{{$loop->iteration}}</td>
-                                          <td>{{ date('Y-m-d', strtotime($data->created_at)) }}</td>
+                                          <td>{{ date('Y-m-d', strtotime($data->sales_date)) }}</td>
                                           <td>{{$data->sales_item}}</td>
                                           <td>{{$data->price}}</td>
                                     </tr>
