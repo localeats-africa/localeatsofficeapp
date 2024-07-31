@@ -1664,7 +1664,7 @@ class HomeController extends Controller
         $search = $request->input('search');
 
         $expenses = VendorExpenses::where('vendor_id', $vendor_id)
-        ->orderBy('created_at', 'desc')
+        ->orderBy('expense_date', 'desc')
         ->where(function ($query) use ($search) {  // <<<
         $query->where('description', 'LIKE', '%'.$search.'%')
         ->orWhere('cost', 'LIKE', '%'.$search.'%')
@@ -1764,7 +1764,7 @@ class HomeController extends Controller
         $search = $request->input('search');
 
         $sales = OfflineSales::where('vendor_id', $vendor_id)
-        ->orderBy('created_at', 'desc')
+        ->orderBy('sales_date', 'desc')
         ->where(function ($query) use ($search) {  // <<<
         $query->where('sales_item', 'LIKE', '%'.$search.'%')
         ->orWhere('price', 'LIKE', '%'.$search.'%')
