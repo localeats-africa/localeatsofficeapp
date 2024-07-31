@@ -1824,7 +1824,7 @@ class HomeController extends Controller
         $sales->sales_item          = $request->item;
         $sales->price               = $request->price;
         $sales->added_by            = Auth::user()->id;
-        $sales->sales_date     = date("Y-m-d", strtotime($request->date));
+        $sales->sales_date          = date("Y-m-d", strtotime($request->date));
         $sales->save();
 
         if($sales){
