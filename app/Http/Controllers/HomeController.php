@@ -1717,6 +1717,11 @@ class HomeController extends Controller
             'price'         => 'required|string|max:255',  
             'date'          => 'required|string|max:255'       
         ]);
+        $storeExpense = new ExpensesList();
+        $storeExpense->vendor_id    = $request->vendor;
+        $storeExpense->item         = $request->item;
+        $storeExpense->added_by     = Auth::user()->id;
+        $storeExpense->save();
 
         $expenses = new VendorExpenses();
         $expenses->vendor_id        = $request->vendor;
@@ -1810,7 +1815,8 @@ class HomeController extends Controller
         $this->validate($request, [ 
             'vendor'        => 'required|max:255',
             'item'          => 'required|string|max:255',  
-            'price'         => 'required|string|max:255'        
+            'price'         => 'required|string|max:255', 
+            'date'          => 'required|string|max:255'         
         ]);
 
         $sales = new OfflineSales();
@@ -1818,6 +1824,7 @@ class HomeController extends Controller
         $sales->sales_item          = $request->item;
         $sales->price               = $request->price;
         $sales->added_by            = Auth::user()->id;
+        $sales->sales_date     = date("Y-m-d", strtotime($request->date));
         $sales->save();
 
         if($sales){
