@@ -1818,7 +1818,12 @@ class HomeController extends Controller
             'price'         => 'required|string|max:255', 
             'date'          => 'required|string|max:255'         
         ]);
-
+        $foodItem = new OfflineFoodMenu();
+        $foodItem->vendor_id    = $request->vendor;
+        $foodItem->item         = $request->item;
+        $foodItem->added_by     = Auth::user()->id;
+        $foodItem->save();
+        
         $sales = new OfflineSales();
         $sales->vendor_id           = $request->vendor;
         $sales->sales_item          = $request->item;
