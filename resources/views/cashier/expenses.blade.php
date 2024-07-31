@@ -195,7 +195,7 @@
                                                 @foreach($expenses as $data)
                                                 <tr>
                                                       <td>{{$loop->iteration}}</td>
-                                                      <td>{{ date('d/m/Y', strtotime($data->created_at))}}</td>
+                                                      <td>{{ date('d/m/Y', strtotime($data->expense_date))}}</td>
                                                       <td class="text-capitalize">{{$data->description}}</td>
                                                       <td>{{$data->cost}}</td>
 
