@@ -46,7 +46,7 @@ class EmailVendorInvoice extends Mailable
     public function content()
     {
         return new Content(
-            view: 'email.vendor-invoice',
+            view: 'email.send-vendor-invoice',
         );
     }
 

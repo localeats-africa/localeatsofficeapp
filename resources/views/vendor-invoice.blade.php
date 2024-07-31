@@ -50,6 +50,7 @@
                                           Excel</button>
                               </form>
                               <nav style="--bs-breadcrumb-divider: '';" aria-label="breadcrumb">
+                                    <p id="response"></p>
                                     <ol class="breadcrumb">
                                           <li class="breadcrumb-item">
                                                 <button class="btn btn-outline-dark  text-dark" onclick="printDiv()">
@@ -60,32 +61,20 @@
                                                       <i class="fa fa-download"></i></button>
                                           </li>
                                           <li class="breadcrumb-item">
-
-                                                <form action="{{ route('email-invoice', [$invoice_ref]) }}" method="get"
-                                                      name="submit" enctype="multipart/form-data">
-                                                      @csrf
-                                                      <input type="hidden" value="{{$invoice_ref}}" name="invoice_ref"
-                                                            id="invoice_ref">
-                                                      <input type="hidden" value="{{$vendor}}" name="vendor"
-                                                            id="vendor">
-                                                      <button type="submit" name="submit"
-                                                            class="btn btn-outline-dark  text-dark">
-                                                            <i class="fa fa-envelope"></i></button>
-                                                </form>
-
-
-                                          </li>
-
-                                          <li class="breadcrumb-item">
-
-<!-- 
                                                 <input type="hidden" value="{{$invoice_ref}}" name="ref" id="ref">
                                                 <input type="hidden" value="{{$vendor}}" name="vendor" id="vendor">
                                                 <button onclick="mypdf()" class="btn btn-outline-dark  text-dark">
-                                                      send email</button> -->
-
+                                                      <i class="fa fa-envelope"></i></button>
+                                                <div class="progress" id="show-progress" style="display:none;">
+                                                      <span class="progress-bar progress-bar-animated"> &nbsp; &nbsp; loading
+                                                            ...</span>
+                                                      <!-- <div class="progress-bar progress-bar-striped  progress-bar-animated"
+                                                            role="progressbar" aria-valuenow="75" aria-valuemin="0"
+                                                            aria-valuemax="100" style="width: 75%"></div> -->
+                                                </div>
 
                                           </li>
+
                                           <li class="breadcrumb-item">
                                                 <button class="btn btn-outline-dark  text-dark">
                                                       <i class="fa fa-whatsapp"></i></button>
@@ -101,7 +90,7 @@
             <div class="row">
                   <div class="col-lg-12">
 
-                        @if(session('save'))
+                        @if(session('email-sent'))
                         <div class="alert  alert-danger alert-dismissible" role="alert">
                               <div class="d-flex">
                                     <div>
@@ -136,16 +125,16 @@
                                                       <img src="{{ asset('assets/images/logo.png') }}" alt="Admin"
                                                             class="rounded-circle " width="110">
                                                       <h4>LocalEats Africa</h4>
-                                                      <div class="mt-1 text-secondary">
+                                                      <div class="mt-1 text-secondary" style="line-height:1.7">
                                                             <small>2nd floor,10 Hughes Avenue, <br>
                                                                   Alagomeji, Yaba Lagos</small>
-                                                            <p>
-                                                                  <small> <i class="mdi mdi-email"></i>
-                                                                        hi@localeats.africa
-                                                                        <br>
-                                                                        <i class="mdi mdi-web-check"></i>
-                                                                        www.localeats.africa</small>
-                                                            </p>
+                                                            <br>
+                                                            <small> <i class="mdi mdi-email"></i>
+                                                                  hi@localeats.africa
+                                                                  <br>
+                                                                  <i class="mdi mdi-web-check"></i>
+                                                                  www.localeats.africa</small>
+
 
                                                       </div>
                                                 </div>
@@ -163,14 +152,27 @@
 
                                                                   <p class="text-secondary mb-1">
                                                                   <h6></h6>
-                                                                  <h6>Contact:&nbsp;&nbsp;
+                                                                  <h6><span class="text-dark mb-1">Contact:</span>
+                                                                        &nbsp;&nbsp;
                                                                         {{$vendorFname}}&nbsp;{{$vendorLname}}</h6>
 
                                                                   <i class="fa fa-phone"></i>
                                                                   {{$vendorPhone}}</small>
                                                                   </p>
+
+                                                                  <p>
+                                                                  <h6><span class="text-dark mb-1">Bank Name:</span>
+                                                                        &nbsp;&nbsp; {{$vendorBankName}}</h6>
+                                                                  <h6> <span class="text-dark mb-1">Account
+                                                                              Number:</span>
+                                                                        &nbsp;&nbsp;{{$vendorAccountNumber}}</h6>
+                                                                  <h6><span class="text-dark mb-1">Account Name:</span>
+                                                                        &nbsp;&nbsp;{{$vendorAccountName}}</h6>
+
+                                                                  </p>
                                                             </div>
                                                             <p></p>
+                                                            <br><br>
                                                             <div class="mt-1">
                                                                   <h4 id="invoice_ref">Invoice ID: {{$invoice_ref}}</h4>
 
@@ -207,9 +209,12 @@
                                                                   @foreach($orders as $data)
 
                                                                   <tr>
-                                                                        <td width="50%" style="white-space:wrap; line-height:1.6"><small>
+                                                                        <td width="50%"
+                                                                              style="white-space:wrap; line-height:1.6">
+                                                                              <small>
                                                                                     {!! nl2br($data->description) !!}
-                                                                              </small></td>
+                                                                              </small>
+                                                                        </td>
                                                                         <td><small>{{$data->order_ref}}</small></td>
                                                                         <td><small>{{ date('d/m/Y', strtotime($data->delivery_date))}}</small>
                                                                         </td>
@@ -231,22 +236,19 @@
                                                                   </tr>
                                                                   <tr>
                                                                         <th colspan="3" class="text-end">
-                                                                             @auth 
-                                                                             @if(Auth::user()->role_id =='2')
-                                                                             @if($payment_status == 'paid')
+                                                                              @auth
+                                                                              @if(Auth::user()->role_id =='2')
+                                                                              @if($payment_status == 'paid')
                                                                               @else
-                                                                              <input type="hidden" value="{{$vendor}}"
-                                                                                    id="vendor_id">
-                                                                              <input type="hidden"
-                                                                                    value="{{ $invoice_ref}}"
-                                                                                    id="invoice_ref">
+                                                                              <input type="hidden" value="{{$vendor}}" id="vendor_id">
+                                                                              <input type="hidden" value="{{$invoice_ref}}" id="invoiceRef">
                                                                               <button onclick="markAsPaid()"
                                                                                     class="btn btn-block btn-success text-dark">Mark
                                                                                     This Invoice As Paid</button>
                                                                               @endif
-                                                                             @else 
-                                                                             @endif
-                                                                             @endauth 
+                                                                              @else
+                                                                              @endif
+                                                                              @endauth
                                                                         </th>
 
                                                                         <th class="text-end">
@@ -304,12 +306,11 @@
 <script>
 function markAsPaid() {
       document.getElementById('response').style.display = 'none';
-      var id = document.getElementById('invoice_ref').value;
+      var id = document.getElementById('invoiceRef').value;
       var vendor_id = document.getElementById('vendor_id').value;
       var showRoute = "{{ route('mark-invoice-paid', ':id') }}";
       url = showRoute.replace(':id', id);
 
-      //window.location = url;
       $.ajaxSetup({
             headers: {
                   'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
@@ -325,15 +326,19 @@ function markAsPaid() {
             },
             success: function(data) {
                   console.log(data.message);
-                  document.getElementById('response').style.display = '';
-                  document.getElementById('response').style.color = 'green';
-                  document.getElementById('response').innerHTML = data.message;
+                  alert(data.message);
+                  // document.getElementById('response').style.display = '';
+                  // document.getElementById('response').style.color = 'green';
+                  // document.getElementById('response').innerHTML = data.message;
+                  window.location.reload();
             },
             error: function(data) {
                   console.log(data);
+            },
+            complete: function() {
+                  setTimeout(ajax, 1000);
             }
       });
-      location.reload();
 }
 </script>
 
@@ -376,7 +381,6 @@ function getPDF() {
 
       var totalPDFPages = Math.ceil(HTML_Height / PDF_Height) - 1;
 
-
       html2canvas($(".print_invoice")[0], {
             allowTaint: true
       }).then(function(canvas) {
@@ -396,23 +400,19 @@ function getPDF() {
             }
             pdf.save("invoice-{{$invoice_ref}}.pdf");
       });
-
 }
 </script>
 
 <script>
 function mypdf() {
+      document.getElementById('show-progress').style.display = '';
+      document.getElementById('response').style.display = 'none';
       html2canvas($('#print_invoice')[0]).then(function(canvas) {
             var dataUrl = canvas.toDataURL();
             var newDataURL = dataUrl.replace(/^data:image\/png/,
                   "data:application/octet-stream"); //do this to clean the url.
             $("#saveBtn").attr("download", "your_pic_name.png").attr("href",
                   newDataURL); //incase you want to create a download link to save the pic locally.
-
-            //   var newDataURL = dataUrl.replace(/^data:application\/pdf/); //do this to clean the url.
-            //      $("#saveBtn").attr("download", "your_pic_name.png").attr("href", newDataURL); //incase you want to create a download link to save the pic locally.
-
-            //data:application/pdf;base64,JVBERi0xLjQKJcOkw7zDtsOfCjIgMCBvYmoKPDwvTGVuZ3RoIDMgMCBSL0ZpbHRlci9GbGF0ZURlY29kZT4+CnN0cmVhbQp4nO1cyY4ktxG911fUWUC3kjsTaBTQ1Ytg32QN4IPgk23JMDQ2LB/0+2YsZAQzmZk1PSPIEB...
             var id = document.getElementById('ref').value;
             var showRoute = "{{ route('send-email-pdf', ':id') }}";
             url = showRoute.replace(':id', id);
@@ -431,83 +431,22 @@ function mypdf() {
                         'img': dataUrl
                   },
                   success: function(data) {
-                        console.log(data);
+                        document.getElementById('show-progress').style.display = 'none';
+                        console.log(data.message);
+                        alert(data.message);
+                        // document.getElementById('response').style.display = '';
+                        // document.getElementById('response').style.color = 'green';
+                        // document.getElementById('response').innerHTML = data.message;
+                        window.location.reload();
                   },
                   error: function(data) {
-                        console.log(data);
+                        console.log(data.message);
+                        document.getElementById('response').innerHTML = data.message;
                   }
             });
 
       });
 }
 </script>
-
-<script>
-function sendEmail() {
-
-      var HTML_Width = $(".print_invoice").width();
-      var HTML_Height = $(".print_invoice").height();
-      var top_left_margin = 15;
-      var PDF_Width = HTML_Width + (top_left_margin * 2);
-      var PDF_Height = (PDF_Width * 1.5) + (top_left_margin * 2);
-      var canvas_image_width = HTML_Width;
-      var canvas_image_height = HTML_Height;
-
-      var totalPDFPages = Math.ceil(HTML_Height / PDF_Height) - 1;
-
-
-      html2canvas($(".print_invoice")[0], {
-            allowTaint: true
-      }).then(function(canvas) {
-            canvas.getContext('2d');
-
-            console.log(canvas.height + "  " + canvas.width);
-            var imgData = canvas.toDataURL("image/jpeg", 1.0);
-            var pdf = new jsPDF('p', 'pt', [PDF_Width, PDF_Height]);
-            pdf.addImage(imgData, 'JPG', top_left_margin, top_left_margin, canvas_image_width,
-                  canvas_image_height);
-
-            for (var i = 1; i <= totalPDFPages; i++) {
-                  pdf.addPage(PDF_Width, PDF_Height);
-                  pdf.addImage(imgData, 'JPG', top_left_margin, -(PDF_Height * i) + (
-                        top_left_margin *
-                        4), canvas_image_width, canvas_image_height);
-            }
-            // pdf.save("invoice-{{$invoice_ref}}.pdf");
-
-            var blob = pdf.output('blob');
-
-
-
-            var id = document.getElementById('ref').value;
-            var showRoute = "{{ route('send-email-pdf', ':id') }}";
-            url = showRoute.replace(':id', id);
-            // $token = document.getElementsByName("_token")[0].value;
-            $.ajaxSetup({
-                  headers: {
-                        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-                  }
-            });
-            $.ajax({
-                  method: 'POST',
-                  enctype: 'multipart/form-data',
-                  url: url,
-                  data: {
-                        //you can more data here
-                        'img': blob
-                  },
-                  success: function(data) {
-                        console.log(data);
-                  },
-                  error: function(data) {
-                        console.log(data);
-                  }
-            });
-      });
-
-
-}
-</script>
-
 
 @endsection

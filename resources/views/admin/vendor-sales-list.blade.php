@@ -159,8 +159,8 @@
                               <thead>
                                     <th>SN</th>
                                     <th>Date</th>
-                                    <th>Expenses</th>
-                                    <th>Cost</th>
+                                    <th>Sales</th>
+                                    <th>Price</th>
                               </thead>
                               <tbody>
                                     @foreach($vendorSales as $data)

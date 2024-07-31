@@ -210,7 +210,7 @@
                                                             </thead>
                                                             <tbody>
                                                                   @foreach($orders as $data)
-                                                                  <span id="delete_order"></span> 
+                                                                 
                                                                   <tr>
                                                                         <td class="align-items-center">
                                                                               <small>{{$loop->iteration}} </small>
@@ -225,10 +225,10 @@
                                                                               <button onclick="deleteOrderRow()"
                                                                                     class="text-danger"><i
                                                                                           class="fa fa-trash"></i></button>
+                                                                                          <span id="delete_order"></span> 
 
                                                                               @endif
                                                                               @endauth
-
                                                                               @endif
                                                                              
                                                                         </td>
@@ -562,15 +562,23 @@ function deleteOrderRow() {
             },
             success: function(data) {
                   console.log(data.message);
-                  document.getElementById('delete_order').style.display = '';
-                  document.getElementById('delete_order').style.color = 'green';
-                  document.getElementById('delete_order').innerHTML = data.message;
+                  alert(data.message);
+                  // document.getElementById('delete_order').style.display = '';
+                  // document.getElementById('delete_order').style.color = 'green';
+                  // document.getElementById('delete_order').innerHTML =
+                // location.reload();   
+                window.location.reload();
             },
             error: function(data) {
                   console.log(data);
+            },
+            complete: function() {
+                  setTimeout(ajax, 1000);
             }
+            
+          
       });
-     location.reload();
+  
 
 }
 </script>

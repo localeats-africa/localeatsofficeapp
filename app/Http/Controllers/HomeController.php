@@ -32,6 +32,10 @@ use App\Models\Payout;
 use App\Mail\NewUserEmail;
 use App\Mail\EmailVendorInvoice;
 use Barryvdh\DomPDF\Facade\Pdf;
+use App\Models\ExpensesList;
+use App\Models\OfflineSales;
+use App\Models\VendorExpenses;
+use App\Models\OfflineFoodMenu;
 
 use Excel;
 use Auth;
@@ -39,6 +43,7 @@ use Session;
 use Carbon\Carbon;
 use Carbon\CarbonPeriod;
 use Mail;
+use Storage;
 
 class HomeController extends Controller
 {
@@ -1242,6 +1247,16 @@ class HomeController extends Controller
         $vendorLname = DB::table('vendor')->where('id', $vendor)
         ->select('*')->pluck('contact_lname')->first();
 
+        $vendorAccountNumber = DB::table('vendor')->where('id', $vendor)
+        ->select('*')->pluck('account_number')->first();
+
+        $vendorAccountName = DB::table('vendor')->where('id', $vendor)
+        ->select('*')->pluck('account_name')->first();
+
+        $vendorBankName = DB::table('vendor')->where('vendor.id', $vendor)
+        ->leftjoin('banks', 'banks.code', 'vendor.bank_name')
+        ->select('banks.*')->pluck('name')->first();
+
         $sumFoodPrice = DB::table('orders')
         ->where('orders.vendor_id', $vendor)
         ->where('orders.invoice_ref', $invoice_ref)
@@ -1281,7 +1296,8 @@ class HomeController extends Controller
             'vendorAddress','vendorState', 'vendorCountry', 'vendorPhone',
             'vendorEmail', 'vendorFname', 'vendorLname', 'orders',
             'sumFoodPrice', 'sumExtra','vendorFoodPrice', 'payout', 
-            'payment_status', 'invoice_ref', 'vendor'));
+            'payment_status', 'invoice_ref', 'vendor', 
+            'vendorAccountNumber', 'vendorAccountName', 'vendorBankName'));
 
      }
 
@@ -1458,210 +1474,77 @@ class HomeController extends Controller
         return Excel::download(new ExportOrderList($invoice_ref), 'invoice-'.$invoice_ref.'.xlsx');
     }
 
+    public function sendEmailPdfInvoice(Request $request, $ref){
+        $img = $request->img; //get the image string from ajax post
+        $getimg = substr(explode(";",$img)[1], 7); //this extract the exact image
+        $target= $ref.'-invoice.png'; //rename the image by time
+       // $image = file_put_contents(public_path($target), base64_decode($getimg));
+        $image = file_put_contents(public_path().'/assets/invoice/' . $target, base64_decode($getimg));
+        $path = '/assets/invoice/' . $target;
 
-    public function saveImage(Request $request)
-{
-    $image = Image::make($request->get('imgBase64'));
-    $image->save('public/bar.jpg');
-}
-
-    public function emailPdfInvoice(Request $request, $invoice_ref )
-    {
-        $invoice_ref = $request->invoice_ref;
-        $vendor =   $request->vendor;
-
-        $vendorBusinessName = Vendor::where('id', $vendor)
-        ->get('*')->pluck('store_name')->first();
-
-        $vendorAddress = DB::table('vendor')->where('id', $vendor)
-        ->select('*')->pluck('address')->first();
-
-        $vendorState = DB::table('vendor')->where('vendor.id', $vendor)
-        ->join('state', 'state.id', '=', 'vendor.state_id')
-        ->select('state.state')->pluck('state')->first();
-
-        $vendorCountry = DB::table('vendor')->where('vendor.id', $vendor)
-        ->join('country', 'country.id', '=', 'vendor.country_id')
-        ->select('country.country')->pluck('country')->first();
-
-        $vendorPhone = DB::table('vendor')->where('id', $vendor)
-        ->select('*')->pluck('contact_phone')->first();
+        $invoice_ref =  $ref;
+        $vendor = DB::table('orders')
+        ->where('orders.invoice_ref', $invoice_ref)
+        ->pluck('vendor_id')->first();
 
         $vendorEmail = DB::table('vendor')->where('id', $vendor)
         ->select('*')->pluck('email')->first();
 
-        $vendorFname = DB::table('vendor')->where('id', $vendor)
-        ->select('*')->pluck('contact_fname')->first();
-
-        $vendorLname = DB::table('vendor')->where('id', $vendor)
-        ->select('*')->pluck('contact_lname')->first();
-
-        $sumFoodPrice = DB::table('orders')
-        ->where('orders.vendor_id', $vendor)
-        ->where('orders.invoice_ref', $invoice_ref)
-        ->where('orders.deleted_at', null)
-        ->sum('food_price');
-
-         $sumExtra = DB::table('orders')
-         ->where('orders.vendor_id', $vendor)
-         ->where('orders.invoice_ref', $invoice_ref)
-         ->where('orders.deleted_at', null)
-         ->sum('extra');
-
-         $vendorFoodPrice =  $sumFoodPrice + $sumExtra;
-
-         $getpayout =  DB::table('orders')
-            ->where('vendor_id', $vendor)
-            ->where('invoice_ref', $invoice_ref)
-            ->get('*')
-            ->value('payout');
-            $payout = (int)$getpayout;
-
-         $payment_status = DB::table('orders')
-          ->where('orders.vendor_id', $vendor)
-         ->where('orders.invoice_ref', $invoice_ref)
-         ->where('orders.payment_status', '!=', null)
-         ->pluck('payment_status')->first();
-  
-          $order_description = DB::table('orders')
-          ->leftJoin('merge_invoices', 'orders.id', '=', 'merge_invoices.order_id')
-          ->where('orders.vendor_id', $vendor)
-          ->where('orders.invoice_ref', $invoice_ref)
-          ->where('orders.deleted_at', null)
-          ->get('orders.description');
-
-          $order_invoice_ref = DB::table('orders')
-          ->leftJoin('merge_invoices', 'orders.id', '=', 'merge_invoices.order_id')
-          ->where('orders.vendor_id', $vendor)
-          ->where('orders.invoice_ref', $invoice_ref)
-          ->where('orders.deleted_at', null)
-          ->get('orders.invoice_ref');
-
-
-          $order_date = DB::table('orders')
-          ->leftJoin('merge_invoices', 'orders.id', '=', 'merge_invoices.order_id')
-          ->where('orders.vendor_id', $vendor)
-          ->where('orders.invoice_ref', $invoice_ref)
-          ->where('orders.deleted_at', null)
-          ->get('orders.delivery_date');
-
-          $order_food = DB::table('orders')
-          ->leftJoin('merge_invoices', 'orders.id', '=', 'merge_invoices.order_id')
-          ->where('orders.vendor_id', $vendor)
-          ->where('orders.invoice_ref', $invoice_ref)
-          ->where('orders.deleted_at', null)
-          ->get('orders.food_price');
-
-          $order_extra = DB::table('orders')
-          ->leftJoin('merge_invoices', 'orders.id', '=', 'merge_invoices.order_id')
-          ->where('orders.vendor_id', $vendor)
-          ->where('orders.invoice_ref', $invoice_ref)
-          ->where('orders.deleted_at', null)
-          ->get('orders.extra');
-    
-        $data = [
-            [
-                'invoice_ref'               => $invoice_ref,
-                'business_name'             => $vendorBusinessName,
-                'address'                   => $vendorAddress,
-                'state'                     => $vendorState,
-                'country'                   => $vendorCountry,
-                'phone'                     => $vendorPhone,
-                'email'                     => $vendorEmail,
-                'first_name'                => $vendorFname,
-                'last_name'                 => $vendorLname,
-                'food_price'                => $sumFoodPrice,
-                'extra'                     => $sumExtra,
-                'extra'                     => $sumExtra,
-                'total_amount'              => $vendorFoodPrice,
-                'payout'                    => $payout,
-                'payment_status'            => $payment_status,
-                'description'               => $order_description,
-                'order_invoice_ref'         => $order_invoice_ref,
-                'delivery_date'             => $order_date,
-                'food_price'                => $order_food,
-                'extra'                     => $order_extra,
-            ]
-        ];
-       // dd( $data);
-     
-        $pdf = Pdf::loadView('email-vendor-invoice', array('data' =>  $data));
-        return $pdf->download('invoice-'.$invoice_ref.'pdf'); 
-
-     
-   
-
-        $vendorName = Vendor::where('id', $vendor)
-        ->get('*')->pluck('vendor_name')->first();
-
-        $vendorEmail = Vendor::where('id', $vendor)
-        ->get('email');
-
-        if (!empty($vendorEmail)){
+        $vendorBusinessName = Vendor::where('id', $vendor)
+        ->get('*')->pluck('store_name')->first();
            
-         
-             $data = [
-                'vendor_name'   => $vendorName,
-                'title'         => 'Payment Invoice'
-            ]; 
-            //send email
+        if($image){
+            $pdf_path =  $path; 
+        }
+        else {$pdf_path = "";
+        }
+        $storeInvoice =  Invoice::updateOrCreate(
+            ['reference' => $invoice_ref, 'vendor_id' => $vendor],
+            ['invoice_url' => $pdf_path, 'invoice_status' => 'email']
+        );
+        
+        // new Invoice();
+        // $storeInvoice->reference       = $invoice_ref;
+        // $storeInvoice->vendor_id       = $vendor;
+        // $storeInvoice->invoice_url     = $pdf_path;
+        // $storeInvoice->invoice_status  = 'email';
+        // $storeInvoice->save();
+
+        if($storeInvoice){
+            $data = array(
+                'vendor_name'     => $vendorBusinessName,
+                'email'           => $vendorEmail,      
+                );
+            $invoicePath = Invoice::where('reference', $invoice_ref)  
+            ->get()->pluck('invoice_url')->first();  
+            $pathInvoice = public_path($invoicePath);
+
             $message = new EmailVendorInvoice($data);
-            $message->attachData($pdf->output(), 'invoice-'.$invoice_ref.'pdf');
+            $message ->attach($pathInvoice, [
+                'as' => 'invoice-'.$invoice_ref.'.png',
+                'mime' => 'image/png',
+            ]);
             $sendMail = Mail::to($vendorEmail)
-                        ->cc('admin@localeats.africa')
+                        ->cc(Auth::user()->email)
+                        ->bcc('admin@localeats.africa')
                         ->send($message);
-            if($sendMail){
-                $storeInvoice = new Invoice();
-                $storeInvoice->reference       = $invoice_ref;
-                $storeInvoice->vendor_id       = $vendor;
-                $storeInvoice->invoice_url     = $image;
-                $storeInvoice->invoice_status  = 'email';
-                $storeInvoice->save();
-            }
-
+          if($sendMail){
+            $jsondata = [
+                'status' => true,
+                'message'=> 'Email sent successfully'
+                ];
+                            
+                return response()->json($jsondata);
+          }
+          else{
+            $jsondata = [
+                'status' => false,
+                'message'=> 'Opps! Email Not sent. Check if vendor has email address'
+                ];
+                            
+                return response()->json($jsondata);
+          }
         }
-        else{
-            return redirect()->back()->with('email-error',  $vendorName.'has to email address');
-        }
-    
-    }
-
-    public function sendEmailPdfInvoice(Request $request, $ref){
-        //$image =  $request->file("file");
-      
-        $img = $request->img; //get the image string from ajax post
-        $getimg = substr(explode(";",$img)[1], 7); //this extract the exact image
-        $target=time().'invoice.png'; //rename the image by time
-        $image = file_put_contents(public_path($target), base64_decode($getimg));
-        // $putImage = 
-     
-        $invoice_ref =  $ref;
-
-        $vendor = DB::table('orders')
-       ->where('orders.invoice_ref', $invoice_ref)
-       ->pluck('vendor_id')->first();
-           if($image){
-               // $fileName =  'invoice-'.$invoice_ref['invoice_ref'] . '.' . 'pdf' ;
-                //$path = $getimg->move(public_path('assets/invoice/'), $target);
-                $pdf_path = "/".$target; 
-                //$pdf_path = $path. '/' .$fileName;
-
-                
-            }
-           else {
-            $pdf_path = "";
-            }
-
-        $storeInvoice = new Invoice();
-                $storeInvoice->reference       = $invoice_ref;
-                $storeInvoice->vendor_id       = $vendor;
-                $storeInvoice->invoice_url     = $pdf_path;
-                $storeInvoice->invoice_status  = 'email';
-                $storeInvoice->save();
-
-                if($storeInvoice){
-                    return redirect()->back()->with('save', 'save successfully .');
-                }
 
     }
 
@@ -1753,6 +1636,194 @@ class HomeController extends Controller
             return redirect()->back()->with('merge-error', 'Something went wrong');
         }
 
+    }
 
+    //Cashier
+    public function addVendorExpenses(Request $request){
+        $name = Auth::user()->fullname;
+        $id = Auth::user()->id;
+        $role = DB::table('role')->select('role_name')
+        ->join('users', 'users.role_id', 'role.id')
+        ->where('users.id', $id)
+        ->pluck('role_name')->first();
+
+        //a cashier should only see things for the vendor assigned to him
+        $vendorName = Vendor::join('users', 'users.vendor', 'vendor.id')
+        ->where('users.id', $id)
+        ->get('vendor.vendor_name')->pluck('vendor_name')->first();
+
+        $vendor_id = Vendor::join('users', 'users.vendor', 'vendor.id')
+        ->where('users.id', $id)
+        ->get('vendor.id')->pluck('id')->first();
+
+        $expensesList = ExpensesList::where('vendor_id', $vendor_id)
+        ->orderBy('created_at', 'desc')
+        ->get();
+
+        $perPage = $request->perPage ?? 10;
+        $search = $request->input('search');
+
+        $expenses = VendorExpenses::where('vendor_id', $vendor_id)
+        ->orderBy('created_at', 'desc')
+        ->where(function ($query) use ($search) {  // <<<
+        $query->where('description', 'LIKE', '%'.$search.'%')
+        ->orWhere('cost', 'LIKE', '%'.$search.'%')
+        ->orWhere('created_at', 'LIKE', '%'.$search.'%');
+        })
+        ->paginate($perPage)->appends(['per_page'   => $perPage]);
+        $pagination = $expenses->appends ( array ('search' => $search) );
+            if (count ( $pagination ) > 0){
+                return view('cashier.expenses',  compact('name', 'role', 
+                'vendorName','expensesList', 'vendor_id', 'perPage', 'expenses'))->withDetails( $pagination );     
+            } 
+        //else{return redirect()->back()->with('expenses-status', 'No record order found'); }
+
+        return view('cashier.expenses',  compact('name', 'role', 
+         'vendorName','expensesList', 'vendor_id', 'perPage', 'expenses'));
+    }
+
+    public function addExpensesList(Request $request){
+        $this->validate($request, [ 
+            'vendor'  => 'required|max:255',
+            'item'   => 'required|string|max:255'      
+        ]);
+
+        $storeExpense = new ExpensesList();
+        $storeExpense->vendor_id    = $request->vendor;
+        $storeExpense->item         = $request->item;
+        $storeExpense->added_by     = Auth::user()->id;
+        $storeExpense->save();
+
+        if($storeExpense){
+            $data = [
+                'status' => true,
+                'message'=> 'New list added successfully.'
+            ];
+            return response()->json($data);
+        }
+        else{
+            $data = [
+                'status' => false,
+                'message'=> 'Something went wrong'
+            ];
+            return response()->json($data);
+        }
+    }
+
+    public function storeVendorDailyExpenses(Request $request){
+        $this->validate($request, [ 
+            'vendor'        => 'required|max:255',
+            'item'          => 'required|string|max:255',  
+            'price'         => 'required|string|max:255'        
+        ]);
+
+        $expenses = new VendorExpenses();
+        $expenses->vendor_id        = $request->vendor;
+        $expenses->description      = $request->item;
+        $expenses->cost             = $request->price;
+        $expenses->added_by         = Auth::user()->id;
+        $expenses->save();
+
+        if($expenses){
+            return redirect()->back()->with('expense-status', 'You have successfully added an Expenses');
+        }
+        else{
+            return redirect()->back()->with('expense-error', 'Opps! something happend');
+        
+        }
+    }
+
+    public function offlineSales(Request $request){
+        $name = Auth::user()->fullname;
+        $id = Auth::user()->id;
+        $role = DB::table('role')->select('role_name')
+        ->join('users', 'users.role_id', 'role.id')
+        ->where('users.id', $id)
+        ->pluck('role_name')->first();
+
+        //a cashier should only see things for the vendor assigned to him
+        $vendorName = Vendor::join('users', 'users.vendor', 'vendor.id')
+        ->where('users.id', $id)
+        ->get('vendor.vendor_name')->pluck('vendor_name')->first();
+
+        $vendor_id = Vendor::join('users', 'users.vendor', 'vendor.id')
+        ->where('users.id', $id)
+        ->get('vendor.id')->pluck('id')->first();
+
+        $salesList = OfflineFoodMenu::where('vendor_id', $vendor_id)
+        ->orderBy('created_at', 'desc')
+        ->get();
+        $perPage = $request->perPage ?? 10;
+        $search = $request->input('search');
+
+        $sales = OfflineSales::where('vendor_id', $vendor_id)
+        ->orderBy('created_at', 'desc')
+        ->where(function ($query) use ($search) {  // <<<
+        $query->where('sales_item', 'LIKE', '%'.$search.'%')
+        ->orWhere('price', 'LIKE', '%'.$search.'%')
+        ->orWhere('created_at', 'LIKE', '%'.$search.'%');
+        })
+        ->paginate($perPage)->appends(['per_page'   => $perPage]);
+        $pagination = $sales->appends ( array ('search' => $search) );
+            if (count ( $pagination ) > 0){
+                return view('cashier.sales',  compact('name', 'role', 
+                'vendorName','salesList', 'vendor_id', 'perPage', 'sales'))->withDetails( $pagination );     
+            } 
+        // else{return redirect()->back()->with('expenses-status', 'No record order found'); }
+
+
+        return view('cashier.sales',  compact('name', 'role', 
+        'vendorName','salesList', 'vendor_id', 'sales', 'perPage'));
+    }
+
+    public function OfflineSaleList(Request $request){
+        $this->validate($request, [ 
+            'vendor'  => 'required|max:255',
+            'item'   => 'required|string|max:255'      
+        ]);
+
+        $foodItem = new OfflineFoodMenu();
+        $foodItem->vendor_id    = $request->vendor;
+        $foodItem->item         = $request->item;
+        $foodItem->added_by     = Auth::user()->id;
+        $foodItem->save();
+
+        if($foodItem){
+            $data = [
+                'status' => true,
+                'message'=> 'New list added successfully.'
+            ];
+            return response()->json($data);
+        }
+        else{
+            $data = [
+                'status' => false,
+                'message'=> 'Something went wrong'
+            ];
+            return response()->json($data);
+        }
+    }
+
+    public function storeVendorOfflineSale(Request $request){
+        $this->validate($request, [ 
+            'vendor'        => 'required|max:255',
+            'item'          => 'required|string|max:255',  
+            'price'         => 'required|string|max:255'        
+        ]);
+
+        $sales = new OfflineSales();
+        $sales->vendor_id           = $request->vendor;
+        $sales->sales_item          = $request->item;
+        $sales->price               = $request->price;
+        $sales->added_by            = Auth::user()->id;
+        $sales->save();
+
+        if($sales){
+            return redirect()->back()->with('sales-status', 'You have successfully added a Sales');
+        }
+        else{
+            return redirect()->back()->with('sales-error', 'Opps! something happend');
+        
+        }
     }
 }//class

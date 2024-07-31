@@ -11,6 +11,7 @@ use App\Http\Controllers\AdminController;
 use App\Http\Controllers\VendorManagerController;
 use App\Http\Controllers\CashierController;
 use App\Http\Controllers\TwitterController;
+use App\Http\Controllers\AccountManagerController;
 
 
 /*
@@ -116,6 +117,14 @@ Route::controller(HomeController::class)->group(function () {
     Route::post('send-email-pdf/{id}', 'sendEmailPdfInvoice')->name('send-email-pdf');
     Route::get('add-invoice-row/{id}', 'addInvoiceRow')->name('add-invoice-row');
     Route::post('update-invoice-newrow', 'storeAddNewInvoiceRow')->name('update-invoice-newrow');
+
+    Route::get('add-expenses', 'addVendorExpenses')->name('add-expenses');
+    Route::post('add-expenses-list', 'addExpensesList')->name('add-expenses-list');
+    Route::post('add-vendor-expenses', 'storeVendorDailyExpenses')->name('add-vendor-expenses');
+    Route::get('offline-sales', 'offlineSales')->name('offline-sales');
+    Route::post('offline-sales-list', 'OfflineSaleList')->name('offline-sales-list');
+    Route::post('add-vendor-offline-sales', 'storeVendorOfflineSale')->name('add-vendor-offline-sales');
+
 });
 
 Route::controller(SuperAdminController::class)->group(function () {
@@ -150,8 +159,14 @@ Route::controller(AdminController::class)->group(function () {
     Route::get('vendor-sales-list', 'salesList')->name('vendor-sales-list');
     Route::post('import-expenses-list', 'importExpensesList')->name('import-expenses-list');
    
+    Route::get('show-deleted-invoice',  'showDeletedInvoice')->name('show-deleted-invoice');
+    Route::post('restore-invoice/{id}',  'restoreDeletedInvoice')->name('restore-invoice');
     
-
+    Route::get('show-deleted-rows',  'allDeletedRows')->name('show-deleted-rows');
+    Route::post('restore-row/{id}',  'restoreDeletedRow')->name('restore-row');
+    Route::get('edit-user/{id}',  'editUser')->name('edit-user');
+    Route::post('update-user/{id}',  'updateUser')->name('update-user');
+    
 });
 
 Route::controller(ManagerController::class)->group(function () {
@@ -169,13 +184,10 @@ Route::controller(AuditorController::class)->group(function () {
 Route::controller(VendorManagerController::class)->group(function () {
     Route::get('vendormanager',  'index')->name('vendor_manager');
 });
+Route::controller(AccountManagerController::class)->group(function () {
+    Route::get('accountmanager',  'index')->name('account_manager');
+});
+
 Route::controller(CashierController::class)->group(function () {
     Route::get('cashier',  'index')->name('cashier');
-    Route::get('add-expenses', 'addVendorExpenses')->name('add-expenses');
-    Route::post('add-expenses-list', 'addExpensesList')->name('add-expenses-list');
-    Route::post('add-vendor-expenses', 'storeVendorDailyExpenses')->name('add-vendor-expenses');
-    Route::get('offline-sales', 'offlineSales')->name('offline-sales');
-    Route::post('offline-sales-list', 'OfflineSaleList')->name('offline-sales-list');
-    Route::post('add-vendor-offline-sales', 'storeVendorOfflineSale')->name('add-vendor-offline-sales');
-
 });

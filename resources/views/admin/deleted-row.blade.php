@@ -8,17 +8,38 @@
       <div class="content-wrapper">
             <div class="page-header">
                   <h3 class="page-title">
-                        Merged Invoices
+                        Overview
                   </h3>
             </div>
 
-            <!--row-deck-->
+            <p></p>
             <p></p>
             <!--Alert here--->
             <div class="row ">
                   <div class="col-12">
+                        @if(session('add-platform'))
+                        <div class="alert alert-important alert-success alert-dismissible" role="alert">
+                              <div class="d-flex">
+                                    <div>
+                                          <!-- Download SVG icon from http://tabler-icons.io/i/alert-triangle -->
+                                          <svg xmlns="http://www.w3.org/2000/svg" class="icon alert-icon" width="24"
+                                                height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"
+                                                fill="none" stroke-linecap="round" stroke-linejoin="round">
+                                                <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                                                <path
+                                                      d="M10.24 3.957l-8.422 14.06a1.989 1.989 0 0 0 1.7 2.983h16.845a1.989 1.989 0 0 0 1.7 -2.983l-8.423 -14.06a1.989 1.989 0 0 0 -3.4 0z" />
+                                                <path d="M12 9v4" />
+                                                <path d="M12 17h.01" />
+                                          </svg>
+                                    </div>
+                                    <div> {!! session('add-platform') !!}</div>
+                              </div>
+                              <a class="btn-close" data-bs-dismiss="alert" aria-label="close"></a>
+                        </div>
+                        @endif
 
-                        @if(session('invoice-status'))
+
+                        @if(session('order-status'))
                         <div class="alert  alert-danger alert-dismissible" role="alert">
                               <div class="d-flex">
                                     <div>
@@ -33,11 +54,12 @@
                                                 <path d="M12 17h.01" />
                                           </svg>
                                     </div>
-                                    <div> {!! session('invoice-status') !!}</div>
+                                    <div> {!! session('order-status') !!}</div>
                               </div>
                               <a class="btn-close" data-bs-dismiss="alert" aria-label="close"></a>
                         </div>
                         @endif
+
                   </div>
             </div>
             <!---end Alert --->
@@ -46,7 +68,7 @@
                   <div class="col-12">
                         <div class="card">
                               <div class="card-header">
-                                    <h3 class="card-title"> </h3>
+                                    <h4 class="card-title"> </h4>
                               </div>
                               <div class="card-body border-bottom py-3">
                                     <div class="d-flex">
@@ -74,7 +96,7 @@
                                                 Search:
                                                 <div class="ms-2 d-inline-block">
 
-                                                      <form action="{{ route('vendor-merged-invoices') }}" method="GET"
+                                                      <form action="{{ route('all-orders') }}" method="GET"
                                                             role="search">
                                                             {{ csrf_field() }}
                                                             <div class="input-group mb-2">
@@ -94,64 +116,44 @@
                                           id="orders">
                                           <thead>
                                                 <tr>
-                                                      <th>Import Date</th>
-                                                      <th>Vendor</th>
-                                                      <th>Invoice Ref.</th>
+                                                      <th>invoice_ref</th>
+                                                      <th>Order Ref.</th>
 
+                                                      <th>Vendors</th>
+
+                                                      <th>Item (s)</th>
+                                                      <th>Amount</th>
+                                                      <th>Food Price</th>
+                                                      <th>Extra</th>
+                                                      <th>Delivery Date</th>
+                                                      <th>Posted By</th>
                                                       <th></th>
                                                 </tr>
                                           </thead>
                                           <tbody>
                                                 @foreach($orders as $data)
                                                 <tr>
-                                                      <td>{{date('d/m/Y',  strtotime($data->created_at))}}</td>
-                                                      <td class="text-sm">{{$data->vendor_name}} </td>
-                                                      <td>{{ $data->invoice_ref}}</td>
+                                                      <td class="text-capitalize">{{$data->invoice_ref}}</td>
+                                                      <td>{{$data->order_ref}}</td>
 
-                                                    
-                                                      <td class="">
-                                                      @auth
-                                                      @if(Auth::user()->role_id == '2')
-                                                            <span class="dropdown">
-                                                                  <button
-                                                                        class="btn dropdown-toggle align-text-top text-danger"
-                                                                        data-bs-boundary="viewport"
-                                                                        data-bs-toggle="dropdown"
-                                                                        style="padding:0;">Action</button>
+                                                      <td class="text-capitalize">{{$data->vendor_name}}</td>
 
-
-                                                                  <div class="dropdown-menu ">
-                                                                        <a class="dropdown-item text-danger"
-                                                                              href="computed-invoice/{{$data->id}}/{{$data->number_of_order_merge}}/{{$data->invoice_ref}}">View
-                                                                        </a>
-                                                                        <br>
-                                                                        @if($data->payment_status == 'paid')
-                                                                        @else 
-                                                                        <div class="dropdown-item text-danger">
-                                                                       
-                                                                              <input type="hidden" id="vendor_id" value="{{$data->vendor_id}}">
-                                                                              <input type="hidden" id="invoice_ref" value="{{$data->invoice_ref}}">
-                                                                              <button onclick="deleteInvoice()" class="text-danger"> Delete</button>
-                                                                     
-                                                                        </div>
-                                                                        @endif 
-                                                                   
-                                                                  </div>
-                                                            </span>
-                                                            <p id="response"></p>
-
-                                                            @endif
-
-                                                            @if(Auth::user()->role_id == '6')
-
-                                                            <a href="computed-invoice/{{$data->id}}/{{$data->number_of_order_merge}}/{{$data->invoice_ref}}"
-                                                                  class="text-danger"><i class="fa fa-eye"></i></a>
-
-
-                                                            @endif
-                                                            @endauth
+                                                      <td width="50%" style="white-space:wrap; line-height:1.6"> {!!
+                                                            nl2br($data->description) !!}</td>
+                                                      <td>{{$data->order_amount}}</td>
+                                                      <td>{{$data->food_price}}</td>
+                                                      <td>{{$data->extra}}</td>
+                                                      <td>{{ date('d/m/Y', strtotime($data->delivery_date))}}
                                                       </td>
-                                                  
+                                                      <td class="text-capitalize">{{$data->fullname}}</td>
+                                                      <td>
+                                                            <input type="hidden" id="order_id" value="{{$data->id}}">
+                                                            <button onclick="restoreRow()"
+                                                                  class="text-dark btn  btn-outline-danger">
+                                                                  Restore </button>
+                                                            <p id="response"></p>
+                                                      </td>
+
                                                 </tr>
                                                 @endforeach
 
@@ -216,24 +218,16 @@
             </div>
 
       </div>
-      <!--- content-wrapper-->
-      <footer class="footer">
-            <div class="d-sm-flex justify-content-center justify-content-sm-between">
-                  <span class="text-muted text-center text-sm-left d-block d-sm-inline-block">Copyright ©
-                        LocalEats Africa {{ date('Y')}} </a>. All rights
-                        reserved.</span>
-                  <span class="float-none float-sm-right d-block mt-1 mt-sm-0 text-center"><i
-                              class="mdi mdi-heart text-danger"></i></span>
-            </div>
-      </footer>
+      <!--- content wrapper---->
 </div>
+<!-- main-panel -->
+
 
 <script type="text/javascript">
-function deleteInvoice() {
+function restoreRow() {
       document.getElementById('response').style.display = 'none';
-      var id = document.getElementById('invoice_ref').value;
-      var vendor_id = document.getElementById('vendor_id').value;
-      var showRoute = "{{ route('delete-invoice', ':id') }}";
+      var id = document.getElementById('order_id').value;
+      var showRoute = "{{ route('restore-row', ':id') }}";
       url = showRoute.replace(':id', id);
 
       //window.location = url;
@@ -248,14 +242,15 @@ function deleteInvoice() {
             url: url,
             data: {
                   //you can more data here
-                  'vendor_id': vendor_id
+                  'order_id': id
             },
             success: function(data) {
                   console.log(data.message);
-                  document.getElementById('response').style.display = '';
-                  document.getElementById('response').style.color = 'green';
-                  document.getElementById('response').innerHTML = data.message;
-                 // location.reload();
+                  alert(data.message);
+                  // document.getElementById('response').style.display = '';
+                  // document.getElementById('response').style.color = 'green';
+                  // document.getElementById('response').innerHTML = data.message;
+                  window.location.reload();
             },
             error: function(data) {
                   console.log(data);

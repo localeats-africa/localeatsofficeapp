@@ -97,9 +97,7 @@ class AdminController extends Controller
         ->where('deleted_at', null)
         ->where('orders.order_amount', '!=', null)
         ->where('orders.order_ref', '!=', null)
-        ->whereDate('delivery_date', '>=', $lastSevenDays)                                 
-        ->whereDate('delivery_date', '<=', $today) 
-       // ->whereBetween('delivery_date',  [$lastSevenDays, $today])
+        ->whereDate('delivery_date', '=', $lastSevenDays)   
        ->whereYear('orders.delivery_date', '=', Carbon::now()->year)
         ->sum('order_amount');
 
@@ -158,8 +156,7 @@ class AdminController extends Controller
         ->where('orders.order_ref', '!=', null)
        ->where('payout', '!=', null)
         //->whereBetween('updated_at',  [$lastSevenDays, $today])
-        ->whereDate('updated_at', '>=', $lastSevenDays)                                 
-        ->whereDate('updated_at', '<=', $today) 
+        ->whereDate('updated_at', '=', $lastSevenDays)    
         ->whereYear('orders.delivery_date', '=', Carbon::now()->year)
         ->sum('payout');
 
@@ -170,9 +167,9 @@ class AdminController extends Controller
         ->where('deleted_at', null)
         ->where('orders.order_amount', '!=', null)
         ->where('orders.order_ref', '!=', null)
-       // ->whereBetween('updated_at',  [$lastSevenDays, $today])
-        ->whereDate('updated_at', '>=', $lastSevenDays)                                 
-        ->whereDate('updated_at', '<=', $today) 
+        ->where('payout', '!=', null)
+        //->whereDate('updated_at', '>=', $lastSevenDays)   
+        ->whereDate('updated_at', '<', $today)  
         ->whereYear('orders.delivery_date', '=', Carbon::now()->year)
         ->sum('commission');
 
@@ -319,7 +316,6 @@ class AdminController extends Controller
         'edenSales'     =>  $barChartEdenSales,
     ]; 
     
-  
         return view('admin.admin', compact('name', 'role', 'countVendor',
          'countActiveVendor', 'countPlatforms', 'activePlatform',
         'countPlatforms',  'payouts', 'commission',   'sumAllOrders', 
@@ -780,10 +776,10 @@ class AdminController extends Controller
     public function deleteInvoice(Request $request, $id){
         $today = Carbon::now();
         $vendor_id = $request->vendor_id;
-
+ 
         $order = DB::table('orders')
         ->where('invoice_ref', '=', $id)
-        ->where('vendor_id', '=', $vendor_id)
+        //->where('vendor_id', '=', $vendor_id)
         ->update(array('deleted_at' => $today));
 
         if($order){
@@ -806,12 +802,6 @@ class AdminController extends Controller
 
     public function markInvoicePaid(Request $request, $invoice_ref){
         $vendor = $request->vendor_id;
-        // $payment_status = DB::table('orders')
-        //   ->where('orders.vendor_id', $vendor)
-        //  ->where('orders.invoice_ref', $invoice_ref)
-        //  ->where('orders.payment_status', '!=', null)
-        //  ->pluck('payment_status')->first();
-
         $paid =  DB::table('orders')
             ->where('orders.vendor_id', $vendor)
             ->where('orders.invoice_ref', $invoice_ref)
@@ -1053,8 +1043,180 @@ class AdminController extends Controller
        }
        else{
          return redirect()->back()->with('expense-error', 'Opps!');
-       }
-  
+       } 
      }
+
+     public function showDeletedInvoice(Request $request){
+        $name = Auth::user()->name;
+        $user_id = Auth::user()->id;
+        $role = DB::table('role')->select('role_name')
+        ->join('users', 'users.role_id', 'role.id')
+        ->where('users.id', $user_id)
+        ->pluck('role_name')->first();
+
+        $perPage = $request->perPage ?? 25;
+        $search = $request->input('search');
+
+
+        $orders = DB::table('orders')->distinct()
+        ->join('merge_invoices', 'orders.number_of_order_merge', '=', 'merge_invoices.number_of_order_merge')
+        ->join('vendor', 'orders.vendor_id', '=', 'vendor.id')
+        ->where('orders.deleted_at', '!=', null)
+        ->orderBy('orders.created_at', 'desc')
+        ->select(['orders.*', 
+        'vendor.vendor_name', 'vendor.id' ])
+        ->where(function ($query) use ($search) {  // <<<
+        $query->where('orders.created_at', 'LIKE', '%'.$search.'%')
+               ->orWhere('vendor.vendor_name', 'LIKE', '%'.$search.'%')
+               ->orWhere('orders.invoice_ref', 'LIKE', '%'.$search.'%')
+               ->orderBy('orders.created_at', 'desc');
+        })->paginate($perPage, $columns = ['*'], $pageName = 'orders'
+        )->appends(['per_page'   => $perPage]);
+
+     
+        $pagination = $orders->appends ( array ('search' => $search) );
+            if (count ( $pagination ) > 0){
+                return view('admin.restore-invoices',  compact(
+                'perPage', 'name', 'role', 'orders'))->withDetails( $pagination );     
+            } 
+            else{return redirect()->back()->with('invoice-status', 'No record order found');}
+        return view('admin.restore-invoices', compact('name', 'role', 'orders'));
+     }
+
+     public function restoreDeletedInvoice(Request $request, $invoice_ref){
+        $today = Carbon::now();
+        $vendor_id = $request->vendor_id;
+ 
+        $order = DB::table('orders')
+        ->where('invoice_ref', '=', $invoice_ref)
+        //->where('vendor_id', '=', $vendor_id)
+        ->update(array('deleted_at' => null));
+
+        if($order){
+            $data = [
+                'status' => true,
+                'message'=> 'Invoice Number' .$invoice_ref.' restored successfully. Check merge invoices'
+            ];
+            return response()->json($data);
+        }
+        else{
+            $data = [
+                'status' => false,
+                'message'=> 'Opps! something went wrong'
+            ];
+            return response()->json($data);
+        }
+    }
+
+    public function allDeletedRows(Request $request){
+        $name = Auth::user()->name;
+        $user_id = Auth::user()->id;
+        $role = DB::table('role')->select('role_name')
+        ->join('users', 'users.role_id', 'role.id')
+        ->where('users.id', $user_id)
+        ->pluck('role_name')->first();
+
+        $perPage = $request->perPage ?? 10;
+        $search = $request->input('search'); 
+
+        $orders = DB::table('orders')
+        ->join('vendor', 'orders.vendor_id', '=', 'vendor.id')
+        ->join('users', 'orders.added_by', '=', 'users.id')
+        ->Join('platforms', 'orders.platform_id', '=', 'platforms.id')
+        ->where('orders.deleted_at', '!=', null)
+        ->where('orders.order_amount', '!=', null)
+        ->where('orders.order_ref', '!=', null)
+        ->select(['orders.*', 'vendor.vendor_name', 'platforms.name', 'users.fullname'])
+        ->orderBy('orders.created_at', 'desc')
+        ->where(function ($query) use ($search) {  // <<<
+        $query->where('vendor.vendor_name', 'LIKE', '%'.$search.'%')
+               ->orWhere('orders.invoice_ref', 'LIKE', '%'.$search.'%')
+               ->orWhere('platforms.name', 'LIKE', '%'.$search.'%')
+               ->orWhere('orders.delivery_date', 'LIKE', '%'.$search.'%')
+               ->orderBy('orders.created_at', 'desc');
+        })->paginate($perPage, $columns = ['*'], $pageName = 'orders'
+        )->appends(['per_page'   => $perPage]);
+    
+        $pagination = $orders->appends ( array ('search' => $search) );
+            if (count ( $pagination ) > 0){
+                return view('admin.deleted-row',  compact(
+                'perPage', 'name', 'role', 'orders'))->withDetails( $pagination );     
+            } 
+            else{return redirect()->back()->with('order-status', 'No record order found');}
+        return view('admin.deleted-row', compact('name', 'role', 'orders'));
+    }
+
+    public function restoreDeletedRow(Request $request, $id){
+        $today = Carbon::now();
+ 
+        $order = DB::table('orders')
+        ->where('id', '=', $id)
+        //->where('vendor_id', '=', $vendor_id)
+        ->update(array('deleted_at' => null));
+
+        if($order){
+            $data = [
+                'status' => true,
+                'message'=> 'Order restored successfully. Check merge invoices'
+            ];
+            return response()->json($data);
+        }
+        else{
+            $data = [
+                'status' => false,
+                'message'=> 'Opps! something went wrong'
+            ];
+            return response()->json($data);
+        }
+    }
+
+    public function editUser(Request $request, $id){
+        if( Auth::user()){
+            $name = Auth::user()->name;
+            $user_id = Auth::user()->id;
+            $role = DB::table('role')->select('role_name')
+            ->join('users', 'users.role_id', 'role.id')
+            ->where('users.id', $user_id)
+            ->pluck('role_name')->first();
+
+            $user = User::find($id);
+            $userRole = Role::where('id', '!=', '1')
+            ->get();
+            //->where('role.id', '!=', '2')//except admin
+         
+            $staffRoleName = DB::table('role')->select('role_name')
+            ->join('users', 'users.role_id', 'role.id')
+            ->where('users.id', $id)
+            ->pluck('role_name')->first();
+      
+
+            return view('admin.edit-user-role', compact('userRole', 'user', 
+            'role', 'name', 'staffRoleName')); 
+        }
+          else { return Redirect::to('/login');
+        }
+  }
+
+    public function updateUser(Request $request, $id)
+    {
+        $this->validate($request, [
+            'fullname'      => 'max:255',
+            'email'         => 'max:255',
+            'role'          => 'max:255',
+            ]);
+            $user = User::find($id);
+            $user->fullname         = $request->fullname;
+            $user->email            = $request->email;
+            $user->role_id          = $request->role;
+            $user->update();
+
+            if($user){
+                return redirect()->back()->with('update-user', 'Record Updated');
+  
+            }
+            else{
+                return redirect()->back()->with('update-error', 'Opps! something went wrong'); 
+            }
+    }
 
 }//class

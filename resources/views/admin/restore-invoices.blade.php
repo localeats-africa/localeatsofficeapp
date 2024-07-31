@@ -8,7 +8,7 @@
       <div class="content-wrapper">
             <div class="page-header">
                   <h3 class="page-title">
-                        Merged Invoices
+                        All Deleted Invoices
                   </h3>
             </div>
 
@@ -46,7 +46,7 @@
                   <div class="col-12">
                         <div class="card">
                               <div class="card-header">
-                                    <h3 class="card-title"> </h3>
+                                    <h5 class="text-danger"> Be sure before clicking "Restore" button</h5>
                               </div>
                               <div class="card-body border-bottom py-3">
                                     <div class="d-flex">
@@ -74,7 +74,7 @@
                                                 Search:
                                                 <div class="ms-2 d-inline-block">
 
-                                                      <form action="{{ route('vendor-merged-invoices') }}" method="GET"
+                                                      <form action="{{ route('show-deleted-invoice') }}" method="GET"
                                                             role="search">
                                                             {{ csrf_field() }}
                                                             <div class="input-group mb-2">
@@ -108,50 +108,24 @@
                                                       <td class="text-sm">{{$data->vendor_name}} </td>
                                                       <td>{{ $data->invoice_ref}}</td>
 
-                                                    
+
                                                       <td class="">
-                                                      @auth
-                                                      @if(Auth::user()->role_id == '2')
-                                                            <span class="dropdown">
-                                                                  <button
-                                                                        class="btn dropdown-toggle align-text-top text-danger"
-                                                                        data-bs-boundary="viewport"
-                                                                        data-bs-toggle="dropdown"
-                                                                        style="padding:0;">Action</button>
-
-
-                                                                  <div class="dropdown-menu ">
-                                                                        <a class="dropdown-item text-danger"
-                                                                              href="computed-invoice/{{$data->id}}/{{$data->number_of_order_merge}}/{{$data->invoice_ref}}">View
-                                                                        </a>
-                                                                        <br>
-                                                                        @if($data->payment_status == 'paid')
-                                                                        @else 
-                                                                        <div class="dropdown-item text-danger">
-                                                                       
-                                                                              <input type="hidden" id="vendor_id" value="{{$data->vendor_id}}">
-                                                                              <input type="hidden" id="invoice_ref" value="{{$data->invoice_ref}}">
-                                                                              <button onclick="deleteInvoice()" class="text-danger"> Delete</button>
-                                                                     
-                                                                        </div>
-                                                                        @endif 
-                                                                   
-                                                                  </div>
-                                                            </span>
+                                                            @auth
+                                                            @if(Auth::user()->role_id == '2')
+                                                            <input type="hidden" id="vendor_id"
+                                                                  value="{{$data->vendor_id}}">
+                                                            <input type="hidden" id="invoice_ref"
+                                                                  value="{{$data->invoice_ref}}">
+                                                            <button onclick="restoreInvoice()" class="text-dark btn  btn-outline-danger">
+                                                                  Restore </button>
                                                             <p id="response"></p>
 
                                                             @endif
 
-                                                            @if(Auth::user()->role_id == '6')
 
-                                                            <a href="computed-invoice/{{$data->id}}/{{$data->number_of_order_merge}}/{{$data->invoice_ref}}"
-                                                                  class="text-danger"><i class="fa fa-eye"></i></a>
-
-
-                                                            @endif
                                                             @endauth
                                                       </td>
-                                                  
+
                                                 </tr>
                                                 @endforeach
 
@@ -229,11 +203,11 @@
 </div>
 
 <script type="text/javascript">
-function deleteInvoice() {
+function restoreInvoice() {
       document.getElementById('response').style.display = 'none';
       var id = document.getElementById('invoice_ref').value;
       var vendor_id = document.getElementById('vendor_id').value;
-      var showRoute = "{{ route('delete-invoice', ':id') }}";
+      var showRoute = "{{ route('restore-invoice', ':id') }}";
       url = showRoute.replace(':id', id);
 
       //window.location = url;
@@ -255,7 +229,7 @@ function deleteInvoice() {
                   document.getElementById('response').style.display = '';
                   document.getElementById('response').style.color = 'green';
                   document.getElementById('response').innerHTML = data.message;
-                 // location.reload();
+                  // location.reload();
             },
             error: function(data) {
                   console.log(data);
