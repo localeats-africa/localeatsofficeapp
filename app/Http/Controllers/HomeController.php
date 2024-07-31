@@ -1715,7 +1715,7 @@ class HomeController extends Controller
             'vendor'        => 'required|max:255',
             'item'          => 'required|string|max:255',  
             'price'         => 'required|string|max:255',  
-            'date'   => 'required|string|max:255'       
+            'date'          => 'required|string|max:255'       
         ]);
 
         $expenses = new VendorExpenses();
@@ -1723,7 +1723,7 @@ class HomeController extends Controller
         $expenses->description      = $request->item;
         $expenses->cost             = $request->price;
         $expenses->added_by         = Auth::user()->id;
-        $expenses->expense_date = $request->date;
+        $expenses->expense_date     = date("Y-m-d", strtotime($request->date));
         $expenses->save();
 
         if($expenses){
