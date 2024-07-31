@@ -197,7 +197,7 @@
                                                       <path d="M12 5m-1 0a1 1 0 1 0 2 0a1 1 0 1 0 -2 0" />
                                                 </svg>
                                           </a>
-                                          <div class="dropdown-menu dropdown-menu-end">
+                                          <div class="dropdown-menu dropdown-menu-end text-end">
                                                 <a class="dropdown-item btn btn-sm text-capitalize text-danger"
                                                       href="edit-user/{{$data->id}}">
                                                      <i class=" fa fa-pencil"></i>
