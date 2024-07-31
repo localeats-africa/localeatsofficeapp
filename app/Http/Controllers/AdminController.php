@@ -889,13 +889,13 @@ class AdminController extends Controller
         ->get()->pluck('vendor_name')->first();
         
         $vendorExpense = VendorExpenses::where('vendor_id',  $vendor_id)
-        ->whereDate('vendor_expenses.created_at', '>=', $startDate)                                 
-        ->whereDate('vendor_expenses.created_at', '<=', $endDate) 
+        ->whereDate('vendor_expenses.expense_date', '>=', $startDate)                                 
+        ->whereDate('vendor_expenses.expense_date', '<=', $endDate) 
         ->get(['vendor_expenses.*']);
 
         $vendorTotalExpense = VendorExpenses::where('vendor_id',  $vendor_id)
-        ->whereDate('created_at', '>=', $startDate)                                 
-        ->whereDate('created_at', '<=', $endDate) 
+        ->whereDate('expense_date', '>=', $startDate)                                 
+        ->whereDate('expense_date', '<=', $endDate) 
         ->sum('cost');
 
         return view('admin.expenses-list', compact('role', 'vendor',
@@ -950,13 +950,13 @@ class AdminController extends Controller
             ->get()->pluck('vendor_name')->first();
             
             $vendorSales = OfflineSales::where('vendor_id',  $vendor_id)
-            ->whereDate('created_at', '>=', $startDate)                                 
-            ->whereDate('created_at', '<=', $endDate) 
+            ->whereDate('sales_date', '>=', $startDate)                                 
+            ->whereDate('sales_date', '<=', $endDate) 
             ->get(['*']);
     
             $vendorTotalSales = OfflineSales::where('vendor_id',  $vendor_id)
-            ->whereDate('created_at', '>=', $startDate)                                 
-            ->whereDate('created_at', '<=', $endDate) 
+            ->whereDate('sales_date', '>=', $startDate)                                 
+            ->whereDate('sales_date', '<=', $endDate) 
             ->sum('price');
         
             return view('admin.vendor-sales-list', compact('role', 'vendor',
@@ -983,13 +983,13 @@ class AdminController extends Controller
         ->get()->pluck('vendor_name')->first();
 
         $vendorTotalExpense = VendorExpenses::where('vendor_id',  $vendor_id)
-        ->whereDate('created_at', '>=', $startDate)                                 
-        ->whereDate('created_at', '<=', $endDate) 
+        ->whereDate('expense_date', '>=', $startDate)                                 
+        ->whereDate('expense_date', '<=', $endDate) 
         ->sum('cost');
 
         $vendorTotalSales = OfflineSales::where('vendor_id',  $vendor_id)
-        ->whereDate('created_at', '>=', $startDate)                                 
-        ->whereDate('created_at', '<=', $endDate) 
+        ->whereDate('sales_date', '>=', $startDate)                                 
+        ->whereDate('sales_date', '<=', $endDate) 
         ->sum('price');
 
         $profitAndLoss = $vendorTotalSales - $vendorTotalExpense;
