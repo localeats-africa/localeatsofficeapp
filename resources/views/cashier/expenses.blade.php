@@ -310,7 +310,7 @@ $(document).ready(function() {
             // Append it to the select
             $('#item').append(newState).trigger('change').select2();
             // }
-            var item = document.getElementById('new-item').value;
+            var item = document.getElementById('item').value;
             var vendor = document.getElementById('vendor').value;
 
             var url = "{{ route('add-expenses-list') }}";
