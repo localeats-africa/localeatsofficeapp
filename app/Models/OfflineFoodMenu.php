@@ -9,4 +9,13 @@ class OfflineFoodMenu extends Model
 {
     use HasFactory;
     protected $table = 'offline_foodmenu';
+    protected $fillable = [
+        'item',
+        'swallow',
+        'soup',
+        'protein',
+        'others',
+        'vendor_id',
+        'added_by',
+    ];
 }

@@ -8,33 +8,39 @@
       <div class="content-wrapper">
             <div class="page-header">
                   <h3 class="page-title">
-                        Overview >>> Year >>> <span class="text-info"> {{$currentYear}}</span>
+                        Overview >>> <span class="text-info"> {{ date('M-d, Y'), strtotime($startDate) }}</span> - <span class="text-info"> {{date('M-d, Y'), strtotime($endDate)   }}</span>
                   </h3>
                   <nav aria-label="breadcrumb">
                         <ul class="breadcrumb">
                               <li class="breadcrumb-item active" aria-current="page">
 
                               </li>
+
+                              <li class="breadcrumb-item active" aria-current="page">
+
+                              </li>
                         </ul>
                   </nav>
             </div>
-            <!-- filter dashboard  -->
+
             <div class="row ">
+
                   <form method="GET" action="{{ route('admin-filter-dashboard') }}" name="submit"
                         enctype="multipart/form-data">
                         @csrf
                         {{csrf_field()}}
+                        <div class="row">
                         <div class="row text-end">
-                        <h6>Filter record:</h6>
+                        <h6>Filter record: &nbsp; <a href="{{ url('admin') }}" class="btn bg-info btn-sm  text-white"> View All</a>
+                        </h6>
                               <div class="col-md-3">
                               </div>
-                              <div class="col-md-3">
+                              <div class="col-md-3 col-12">
                               </div>
-                              
                               <div class="col-md-3 col-12">
                                     <div class="form-group">
                                           <div class="input-group date">
-                                                <span class="input-group-append">
+                                          <span class="input-group-append">
                                                       <span class="input-group-text text-dark d-block">
                                                             Start
                                                       </span>
@@ -53,7 +59,7 @@
                               <div class="col-md-3 col-12">
                                     <div class="form-group">
                                           <div class="input-group date">
-                                                <span class="input-group-append">
+                                          <span class="input-group-append">
                                                       <span class="input-group-text text-dark d-block">
                                                             End
                                                       </span>
@@ -71,7 +77,7 @@
                                     </div>
                               </div>
 
-
+                           
                         </div>
                         <!---end row--->
                   </form>
@@ -199,9 +205,6 @@
                                                 </h4>
                                                 <h2 class="mb-5">₦{{number_format($sumAllOrders, 2)}}</h2>
                                                 <hr class="w-100">
-                                                <h6 class="card-text">weekly average <span
-                                                            style="float:right;">₦{{number_format($averageWeeklySales, 2)}}
-                                                      </span></h6>
                                           </div>
                                     </div>
                               </div>
@@ -216,9 +219,6 @@
                                                 </h4>
                                                 <h2 class="mb-5">₦{{number_format($payouts, 2)}}</h2>
                                                 <hr class="w-100">
-                                                <h6 class="card-text">weekly average <span
-                                                            style="float:right;">₦{{number_format($averageWeeklyPayouts, 2)}}
-                                                      </span> </h6>
                                           </div>
                                     </div>
                               </div>
@@ -233,9 +233,6 @@
                                                 </h4>
                                                 <h2 class="mb-5">₦ {{number_format($commission, 2) }}</h2>
                                                 <hr class="w-100">
-                                                <h6 class="card-text">weekly average<span
-                                                            style="float:right;">₦{{number_format($averageWeeklyComm, 2)}}
-                                                      </span> </h6>
                                           </div>
                                     </div>
                               </div>
@@ -251,9 +248,6 @@
                                                 </h4>
                                                 <h2 class="mb-5">₦ {{number_format($commissionPaid, 2) }}</h2>
                                                 <hr class="w-100">
-                                                <h6 class="card-text">weekly average<span
-                                                            style="float:right;">₦{{number_format($averageWeeklyCommissionPaid,2)}}
-                                                      </span> </h6>
                                           </div>
                                     </div>
                               </div>

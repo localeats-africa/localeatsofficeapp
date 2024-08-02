@@ -1664,7 +1664,7 @@ class HomeController extends Controller
         $search = $request->input('search');
 
         $expenses = VendorExpenses::where('vendor_id', $vendor_id)
-        ->orderBy('created_at', 'desc')
+        ->orderBy('expense_date', 'desc')
         ->where(function ($query) use ($search) {  // <<<
         $query->where('description', 'LIKE', '%'.$search.'%')
         ->orWhere('cost', 'LIKE', '%'.$search.'%')
@@ -1685,7 +1685,7 @@ class HomeController extends Controller
     public function addExpensesList(Request $request){
         $this->validate($request, [ 
             'vendor'  => 'required|max:255',
-            'item'   => 'required|string|max:255'      
+            'item'   => 'required|string|max:255',   
         ]);
 
         $storeExpense = new ExpensesList();
@@ -1714,14 +1714,21 @@ class HomeController extends Controller
         $this->validate($request, [ 
             'vendor'        => 'required|max:255',
             'item'          => 'required|string|max:255',  
-            'price'         => 'required|string|max:255'        
+            'price'         => 'required|string|max:255',  
+            'date'          => 'required|string|max:255'       
         ]);
+        $storeExpense = new ExpensesList();
+        $storeExpense->vendor_id    = $request->vendor;
+        $storeExpense->item         = $request->item;
+        $storeExpense->added_by     = Auth::user()->id;
+        $storeExpense->save();
 
         $expenses = new VendorExpenses();
         $expenses->vendor_id        = $request->vendor;
         $expenses->description      = $request->item;
         $expenses->cost             = $request->price;
         $expenses->added_by         = Auth::user()->id;
+        $expenses->expense_date     = date("Y-m-d", strtotime($request->date));
         $expenses->save();
 
         if($expenses){
@@ -1751,13 +1758,35 @@ class HomeController extends Controller
         ->get('vendor.id')->pluck('id')->first();
 
         $salesList = OfflineFoodMenu::where('vendor_id', $vendor_id)
+        ->where('item', '!=', null)
         ->orderBy('created_at', 'desc')
         ->get();
+
+        $vendorSwallow = OfflineFoodMenu::where('vendor_id', $vendor_id)
+        ->where('swallow', '!=', null)
+        ->orderBy('created_at', 'desc')
+        ->get('swallow', 'id');
+
+        $vendorSoup= OfflineFoodMenu::where('vendor_id', $vendor_id)
+        ->where('soup', '!=', null)
+        ->orderBy('created_at', 'desc')
+        ->get('soup', 'id');
+
+        $vendorProtein= OfflineFoodMenu::where('vendor_id', $vendor_id)
+        ->where('protein', '!=', null)
+        ->orderBy('created_at', 'desc')
+        ->get('protein', 'id');
+
+        $vendorOthersFoodItem= OfflineFoodMenu::where('vendor_id', $vendor_id)
+        ->where('others', '!=', null)
+        ->orderBy('created_at', 'desc')
+        ->get('others', 'id');
+
         $perPage = $request->perPage ?? 10;
         $search = $request->input('search');
 
         $sales = OfflineSales::where('vendor_id', $vendor_id)
-        ->orderBy('created_at', 'desc')
+        ->orderBy('sales_date', 'desc')
         ->where(function ($query) use ($search) {  // <<<
         $query->where('sales_item', 'LIKE', '%'.$search.'%')
         ->orWhere('price', 'LIKE', '%'.$search.'%')
@@ -1767,13 +1796,14 @@ class HomeController extends Controller
         $pagination = $sales->appends ( array ('search' => $search) );
             if (count ( $pagination ) > 0){
                 return view('cashier.sales',  compact('name', 'role', 
-                'vendorName','salesList', 'vendor_id', 'perPage', 'sales'))->withDetails( $pagination );     
+                'vendorName','salesList', 'vendor_id', 'perPage', 'sales',
+                'vendorSwallow', 'vendorSoup', 'vendorProtein', 'vendorOthersFoodItem'))->withDetails( $pagination );     
             } 
         // else{return redirect()->back()->with('expenses-status', 'No record order found'); }
 
-
         return view('cashier.sales',  compact('name', 'role', 
-        'vendorName','salesList', 'vendor_id', 'sales', 'perPage'));
+        'vendorName','salesList', 'vendor_id', 'sales', 'perPage', 
+        'vendorSwallow', 'vendorSoup', 'vendorProtein', 'vendorOthersFoodItem'));
     }
 
     public function OfflineSaleList(Request $request){
@@ -1806,16 +1836,72 @@ class HomeController extends Controller
 
     public function storeVendorOfflineSale(Request $request){
         $this->validate($request, [ 
-            'vendor'        => 'required|max:255',
-            'item'          => 'required|string|max:255',  
-            'price'         => 'required|string|max:255'        
+            'vendor'        => 'required|max:255', 
+            'price'         => 'required|string|max:255', 
+            'date'          => 'required|string|max:255'         
         ]);
+        // $foodItem = new OfflineFoodMenu();
+        // $foodItem->vendor_id    = $request->vendor;
+        // $foodItem->item         = $request->item;
+        // $foodItem->added_by     = Auth::user()->id;
+        // $foodItem->save();
+        if(empty($request->soup)){
+            $soup = ' ';
+        }
+        else{
+            $soup = $request->soup; 
+        }
 
+        if(empty($request->swallow)){
+            $swallow = ' ';
+        }
+        else{
+            $swallow = $request->swallow; 
+        }
+
+        if(empty($request->protein)){
+            $protein = ' ';
+        }
+        else{
+            $protein = $request->protein; 
+        }
+
+        if(empty($request->others)){
+            $others = ' ';
+        }
+        else{
+            $others = $request->others; 
+        }
+
+        $salesArray = array_filter($soup);
+        foreach($salesArray  as $key => $value){
+            $salesItem =[
+                'soup_qty' =>$request->soup_qty[$key],
+                'soup' => 'plate of '. $salesArray[$key],
+                'swallow_qty' =>$request->swallow_qty[$key],
+                'swallow' =>$swallow [$key],
+                'protein_qty' =>$request->protein_qty[$key],
+                'protein' =>$protein[$key],
+                 'others_qty' =>$request->others_qty[$key],
+                'others' =>$others[$key],
+                ] ;
+        }
+
+       // dd(json_encode($salesItem));
         $sales = new OfflineSales();
         $sales->vendor_id           = $request->vendor;
-        $sales->sales_item          = $request->item;
+        $sales->swallow             =  $salesItem['swallow'];
+        $sales->swallow_qty         =  $salesItem['swallow_qty'];
+        $sales->soup                =  $salesItem['soup'];
+        $sales->soup_qty            =  $salesItem['soup_qty'];
+        $sales->protein             =  $salesItem['protein'];
+        $sales->protein_qty         =  $salesItem['protein_qty'];
+        $sales->others              =  $salesItem['others'];
+        $sales->others_qty          =  $salesItem['others_qty'];
+        //$sales->sales_item          = json_encode($salesItem);
         $sales->price               = $request->price;
         $sales->added_by            = Auth::user()->id;
+        $sales->sales_date          = date("Y-m-d", strtotime($request->date));
         $sales->save();
 
         if($sales){

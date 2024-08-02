@@ -11,6 +11,14 @@
                   <h3 class="page-title">
                         Vendor (s) Sales
                   </h3>
+                  <nav aria-label="breadcrumb">
+                        <ul class="breadcrumb">
+                              <li class="breadcrumb-item active" aria-current="page">
+                                    <span></span><a href="{{ url ('new-offline-foodmenu') }}" class="btn btn-block btn-danger"><i
+                                                class="fa fa-plus-square"></i> &nbsp;Create New FoodMenu / Item </a>
+                              </li>
+                        </ul>
+                  </nav>
             </div>
 
             <!--Alert here--->
@@ -166,8 +174,29 @@
                                     @foreach($vendorSales as $data)
                                     <tr>
                                           <td>{{$loop->iteration}}</td>
-                                          <td>{{ date('Y-m-d', strtotime($data->created_at)) }}</td>
-                                          <td>{{$data->sales_item}}</td>
+                                          <td>{{ date('Y-m-d', strtotime($data->sales_date)) }}</td>
+                                          <td>
+                                                {{$data->sales_item}}
+                                                @if($data->soup ==' ')
+                                                            @else
+                                                            {{$data->soup_qty }} {{$data->soup}}
+                                                            @endif
+
+                                                            @if($data->swallow ==' ')
+                                                            @else
+                                                            , {{$data->swallow_qty }} {{$data->swallow}}
+                                                            @endif
+
+                                                            @if($data->protein ==' ')
+                                                            @else
+                                                            , {{$data->protein_qty }} {{$data->protein}}
+                                                            @endif
+
+                                                            @if($data->others ==' ')
+                                                            @else
+                                                            , {{$data->others_qty }}, {{$data->others}}
+                                                            @endif
+                                          </td>
                                           <td>{{$data->price}}</td>
                                     </tr>
                                     @endforeach

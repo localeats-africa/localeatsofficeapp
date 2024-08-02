@@ -60,6 +60,32 @@
                         </div>
                         @endif
 
+                        @if ($errors->any())
+                        <div class="alert alert-danger alert-dismissible" role="alert">
+                              <div class="d-flex">
+                                    <div>
+                                          <!-- Download SVG icon from http://tabler-icons.io/i/alert-circle -->
+                                          <svg xmlns="http://www.w3.org/2000/svg" class="icon alert-icon" width="24"
+                                                height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"
+                                                fill="none" stroke-linecap="round" stroke-linejoin="round">
+                                                <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                                                <path d="M3 12a9 9 0 1 0 18 0a9 9 0 0 0 -18 0" />
+                                                <path d="M12 8v4" />
+                                                <path d="M12 16h.01" />
+                                          </svg>
+                                    </div>
+                                    <div>
+                                          <ul>
+                                                @foreach ($errors->all() as $error)
+                                                <li>{{ $error }}</li>
+                                                @endforeach
+                                          </ul>
+                                    </div>
+                              </div>
+                              <a class="btn-close" data-bs-dismiss="alert" aria-label="close"></a>
+                        </div>
+                        @endif
+
 
                   </div>
             </div>
@@ -67,14 +93,141 @@
 
             <div class="row ">
 
-                  <form method="post" action="{{ route('add-vendor-offline-sales') }}" name="submit" enctype="multipart/form-data">
+                  <form method="post" action="{{ route('add-vendor-offline-sales') }}" name="submit"
+                        enctype="multipart/form-data">
                         @csrf
                         {{csrf_field()}}
+
+                        <div class="row">
+                              <h6 class="text-danger">Check multiple one or more food item, enter each quantity, enter
+                                    total price and date</h6>
+                              <p></p>
+                              <div class="col-md-3 col-12 list-wrapper">
+                                    <h6>Soup</h6>
+                                    <ul class="d-flex flex-column-reverse ">
+                                          @foreach($vendorSoup as $data)
+                                          <li>
+                                                <div class="form-check">
+                                                      <label class="form-check-label">
+                                                            <input class="checkbox" type="checkbox" name="soup[]"
+                                                                  value="{{$data->soup}}">{{$data->soup}} <i
+                                                                  class="input-helper"></i>
+                                                      </label>
+                                                </div>
+
+                                                <i class="remove"></i>
+                                                <input class="form-control" type="number" name="soup_qty[]" value="1"
+                                                      style="width:85px;" placeholder="Quantity">
+                                          </li>
+                                          @endforeach
+                                    </ul>
+
+                              </div>
+                              <div class="col-md-3 col-12 list-wrapper">
+                                    <h6>Swallow</h6>
+                                    <ul class="d-flex flex-column-reverse ">
+                                          @foreach($vendorSwallow as $data)
+                                          <li>
+                                                <div class="form-check">
+                                                      <label class="form-check-label">
+                                                            <input class="checkbox" type="checkbox" name="swallow[]"
+                                                                  value="{{$data->swallow}}">{{$data->swallow}}
+                                                      </label>
+                                                </div>
+
+                                                <i class="remove"></i>
+                                                <input class="form-control" type="number" name="swallow_qty[]" value="1"
+                                                      style="width:85px;" placeholder="Quantity">
+
+                                          </li>
+                                          @endforeach
+                                    </ul>
+
+                              </div>
+
+                              <div class="col-md-3 col-12 list-wrapper">
+                                    <h6>Protein</h6>
+                                    <ul class="d-flex flex-column-reverse ">
+                                          @foreach($vendorProtein as $data)
+                                          <li>
+                                                <div class="form-check">
+                                                      <label class="form-check-label">
+                                                            <input class="checkbox" type="checkbox" name="protein[]"
+                                                                  value="{{$data->protein}}">{{$data->protein}}
+                                                      </label>
+                                                </div>
+
+                                                <i class="remove"></i>
+                                                <input class="form-control" type="number" name="protein_qty[]" value="1"
+                                                      style="width:85px;" placeholder="Quantity">
+
+                                          </li>
+                                          @endforeach
+                                    </ul>
+
+                              </div>
+
+
+                              <div class="col-md-3 col-12 list-wrapper">
+                                    <h6>Others</h6>
+                                    <ul class="d-flex flex-column-reverse ">
+                                          @foreach($vendorOthersFoodItem as $data)
+                                          <li>
+                                                <div class="form-check">
+                                                      <label class="form-check-label">
+                                                            <input class="checkbox" type="checkbox" name="others[]"
+                                                                  value="{{$data->others}}">{{$data->others}}
+                                                      </label>
+                                                </div>
+
+                                                <i class="remove"></i>
+                                                <input class="form-control" type="number" name="others_qty[]" value="1"
+                                                      style="width:85px;" placeholder="Quantity">
+
+                                          </li>
+                                          @endforeach
+                                    </ul>
+
+                              </div>
+
+                        </div>
+                        <!---row--->
+                        <p></p>
                         <div class="row">
                               <div class="col-md-6 col-12">
                                     <div class="form-group">
+                                          <h6 for="">Total price</h6>
+                                          <br>
+                                          <div class="input-group date">
+                                                <input type="text" class="form-control" id="price" name="price"
+                                                      placeholder="Enter food price" />
+                                          </div>
+                                    </div>
+                              </div>
+
+                              <div class="col-md-6 col-12">
+                                    <div class="form-group">
+                                          <h6 for="">Date</h6>
+                                          <br>
+                                          <div class="input-group date">
+
+                                                <input type="text" class="form-control" value="{{ date('Y-m-d')}}"
+                                                      id="date" name="date" placeholder="Enter expenses" />
+                                                <input id="vendor" name="vendor" type="hidden"
+                                                      value="{{ $vendor_id }}" />
+                                                <button type="submit" name="submit"
+                                                      class="btn bg-gradient-primary btn-sm  text-white">Submit</button>
+                                          </div>
+                                    </div>
+
+                              </div>
+                        </div>
+                        <!---row--->
+                        <!-- <div class="row">
+                              <div class="col-md-4 col-12">
+                                    <div class="form-group">
                                           <label for="">Food List</label>
-<br>
+                                          <br>
                                           <select id="item" class="" name="item" type="text" style="width:90%">
                                                 <option value=""></option>
                                                 @foreach($salesList as $data)
@@ -92,32 +245,42 @@
                                           <div class="input-group">
                                                 <input id="new-item" class="form-control" type="text"
                                                       placeholder=" Enter new sales item" />
-                                                <input id="vendor" name="vendor" type="hidden" value="{{ $vendor_id }}" />
+                                                <input id="vendor" name="vendor" type="hidden"
+                                                      value="{{ $vendor_id }}" />
                                                 <button type="button" class="btn btn-dark btn-sm" id="btn-add-state"><i
                                                             class="fa fa-check"></i></button>
                                           </div>
                                     </div>
-
-
                               </div>
-                              <!-- <div class="col-md-4 col-12" >
-                                  
-                              </div> -->
 
-                              <div class="col-md-6 col-12">
+                              <div class="col-md-4 col-12">
                                     <div class="form-group">
                                           <label for="">Price</label>
                                           <br>
                                           <div class="input-group date">
                                                 <input type="text" class="form-control" id="price" name="price"
                                                       placeholder="Enter food price" />
-                                                <button type="submit" name="submit"
-                                                      class="btn bg-gradient-primary btn-sm  text-white" onclick="addVendorsales()">Submit</button>
                                           </div>
                                     </div>
                               </div>
 
-                        </div>
+                              <div class="col-md-4 col-12">
+                                    <div class="form-group">
+                                          <label for="">Date</label>
+                                          <br>
+                                          <div class="input-group date">
+
+                                                <input type="text" class="form-control" value="{{ date('Y-m-d')}}"
+                                                      id="date" name="date" placeholder="Enter expenses" />
+                                                <button type="submit" name="submit"
+                                                      class="btn bg-gradient-primary btn-sm  text-white"
+                                                      onclick="addVendorExpenses()">Submit</button>
+                                          </div>
+                                    </div>
+
+                              </div>
+
+                        </div> -->
                         <!---end row--->
                   </form>
             </div>
@@ -156,7 +319,8 @@
                                                 Search:
                                                 <div class="ms-2 d-inline-block">
 
-                                                      <form action="{{ route('offline-sales') }}" method="GET" role="search">
+                                                      <form action="{{ route('offline-sales') }}" method="GET"
+                                                            role="search">
                                                             {{ csrf_field() }}
                                                             <div class="input-group mb-2">
                                                                   <input type="text" class="form-control"
@@ -185,8 +349,30 @@
                                                 @foreach($sales as $data)
                                                 <tr>
                                                       <td>{{$loop->iteration}}</td>
-                                                      <td>{{ date('d/m/Y', strtotime($data->created_at))}}</td>
-                                                      <td class="text-capitalize">{{$data->sales_item}}</td>
+                                                      <td>{{ date('d/m/Y', strtotime($data->sales_date))}}</td>
+                                                      <td class="text-capitalize">
+                                                            {{ $data->sales_item }}
+                                                            @if($data->soup ==' ')
+                                                            @else
+                                                            {{$data->soup_qty }} {{$data->soup}}
+                                                            @endif
+
+                                                            @if($data->swallow ==' ')
+                                                            @else
+                                                            , {{$data->swallow_qty }} {{$data->swallow}}
+                                                            @endif
+
+                                                            @if($data->protein ==' ')
+                                                            @else
+                                                            , {{$data->protein_qty }} {{$data->protein}}
+                                                            @endif
+
+                                                            @if($data->others ==' ')
+                                                            @else
+                                                            , {{$data->others_qty }}, {{$data->others}}
+                                                            @endif
+
+                                                      </td>
                                                       <td>{{$data->price}}</td>
 
 
@@ -211,9 +397,8 @@
                                           @if(isset($sales))
                                           @if($sales->currentPage() > 1)
                                           <li class="page-item ">
-                                                <a class="page-link text-danger"
-                                                      href="{{ $sales->previousPageUrl() }}" tabindex="-1"
-                                                      aria-disabled="true">
+                                                <a class="page-link text-danger" href="{{ $sales->previousPageUrl() }}"
+                                                      tabindex="-1" aria-disabled="true">
                                                       <!-- Download SVG icon from http://tabler-icons.io/i/chevron-left -->
                                                       <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24"
                                                             height="24" viewBox="0 0 24 24" stroke-width="2"
@@ -267,8 +452,10 @@
       </footer>
 </div>
 <!-- main-panel -->
+<link rel="stylesheet" href="https://code.jquery.com/ui/1.13.3/themes/base/jquery-ui.css">
 
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+<script src="https://code.jquery.com/ui/1.13.3/jquery-ui.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.6/js/bootstrap.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.1/js/select2.min.js"></script>
 
@@ -293,11 +480,11 @@ $(document).ready(function() {
             // if ($('#item').find("option[value=" + newStateVal + "]").length) {
             //       $('#item').val(newStateVal).trigger("change");
             // } else {
-                  // Create the DOM option that is pre-selected by default
-                  var newState = new Option(newStateVal, newStateVal, true, true);
-                  // Append it to the select
-                  $('#item').append(newState).trigger('change').select2();
-           // }
+            // Create the DOM option that is pre-selected by default
+            var newState = new Option(newStateVal, newStateVal, true, true);
+            // Append it to the select
+            $('#item').append(newState).trigger('change').select2();
+            // }
             var item = document.getElementById('new-item').value;
             var vendor = document.getElementById('vendor').value;
 
@@ -348,5 +535,9 @@ function myClick() {
 </script>
 
 
-
+<script>
+$(function() {
+      $("#date").datepicker();
+});
+</script>
 @endsection

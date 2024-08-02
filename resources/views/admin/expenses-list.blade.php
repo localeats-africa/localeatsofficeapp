@@ -173,7 +173,7 @@
                               @foreach($vendorExpense as $data)
                               <tr>
                                     <td>{{$loop->iteration}}</td>
-                                    <td>{{ date('Y-m-d', strtotime($data->created_at)) }}</td>
+                                    <td>{{ date('Y-m-d', strtotime($data->expense_date)) }}</td>
                                     <td>{{$data->description}}</td>
                                     <td>{{$data->cost}}</td>
                               </tr>

@@ -67,14 +67,15 @@
 
             <div class="row ">
 
-                  <form method="post" action="{{ route('add-vendor-expenses') }}" name="submit" enctype="multipart/form-data">
+                  <form method="post" action="{{ route('add-vendor-expenses') }}" name="submit"
+                        enctype="multipart/form-data">
                         @csrf
                         {{csrf_field()}}
                         <div class="row">
-                              <div class="col-md-6 col-12">
+                              <div class="col-md-4 col-12">
                                     <div class="form-group">
                                           <label for="">Expenses List</label>
-<br>
+                                          <br>
                                           <select id="item" class="" name="item" type="text" style="width:90%">
                                                 <option value=""></option>
                                                 @foreach($expensesList as $data)
@@ -92,29 +93,37 @@
                                           <div class="input-group">
                                                 <input id="new-item" class="form-control" type="text"
                                                       placeholder=" enter new expenses" />
-                                                <input id="vendor" name="vendor" type="hidden" value="{{ $vendor_id }}" />
+                                                <input id="vendor" name="vendor" type="hidden"
+                                                      value="{{ $vendor_id }}" />
                                                 <button type="button" class="btn btn-dark btn-sm" id="btn-add-state"><i
                                                             class="fa fa-check"></i></button>
                                           </div>
                                     </div>
-
-
                               </div>
-                              <!-- <div class="col-md-4 col-12" >
-                                  
-                              </div> -->
-
-                              <div class="col-md-6 col-12">
+                              <div class="col-md-4 col-12">
                                     <div class="form-group">
                                           <label for="">Price</label>
                                           <br>
                                           <div class="input-group date">
                                                 <input type="text" class="form-control" id="price" name="price"
                                                       placeholder="Enter expenses" />
-                                                <button type="submit" name="submit"
-                                                      class="btn bg-gradient-primary btn-sm  text-white" onclick="addVendorExpenses()">Submit</button>
                                           </div>
                                     </div>
+                              </div>
+                              <div class="col-md-4 col-12">
+                                    <div class="form-group">
+                                          <label for="">Date</label>
+                                          <br>
+                                          <div class="input-group date">
+                                                
+                                                <input type="text" class="form-control"  value="{{ date('Y-m-d')}}" id="date" name="date"
+                                                      placeholder="Enter expenses" />
+                                                <button type="submit" name="submit"
+                                                      class="btn bg-gradient-primary btn-sm  text-white"
+                                                      onclick="addVendorExpenses()">Submit</button>
+                                          </div>
+                                    </div>
+
                               </div>
 
                         </div>
@@ -156,7 +165,8 @@
                                                 Search:
                                                 <div class="ms-2 d-inline-block">
 
-                                                      <form action="{{ route('add-expenses') }}" method="GET" role="search">
+                                                      <form action="{{ route('add-expenses') }}" method="GET"
+                                                            role="search">
                                                             {{ csrf_field() }}
                                                             <div class="input-group mb-2">
                                                                   <input type="text" class="form-control"
@@ -185,7 +195,7 @@
                                                 @foreach($expenses as $data)
                                                 <tr>
                                                       <td>{{$loop->iteration}}</td>
-                                                      <td>{{ date('d/m/Y', strtotime($data->created_at))}}</td>
+                                                      <td>{{ date('d/m/Y', strtotime($data->expense_date))}}</td>
                                                       <td class="text-capitalize">{{$data->description}}</td>
                                                       <td>{{$data->cost}}</td>
 
@@ -267,9 +277,11 @@
       </footer>
 </div>
 <!-- main-panel -->
+<link rel="stylesheet" href="https://code.jquery.com/ui/1.13.3/themes/base/jquery-ui.css">
 
+<!-- <script src="https://code.jquery.com/jquery-3.7.1.js"></script> -->
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.6/js/bootstrap.min.js"></script>
+<script src="https://code.jquery.com/ui/1.13.3/jquery-ui.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.1/js/select2.min.js"></script>
 
 <!-- End custom js for this page -->
@@ -293,12 +305,12 @@ $(document).ready(function() {
             // if ($('#item').find("option[value=" + newStateVal + "]").length) {
             //       $('#item').val(newStateVal).trigger("change");
             // } else {
-                  // Create the DOM option that is pre-selected by default
-                  var newState = new Option(newStateVal, newStateVal, true, true);
-                  // Append it to the select
-                  $('#item').append(newState).trigger('change').select2();
-           // }
-            var item = document.getElementById('new-item').value;
+            // Create the DOM option that is pre-selected by default
+            var newState = new Option(newStateVal, newStateVal, true, true);
+            // Append it to the select
+            $('#item').append(newState).trigger('change').select2();
+            // }
+            var item = document.getElementById('item').value;
             var vendor = document.getElementById('vendor').value;
 
             var url = "{{ route('add-expenses-list') }}";
@@ -348,5 +360,13 @@ function myClick() {
 </script>
 
 
+
+<script>
+$(function() {
+      $("#date").datepicker();
+});
+
+
+</script>
 
 @endsection
