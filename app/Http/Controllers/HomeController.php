@@ -1845,10 +1845,15 @@ class HomeController extends Controller
         // $foodItem->item         = $request->item;
         // $foodItem->added_by     = Auth::user()->id;
         // $foodItem->save();
+        //$salesItem = $request->soup_qty. 'plate of ,' .$request->soup.  ',' .$request->swallow_qty .$request->swallow. ',' .$request->protein_qty .$request->protein. ',' .$request->others_qty .$request->others;
         
+        foreach($request->soup_qty  as $soupQty){
+            $salesItem = $soupQty. 'plate of ,' .$request->soup.  ',' .$request->swallow_qty .$request->swallow. ',' .$request->protein_qty .$request->protein. ',' .$request->others_qty .$request->others;
+        
+        }
         $sales = new OfflineSales();
         $sales->vendor_id           = $request->vendor;
-        $sales->sales_item          = $request->item;
+        $sales->sales_item          = $salesItem;
         $sales->price               = $request->price;
         $sales->added_by            = Auth::user()->id;
         $sales->sales_date          = date("Y-m-d", strtotime($request->date));
