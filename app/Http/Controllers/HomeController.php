@@ -1848,22 +1848,24 @@ class HomeController extends Controller
         //$salesItem = $request->soup_qty. 'plate of ,' .$request->soup.  ',' .$request->swallow_qty .$request->swallow. ',' .$request->protein_qty .$request->protein. ',' .$request->others_qty .$request->others;
         $salesArray = array_filter($request->soup);
         //dd( $salesArray);
-        $salesItem  = [];
+        //$salesItem  = [];
         foreach($salesArray  as $key => $value){
-            $salesItem[] =[
+            $salesItem =[
                 'soup_qty' =>$request->soup_qty[$key],
                 'soup' => $salesArray[$key],
                 'swallow_qty' =>$request->swallow_qty[$key],
                 'swallow' =>$request->swallow[$key],
                 'protein_qty' =>$request->protein_qty[$key],
                 'protein' =>$request->protein[$key],
-                'others_qty' =>$request->others_qty[$key],
-                'others' =>$request->others[$key],
                 ] ;
         }
+
+        // 'others_qty' =>$request->others_qty[$key],
+        // 'others' =>$request->others[$key],
+       // dd(json_encode($salesItem));
         $sales = new OfflineSales();
         $sales->vendor_id           = $request->vendor;
-        $sales->sales_item          = $salesItem;
+        $sales->sales_item          = json_encode($salesItem);
         $sales->price               = $request->price;
         $sales->added_by            = Auth::user()->id;
         $sales->sales_date          = date("Y-m-d", strtotime($request->date));
