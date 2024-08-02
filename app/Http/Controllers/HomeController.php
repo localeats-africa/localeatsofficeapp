@@ -1847,11 +1847,19 @@ class HomeController extends Controller
         // $foodItem->save();
         //$salesItem = $request->soup_qty. 'plate of ,' .$request->soup.  ',' .$request->swallow_qty .$request->swallow. ',' .$request->protein_qty .$request->protein. ',' .$request->others_qty .$request->others;
         $salesArray = array_filter($request->soup);
-        dd( $salesArray);
+        //dd( $salesArray);
         $salesItem  = [];
-        foreach($request->soup_qty  as $key => $value){
-            $salesItem[] = $request->soup_qty. 'plate of ,' .$request->soup.  ',' .$request->swallow_qty .$request->swallow. ',' .$request->protein_qty .$request->protein. ',' .$request->others_qty .$request->others;
-
+        foreach($salesArray  as $key => $value){
+            $salesItem[] =[
+                'soup_qty' =>$request->soup_qty[$key],
+                'soup' => $salesArray[$key],
+                'swallow_qty' =>$request->swallow_qty[$key],
+                'swallow' =>$request->swallow[$key],
+                'protein_qty' =>$request->protein_qty[$key],
+                'protein' =>$request->protein[$key],
+                'others_qty' =>$request->others_qty[$key],
+                'others' =>$request->others[$key],
+                ] ;
         }
         $sales = new OfflineSales();
         $sales->vendor_id           = $request->vendor;
