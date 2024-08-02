@@ -159,7 +159,7 @@ Route::controller(AdminController::class)->group(function () {
     Route::get('vendor-sales-list', 'salesList')->name('vendor-sales-list');
     Route::post('import-expenses-list', 'importExpensesList')->name('import-expenses-list');
     Route::get('new-offline-foodmenu', 'newOfflineFoodMenu')->name('new-offline-foodmenu');
-    Route::post('add-offilne-foodmenu', 'addOfflineFoodMenu')->name('add-offilne-foodmenu');
+    Route::post('add-offline-foodmenu', 'addOfflineFoodMenu')->name('add-offilne-foodmenu');
     Route::post('import-offline-foodmenu', 'importOfflineFoodMenu')->name('import-offline-foodmenu');
     
     Route::get('show-deleted-invoice',  'showDeletedInvoice')->name('show-deleted-invoice');
