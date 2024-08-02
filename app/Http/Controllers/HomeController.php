@@ -1895,6 +1895,14 @@ class HomeController extends Controller
        // dd(json_encode($salesItem));
         $sales = new OfflineSales();
         $sales->vendor_id           = $request->vendor;
+        $sales->swallow             =  $salesItem['swallow'];
+        $sales->swallow_qty         =  $salesItem['swallow_qty'];
+        $sales->soup                =  $salesItem['soup'];
+        $sales->soup_qty            =  $salesItem['soup_qty'];
+        $sales->protein             =  $salesItem['protein'];
+        $sales->protein_qty         =  $salesItem['protein_qty'];
+        $sales->others              =  $salesItem['others'];
+        $sales->others_qty          =  $salesItem['others_qty'];
         $sales->sales_item          = json_encode($salesItem);
         $sales->price               = $request->price;
         $sales->added_by            = Auth::user()->id;
