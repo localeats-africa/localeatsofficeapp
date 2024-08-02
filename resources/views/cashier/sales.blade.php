@@ -183,6 +183,8 @@
 
                                                 <input type="text" class="form-control" value="{{ date('Y-m-d')}}"
                                                       id="date" name="date" placeholder="Enter expenses" />
+                                                      <input id="vendor" name="vendor" type="hidden"
+                                                      value="{{ $vendor_id }}" />
                                                 <button type="submit" name="submit"
                                                       class="btn bg-gradient-primary btn-sm  text-white">Submit</button>
                                           </div>
