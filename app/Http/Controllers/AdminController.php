@@ -73,6 +73,16 @@ class AdminController extends Controller
 
         $sevenDaysBack = Carbon::now()->subDays(7)->startOfDay();
         $lastSevenDays  =  date('Y-m-d', strtotime($sevenDaysBack));
+        
+        //filter dashboard
+        $startDate      =   date("Y-m-d", strtotime($request->from)) ;
+        $endDate        =  date("Y-m-d", strtotime($request->to));
+
+        $vendorTotalExpense = VendorExpenses::where('vendor_id',  $vendor_id)
+        ->whereDate('expense_date', '>=', $startDate)                                 
+        ->whereDate('expense_date', '<=', $endDate) 
+        ->sum('cost');
+
 
         //dd();
         $allOrderStart = DB::table('orders')
@@ -107,17 +117,6 @@ class AdminController extends Controller
         ->whereYear('orders.delivery_date', '=', Carbon::now()->year)
         ->sum('order_amount');
 
-
-        // $sumAllOrders = Orders::select(
-        //     \DB::raw('SUM(order_amount) as sales_volume'),
-        //     )->where('deleted_at', null)
-        //     ->where('orders.order_amount', '!=', null)
-        //     ->where('orders.order_ref', '!=', null)
-        //     ->whereYear('orders.delivery_date', '=', Carbon::now()->year)
-        //     // ->groupby('month')
-        //     ->get();
-
-          //  dd( $sumAllOrders );
         $countAllOrder = Orders::where('deleted_at', null)
         ->where('orders.order_amount', '!=', null)
         ->where('orders.order_ref', '!=', null)
