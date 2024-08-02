@@ -22,6 +22,66 @@
                         </ul>
                   </nav>
             </div>
+
+            <div class="row ">
+
+<form method="GET" action="{{ route('profit-and-loss') }}" name="submit"
+            enctype="multipart/form-data">
+            @csrf
+            {{csrf_field()}}
+            <div class="row">
+                  <div class="col-md-4 col-12">
+                        <div class="form-group">
+                              <label for="">Vendor</label>
+                              <select class="js-example-basic-single text-secondary" style="width:100%"
+                                    name="vendor_id" id="vendor">
+                                    <option>Choose</option>
+                                    @foreach($vendor as $data)
+                                    <option value="{{$data->id}}">
+                                          {{$data->vendor_name}}
+                                    </option>
+                                    @endforeach
+                              </select>
+                        </div>
+                  </div>
+
+                  <div class="col-md-4 col-12">
+                        <div class="form-group">
+                              <label for="">From</label>
+                              <div class="input-group date">
+                                    <input type="text" value="{{ date('Y-m-d')}}" name="from"
+                                          class="form-control" placeholder="" id="from" />
+                                    <span class="input-group-append">
+                                          <span class="input-group-text bg-light d-block">
+                                                <i class="fa fa-calendar"></i>
+                                          </span>
+                                    </span>
+                              </div>
+                        </div>
+                  </div>
+
+                  <div class="col-md-4 col-12">
+                        <div class="form-group">
+
+                              <label for="">To</label>
+                              <div class="input-group date">
+                                    <input type="text" value="{{ date('Y-m-d')}}" name="to"
+                                          class="form-control" placeholder="" id="to" />
+                                    <span class="input-group-append">
+                                          <span class="input-group-text bg-light d-block">
+                                                <i class="fa fa-calendar"></i>
+                                          </span>
+                                    </span>
+                                    <button type="submit" name="submit"
+                                          class="btn bg-gradient-dark btn-sm  text-white">GO!</button>
+                              </div>
+                        </div>
+                  </div>
+            </div>
+            <!---end row--->
+      </form>
+</div>
+<!---end row ---
             <!-- <div class="container "> -->
             <div class="row ">
                   <div class="col-12">
