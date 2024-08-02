@@ -1758,6 +1758,7 @@ class HomeController extends Controller
         ->get('vendor.id')->pluck('id')->first();
 
         $salesList = OfflineFoodMenu::where('vendor_id', $vendor_id)
+        ->where('item', '!=', null)
         ->orderBy('created_at', 'desc')
         ->get();
 
