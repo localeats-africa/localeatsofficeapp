@@ -24,8 +24,8 @@
                         enctype="multipart/form-data">
                         @csrf
                         {{csrf_field()}}
-                        <div class="row">
-                            
+                        <div class="row text-end">
+                        <h6>Filter record:</h6>
                               <div class="col-md-3">
                               </div>
                               <div class="col-md-3">
