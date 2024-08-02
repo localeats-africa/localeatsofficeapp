@@ -1845,23 +1845,50 @@ class HomeController extends Controller
         // $foodItem->item         = $request->item;
         // $foodItem->added_by     = Auth::user()->id;
         // $foodItem->save();
-        //$salesItem = $request->soup_qty. 'plate of ,' .$request->soup.  ',' .$request->swallow_qty .$request->swallow. ',' .$request->protein_qty .$request->protein. ',' .$request->others_qty .$request->others;
-        $salesArray = array_filter($request->soup);
-        //dd( $salesArray);
-        //$salesItem  = [];
+        if(empty($request->soup)){
+            $soup = '';
+        }
+        else{
+            $soup = $request->soup; 
+        }
+
+        if(empty($request->swallow)){
+            $swallow = '';
+        }
+        else{
+            $swallow = $request->swallow; 
+        }
+
+        if(empty($request->protein)){
+            $protein = '';
+        }
+        else{
+            $protein = $request->protein; 
+        }
+
+        if(empty($request->others)){
+            $others = '';
+        }
+        else{
+            $others = $request->others; 
+        }
+
+
+
+        $salesArray = array_filter($soup);
         foreach($salesArray  as $key => $value){
             $salesItem =[
                 'soup_qty' =>$request->soup_qty[$key],
-                'soup' => $salesArray[$key],
+                'soup' => 'plate of'.$salesArray[$key],
                 'swallow_qty' =>$request->swallow_qty[$key],
-                'swallow' =>$request->swallow[$key],
+                'swallow' =>$swallow [$key],
                 'protein_qty' =>$request->protein_qty[$key],
-                'protein' =>$request->protein[$key],
+                'protein' =>$protein[$key],
+                 'others_qty' =>$request->others_qty[$key],
+                'others' =>$others[$key],
                 ] ;
         }
 
-        // 'others_qty' =>$request->others_qty[$key],
-        // 'others' =>$request->others[$key],
        // dd(json_encode($salesItem));
         $sales = new OfflineSales();
         $sales->vendor_id           = $request->vendor;
