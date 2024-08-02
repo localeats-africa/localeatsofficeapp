@@ -30,20 +30,6 @@
             @csrf
             {{csrf_field()}}
             <div class="row">
-                  <div class="col-md-4 col-12">
-                        <div class="form-group">
-                              <label for="">Vendor</label>
-                              <select class="js-example-basic-single text-secondary" style="width:100%"
-                                    name="vendor_id" id="vendor">
-                                    <option>Choose</option>
-                                    @foreach($vendor as $data)
-                                    <option value="{{$data->id}}">
-                                          {{$data->vendor_name}}
-                                    </option>
-                                    @endforeach
-                              </select>
-                        </div>
-                  </div>
 
                   <div class="col-md-4 col-12">
                         <div class="form-group">
