@@ -83,13 +83,13 @@
                                           <li>
                                                 <div class="form-check">
                                                       <label class="form-check-label">
-                                                            <input class="checkbox" type="checkbox">{{$data->soup}} <i
+                                                            <input class="checkbox" type="checkbox" name="soup[]">{{$data->soup}} <i
                                                                   class="input-helper"></i>
                                                       </label>
                                                 </div>
 
                                                 <i class="remove"></i>
-                                                <input class="form-control" type="number" value="1" style="width:85px;"
+                                                <input class="form-control" type="number" name="soup_qty[]" value="1" style="width:85px;"
                                                       placeholder="Quantity">
                                           </li>
                                           @endforeach
@@ -103,12 +103,12 @@
                                           <li>
                                                 <div class="form-check">
                                                       <label class="form-check-label">
-                                                            <input class="checkbox" type="checkbox">{{$data->swallow}}
+                                                            <input class="checkbox" type="checkbox" name="swallow[]">{{$data->swallow}}
                                                       </label>
                                                 </div>
 
                                                 <i class="remove"></i>
-                                                <input class="form-control" type="number" value="1" style="width:85px;"
+                                                <input class="form-control" type="number" name="swallow_qty[]" value="1" style="width:85px;"
                                                       placeholder="Quantity">
 
                                           </li>
@@ -124,12 +124,12 @@
                                           <li>
                                                 <div class="form-check">
                                                       <label class="form-check-label">
-                                                            <input class="checkbox" type="checkbox">{{$data->protein}}
+                                                            <input class="checkbox" type="checkbox" name="protein[]">{{$data->protein}}
                                                       </label>
                                                 </div>
 
                                                 <i class="remove"></i>
-                                                <input class="form-control" type="number" value="1" style="width:85px;"
+                                                <input class="form-control" type="number" name="protein_qty[]" value="1" style="width:85px;"
                                                       placeholder="Quantity">
 
                                           </li>
@@ -146,12 +146,12 @@
                                           <li>
                                                 <div class="form-check">
                                                       <label class="form-check-label">
-                                                            <input class="checkbox" type="checkbox">{{$data->others}}
+                                                            <input class="checkbox" type="checkbox" name="others[]">{{$data->others}}
                                                       </label>
                                                 </div>
 
                                                 <i class="remove"></i>
-                                                <input class="form-control" type="number" value="1" style="width:85px;"
+                                                <input class="form-control" type="number" name="others_qty[]" value="1" style="width:85px;"
                                                       placeholder="Quantity">
 
                                           </li>
