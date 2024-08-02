@@ -545,12 +545,11 @@ class AdminController extends Controller
              'countActiveVendor', 'countPlatforms', 'activePlatform',
             'countPlatforms',  'payouts', 'commission',   'sumAllOrders', 
             'countAllOrder', 'countPlatformWhereOrderCame',
-            'countAllPlate', 'commissionPaid', 'orderStart', 'orderEnd',
-            'averageWeeklySales', 'averageWeeklyPayouts', 'averageWeeklyCommissionPaid',
-            'averageWeeklyComm', 'data', 'salesYear', 'platformOrders',
-            'chowdeckOrderCount','glovoOrderCount', 'edenOrderCount', 'currentYear',
+            'countAllPlate', 'commissionPaid', 'data', 'salesYear', 'platformOrders',
+            'chowdeckOrderCount','glovoOrderCount', 'edenOrderCount', 
             'chowdeckSalesPercentageChart', 'glovoSalesPercentageChart', 
-            'edenSalesPercentageChart', 'piechartData' ,  'barChartData'));
+            'edenSalesPercentageChart', 'piechartData' ,  'barChartData',
+            'startDate', 'endDate'));
           
     }
 
