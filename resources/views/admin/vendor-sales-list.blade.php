@@ -14,7 +14,7 @@
                   <nav aria-label="breadcrumb">
                         <ul class="breadcrumb">
                               <li class="breadcrumb-item active" aria-current="page">
-                                    <span></span><a href="{{ url('new-expenses') }}" class="btn btn-block btn-danger"><i
+                                    <span></span><a href="{{ url ('new-offline-foodmenu') }}" class="btn btn-block btn-danger"><i
                                                 class="fa fa-plus-square"></i> &nbsp;Create New FoodMenu / Item </a>
                               </li>
                         </ul>
