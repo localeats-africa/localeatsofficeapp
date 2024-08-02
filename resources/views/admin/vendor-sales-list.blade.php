@@ -175,7 +175,28 @@
                                     <tr>
                                           <td>{{$loop->iteration}}</td>
                                           <td>{{ date('Y-m-d', strtotime($data->sales_date)) }}</td>
-                                          <td>{{$data->sales_item}}</td>
+                                          <td>
+                                                {{$data->sales_item}}
+                                                @if($data->soup ==' ')
+                                                            @else
+                                                            {{$data->soup_qty }} {{$data->soup}}
+                                                            @endif
+
+                                                            @if($data->swallow ==' ')
+                                                            @else
+                                                            , {{$data->swallow_qty }} {{$data->swallow}}
+                                                            @endif
+
+                                                            @if($data->protein ==' ')
+                                                            @else
+                                                            , {{$data->protein_qty }} {{$data->protein}}
+                                                            @endif
+
+                                                            @if($data->others ==' ')
+                                                            @else
+                                                            , {{$data->others_qty }}, {{$data->others}}
+                                                            @endif
+                                          </td>
                                           <td>{{$data->price}}</td>
                                     </tr>
                                     @endforeach
