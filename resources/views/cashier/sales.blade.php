@@ -351,6 +351,7 @@
                                                       <td>{{$loop->iteration}}</td>
                                                       <td>{{ date('d/m/Y', strtotime($data->sales_date))}}</td>
                                                       <td class="text-capitalize">
+                                                            {{$data->sales_item}}
                                                             @if($data->soup ==' ')
                                                             @else
                                                             {{$data->soup_qty }} {{$data->soup}}
