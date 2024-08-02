@@ -934,6 +934,29 @@ class AdminController extends Controller
         return view('admin.new-expenses', compact('role', 'vendor'));
     }
 
+
+    public function importExpensesList(Request $request)
+    {
+        // Validate the uploaded file
+        $request->validate([
+            'file' => 'required|mimes:xlsx,xls',
+            'vendor_name'=>'required|string|max:255',
+        ]);
+        // Get the uploaded file
+        $file = $request->file('file');
+        $vendor_id = $request->vendor_name;
+     
+        // Process the Excel file
+      $import =  Excel::import(new ImportExpensesList($vendor_id), $file);
+
+      if($import){
+        return redirect()->back()->with('expense-status', 'File imported successfully!');
+      }
+      else{
+        return redirect()->back()->with('expense-error', 'Opps!');
+      } 
+    }
+
         //view sales list per vendor
         public function salesList(Request $request){
             $id = Auth::user()->id;
@@ -962,6 +985,60 @@ class AdminController extends Controller
             return view('admin.vendor-sales-list', compact('role', 'vendor',
             'vendorSales', 'vendorTotalSales', 'vendorName',
             'startDate', 'endDate',  'vendorSales', 'vendorTotalSales'));
+        }
+
+        public function newOfflineFoodMenu(Request $request){
+            $id = Auth::user()->id;
+            $role = DB::table('role')->select('role_name')
+            ->join('users', 'users.role_id', 'role.id')
+            ->where('users.id', $id)
+            ->pluck('role_name')->first();
+            $vendor = Vendor::all();
+            return view('admin.new-offline-foodmenu', compact('role', 'vendor'));
+        }
+    
+        public function addOfflineFoodMenu(Request $request){
+            $this->validate($request, [ 
+                'vendor'  => 'required|max:255',
+                'item'   => 'required|string|max:255'      
+            ]);
+    
+            $storeMenu = new OfflineFoodMenu();
+            $storeMenu->vendor_id    = $request->vendor;
+            $storeMenu->item         = $request->item;
+            $storeMenu->added_by     = Auth::user()->id;
+            $storeMenu->save();
+    
+            if($storeMenu){
+                return redirect()->back()->with('expense-status', 'Expense added successfully');
+            }
+            else{
+                return redirect()->back()->with('expense-error', 'Opps! something went wrong');
+            }
+            return view('admin.new-offile-foodmenu', compact('role', 'vendor'));
+        }
+    
+    
+        public function importOfflineFoodMenu(Request $request)
+        {
+            // Validate the uploaded file
+            $request->validate([
+                'file' => 'required|mimes:xlsx,xls',
+                'vendor_name'=>'required|string|max:255',
+            ]);
+            // Get the uploaded file
+            $file = $request->file('file');
+            $vendor_id = $request->vendor_name;
+         
+            // Process the Excel file
+          $import =  Excel::import(new ImportExpensesList($vendor_id), $file);
+    
+          if($import){
+            return redirect()->back()->with('expense-status', 'File imported successfully!');
+          }
+          else{
+            return redirect()->back()->with('expense-error', 'Opps!');
+          } 
         }
 
     public function profitAndLoss(Request $request){
@@ -1022,28 +1099,6 @@ class AdminController extends Controller
             ];
             return response()->json($data);
          }
-     }
-
-     public function importExpensesList(Request $request)
-     {
-         // Validate the uploaded file
-         $request->validate([
-             'file' => 'required|mimes:xlsx,xls',
-             'vendor_name'=>'required|string|max:255',
-         ]);
-         // Get the uploaded file
-         $file = $request->file('file');
-         $vendor_id = $request->vendor_name;
-      
-         // Process the Excel file
-       $import =  Excel::import(new ImportExpensesList($vendor_id), $file);
- 
-       if($import){
-         return redirect()->back()->with('expense-status', 'File imported successfully!');
-       }
-       else{
-         return redirect()->back()->with('expense-error', 'Opps!');
-       } 
      }
 
      public function showDeletedInvoice(Request $request){
