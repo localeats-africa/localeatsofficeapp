@@ -83,7 +83,7 @@
                                           <li>
                                                 <div class="form-check">
                                                       <label class="form-check-label">
-                                                            <input class="checkbox" type="checkbox" name="soup[]">{{$data->soup}} <i
+                                                            <input class="checkbox" type="checkbox" name="soup[]"  value="{{$data->soup}}">{{$data->soup}} <i
                                                                   class="input-helper"></i>
                                                       </label>
                                                 </div>
@@ -103,7 +103,7 @@
                                           <li>
                                                 <div class="form-check">
                                                       <label class="form-check-label">
-                                                            <input class="checkbox" type="checkbox" name="swallow[]">{{$data->swallow}}
+                                                            <input class="checkbox" type="checkbox" name="swallow[]" value="{{$data->swallow}}">{{$data->swallow}}
                                                       </label>
                                                 </div>
 
@@ -124,7 +124,7 @@
                                           <li>
                                                 <div class="form-check">
                                                       <label class="form-check-label">
-                                                            <input class="checkbox" type="checkbox" name="protein[]">{{$data->protein}}
+                                                            <input class="checkbox" type="checkbox" name="protein[]" value="{{$data->protein}}">{{$data->protein}}
                                                       </label>
                                                 </div>
 
@@ -146,7 +146,7 @@
                                           <li>
                                                 <div class="form-check">
                                                       <label class="form-check-label">
-                                                            <input class="checkbox" type="checkbox" name="others[]">{{$data->others}}
+                                                            <input class="checkbox" type="checkbox" name="others[]" value="{{$data->others}}">{{$data->others}}
                                                       </label>
                                                 </div>
 
