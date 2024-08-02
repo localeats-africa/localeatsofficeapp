@@ -73,7 +73,7 @@
                         {{csrf_field()}}
 
                         <div class="row">
-                              <h6>Check multiple one or more food item, enter each quantity and total price</h6>
+                              <h6 class="text-danger">Check multiple one or more food item, enter each quantity,  enter total price and date</h6>
                               <p></p>
                               <div class="col-md-3 col-12 list-wrapper">
                                     <h6>Soup</h6>
