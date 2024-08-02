@@ -8,7 +8,7 @@
       <div class="content-wrapper">
             <div class="page-header">
                   <h3 class="page-title">
-                        Overview >>> Year >>> <span class="text-info"> {{$startDate}} - {{$endDate}}<</span>
+                        Overview >>> Year >>> <span class="text-info"> {{$startDate}} - {{$endDate}}</span>
                   </h3>
                   <nav aria-label="breadcrumb">
                         <ul class="breadcrumb">
@@ -31,11 +31,13 @@
                         {{csrf_field()}}
                         <div class="row">
                         <div class="row text-end">
-                        <h6>Filter record:</h6>
+                        <h6>Filter record: &nbsp; <a href="{{ url('admin') }}" class="btn bg-info btn-sm  text-white"> View All</a>
+                        </h6>
                               <div class="col-md-3">
                               </div>
-                              <div class="col-md-3">
+                              <div class="col-md-3 col-12">
                               </div>
+                              <div class="col-md-3 col-12">
                                     <div class="form-group">
                                           <div class="input-group date">
                                           <span class="input-group-append">
@@ -54,7 +56,7 @@
                                     </div>
                               </div>
 
-                              <div class="col-md-4 col-12">
+                              <div class="col-md-3 col-12">
                                     <div class="form-group">
                                           <div class="input-group date">
                                           <span class="input-group-append">
@@ -75,14 +77,7 @@
                                     </div>
                               </div>
 
-                              <div class="col-md-4 col-12">
-                                    <div class="form-group">
-                                          <label for=""><br></label>
-                                          <div class="input-group date">
-                                                <a href="" class="btn bg-info btn-sm  text-white"> View All</a>
-                                          </div>
-                                    </div>
-                              </div>
+                           
                         </div>
                         <!---end row--->
                   </form>
