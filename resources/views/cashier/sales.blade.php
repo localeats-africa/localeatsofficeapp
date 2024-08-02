@@ -73,27 +73,24 @@
                         {{csrf_field()}}
 
                         <div class="row">
-                              <h6 class="text-danger">Check multiple one or more food item, enter each quantity,  enter total price and date</h6>
+                              <h6 class="text-danger">Check multiple one or more food item, enter each quantity, enter
+                                    total price and date</h6>
                               <p></p>
                               <div class="col-md-3 col-12 list-wrapper">
                                     <h6>Soup</h6>
                                     <ul class="d-flex flex-column-reverse ">
                                           @foreach($vendorSoup as $data)
                                           <li>
-                                                <div class="form-group">
-                                                      <div class="input-group">
-                                                            <div class="form-check">
-                                                                  <label class="form-check-label">
-                                                                        <input class="checkbox"
-                                                                              type="checkbox">{{$data->soup}}
-                                                                  </label>
-                                                            </div>
-                                                            &nbsp; &nbsp; &nbsp;
-                                                            <input class="form-control" type="text"
-                                                                  placeholder="Quantity">
-                                                      </div>
-
+                                                <div class="form-check">
+                                                      <label class="form-check-label">
+                                                            <input class="checkbox" type="checkbox">{{$data->soup}} <i
+                                                                  class="input-helper"></i>
+                                                      </label>
                                                 </div>
+
+                                                <i class="remove"></i>
+                                                <input class="form-control" type="number" value="1" style="width:85px;"
+                                                      placeholder="Quantity">
                                           </li>
                                           @endforeach
                                     </ul>
@@ -104,20 +101,16 @@
                                     <ul class="d-flex flex-column-reverse ">
                                           @foreach($vendorSwallow as $data)
                                           <li>
-                                                <div class="form-group">
-                                                      <div class="input-group">
-                                                            <div class="form-check">
-                                                                  <label class="form-check-label">
-                                                                        <input class="checkbox"
-                                                                              type="checkbox">{{$data->swallow}}
-                                                                  </label>
-                                                            </div>
-                                                            &nbsp; &nbsp; &nbsp;
-                                                            <input class="form-control" type="text"
-                                                                  placeholder="Quantity">
-                                                      </div>
-
+                                                <div class="form-check">
+                                                      <label class="form-check-label">
+                                                            <input class="checkbox" type="checkbox">{{$data->swallow}}
+                                                      </label>
                                                 </div>
+
+                                                <i class="remove"></i>
+                                                <input class="form-control" type="number" value="1" style="width:85px;"
+                                                      placeholder="Quantity">
+
                                           </li>
                                           @endforeach
                                     </ul>
@@ -129,20 +122,16 @@
                                     <ul class="d-flex flex-column-reverse ">
                                           @foreach($vendorProtein as $data)
                                           <li>
-                                                <div class="form-group">
-                                                      <div class="input-group">
-                                                            <div class="form-check">
-                                                                  <label class="form-check-label">
-                                                                        <input class="checkbox"
-                                                                              type="checkbox">{{$data->protein}}
-                                                                  </label>
-                                                            </div>
-                                                            &nbsp; &nbsp; &nbsp;
-                                                            <input class="form-control" type="text"
-                                                                  placeholder="Quantity">
-                                                      </div>
-
+                                                <div class="form-check">
+                                                      <label class="form-check-label">
+                                                            <input class="checkbox" type="checkbox">{{$data->protein}}
+                                                      </label>
                                                 </div>
+
+                                                <i class="remove"></i>
+                                                <input class="form-control" type="number" value="1" style="width:85px;"
+                                                      placeholder="Quantity">
+
                                           </li>
                                           @endforeach
                                     </ul>
@@ -155,20 +144,16 @@
                                     <ul class="d-flex flex-column-reverse ">
                                           @foreach($vendorOthersFoodItem as $data)
                                           <li>
-                                                <div class="form-group">
-                                                      <div class="input-group">
-                                                            <div class="form-check">
-                                                                  <label class="form-check-label">
-                                                                        <input class="checkbox"
-                                                                              type="checkbox">{{$data->others}}
-                                                                  </label>
-                                                            </div>
-                                                            &nbsp; &nbsp; &nbsp;
-                                                            <input class="form-control" type="text"
-                                                                  placeholder="Quantity">
-                                                      </div>
-
+                                                <div class="form-check">
+                                                      <label class="form-check-label">
+                                                            <input class="checkbox" type="checkbox">{{$data->others}}
+                                                      </label>
                                                 </div>
+
+                                                <i class="remove"></i>
+                                                <input class="form-control" type="number" value="1" style="width:85px;"
+                                                      placeholder="Quantity">
+
                                           </li>
                                           @endforeach
                                     </ul>
@@ -177,11 +162,11 @@
 
                         </div>
                         <!---row--->
-
+                        <p></p>
                         <div class="row">
-                        <div class="col-md-6 col-12">
+                              <div class="col-md-6 col-12">
                                     <div class="form-group">
-                                          <label for="">Total price</label>
+                                          <h6 for="">Total price</h6>
                                           <br>
                                           <div class="input-group date">
                                                 <input type="text" class="form-control" id="price" name="price"
@@ -192,7 +177,7 @@
 
                               <div class="col-md-6 col-12">
                                     <div class="form-group">
-                                          <label for="">Date</label>
+                                          <h6 for="">Date</h6>
                                           <br>
                                           <div class="input-group date">
 
