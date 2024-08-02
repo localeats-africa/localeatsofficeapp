@@ -67,14 +67,40 @@
 
             <div class="row ">
 
-                  <form method="post" action="{{ route('add-vendor-offline-sales') }}" name="submit" enctype="multipart/form-data">
+                  <form method="post" action="{{ route('add-vendor-offline-sales') }}" name="submit"
+                        enctype="multipart/form-data">
                         @csrf
                         {{csrf_field()}}
+
+                        <div class="row">
+                              <h6>Check multiple one or more food item,  enter each quantity and total price</h6>
+                              @foreach($salesList as $data)
+                              <div class="col-md-6 col-12">
+                                    <div class="form-group">
+                                          <div class="input-group">
+                                                <div class="form-check">
+                                                      <label class="form-check-label">
+                                                            <input class="checkbox" type="checkbox">{{$data->item}}
+
+                                                      </label>
+                                                </div>
+                                                &nbsp; &nbsp; &nbsp;
+                                                <input class="form-control" type="text" placeholder="Quantity">
+                                          </div>
+                                    </div>
+
+                              </div>
+
+
+                              @endforeach
+
+                        </div>
+                        <!---row--->
                         <div class="row">
                               <div class="col-md-4 col-12">
                                     <div class="form-group">
                                           <label for="">Food List</label>
-<br>
+                                          <br>
                                           <select id="item" class="" name="item" type="text" style="width:90%">
                                                 <option value=""></option>
                                                 @foreach($salesList as $data)
@@ -92,7 +118,8 @@
                                           <div class="input-group">
                                                 <input id="new-item" class="form-control" type="text"
                                                       placeholder=" Enter new sales item" />
-                                                <input id="vendor" name="vendor" type="hidden" value="{{ $vendor_id }}" />
+                                                <input id="vendor" name="vendor" type="hidden"
+                                                      value="{{ $vendor_id }}" />
                                                 <button type="button" class="btn btn-dark btn-sm" id="btn-add-state"><i
                                                             class="fa fa-check"></i></button>
                                           </div>
@@ -105,7 +132,8 @@
                                           <br>
                                           <div class="input-group date">
                                                 <input type="text" class="form-control" id="price" name="price"
-                                                      placeholder="Enter food price" /></div>
+                                                      placeholder="Enter food price" />
+                                          </div>
                                     </div>
                               </div>
 
@@ -114,9 +142,9 @@
                                           <label for="">Date</label>
                                           <br>
                                           <div class="input-group date">
-                                                
-                                                <input type="text" class="form-control"  value="{{ date('Y-m-d')}}" id="date" name="date"
-                                                      placeholder="Enter expenses" />
+
+                                                <input type="text" class="form-control" value="{{ date('Y-m-d')}}"
+                                                      id="date" name="date" placeholder="Enter expenses" />
                                                 <button type="submit" name="submit"
                                                       class="btn bg-gradient-primary btn-sm  text-white"
                                                       onclick="addVendorExpenses()">Submit</button>
@@ -164,7 +192,8 @@
                                                 Search:
                                                 <div class="ms-2 d-inline-block">
 
-                                                      <form action="{{ route('offline-sales') }}" method="GET" role="search">
+                                                      <form action="{{ route('offline-sales') }}" method="GET"
+                                                            role="search">
                                                             {{ csrf_field() }}
                                                             <div class="input-group mb-2">
                                                                   <input type="text" class="form-control"
@@ -219,9 +248,8 @@
                                           @if(isset($sales))
                                           @if($sales->currentPage() > 1)
                                           <li class="page-item ">
-                                                <a class="page-link text-danger"
-                                                      href="{{ $sales->previousPageUrl() }}" tabindex="-1"
-                                                      aria-disabled="true">
+                                                <a class="page-link text-danger" href="{{ $sales->previousPageUrl() }}"
+                                                      tabindex="-1" aria-disabled="true">
                                                       <!-- Download SVG icon from http://tabler-icons.io/i/chevron-left -->
                                                       <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24"
                                                             height="24" viewBox="0 0 24 24" stroke-width="2"
@@ -303,11 +331,11 @@ $(document).ready(function() {
             // if ($('#item').find("option[value=" + newStateVal + "]").length) {
             //       $('#item').val(newStateVal).trigger("change");
             // } else {
-                  // Create the DOM option that is pre-selected by default
-                  var newState = new Option(newStateVal, newStateVal, true, true);
-                  // Append it to the select
-                  $('#item').append(newState).trigger('change').select2();
-           // }
+            // Create the DOM option that is pre-selected by default
+            var newState = new Option(newStateVal, newStateVal, true, true);
+            // Append it to the select
+            $('#item').append(newState).trigger('change').select2();
+            // }
             var item = document.getElementById('new-item').value;
             var vendor = document.getElementById('vendor').value;
 
@@ -362,7 +390,5 @@ function myClick() {
 $(function() {
       $("#date").datepicker();
 });
-
-
 </script>
 @endsection
