@@ -78,11 +78,6 @@ class AdminController extends Controller
         $startDate      =   date("Y-m-d", strtotime($request->from)) ;
         $endDate        =  date("Y-m-d", strtotime($request->to));
 
-        $vendorTotalExpense = VendorExpenses::where('vendor_id',  $vendor_id)
-        ->whereDate('expense_date', '>=', $startDate)                                 
-        ->whereDate('expense_date', '<=', $endDate) 
-        ->sum('cost');
-
 
         //dd();
         $allOrderStart = DB::table('orders')
@@ -98,8 +93,7 @@ class AdminController extends Controller
         ->where('orders.order_ref', '!=', null)
         ->whereDate('delivery_date', '<=', $today) 
         ->get()->pluck('delivery_date')->last();
-        //dd($allOrderEnd);
-
+        
         $orderStart = date("d-M-Y ", strtotime($allOrderStart)) ;
         $orderEnd = date("d-M-Y ", strtotime($allOrderEnd)) ;
       
@@ -114,6 +108,8 @@ class AdminController extends Controller
         $sumAllOrders = Orders::where('deleted_at', null)
         ->where('orders.order_amount', '!=', null)
         ->where('orders.order_ref', '!=', null)
+        // ->whereDate('delivery_date', '>=', $startDate)                                 
+        // ->whereDate('delivery_date', '<=', $endDate) 
         ->whereYear('orders.delivery_date', '=', Carbon::now()->year)
         ->sum('order_amount');
 
