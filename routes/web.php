@@ -133,6 +133,7 @@ Route::controller(SuperAdminController::class)->group(function () {
 
 Route::controller(AdminController::class)->group(function () {
     Route::get('admin',  'index')->name('admin');
+    Route::get('admin-filter-dashboard', 'adminFilterDashboard')->name('admin-filter-dashboard');
     Route::post('approve-vendor/{id}',  'approveVendor')->name('approve-vendor');
     Route::get('new-platform',  'newPlatform')->name('new-platform');
     Route::post('add-platform',  'addPlatform')->name('add-platform');
