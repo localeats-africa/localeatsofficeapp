@@ -74,13 +74,13 @@
 
                         <div class="row">
                               <h6>Check multiple one or more food item,  enter each quantity and total price</h6>
-                              @foreach($salesList as $data)
+                              @foreach($vendorSwallow as $data)
                               <div class="col-md-6 col-12">
                                     <div class="form-group">
                                           <div class="input-group">
                                                 <div class="form-check">
                                                       <label class="form-check-label">
-                                                            <input class="checkbox" type="checkbox">{{$data->item}}
+                                                            <input class="checkbox" type="checkbox">{{$data->swallow}}
 
                                                       </label>
                                                 </div>
