@@ -1010,7 +1010,7 @@ class AdminController extends Controller
             $storeMenu->save();
     
             if($storeMenu){
-                return redirect()->back()->with('expense-status', 'Expense added successfully');
+                return redirect()->back()->with('expense-status', 'Food menu added successfully');
             }
             else{
                 return redirect()->back()->with('expense-error', 'Opps! something went wrong');
