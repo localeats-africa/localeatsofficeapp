@@ -1846,28 +1846,28 @@ class HomeController extends Controller
         // $foodItem->added_by     = Auth::user()->id;
         // $foodItem->save();
         if(empty($request->soup)){
-            $soup = '';
+            $soup = ' ';
         }
         else{
             $soup = $request->soup; 
         }
 
         if(empty($request->swallow)){
-            $swallow = '';
+            $swallow = ' ';
         }
         else{
             $swallow = $request->swallow; 
         }
 
         if(empty($request->protein)){
-            $protein = '';
+            $protein = ' ';
         }
         else{
             $protein = $request->protein; 
         }
 
         if(empty($request->others)){
-            $others = '';
+            $others = ' ';
         }
         else{
             $others = $request->others; 
