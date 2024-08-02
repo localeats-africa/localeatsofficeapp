@@ -177,7 +177,36 @@
 
                         </div>
                         <!---row--->
+
                         <div class="row">
+                        <div class="col-md-6 col-12">
+                                    <div class="form-group">
+                                          <label for="">Total price</label>
+                                          <br>
+                                          <div class="input-group date">
+                                                <input type="text" class="form-control" id="price" name="price"
+                                                      placeholder="Enter food price" />
+                                          </div>
+                                    </div>
+                              </div>
+
+                              <div class="col-md-6 col-12">
+                                    <div class="form-group">
+                                          <label for="">Date</label>
+                                          <br>
+                                          <div class="input-group date">
+
+                                                <input type="text" class="form-control" value="{{ date('Y-m-d')}}"
+                                                      id="date" name="date" placeholder="Enter expenses" />
+                                                <button type="submit" name="submit"
+                                                      class="btn bg-gradient-primary btn-sm  text-white">Submit</button>
+                                          </div>
+                                    </div>
+
+                              </div>
+                        </div>
+                        <!---row--->
+                        <!-- <div class="row">
                               <div class="col-md-4 col-12">
                                     <div class="form-group">
                                           <label for="">Food List</label>
@@ -234,7 +263,7 @@
 
                               </div>
 
-                        </div>
+                        </div> -->
                         <!---end row--->
                   </form>
             </div>
