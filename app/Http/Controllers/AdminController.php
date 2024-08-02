@@ -334,6 +334,10 @@ class AdminController extends Controller
         ->get('sales_platform.platform_name');
         
         $countVendor = Vendor::all();
+        $countActiveVendor = DB::table('sales_platform')
+        ->join('vendor', 'vendor.id', '=', 'sales_platform.vendor_id')->distinct()
+        ->where('sales_platform.vendor_status', 'active')
+        ->get('sales_platform.vendor_id');
 
          //filter dashboard Start here
          $startDate      =   date("Y-m-d", strtotime($request->from)) ;
