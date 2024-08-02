@@ -1903,7 +1903,7 @@ class HomeController extends Controller
         $sales->protein_qty         =  $salesItem['protein_qty'];
         $sales->others              =  $salesItem['others'];
         $sales->others_qty          =  $salesItem['others_qty'];
-        $sales->sales_item          = json_encode($salesItem);
+        //$sales->sales_item          = json_encode($salesItem);
         $sales->price               = $request->price;
         $sales->added_by            = Auth::user()->id;
         $sales->sales_date          = date("Y-m-d", strtotime($request->date));
