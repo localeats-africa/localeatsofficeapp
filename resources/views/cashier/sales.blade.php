@@ -325,24 +325,24 @@
                                                       <td>{{$loop->iteration}}</td>
                                                       <td>{{ date('d/m/Y', strtotime($data->sales_date))}}</td>
                                                       <td class="text-capitalize">
-                                                            @if(empty($data->soup))
+                                                            @if($data->soup ==' ')
                                                             @else
-                                                            {{$data->soup_qty }} {{$data->soup}},
+                                                            {{$data->soup_qty }} {{$data->soup}}
                                                             @endif
 
-                                                            @if(empty($data->swallow))
+                                                            @if($data->swallow ==' ')
                                                             @else
-                                                            {{$data->swallow_qty }} {{$data->swallow}},
+                                                            , {{$data->swallow_qty }} {{$data->swallow}}
                                                             @endif
 
-                                                            @if(empty($data->protein))
+                                                            @if($data->protein ==' ')
                                                             @else
-                                                            {{$data->protein_qty }} {{$data->protein}},
+                                                            , {{$data->protein_qty }} {{$data->protein}}
                                                             @endif
 
-                                                            @if(empty($data->others))
+                                                            @if($data->others ==' ')
                                                             @else
-                                                            {{$data->others_qty }}, {{$data->others}}
+                                                            , {{$data->others_qty }}, {{$data->others}}
                                                             @endif
 
                                                       </td>
