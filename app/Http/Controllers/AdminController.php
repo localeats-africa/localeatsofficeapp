@@ -73,12 +73,7 @@ class AdminController extends Controller
 
         $sevenDaysBack = Carbon::now()->subDays(7)->startOfDay();
         $lastSevenDays  =  date('Y-m-d', strtotime($sevenDaysBack));
-        
-        //filter dashboard
-        $startDate      =   date("Y-m-d", strtotime($request->from)) ;
-        $endDate        =  date("Y-m-d", strtotime($request->to));
-
-
+    
         //dd();
         $allOrderStart = DB::table('orders')
         ->where('orders.deleted_at', null)
@@ -96,21 +91,34 @@ class AdminController extends Controller
         
         $orderStart = date("d-M-Y ", strtotime($allOrderStart)) ;
         $orderEnd = date("d-M-Y ", strtotime($allOrderEnd)) ;
+
+        $countPlatforms = Platforms::all();
+        // a platform is ative is it has one or more active vendor
+        $activePlatform = DB::table('sales_platform')
+        ->join('vendor', 'vendor.id', '=', 'sales_platform.vendor_id')
+       ->join('platforms', 'platforms.name', '=', 'sales_platform.platform_name')->distinct()
+        ->where('sales_platform.vendor_status', 'active')
+        ->get('sales_platform.platform_name');
+        
+        $countVendor = Vendor::all();
+         // a vendor is consider active if it's active on one or more platform
+         $countActiveVendor = DB::table('sales_platform')
+         ->join('vendor', 'vendor.id', '=', 'sales_platform.vendor_id')->distinct()
+         ->where('sales_platform.vendor_status', 'active')
+         ->get('sales_platform.vendor_id');
       
+        $sumAllOrders = Orders::where('deleted_at', null)
+        ->where('orders.order_amount', '!=', null)
+        ->where('orders.order_ref', '!=', null)
+        ->whereYear('orders.delivery_date', '=', Carbon::now()->year)
+        ->sum('order_amount');
+
         $averageWeeklySales = DB::table('orders')
         ->where('deleted_at', null)
         ->where('orders.order_amount', '!=', null)
         ->where('orders.order_ref', '!=', null)
         ->whereDate('delivery_date', '=', $lastSevenDays)   
        ->whereYear('orders.delivery_date', '=', Carbon::now()->year)
-        ->sum('order_amount');
-
-        $sumAllOrders = Orders::where('deleted_at', null)
-        ->where('orders.order_amount', '!=', null)
-        ->where('orders.order_ref', '!=', null)
-        // ->whereDate('delivery_date', '>=', $startDate)                                 
-        // ->whereDate('delivery_date', '<=', $endDate) 
-        ->whereYear('orders.delivery_date', '=', Carbon::now()->year)
         ->sum('order_amount');
 
         $countAllOrder = Orders::where('deleted_at', null)
@@ -172,21 +180,66 @@ class AdminController extends Controller
         //Commission::all()->sum('localeats_comm');
         $averageWeeklyComm =$averageWeeklySales - $averageWeeklyPayouts ;
 
-        $countPlatforms = Platforms::all();
-        // a platform is ative is it has one or more active vendor
-        $activePlatform = DB::table('sales_platform')
-        ->join('vendor', 'vendor.id', '=', 'sales_platform.vendor_id')
-       ->join('platforms', 'platforms.name', '=', 'sales_platform.platform_name')->distinct()
-        ->where('sales_platform.vendor_status', 'active')
-        ->get('sales_platform.platform_name');
-        
-        $countVendor = Vendor::all();
-         // a vendor is consider active if it's active on one or more platform
-         $countActiveVendor = DB::table('sales_platform')
-         ->join('vendor', 'vendor.id', '=', 'sales_platform.vendor_id')->distinct()
-         ->where('sales_platform.vendor_status', 'active')
-         ->get('sales_platform.vendor_id');
-       
+        //   
+        //filter dashboard Start here
+        $startDate      =   date("Y-m-d", strtotime($request->from)) ;
+        $endDate        =  date("Y-m-d", strtotime($request->to));
+
+        $sumAllOrdersFilter = Orders::where('deleted_at', null)
+        ->where('orders.order_amount', '!=', null)
+        ->where('orders.order_ref', '!=', null)
+        ->whereDate('delivery_date', '>=', $startDate)                                 
+        ->whereDate('delivery_date', '<=', $endDate) 
+        ->whereYear('orders.delivery_date', '=', Carbon::now()->year)
+        ->sum('order_amount');
+
+        $countAllOrderFilter = Orders::where('deleted_at', null)
+        ->where('orders.order_amount', '!=', null)
+        ->where('orders.order_ref', '!=', null)
+        ->whereDate('delivery_date', '>=', $startDate)                                 
+        ->whereDate('delivery_date', '<=', $endDate) 
+        ->whereYear('orders.delivery_date', '=', Carbon::now()->year)
+        ->count();
+
+        $getOrderItemFilter = DB::table('orders')
+        ->where('deleted_at', null)
+        ->where('orders.order_amount', '!=', null)
+        ->where('orders.order_ref', '!=', null)
+        ->whereDate('delivery_date', '>=', $startDate)                                 
+        ->whereDate('delivery_date', '<=', $endDate) 
+        ->whereYear('orders.delivery_date', '=', Carbon::now()->year)
+        ->get('description')->pluck('description');
+
+        $stringF =  $getOrderItemFilter;
+        $substringF = 'plate';
+        $countAllPlateFilter = substr_count($stringF, $substringF);
+
+        $countPlatformWhereOrderCameFilter = DB::table('orders')
+        ->Join('platforms', 'orders.platform_id', '=', 'platforms.id')->distinct()
+        ->where('orders.deleted_at', null)
+        ->where('orders.order_amount', '!=', null)
+        ->where('orders.order_ref', '!=', null)
+        ->whereDate('delivery_date', '>=', $startDate)                                 
+        ->whereDate('delivery_date', '<=', $endDate) 
+        ->whereYear('orders.delivery_date', '=', Carbon::now()->year)
+        ->count('platforms.id');
+
+        $payoutsFilter = DB::table('orders')
+        ->where('deleted_at', null)
+        ->where('orders.order_amount', '!=', null)
+        ->where('orders.order_ref', '!=', null)
+        ->whereDate('delivery_date', '>=', $startDate)                                 
+        ->whereDate('delivery_date', '<=', $endDate) 
+        ->whereYear('orders.delivery_date', '=', Carbon::now()->year)
+        ->sum('payout');
+
+        $commissionFilter = (int)$sumAllOrdersFilter - (int)$payoutsFilter ;
+
+        $commissionPaidFilter = Orders::whereYear('orders.delivery_date', '=', Carbon::now()->year)
+        ->whereDate('delivery_date', '>=', $startDate)                                 
+        ->whereDate('delivery_date', '<=', $endDate) 
+        ->sum('commission');
+
         $chartYearlyTotalSales = Orders::select(
         \DB::raw('YEAR(delivery_date) as year'),)
         ->where('deleted_at', null)
@@ -259,7 +312,7 @@ class AdminController extends Controller
         $piechartData = [            
         'label' => ['Chowdeck', 'Glovo', 'Eden'],
         'data' => [round($chowdeckSalesPercentageChart) , round($glovoSalesPercentageChart),  round($edenSalesPercentageChart)] ,
-    ];
+        ];
     //sales for barchart
 
     $chowdeckOrder =  Orders::join('platforms', 'platforms.id', '=', 'orders.platform_id')
