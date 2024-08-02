@@ -15,26 +15,30 @@
                               <li class="breadcrumb-item active" aria-current="page">
 
                               </li>
-
-                              <li class="breadcrumb-item active" aria-current="page">
-
-                              </li>
                         </ul>
                   </nav>
             </div>
-
+            <!-- filter dashboard  -->
             <div class="row ">
-
                   <form method="GET" action="{{ route('admin-filter-dashboard') }}" name="submit"
                         enctype="multipart/form-data">
                         @csrf
                         {{csrf_field()}}
                         <div class="row">
-
-                              <div class="col-md-4 col-12">
+                            
+                              <div class="col-md-3">
+                              </div>
+                              <div class="col-md-3">
+                              </div>
+                              
+                              <div class="col-md-3 col-12">
                                     <div class="form-group">
-                                          <label for="">Start</label>
                                           <div class="input-group date">
+                                                <span class="input-group-append">
+                                                      <span class="input-group-text text-dark d-block">
+                                                            Start
+                                                      </span>
+                                                </span>
                                                 <input type="text" value="" name="from" class="form-control"
                                                       placeholder="" id="from" />
                                                 <span class="input-group-append">
@@ -46,12 +50,16 @@
                                     </div>
                               </div>
 
-                              <div class="col-md-4 col-12">
+                              <div class="col-md-3 col-12">
                                     <div class="form-group">
-                                          <label for="">End</label>
                                           <div class="input-group date">
-                                                <input type="text" value="" name="to" class="form-control" 
-                                                      placeholder="" id="to"  />
+                                                <span class="input-group-append">
+                                                      <span class="input-group-text text-dark d-block">
+                                                            End
+                                                      </span>
+                                                </span>
+                                                <input type="text" value="" name="to" class="form-control"
+                                                      placeholder="" id="to" />
                                                 <span class="input-group-append">
                                                       <span class="input-group-text bg-light d-block">
                                                             <i class="fa fa-calendar"></i>
@@ -63,7 +71,7 @@
                                     </div>
                               </div>
 
-                            
+
                         </div>
                         <!---end row--->
                   </form>
