@@ -1762,18 +1762,22 @@ class HomeController extends Controller
         ->get();
 
         $vendorSwallow = OfflineFoodMenu::where('vendor_id', $vendor_id)
+        ->where('swallow', '!=', null)
         ->orderBy('created_at', 'desc')
         ->get('swallow');
 
         $vendorSoup= OfflineFoodMenu::where('vendor_id', $vendor_id)
+        ->where('soup', '!=', null)
         ->orderBy('created_at', 'desc')
         ->get('soup');
 
         $vendorProtein= OfflineFoodMenu::where('vendor_id', $vendor_id)
+        ->where('protein', '!=', null)
         ->orderBy('created_at', 'desc')
         ->get('protein');
 
         $vendorOthersFoodItem= OfflineFoodMenu::where('vendor_id', $vendor_id)
+        ->where('others', '!=', null)
         ->orderBy('created_at', 'desc')
         ->get('others');
 
