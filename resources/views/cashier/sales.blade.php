@@ -73,26 +73,107 @@
                         {{csrf_field()}}
 
                         <div class="row">
-                              <h6>Check multiple one or more food item,  enter each quantity and total price</h6>
-                              @foreach($vendorSwallow as $data)
-                              <div class="col-md-6 col-12">
-                                    <div class="form-group">
-                                          <div class="input-group">
-                                                <div class="form-check">
-                                                      <label class="form-check-label">
-                                                            <input class="checkbox" type="checkbox">{{$data->swallow}}
+                              <h6>Check multiple one or more food item, enter each quantity and total price</h6>
+                              <p></p>
+                              <div class="col-md-3 col-12 list-wrapper">
+                                    <h6>Soup</h6>
+                                    <ul class="d-flex flex-column-reverse ">
+                                          @foreach($vendorSoup as $data)
+                                          <li>
+                                                <div class="form-group">
+                                                      <div class="input-group">
+                                                            <div class="form-check">
+                                                                  <label class="form-check-label">
+                                                                        <input class="checkbox"
+                                                                              type="checkbox">{{$data->soup}}
+                                                                  </label>
+                                                            </div>
+                                                            &nbsp; &nbsp; &nbsp;
+                                                            <input class="form-control" type="text"
+                                                                  placeholder="Quantity">
+                                                      </div>
 
-                                                      </label>
                                                 </div>
-                                                &nbsp; &nbsp; &nbsp;
-                                                <input class="form-control" type="text" placeholder="Quantity">
-                                          </div>
-                                    </div>
+                                          </li>
+                                          @endforeach
+                                    </ul>
+
+                              </div>
+                              <div class="col-md-3 col-12 list-wrapper">
+                                    <h6>Swallow</h6>
+                                    <ul class="d-flex flex-column-reverse ">
+                                          @foreach($vendorSwallow as $data)
+                                          <li>
+                                                <div class="form-group">
+                                                      <div class="input-group">
+                                                            <div class="form-check">
+                                                                  <label class="form-check-label">
+                                                                        <input class="checkbox"
+                                                                              type="checkbox">{{$data->swallow}}
+                                                                  </label>
+                                                            </div>
+                                                            &nbsp; &nbsp; &nbsp;
+                                                            <input class="form-control" type="text"
+                                                                  placeholder="Quantity">
+                                                      </div>
+
+                                                </div>
+                                          </li>
+                                          @endforeach
+                                    </ul>
+
+                              </div>
+
+                              <div class="col-md-3 col-12 list-wrapper">
+                                    <h6>Protein</h6>
+                                    <ul class="d-flex flex-column-reverse ">
+                                          @foreach($vendorProtein as $data)
+                                          <li>
+                                                <div class="form-group">
+                                                      <div class="input-group">
+                                                            <div class="form-check">
+                                                                  <label class="form-check-label">
+                                                                        <input class="checkbox"
+                                                                              type="checkbox">{{$data->protein}}
+                                                                  </label>
+                                                            </div>
+                                                            &nbsp; &nbsp; &nbsp;
+                                                            <input class="form-control" type="text"
+                                                                  placeholder="Quantity">
+                                                      </div>
+
+                                                </div>
+                                          </li>
+                                          @endforeach
+                                    </ul>
 
                               </div>
 
 
-                              @endforeach
+                              <div class="col-md-3 col-12 list-wrapper">
+                                    <h6>Others</h6>
+                                    <ul class="d-flex flex-column-reverse ">
+                                          @foreach($vendorOthersFoodItem as $data)
+                                          <li>
+                                                <div class="form-group">
+                                                      <div class="input-group">
+                                                            <div class="form-check">
+                                                                  <label class="form-check-label">
+                                                                        <input class="checkbox"
+                                                                              type="checkbox">{{$data->others}}
+                                                                  </label>
+                                                            </div>
+                                                            &nbsp; &nbsp; &nbsp;
+                                                            <input class="form-control" type="text"
+                                                                  placeholder="Quantity">
+                                                      </div>
+
+                                                </div>
+                                          </li>
+                                          @endforeach
+                                    </ul>
+
+                              </div>
 
                         </div>
                         <!---row--->
