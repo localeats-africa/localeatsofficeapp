@@ -83,14 +83,15 @@
                                           <li>
                                                 <div class="form-check">
                                                       <label class="form-check-label">
-                                                            <input class="checkbox" type="checkbox" name="soup[]"  value="{{$data->soup}}">{{$data->soup}} <i
+                                                            <input class="checkbox" type="checkbox" name="soup[]"
+                                                                  value="{{$data->soup}}">{{$data->soup}} <i
                                                                   class="input-helper"></i>
                                                       </label>
                                                 </div>
 
                                                 <i class="remove"></i>
-                                                <input class="form-control" type="number" name="soup_qty[]" value="1" style="width:85px;"
-                                                      placeholder="Quantity">
+                                                <input class="form-control" type="number" name="soup_qty[]" value="1"
+                                                      style="width:85px;" placeholder="Quantity">
                                           </li>
                                           @endforeach
                                     </ul>
@@ -103,13 +104,14 @@
                                           <li>
                                                 <div class="form-check">
                                                       <label class="form-check-label">
-                                                            <input class="checkbox" type="checkbox" name="swallow[]" value="{{$data->swallow}}">{{$data->swallow}}
+                                                            <input class="checkbox" type="checkbox" name="swallow[]"
+                                                                  value="{{$data->swallow}}">{{$data->swallow}}
                                                       </label>
                                                 </div>
 
                                                 <i class="remove"></i>
-                                                <input class="form-control" type="number" name="swallow_qty[]" value="1" style="width:85px;"
-                                                      placeholder="Quantity">
+                                                <input class="form-control" type="number" name="swallow_qty[]" value="1"
+                                                      style="width:85px;" placeholder="Quantity">
 
                                           </li>
                                           @endforeach
@@ -124,13 +126,14 @@
                                           <li>
                                                 <div class="form-check">
                                                       <label class="form-check-label">
-                                                            <input class="checkbox" type="checkbox" name="protein[]" value="{{$data->protein}}">{{$data->protein}}
+                                                            <input class="checkbox" type="checkbox" name="protein[]"
+                                                                  value="{{$data->protein}}">{{$data->protein}}
                                                       </label>
                                                 </div>
 
                                                 <i class="remove"></i>
-                                                <input class="form-control" type="number" name="protein_qty[]" value="1" style="width:85px;"
-                                                      placeholder="Quantity">
+                                                <input class="form-control" type="number" name="protein_qty[]" value="1"
+                                                      style="width:85px;" placeholder="Quantity">
 
                                           </li>
                                           @endforeach
@@ -146,13 +149,14 @@
                                           <li>
                                                 <div class="form-check">
                                                       <label class="form-check-label">
-                                                            <input class="checkbox" type="checkbox" name="others[]" value="{{$data->others}}">{{$data->others}}
+                                                            <input class="checkbox" type="checkbox" name="others[]"
+                                                                  value="{{$data->others}}">{{$data->others}}
                                                       </label>
                                                 </div>
 
                                                 <i class="remove"></i>
-                                                <input class="form-control" type="number" name="others_qty[]" value="1" style="width:85px;"
-                                                      placeholder="Quantity">
+                                                <input class="form-control" type="number" name="others_qty[]" value="1"
+                                                      style="width:85px;" placeholder="Quantity">
 
                                           </li>
                                           @endforeach
@@ -183,7 +187,7 @@
 
                                                 <input type="text" class="form-control" value="{{ date('Y-m-d')}}"
                                                       id="date" name="date" placeholder="Enter expenses" />
-                                                      <input id="vendor" name="vendor" type="hidden"
+                                                <input id="vendor" name="vendor" type="hidden"
                                                       value="{{ $vendor_id }}" />
                                                 <button type="submit" name="submit"
                                                       class="btn bg-gradient-primary btn-sm  text-white">Submit</button>
@@ -321,10 +325,27 @@
                                                       <td>{{$loop->iteration}}</td>
                                                       <td>{{ date('d/m/Y', strtotime($data->sales_date))}}</td>
                                                       <td class="text-capitalize">
-                                                   {{   substr($data->sales_item, 1, -1)  }}   
-                                                
-                                                   
-                                                     </td>
+                                                            @if(empty($data->soup))
+                                                            @else
+                                                            {{$data->soup_qty }} {{$data->soup}},
+                                                            @endif
+
+                                                            @if(empty($data->swallow))
+                                                            @else
+                                                            {{$data->swallow_qty }} {{$data->swallow}},
+                                                            @endif
+
+                                                            @if(empty($data->protein))
+                                                            @else
+                                                            {{$data->protein_qty }} {{$data->protein}},
+                                                            @endif
+
+                                                            @if(empty($data->others))
+                                                            @else
+                                                            {{$data->others_qty }}, {{$data->others}}
+                                                            @endif
+
+                                                      </td>
                                                       <td>{{$data->price}}</td>
 
 
