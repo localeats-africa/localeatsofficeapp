@@ -50,8 +50,8 @@
                                     <div class="form-group">
                                           <label for="">End</label>
                                           <div class="input-group date">
-                                                <input type="text" value="" name="to" class="form-control"
-                                                      placeholder="" id="to" />
+                                                <input type="text" value="" name="to" class="form-control" 
+                                                      placeholder="" id="to"  />
                                                 <span class="input-group-append">
                                                       <span class="input-group-text bg-light d-block">
                                                             <i class="fa fa-calendar"></i>
@@ -63,14 +63,7 @@
                                     </div>
                               </div>
 
-                              <div class="col-md-4 col-12">
-                                    <div class="form-group">
-                                          <label for=""><br></label>
-                                          <div class="input-group date">
-                                                <a href="" class="btn bg-info btn-sm  text-white"> View All</a>
-                                          </div>
-                                    </div>
-                              </div>
+                            
                         </div>
                         <!---end row--->
                   </form>
