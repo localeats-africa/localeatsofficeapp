@@ -325,7 +325,16 @@ class AdminController extends Controller
         ->join('users', 'users.role_id', 'role.id')
         ->where('users.id', $id)
         ->pluck('role_name')->first();
+        $countPlatforms = Platforms::all();
+        // a platform is ative is it has one or more active vendor
+        $activePlatform = DB::table('sales_platform')
+        ->join('vendor', 'vendor.id', '=', 'sales_platform.vendor_id')
+       ->join('platforms', 'platforms.name', '=', 'sales_platform.platform_name')->distinct()
+        ->where('sales_platform.vendor_status', 'active')
+        ->get('sales_platform.platform_name');
         
+        $countVendor = Vendor::all();
+
          //filter dashboard Start here
          $startDate      =   date("Y-m-d", strtotime($request->from)) ;
          $endDate        =  date("Y-m-d", strtotime($request->to));
