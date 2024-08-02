@@ -1836,8 +1836,7 @@ class HomeController extends Controller
 
     public function storeVendorOfflineSale(Request $request){
         $this->validate($request, [ 
-            'vendor'        => 'required|max:255',
-            'item'          => 'required|string|max:255',  
+            'vendor'        => 'required|max:255', 
             'price'         => 'required|string|max:255', 
             'date'          => 'required|string|max:255'         
         ]);
