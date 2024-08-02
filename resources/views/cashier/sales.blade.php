@@ -321,7 +321,9 @@
                                                       <td>{{$loop->iteration}}</td>
                                                       <td>{{ date('d/m/Y', strtotime($data->sales_date))}}</td>
                                                       <td class="text-capitalize">
-                                                   {{   substr($data->sales_item, 1, -1)  }}    
+                                                   {{   substr($data->sales_item, 1, -1)  }}   
+                                                
+                                                   
                                                      </td>
                                                       <td>{{$data->price}}</td>
 
