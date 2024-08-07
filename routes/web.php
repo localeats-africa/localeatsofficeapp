@@ -123,7 +123,7 @@ Route::controller(HomeController::class)->group(function () {
     Route::post('add-vendor-expenses', 'storeVendorDailyExpenses')->name('add-vendor-expenses');
     Route::get('offline-sales', 'offlineSales')->name('offline-sales');
     Route::post('offline-sales-list', 'OfflineSaleList')->name('offline-sales-list');
-    Route::post('add-vendor-offline-sales', 'storeVendorOfflineSale')->name('add-vendor-offline-sales');
+    Route::get('add-vendor-offline-sales', 'storeVendorOfflineSale')->name('add-vendor-offline-sales');
 
 });
 
