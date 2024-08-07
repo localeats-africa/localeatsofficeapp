@@ -97,31 +97,40 @@
                                     </div>
                                     <div class="card-body py-3">
 
-                                    <div class="row">
-                                                <p><h5>Staff: </h5></p>
-                                                <div class="col-md-4">
+                                          <div class="row">
+                                                <p>
+                                                <h5>Staff: </h5>
+                                                </p>
+                                                <div class="col-md-3">
                                                       <div class="form-group">
                                                             <h6>Name</h6>
-                                                            <input type="text" value="{{$user->fullname}}" name="fullname"
-                                                                  class="form-control" disable>
+                                                            <input type="text" value="{{$user->fullname}}"
+                                                                  name="fullname" class="form-control" disable>
                                                       </div>
                                                 </div>
 
-                                                <div class="col-md-4">
+                                                <div class="col-md-3">
                                                       <div class="form-group">
                                                             <h6>Email </h6>
-                                                            <input type="text" value="{{$user->email}}"
-                                                                  name="email" class="form-control">
+                                                            <input type="text" value="{{$user->email}}" name="email"
+                                                                  class="form-control">
+                                                      </div>
+                                                </div>
+                                                <div class="col-md-3">
+                                                      <div class="form-group">
+                                                            <h6>Current role </h6>
+                                                            <input type="text" class="form-control" disabled
+                                                                  value="{{$staffRoleName}}">
                                                       </div>
                                                 </div>
 
-                                                <div class="col-md-4">
+                                                <div class="col-md-3">
                                                       <div class="form-group">
-                                                            <h6>Assign a role </h6>
+                                                            <h6>Assign new role </h6>
                                                             <select class="js-example-basic-single" style="width:100%"
                                                                   name="role" id="bank">
-                                                                  <option value="{{$staffRoleName}}">
-                                                                        {{$staffRoleName}}
+                                                                  <option value="">
+                                                                        Search / Choose
                                                                   </option>
                                                                   @foreach($userRole as $data)
                                                                   <option value="{{$data->id}}">
@@ -131,9 +140,9 @@
                                                       </div>
                                                 </div>
 
-                                             
+
                                           </div>
-                                 
+
 
                                           <div class="row">
                                                 <p></p>
