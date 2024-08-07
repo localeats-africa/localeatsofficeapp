@@ -1877,14 +1877,14 @@ class HomeController extends Controller
         $salesArray = array_filter($soup);
         foreach($salesArray  as $key => $value){
             $salesItem =[
-                'soup_qty' =>$request->soup_qty[$key],
-                'soup' => 'plate of '. $salesArray[$key],
-                'swallow_qty' =>$request->swallow_qty[$key],
-                'swallow' =>$swallow [$key],
-                'protein_qty' =>$request->protein_qty[$key],
-                'protein' =>$protein[$key],
-                'others_qty' =>$request->others_qty[$key],
-                'others' =>$others[$key],
+                'soup_qty'      =>$request->soup_qty[$key],
+                'soup'          => 'plate of '. $salesArray[$key],
+                'swallow_qty'   =>$request->swallow_qty[$key],
+                'swallow'       =>$swallow [$key],
+                'protein_qty'   =>$request->protein_qty[$key],
+                'protein'       =>$protein[$key],
+                'others_qty'    =>$request->others_qty[$key],
+                'others'        =>$others[$key],
                 ] ;
         }
 
