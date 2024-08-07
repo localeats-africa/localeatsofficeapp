@@ -1846,44 +1846,44 @@ class HomeController extends Controller
         // $foodItem->item         = $request->item;
         // $foodItem->added_by     = Auth::user()->id;
         // $foodItem->save();
-        if(empty($request->soup)){
+        if(empty($request->input('soup'))){
             $soup = ' ';
         }
         else{
-            $soup = $request->soup; 
+            $soup = $request->input('soup'); 
         }
 
-        if(empty($request->swallow)){
+        if(empty($request->input('swallow'))){
             $swallow = ' ';
         }
         else{
-            $swallow = $request->swallow; 
+            $swallow = $request->input('swallow'); 
         }
 
-        if(empty($request->protein)){
+        if(empty($request->input('protein'))){
             $protein = ' ';
         }
         else{
-            $protein = $request->protein; 
+            $protein = $request->input('protein'); 
         }
 
-        if(empty($request->others)){
+        if(empty($request->input('others'))){
             $others = ' ';
         }
         else{
-            $others = $request->others; 
+            $others = $request->input('others'); 
         }
         $salesArray=[];
         $salesArray = array_filter($soup);
         foreach($salesArray  as $key => $value){
             $salesItem =[
-                'soup_qty'      =>$request->soup_qty[$key],
+                'soup_qty'      =>$request->input('soup_qty')[$key],
                 'soup'          => 'plate of '. $salesArray[$key],
-                'swallow_qty'   =>$request->swallow_qty[$key],
+                'swallow_qty'   =>$request->input('swallow_qty')[$key],
                 'swallow'       =>$swallow [$key],
-                'protein_qty'   =>$request->protein_qty[$key],
+                'protein_qty'   =>$request->input('protein_qty')[$key],
                 'protein'       =>$protein[$key],
-                'others_qty'    =>$request->others_qty[$key],
+                'others_qty'    =>$request->input('others_qty')[$key],
                 'others'        =>$others[$key],
                 ] ;
         }
