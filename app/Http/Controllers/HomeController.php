@@ -1873,7 +1873,7 @@ class HomeController extends Controller
         else{
             $others = $request->others; 
         }
-
+        $salesArray=[];
         $salesArray = array_filter($soup);
         foreach($salesArray  as $key => $value){
             $salesItem =[
