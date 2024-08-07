@@ -116,8 +116,15 @@
                                                 </div>
 
                                                 <i class="remove"></i>
-                                                <input class="form-control" type="number" name="soup_qty[]" value="1"
-                                                      style="width:85px;" placeholder="Quantity">
+                                                <!-- <input class="form-control" type="number" name="soup_qty[]" value="1"
+                                                      style="width:85px;" placeholder="Quantity"> -->
+                                                <div class="value-button" id="decrease" onclick="decreaseMin()"
+                                                      value="decrease Value">-</div>
+                                                <input type="number"  name="soup_qty[]" value="1"
+                                                      id="min">
+
+                                                <div class="value-button" id="increase" onclick="increaseMin()"
+                                                      value="Increase Value">+</div>
                                           </li>
                                           @endforeach
                                     </ul>
