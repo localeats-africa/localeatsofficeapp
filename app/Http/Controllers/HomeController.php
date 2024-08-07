@@ -1883,7 +1883,7 @@ class HomeController extends Controller
                 'swallow' =>$swallow [$key],
                 'protein_qty' =>$request->protein_qty[$key],
                 'protein' =>$protein[$key],
-                 'others_qty' =>$request->others_qty[$key],
+                'others_qty' =>$request->others_qty[$key],
                 'others' =>$others[$key],
                 ] ;
         }
