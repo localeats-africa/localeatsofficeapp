@@ -1878,7 +1878,7 @@ class HomeController extends Controller
         foreach($salesArray  as $key => $value){
             $salesItem =[
                 'soup_qty'      =>$request->soup_qty[$key],
-                'soup'          => 'plate of '. $request->soup[$key],
+                'soup'          => 'plate of '. $salesArray[$key],
                 'swallow_qty'   =>$request->swallow_qty[$key],
                 'swallow'       =>$swallow [$key],
                 'protein_qty'   =>$request->protein_qty[$key],
@@ -1888,7 +1888,7 @@ class HomeController extends Controller
                 ] ;
         }
 
-       // dd(json_encode($salesItem));
+       dd(json_encode($salesItem));
         $sales = new OfflineSales();
         $sales->vendor_id           = $request->vendor;
         $sales->swallow             =  $salesItem['swallow'];
