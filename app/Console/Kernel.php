@@ -22,6 +22,8 @@ class Kernel extends ConsoleKernel
         ->hourly();
 
         $schedule->command('cache:clear')->hourly();
+        $schedule->command('route:clear')->hourly();
+        $schedule->command('config:clear')->hourly();
     }
 
     /**
