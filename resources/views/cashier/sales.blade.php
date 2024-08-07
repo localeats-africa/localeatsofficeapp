@@ -93,7 +93,7 @@
 
             <div class="row ">
 
-                  <form method="post" action="{{ route('add-vendor-offline-sales') }}" name="submit"
+                  <form method="get" action="{{ route('add-vendor-offline-sales') }}" name="submit"
                         enctype="multipart/form-data">
                         @csrf
                         {{csrf_field()}}
