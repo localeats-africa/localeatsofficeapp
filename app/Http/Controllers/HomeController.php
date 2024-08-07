@@ -1787,7 +1787,7 @@ class HomeController extends Controller
 
         $sales = OfflineSales::where('vendor_id', $vendor_id)
         ->where('deleted_at', '=', null)
-        ->orderBy('sales_date', 'desc')
+        ->orderBy('created_at', 'desc')
         ->where(function ($query) use ($search) {  // <<<
         $query->where('sales_item', 'LIKE', '%'.$search.'%')
         ->orWhere('price', 'LIKE', '%'.$search.'%')
@@ -1874,6 +1874,10 @@ class HomeController extends Controller
             $others = $request->input('others'); 
         }
         $salesArray=[];
+
+        foreach($request->input('soup') as $Fsoup){
+            $Soup = $Fsoup;
+        }
         $salesArray = array_filter($soup);
         foreach($salesArray  as $key => $value){
             $salesItem =[
@@ -1888,7 +1892,7 @@ class HomeController extends Controller
                 ] ;
         }
 
-       dd(json_encode($salesItem));
+     //  dd(json_encode($salesItem));
         $sales = new OfflineSales();
         $sales->vendor_id           = $request->vendor;
         $sales->swallow             =  $salesItem['swallow'];
