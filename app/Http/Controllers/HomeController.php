@@ -1786,11 +1786,12 @@ class HomeController extends Controller
         $search = $request->input('search');
 
         $sales = OfflineSales::where('vendor_id', $vendor_id)
+        ->where('deleted_at', '=', null)
         ->orderBy('sales_date', 'desc')
         ->where(function ($query) use ($search) {  // <<<
         $query->where('sales_item', 'LIKE', '%'.$search.'%')
         ->orWhere('price', 'LIKE', '%'.$search.'%')
-        ->orWhere('created_at', 'LIKE', '%'.$search.'%');
+        ->orWhere('sales_date', 'LIKE', '%'.$search.'%');
         })
         ->paginate($perPage)->appends(['per_page'   => $perPage]);
         $pagination = $sales->appends ( array ('search' => $search) );
