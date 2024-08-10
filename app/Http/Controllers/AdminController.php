@@ -425,7 +425,7 @@ class AdminController extends Controller
             $monthlist = array_map(fn($month) => Carbon::create(null, $month)->format('M'), range(1, 12));
             $salesYear =  Arr::pluck($chartYearlyTotalSales, 'year');
             $data = [
-             'month' =>  $monthlist ,
+             'month' =>  $chartSalesMonth ,
              'sales' =>  $chartSalesVolume,
              'total' =>  $chartSalesTotal,
             ];
@@ -531,7 +531,7 @@ class AdminController extends Controller
             $barChartEdenSales = Arr::pluck($edenOrder, 'sales');
       
         $barChartData = [
-            'months'        =>  $monthlist,
+            'months'        =>  $chartSalesMonth,
             'chocdekSales'  =>  $barChartChowdeckSales,
             'glovoSales'    =>  $barChartGlovoSales,
             'edenSales'     =>  $barChartEdenSales,
