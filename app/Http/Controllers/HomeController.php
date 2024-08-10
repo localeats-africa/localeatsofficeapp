@@ -26,6 +26,7 @@ use App\Models\Commission;
 use App\Imports\OrderList;
 use App\Imports\OrdersImportClass;
 use App\Imports\FoodMenuImportClass;
+use App\Imports\ImportPastInvoices;
 use App\Exports\ExportOrderList;
 use App\Exports\ExportInvoiceTemplate;
 use App\Models\Invoice;
@@ -2020,10 +2021,9 @@ class HomeController extends Controller
                     'added_by'              => Auth::user()->id,
                     'sales_date'            =>date("Y-m-d", strtotime($request->date))
                     ];
-}
+        }
        
         \DB::table('offline_sales')->insert($others);
- 
         if($others){
             return redirect()->back()->with('sales-status', 'You have successfully added a others');
         }
@@ -2042,8 +2042,6 @@ class HomeController extends Controller
             ->pluck('role_name')->first();
 
             $sales = offlineSales::find($id);
-      
-
             return view('cashier.edit-offline-sales', compact('sales', 
             'role', 'name')); 
         }
@@ -2051,14 +2049,8 @@ class HomeController extends Controller
         }
   }
 
-
     public function updateOfflineSales(Request $request, $id)
     {
-        // $this->validate($request, [
-        //     'fullname'      => 'max:255',
-        //     'email'         => 'max:255',
-        //     'role'          => 'max:255',
-        //     ]);
         $soupPrice = DB::table('offline_sales')
         ->where('id', $id)
         ->get()->pluck('soup_price')->first();
@@ -2075,7 +2067,6 @@ class HomeController extends Controller
         ->where('id', $id)
         ->get()->pluck('others_price')->first();
 
-        
             $sales = offlineSales::find($id);
             if(!empty($sales->soup_qty)){
                 $sales->soup_qty         = $request->soup;
@@ -2122,7 +2113,57 @@ class HomeController extends Controller
     }
 
     public function exportInvoiceTemplate(Request $request){
-       
         return Excel::download(new ExportInvoiceTemplate(), 'invoice-template.xlsx');
+    }
+
+    public function  uploadPastInvoices(Request $request, $vendorID){
+        if(Auth::user()){
+            $name = Auth::user()->name;
+            $user_id = Auth::user()->id;
+            $role = DB::table('role')->select('role_name')
+            ->join('users', 'users.role_id', 'role.id')
+            ->where('users.id', $user_id)
+            ->pluck('role_name')->first();
+    
+            $status = DB::table('vendor')->where('vendor.id', $vendorID)
+            ->select('*')->pluck('vendor_status')->first();
+    
+            $vendorLogo = Vendor::where('id', $vendorID)
+            ->get('vendor_logo');
+    
+            $vendorRef = DB::table('vendor')->where('id', $vendorID)
+            ->select('*')->pluck('vendor_ref')->first();
+               
+            $vendorName = DB::table('vendor')->where('id', $vendorID)
+            ->select('*')->pluck('vendor_name')->first();
+
+            return view('upload-old-invoices', compact('role', 'name', 
+            'vendorLogo', 'vendorRef', 'vendorName',  'status', 
+            'vendorID'));
+            }
+    }
+
+    public function storePastInvoices(Request $request){
+         // Validate the uploaded file
+         $request->validate([
+          'vendor'      => 'required|string|max:255',
+          'file'        => 'required|mimes:xlsx,xls',
+        ]);
+        $characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
+        // generate a pin based on 2 * 7 digits + a random character
+        $pin = mt_rand(1000000, 9999999);
+        $invoice_ref ='L'.str_shuffle($pin);
+       
+        $file           = $request->file('file');
+        $vendor_id      = $request->vendor;
+   
+        $import =  Excel::import(new ImportPastInvoices($vendor_id, $invoice_ref), $file);   
+  
+      if($import){
+        return redirect()->back()->with('invoice-status',  ' Record saved successfully!');
+      }
+      else{
+        return redirect()->back()->with('invoice-error', 'Opps! something went wrong');
+      }
     }
 }//class

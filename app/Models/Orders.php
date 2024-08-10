@@ -27,5 +27,6 @@ class Orders extends Model
         'number_of_order_merge',
         'payout',
         'payment_status',
+        'invoice_ref',
     ];
 }

@@ -152,6 +152,10 @@
                                           <!-- Download SVG icon from http://tabler-icons.io/i/phone -->
                                     <small>Create Invoice </small> <small class="text-success"> &nbsp;<i class="fa fa-plus"></i></small>  
                                     </a>
+                                    <a href="upload-past-invoice/{{$data->id}}" class="card-btn " style="text-decoration:none;" title="Invoice">
+                                          <!-- Download SVG icon from http://tabler-icons.io/i/phone -->
+                                    <small>Past Invoices </small>   
+                                    </a>
                               </div>
 
 
