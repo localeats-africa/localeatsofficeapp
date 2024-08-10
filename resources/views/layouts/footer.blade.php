@@ -13,6 +13,7 @@
 </div>
 </div>
 
+
 <script src="{{ asset('assets/vendors/js/vendor.bundle.base.js')}}"></script>
 <!-- endinject -->
 <!-- Plugin js for this page -->
@@ -36,37 +37,89 @@
 <!-- <script src="{{ asset('assets/js/dashboard.js"></script> -->
 <!-- End custom js for this page -->
 <script>
-// loan type maximum duration
-function increaseMax() {
-      var value = parseInt(document.getElementById('max').value, 10);
+// loan type minimum duration
+
+function increaseSoup(data){
+      soup = document.querySelector('#soup-' + data);
+      var value = parseInt(soup.value, 10);
       value = isNaN(value) ? 0 : value;
       value++;
-      document.getElementById('max').value = value;
+      soup.value = value;
+
 }
 
-function decreaseMax() {
-      var value = parseInt(document.getElementById('max').value, 10);
+function decreaseSoup(data){
+      soup = document.querySelector('#soup-' + data);
+      var value = parseInt(soup.value, 10);
       value = isNaN(value) ? 0 : value;
       value < 1 ? value = 1 : '';
       value--;
-      document.getElementById('max').value = value;
+      soup.value = value;
+
 }
 </script>
 
 <script>
 // loan type minimum duration
-function increaseMin() {
-      var value = parseInt(document.getElementById('min').value, 10);
+function increaseSwallow(data) {
+      swallow = document.querySelector('#swallow-' + data);
+      var value = parseInt(swallow.value, 10);
       value = isNaN(value) ? 0 : value;
       value++;
-      document.getElementById('min').value = value;
+      swallow.value = value;
+
 }
 
-function decreaseMin() {
-      var value = parseInt(document.getElementById('min').value, 10);
+function decreaseSwallow(data) {
+      swallow = document.querySelector('#swallow-' + data);
+      var value = parseInt(swallow.value, 10);
       value = isNaN(value) ? 0 : value;
       value < 1 ? value = 1 : '';
       value--;
-      document.getElementById('min').value = value;
+      swallow.value = value;
+}
+</script>
+
+<script>
+// loan type minimum duration
+function increaseProtein(data) {
+      protein = document.querySelector('#protein-' + data);
+      var value = parseInt(protein.value, 10);
+      value = isNaN(value) ? 0 : value;
+      value++;
+      protein.value = value;
+
+}
+
+function decreaseProtein(data) {
+      protein = document.querySelector('#protein-' + data);
+      var value = parseInt(protein.value, 10);
+      value = isNaN(value) ? 0 : value;
+      value < 1 ? value = 1 : '';
+      value--;
+      protein.value = value;
+
+}
+</script>
+
+<script>
+// loan type minimum duration
+function increaseOthers(data) {
+      others = document.querySelector('#others-' + data);
+      var value = parseInt(others.value, 10);
+      value = isNaN(value) ? 0 : value;
+      value++;
+      others.value = value;
+
+}
+
+function decreaseOthers(data) {
+      others = document.querySelector('#others-' + data);
+      var value = parseInt(others.value, 10);
+      value = isNaN(value) ? 0 : value;
+      value < 1 ? value = 1 : '';
+      value--;
+      others.value = value;
+
 }
 </script>
