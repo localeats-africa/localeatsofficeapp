@@ -29,6 +29,7 @@ use App\Imports\FoodMenuImportClass;
 use App\Imports\OrdersImportClass;
 use App\Imports\ImportExpensesList;
 use App\Imports\ImportOfflineFoodMenu;
+use App\Exports\ExportOfflineFoodMenu;
 use App\Models\Invoice;
 use App\Models\Payout;
 use App\Models\ExpensesList;
@@ -1482,6 +1483,11 @@ class AdminController extends Controller
             else{
                 return redirect()->back()->with('update-error', 'Opps! something went wrong'); 
             }
+    }
+
+    public function exportOfflineFoodMenuTemplate(Request $request){
+       
+        return Excel::download(new ExportOfflineFoodMenu(), 'offline-foodmenu-template.xlsx');
     }
 
 }//class

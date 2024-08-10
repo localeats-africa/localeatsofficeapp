@@ -9,8 +9,15 @@
       <div class="content-wrapper">
             <div class="page-header">
                   <h3 class="page-title">
-                       Create Offline FoodMenu
+                        Create Offline FoodMenu
                   </h3>
+                  <nav aria-label="breadcrumb">
+                        <ul class="breadcrumb">
+                              <li class="breadcrumb-item active" aria-current="page">
+                                    <a class="" href="{{ url('export-offline-foodmenu-template') }}">Download Excel Template</a>
+                              </li>
+                        </ul>
+                  </nav>
             </div>
 
             <p></p>
@@ -65,21 +72,23 @@
             </div>
             <!---end Alert --->
 
-          
 
-<!---bulk Upload--->
-<p>
+
+            <!---bulk Upload--->
+            <p>
             <h4>Bulk Upload:</h4>
             </p>
             <div class="row">
                   <div class="col-md-12  text-danger ">
-                        <small><b>How to upload bulk foodmenu list; A single spreedsheet save with vendor/store name</b></small>
+                        <small><b>How to upload bulk foodmenu list; A single spreedsheet save with vendor/store
+                                    name</b></small>
                         <!-- <p> <img src="/assets/images/bulk-upload-food-menu.png" alt="" style="width:100%;"></p> -->
 
                   </div>
                   <p></p>
             </div>
-            <form method="post" action="{{ route('import-offline-foodmenu') }}" name="submit" enctype="multipart/form-data">
+            <form method="post" action="{{ route('import-offline-foodmenu') }}" name="submit"
+                  enctype="multipart/form-data">
                   @csrf
                   <div class="row ">
                         <div class="col-md-6 grid-margin stretch-card">
