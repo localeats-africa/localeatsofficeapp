@@ -1205,10 +1205,32 @@ class AdminController extends Controller
             ->whereDate('sales_date', '>=', $startDate)                                 
             ->whereDate('sales_date', '<=', $endDate) 
             ->sum('price');
+
+            $totalSoup = OfflineSales::where('vendor_id',  $vendor_id)
+            ->whereDate('sales_date', '>=', $startDate)                                 
+            ->whereDate('sales_date', '<=', $endDate) 
+            ->sum('soup_total');
+
+            $totalSwallow = OfflineSales::where('vendor_id',  $vendor_id)
+            ->whereDate('sales_date', '>=', $startDate)                                 
+            ->whereDate('sales_date', '<=', $endDate) 
+            ->sum('swallow_total');
+
+            $totalProtein = OfflineSales::where('vendor_id',  $vendor_id)
+            ->whereDate('sales_date', '>=', $startDate)                                 
+            ->whereDate('sales_date', '<=', $endDate) 
+            ->sum('protein_total');
+
+            $totalOthers = OfflineSales::where('vendor_id',  $vendor_id)
+            ->whereDate('sales_date', '>=', $startDate)                                 
+            ->whereDate('sales_date', '<=', $endDate) 
+            ->sum('others_total');
         
+            $total =  $vendorTotalSales +  $totalSoup +   $totalSwallow +  $totalProtein + $totalOthers ;
+
             return view('admin.vendor-sales-list', compact('role', 'vendor',
             'vendorSales', 'vendorTotalSales', 'vendorName',
-            'startDate', 'endDate',  'vendorSales', 'vendorTotalSales'));
+            'startDate', 'endDate',  'vendorSales', 'vendorTotalSales', 'total'));
         }
 
         public function newOfflineFoodMenu(Request $request){
