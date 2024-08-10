@@ -128,14 +128,14 @@
   }
 }
 
-#square {
-  font-size: 14px;
+.blinking-text{
+  font-size: 18px;
   -webkit-animation: animationName 1.5s ease 0s infinite normal; /* Safari 4+ */
   -moz-aanimation: animationName 1.5s ease 0s infinite normal; /* Fx 5+ */
   -o-animation: animationName 1.5s ease 0s infinite normal;/* Opera 12+ */
   animation: animationName 1.5s ease 0s infinite normal; 
 }
-#square:hover 
+.blinking-text:hover 
 {
   -webkit-animation-play-state:paused;
   -moz-animation-play-state:paused;
