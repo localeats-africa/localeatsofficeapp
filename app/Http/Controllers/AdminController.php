@@ -188,6 +188,7 @@ class AdminController extends Controller
         ->where('orders.order_amount', '!=', null)
         ->where('orders.order_ref', '!=', null)
         //->whereYear('orders.delivery_date', '=', Carbon::now()->year)
+      //  ->orderBy('created_at', 'desc')
         ->groupby('year')
         ->get();
 
@@ -199,7 +200,7 @@ class AdminController extends Controller
         ->where('orders.order_amount', '!=', null)
         ->where('orders.order_ref', '!=', null)
         //->whereYear('orders.delivery_date', '=', Carbon::now()->year)
-        ->groupby('month')
+        ->groupBy('month')
         ->get();
         $chartSalesMonth = Arr::pluck($chartMonthlyTotalSales, 'month');
         $chartSalesVolume = Arr::pluck($chartMonthlyTotalSales, 'sales_volume');
@@ -208,7 +209,7 @@ class AdminController extends Controller
         $monthlist = array_map(fn($month) => Carbon::create(null, $month)->format('M'), range(1, 12));
         $salesYear =  Arr::pluck($chartYearlyTotalSales, 'year');
         $data = [
-         'month' =>  $monthlist ,
+         'month' =>  $chartSalesMonth ,
          'sales' =>  $chartSalesVolume,
          'total' =>  $chartSalesTotal,
         ];
@@ -300,7 +301,7 @@ class AdminController extends Controller
         $barChartEdenSales = Arr::pluck($edenOrder, 'sales');
   
     $barChartData = [
-        'months'        =>  $monthlist,
+        'months'        =>  $chartSalesMonth,
         'chocdekSales'  =>  $barChartChowdeckSales,
         'glovoSales'    =>  $barChartGlovoSales,
         'edenSales'     =>  $barChartEdenSales,
