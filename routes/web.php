@@ -131,7 +131,9 @@ Route::controller(HomeController::class)->group(function () {
     Route::post('add-vendor-offline-others', 'storeVendorOfflineOthersSales')->name('add-vendor-offline-others');
     Route::get('edit-offline-sales/{id}', 'editOfflineSales')->name('edit-offline-sales');
     Route::post('update-offlinesales/{id}',  'updateOfflineSales')->name('update-offlinesales');
-
+    // past invoices
+    Route::get('upload-past-invoice/{id}',  'uploadPastInvoices')->name('upload-past-invoice');
+    Route::post('past-invoices',  'storePastInvoices')->name('past-invoices');
 });
 
 Route::controller(SuperAdminController::class)->group(function () {
