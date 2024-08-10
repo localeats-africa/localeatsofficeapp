@@ -332,7 +332,15 @@
                                                                                           class="dropdown-menu dropdown-menu-end">
                                                                                           <p class="dropdown-item text-dark"
                                                                                                 style="white-space:wrap; line-height:1.6">
-                                                                                              test
+                                                                                                <ul  >
+                                                                                                @foreach(\App\Models\OrderExtraFoodMenu::select('foodmenu')->where('foodmenu', '!=', null)->where('order_id', $data->id)->get() as $food)
+                                                                                                <li style="margin-left:20px;  margin-right:20px;">    
+                                                                                                      {{ $food['foodmenu'] }}
+                                                                                                </li>
+                                                                                                 @endforeach      
+                                                                                              
+                                                                                                </ul>
+                                                                                    
                                                                                           </p>
                                                                                     </div>
                                                                               </div>

@@ -36,6 +36,7 @@ use App\Models\ExpensesList;
 use App\Models\OfflineSales;
 use App\Models\VendorExpenses;
 use App\Models\OfflineFoodMenu;
+use App\Models\OrderExtraFoodMenu;
 
 use Excel;
 use Auth;
@@ -950,10 +951,15 @@ class HomeController extends Controller
             ->pluck('payment_status')->first();
             //dd($invoicePaymentStatus);
 
+            $extraFoodMenu = OrderExtraFoodMenu::join('orders', 'orders.id' ,  '=', 'order_extra_foodmenu_picked.order_id' )
+            ->where('order_extra_foodmenu_picked.foodmenu', '!=', null)
+            ->get();
+            
+
             $orders = DB::table('orders')
             ->Join('platforms', 'orders.platform_id', '=', 'platforms.id')
             ->Join('commission', 'orders.id', '=', 'commission.order_id')
-            //->leftJoin('merge_invoices', 'orders.id', '=', 'merge_invoices.order_id')
+           //->leftJoin('merge_invoices', 'orders.id', '=', 'merge_invoices.order_id')
             ->where('orders.vendor_id', $vendor)
             ->where('orders.invoice_ref', $invoice_ref)
             ->where('orders.deleted_at', null)
@@ -968,7 +974,7 @@ class HomeController extends Controller
          'vendorEmail', 'vendorFname', 'vendorLname', 'orders',
          'totalComm', 'totalPlatformComm', 'sumAmount', 'sumFoodPrice', 'sumExtra',
         'vendorFoodPrice', 'payout', 'invoiceRef', 'vendorID', 'invoicePaymentStatus',
-        'commissionPiad') );
+        'commissionPiad', 'extraFoodMenu') );
     }
 
     public function updateMergeInvoiceFood(Request $request){
@@ -1057,6 +1063,7 @@ class HomeController extends Controller
         $order_id       = $request->order;
         $vendor         = $request->vendor;
 
+       // dd( $extra_id);
         $platformName = Commission::where('order_id', $order_id)
         ->where('vendor_id', $vendor)
         ->pluck('platform_name')->first();
@@ -1071,8 +1078,20 @@ class HomeController extends Controller
          $updateOrder = Orders::where('id', $order_id)
          ->where('vendor_id', $vendor)
          ->update([
-             'extra'     => $addExtra,
+             'extra'                => $addExtra,
          ]);
+
+         $extraFoodMenu = DB::table('food_menu')->whereIn('id', $extra_id)
+         ->get();
+
+        foreach($extraFoodMenu as  $value){
+            $storeExtraMenu = new OrderExtraFoodMenu();
+            $storeExtraMenu->order_id      =   $order_id ;
+            $storeExtraMenu->foodmenu_id   =   $value->id;
+            $storeExtraMenu->foodmenu      =   $value->item  ;
+            $storeExtraMenu->save();
+        }
+
          if($updateOrder){
 
             if($platformName == 'Chowdeck' ){
@@ -1428,6 +1447,14 @@ class HomeController extends Controller
         $extra = Orders::where('id', $id)->pluck('extra')->first();
         $foodPrice = Orders::where('id', $id)->pluck('food_price')->first();
          if($order){
+            // reset extra menu
+          OrderExtraFoodMenu::where('order_id', $id)
+            ->update([
+                'foodmenu_id' => null,
+                'foodmenu' => null
+            ]);
+            
+    
             $platformName = Commission::where('order_id', $id)
             ->pluck('platform_name')->first();
 
