@@ -357,6 +357,13 @@ class AdminController extends Controller
          ->whereDate('delivery_date', '>=', $startDate)                                 
          ->whereDate('delivery_date', '<=', $endDate) 
          ->count();
+         dd( $countAllOrder );
+
+        //  $countAllOrder = Orders::where('deleted_at', null)
+        //  ->where('orders.order_amount', '!=', null)
+        //  ->where('orders.order_ref', '!=', null)
+        //  //->whereYear('orders.delivery_date', '=', Carbon::now()->year)
+        //  ->count();
  
          $getOrderItem = DB::table('orders')
          ->where('deleted_at', null)
