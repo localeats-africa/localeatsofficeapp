@@ -1226,7 +1226,7 @@ class AdminController extends Controller
             ->whereDate('sales_date', '<=', $endDate) 
             ->sum('others_total');
         
-            $total =  $vendorTotalSales +  $totalSoup +   $totalSwallow +  $totalProtein + $totalOthers ;
+            $total =  $vendorTotalSales + $totalSoup + $totalSwallow + $totalProtein + $totalOthers ;
 
             return view('admin.vendor-sales-list', compact('role', 'vendor',
             'vendorSales', 'vendorTotalSales', 'vendorName',
@@ -1315,11 +1315,80 @@ class AdminController extends Controller
         ->whereDate('sales_date', '<=', $endDate) 
         ->sum('price');
 
-        $profitAndLoss = $vendorTotalSales - $vendorTotalExpense;
+        $totalSoup = OfflineSales::where('vendor_id',  $vendor_id)
+        ->whereDate('sales_date', '>=', $startDate)                                 
+        ->whereDate('sales_date', '<=', $endDate) 
+        ->sum('soup_total');
+
+        $totalSwallow = OfflineSales::where('vendor_id',  $vendor_id)
+        ->whereDate('sales_date', '>=', $startDate)                                 
+        ->whereDate('sales_date', '<=', $endDate) 
+        ->sum('swallow_total');
+
+        $totalProtein = OfflineSales::where('vendor_id',  $vendor_id)
+        ->whereDate('sales_date', '>=', $startDate)                                 
+        ->whereDate('sales_date', '<=', $endDate) 
+        ->sum('protein_total');
+
+        $totalOthers = OfflineSales::where('vendor_id',  $vendor_id)
+        ->whereDate('sales_date', '>=', $startDate)                                 
+        ->whereDate('sales_date', '<=', $endDate) 
+        ->sum('others_total');
+    
+        $total =  $vendorTotalSales + $totalSoup + $totalSwallow + $totalProtein + $totalOthers ;
+        $profitAndLoss = $total - $vendorTotalExpense;
+
+        $soupSold = OfflineSales::where('vendor_id',  $vendor_id)
+        ->whereDate('sales_date', '>=', $startDate)                                 
+        ->whereDate('sales_date', '<=', $endDate) 
+        ->sum('soup_qty');
+
+        $swallowSold = OfflineSales::where('vendor_id',  $vendor_id)
+        ->whereDate('sales_date', '>=', $startDate)                                 
+        ->whereDate('sales_date', '<=', $endDate) 
+        ->sum('swallow_qty');
+
+        $proteinSold = OfflineSales::where('vendor_id',  $vendor_id)
+        ->whereDate('sales_date', '>=', $startDate)                                 
+        ->whereDate('sales_date', '<=', $endDate) 
+        ->sum('protein_qty');
+
+        $othersSold = OfflineSales::where('vendor_id',  $vendor_id)
+        ->whereDate('sales_date', '>=', $startDate)                                 
+        ->whereDate('sales_date', '<=', $endDate) 
+        ->sum('others_qty');
+
+        $totalItemSold =   $soupSold + $swallowSold + $proteinSold + $othersSold ;
+
+        $plateOfSoup = OfflineSales::where('vendor_id',  $vendor_id)
+        ->whereDate('sales_date', '>=', $startDate)                                 
+        ->whereDate('sales_date', '<=', $endDate) 
+        ->where('soup', '!=', null)
+        ->get('soup')->pluck('soup');
+        
+        $plateOfRice = OfflineSales::where('vendor_id',  $vendor_id)
+        ->whereDate('sales_date', '>=', $startDate)                                 
+        ->whereDate('sales_date', '<=', $endDate) 
+        ->where('others', '!=', null)
+        ->where('others', 'rice')
+        ->count();
+
+       $quantityOfRiceSold =  OfflineSales::where('vendor_id',  $vendor_id)
+        ->whereDate('sales_date', '>=', $startDate)                                 
+        ->whereDate('sales_date', '<=', $endDate) 
+        ->where('others', '!=', null)
+        ->where('others', 'rice')
+        ->sum('others_qty');
+
+        //$stringSoup =  $plateOfSoup;
+        $soupString = 'plate';
+        $countPlateOfSoup = substr_count($plateOfSoup, $soupString);
+        $countAllPlates = $soupSold + $quantityOfRiceSold;
 
         return view('admin.profit-and-loss', compact('role', 'vendor',
        'vendorTotalExpense', 'vendorTotalSales', 'profitAndLoss', 
-        'vendorName', 'startDate', 'endDate'));
+        'vendorName', 'startDate', 'endDate', 'total', 
+        'totalItemSold', 'countAllPlates'));
     }
 
     public function vendorInvoiceCommisionPaid(Request $request){
