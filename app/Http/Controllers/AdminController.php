@@ -309,7 +309,6 @@ class AdminController extends Controller
         'chocdekSales'  =>  $barChartChowdeckSales,
         'glovoSales'    =>  $barChartGlovoSales,
         'edenSales'     =>  $barChartEdenSales,
-        'chowdeckCount' => $barChartChowdeckSCount,
     ]; 
     
         return view('admin.admin', compact('name', 'role', 'countVendor',
