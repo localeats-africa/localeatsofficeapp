@@ -9,8 +9,15 @@
       <div class="content-wrapper">
             <div class="page-header">
                   <h3 class="page-title">
-                       Create Offline FoodMenu
+                        Create Offline FoodMenu
                   </h3>
+                  <nav aria-label="breadcrumb">
+                        <ul class="breadcrumb">
+                              <li class="breadcrumb-item active" aria-current="page">
+                                    <a class="" href="{{ url('export-offline-foodmenu-template') }}">Download Excel Template</a>
+                              </li>
+                        </ul>
+                  </nav>
             </div>
 
             <p></p>
@@ -65,61 +72,23 @@
             </div>
             <!---end Alert --->
 
-            <div class="row ">
 
-            <form method="post" action="{{ route('add-offline-foodmenu') }}" name="submit" enctype="multipart/form-data">
-                  @csrf
-                  {{csrf_field()}}
-                        <div class="row">
-                              <div class="col-md-4 col-12">
-                                    <div class="form-group">
-                                    <label for="">Vendor</label>
-                                    <br>
-                                    <select class="js-example-basic-single text-secondary" style="width:100%"
-                                          name="vendor" id="vendor">
-                                          <option>Choose</option>
-                                          @foreach($vendor as $data)
-                                          <option value="{{$data->id}}">
-                                                {{$data->vendor_name}}
-                                          </option>
-                                          @endforeach
-                                    </select>
-                                    </div>
-                              </div>
 
-                              <div class="col-md-8 col-12">
-                                    <div class="form-group">
-                                    <label for="">FoodMenu / Item</label>
-                                    <br>
-                                    <div class="input-group date">
-                                          <input type="text" class="form-control" name="item" placeholder="Enter expenses" />
-                                          <button type="submit" name="submit"
-                                          class="btn bg-gradient-primary btn-sm  text-white">Submit</button>
-                                    </div>
-                                    </div>
-                              </div>
-
-                              
-
-                        </div>
-                        <!---end row--->
-                  </form>
-            </div>
-            <!---end row --->
-
-<!---bulk Upload--->
-<p>
+            <!---bulk Upload--->
+            <p>
             <h4>Bulk Upload:</h4>
             </p>
             <div class="row">
                   <div class="col-md-12  text-danger ">
-                        <small><b>How to upload bulk foodmenu list; A single spreedsheet save with vendor/store name</b></small>
+                        <small><b>How to upload bulk foodmenu list; A single spreedsheet save with vendor/store
+                                    name</b></small>
                         <!-- <p> <img src="/assets/images/bulk-upload-food-menu.png" alt="" style="width:100%;"></p> -->
 
                   </div>
                   <p></p>
             </div>
-            <form method="post" action="{{ route('import-offline-foodmenu') }}" name="submit" enctype="multipart/form-data">
+            <form method="post" action="{{ route('import-offline-foodmenu') }}" name="submit"
+                  enctype="multipart/form-data">
                   @csrf
                   <div class="row ">
                         <div class="col-md-6 grid-margin stretch-card">

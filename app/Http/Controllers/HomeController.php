@@ -36,6 +36,7 @@ use App\Models\ExpensesList;
 use App\Models\OfflineSales;
 use App\Models\VendorExpenses;
 use App\Models\OfflineFoodMenu;
+use App\Models\OrderExtraFoodMenu;
 
 use Excel;
 use Auth;
@@ -950,10 +951,15 @@ class HomeController extends Controller
             ->pluck('payment_status')->first();
             //dd($invoicePaymentStatus);
 
+            $extraFoodMenu = OrderExtraFoodMenu::join('orders', 'orders.id' ,  '=', 'order_extra_foodmenu_picked.order_id' )
+            ->where('order_extra_foodmenu_picked.foodmenu', '!=', null)
+            ->get();
+            
+
             $orders = DB::table('orders')
             ->Join('platforms', 'orders.platform_id', '=', 'platforms.id')
             ->Join('commission', 'orders.id', '=', 'commission.order_id')
-            //->leftJoin('merge_invoices', 'orders.id', '=', 'merge_invoices.order_id')
+           //->leftJoin('merge_invoices', 'orders.id', '=', 'merge_invoices.order_id')
             ->where('orders.vendor_id', $vendor)
             ->where('orders.invoice_ref', $invoice_ref)
             ->where('orders.deleted_at', null)
@@ -968,7 +974,7 @@ class HomeController extends Controller
          'vendorEmail', 'vendorFname', 'vendorLname', 'orders',
          'totalComm', 'totalPlatformComm', 'sumAmount', 'sumFoodPrice', 'sumExtra',
         'vendorFoodPrice', 'payout', 'invoiceRef', 'vendorID', 'invoicePaymentStatus',
-        'commissionPiad') );
+        'commissionPiad', 'extraFoodMenu') );
     }
 
     public function updateMergeInvoiceFood(Request $request){
@@ -1057,6 +1063,7 @@ class HomeController extends Controller
         $order_id       = $request->order;
         $vendor         = $request->vendor;
 
+       // dd( $extra_id);
         $platformName = Commission::where('order_id', $order_id)
         ->where('vendor_id', $vendor)
         ->pluck('platform_name')->first();
@@ -1071,8 +1078,20 @@ class HomeController extends Controller
          $updateOrder = Orders::where('id', $order_id)
          ->where('vendor_id', $vendor)
          ->update([
-             'extra'     => $addExtra,
+             'extra'                => $addExtra,
          ]);
+
+         $extraFoodMenu = DB::table('food_menu')->whereIn('id', $extra_id)
+         ->get();
+
+        foreach($extraFoodMenu as  $value){
+            $storeExtraMenu = new OrderExtraFoodMenu();
+            $storeExtraMenu->order_id      =   $order_id ;
+            $storeExtraMenu->foodmenu_id   =   $value->id;
+            $storeExtraMenu->foodmenu      =   $value->item  ;
+            $storeExtraMenu->save();
+        }
+
          if($updateOrder){
 
             if($platformName == 'Chowdeck' ){
@@ -1428,6 +1447,14 @@ class HomeController extends Controller
         $extra = Orders::where('id', $id)->pluck('extra')->first();
         $foodPrice = Orders::where('id', $id)->pluck('food_price')->first();
          if($order){
+            // reset extra menu
+          OrderExtraFoodMenu::where('order_id', $id)
+            ->update([
+                'foodmenu_id' => null,
+                'foodmenu' => null
+            ]);
+            
+    
             $platformName = Commission::where('order_id', $id)
             ->pluck('platform_name')->first();
 
@@ -1764,33 +1791,37 @@ class HomeController extends Controller
 
         $vendorSwallow = OfflineFoodMenu::where('vendor_id', $vendor_id)
         ->where('swallow', '!=', null)
-        ->orderBy('created_at', 'desc')
-        ->get('swallow', 'id');
+        //->orderBy('created_at', 'desc')
+        ->get();
 
         $vendorSoup= OfflineFoodMenu::where('vendor_id', $vendor_id)
         ->where('soup', '!=', null)
         ->orderBy('created_at', 'desc')
-        ->get('soup', 'id');
+        ->get();
 
         $vendorProtein= OfflineFoodMenu::where('vendor_id', $vendor_id)
         ->where('protein', '!=', null)
-        ->orderBy('created_at', 'desc')
-        ->get('protein', 'id');
+        //->orderBy('created_at', 'desc')
+        ->get();
 
         $vendorOthersFoodItem= OfflineFoodMenu::where('vendor_id', $vendor_id)
         ->where('others', '!=', null)
-        ->orderBy('created_at', 'desc')
-        ->get('others', 'id');
+        //->orderBy('created_at', 'desc')
+        ->get();
 
         $perPage = $request->perPage ?? 10;
         $search = $request->input('search');
 
         $sales = OfflineSales::where('vendor_id', $vendor_id)
-        ->orderBy('sales_date', 'desc')
+        ->where('deleted_at', '=', null)
+        ->orderBy('created_at', 'desc')
         ->where(function ($query) use ($search) {  // <<<
-        $query->where('sales_item', 'LIKE', '%'.$search.'%')
+        $query->where('soup', 'LIKE', '%'.$search.'%')
+        ->orWhere('swallow', 'LIKE', '%'.$search.'%')
+        ->orWhere('others', 'LIKE', '%'.$search.'%')
+        ->orWhere('protein', 'LIKE', '%'.$search.'%')
         ->orWhere('price', 'LIKE', '%'.$search.'%')
-        ->orWhere('created_at', 'LIKE', '%'.$search.'%');
+        ->orWhere('sales_date', 'LIKE', '%'.$search.'%');
         })
         ->paginate($perPage)->appends(['per_page'   => $perPage]);
         $pagination = $sales->appends ( array ('search' => $search) );
@@ -1800,7 +1831,7 @@ class HomeController extends Controller
                 'vendorSwallow', 'vendorSoup', 'vendorProtein', 'vendorOthersFoodItem'))->withDetails( $pagination );     
             } 
         // else{return redirect()->back()->with('expenses-status', 'No record order found'); }
-
+//dd($sales);
         return view('cashier.sales',  compact('name', 'role', 
         'vendorName','salesList', 'vendor_id', 'sales', 'perPage', 
         'vendorSwallow', 'vendorSoup', 'vendorProtein', 'vendorOthersFoodItem'));
@@ -1834,82 +1865,263 @@ class HomeController extends Controller
         }
     }
 
-    public function storeVendorOfflineSale(Request $request){
+    public function storeVendorOfflineSoupSales(Request $request){
         $this->validate($request, [ 
             'vendor'        => 'required|max:255', 
-            'price'         => 'required|string|max:255', 
             'date'          => 'required|string|max:255'         
         ]);
-        // $foodItem = new OfflineFoodMenu();
-        // $foodItem->vendor_id    = $request->vendor;
-        // $foodItem->item         = $request->item;
-        // $foodItem->added_by     = Auth::user()->id;
-        // $foodItem->save();
-        if(empty($request->soup)){
-            $soup = ' ';
-        }
-        else{
-            $soup = $request->soup; 
-        }
 
-        if(empty($request->swallow)){
-            $swallow = ' ';
-        }
-        else{
-            $swallow = $request->swallow; 
-        }
+        $getsoup = DB::table('offline_foodmenu')->where('vendor_id', $request->vendor)
+        ->whereIn('soup', $request->soup)
+        ->get();
 
-        if(empty($request->protein)){
-            $protein = ' ';
+        foreach( $getsoup as $key => $value){
+         
+            $soup[] = [
+                'soup'          => 'plate of '.$value->soup,
+                'soup_price'    =>$value->soup_price,
+                'soup_qty'      =>$request->soup_qty[$key],
+                'soup_total'    =>$request->soup_qty[$key] * $value->soup_price,
+                'vendor_id'     => $request->vendor,
+                'added_by'      => Auth::user()->id,
+                'sales_date'    =>date("Y-m-d", strtotime($request->date))
+                ];
         }
-        else{
-            $protein = $request->protein; 
-        }
-
-        if(empty($request->others)){
-            $others = ' ';
-        }
-        else{
-            $others = $request->others; 
-        }
-
-        $salesArray = array_filter($soup);
-        foreach($salesArray  as $key => $value){
-            $salesItem =[
-                'soup_qty' =>$request->soup_qty[$key],
-                'soup' => 'plate of '. $salesArray[$key],
-                'swallow_qty' =>$request->swallow_qty[$key],
-                'swallow' =>$swallow [$key],
-                'protein_qty' =>$request->protein_qty[$key],
-                'protein' =>$protein[$key],
-                 'others_qty' =>$request->others_qty[$key],
-                'others' =>$others[$key],
-                ] ;
-        }
-
-       // dd(json_encode($salesItem));
-        $sales = new OfflineSales();
-        $sales->vendor_id           = $request->vendor;
-        $sales->swallow             =  $salesItem['swallow'];
-        $sales->swallow_qty         =  $salesItem['swallow_qty'];
-        $sales->soup                =  $salesItem['soup'];
-        $sales->soup_qty            =  $salesItem['soup_qty'];
-        $sales->protein             =  $salesItem['protein'];
-        $sales->protein_qty         =  $salesItem['protein_qty'];
-        $sales->others              =  $salesItem['others'];
-        $sales->others_qty          =  $salesItem['others_qty'];
-        //$sales->sales_item          = json_encode($salesItem);
-        $sales->price               = $request->price;
-        $sales->added_by            = Auth::user()->id;
-        $sales->sales_date          = date("Y-m-d", strtotime($request->date));
-        $sales->save();
-
-        if($sales){
-            return redirect()->back()->with('sales-status', 'You have successfully added a Sales');
+          \DB::table('offline_sales')->insert($soup);
+ 
+        if($soup){
+            return redirect()->back()->with('sales-status', 'You have successfully added a Soup');
         }
         else{
             return redirect()->back()->with('sales-error', 'Opps! something happend');
-        
         }
+    }
+
+    public function storeVendorOfflineSwallowSales(Request $request){
+        $this->validate($request, [ 
+            'vendor'        => 'required|max:255', 
+            'date'          => 'required|string|max:255'         
+        ]);
+        $getswallow = DB::table('offline_foodmenu')->where('vendor_id', $request->vendor)
+        ->whereIn('swallow', $request->swallow)
+        ->get();
+
+        $swallow= [];
+        // for ($s = 0; $s < count($request->swallow); $s++) {
+        // $swallow[] = [
+        //     'swallow' => $request->swallow[$s],
+        //     'swallow_qty' => $request->swallow_qty[$s],
+        //     'swallow_price' =>$request->swallow_price[$s],
+        //     'vendor_id' => $request->vendor,
+        //     'added_by' => Auth::user()->id,
+        //     'sales_date' =>date("Y-m-d", strtotime($request->date))
+        //     ];
+        // }
+        foreach( $getswallow as $key => $value){
+
+                $swallow[] = [
+                    'swallow'           => $value->swallow,
+                    'swallow_qty'       => $request->swallow_qty,
+                    'swallow_price'     =>$value->swallow_price,
+                    'swallow_total'     =>$request->swallow_qty[$key] * $value->swallow_price,
+                    'vendor_id'         => $request->vendor,
+                    'added_by'          => Auth::user()->id,
+                    'sales_date'        =>date("Y-m-d", strtotime($request->date))
+                    ];
+        }
+       
+        \DB::table('offline_sales')->insert($swallow);
+ 
+        if($swallow){
+            return redirect()->back()->with('sales-status', 'You have successfully added a swallow');
+        }
+        else{
+            return redirect()->back()->with('sales-error', 'Opps! something happend');
+        }
+    }
+
+    public function storeVendorOfflineProteinSales(Request $request){
+        $this->validate($request, [ 
+            'vendor'        => 'required|max:255', 
+            'date'          => 'required|string|max:255'         
+        ]);
+
+        $getprotein = DB::table('offline_foodmenu')->where('vendor_id', $request->vendor)
+        ->whereIn('protein', $request->protein)
+        ->get();
+
+        $protein= [];
+        // for ($s = 0; $s < count($request->protein); $s++) {
+        // $protein[] = [
+        //     'protein' => $request->protein[$s],
+        //     'protein_qty' => $request->protein_qty[$s],
+        //     'protein_price' =>$request->protein_price[$s],
+        //     'vendor_id' => $request->vendor,
+        //     'added_by' => Auth::user()->id,
+        //     'sales_date' =>date("Y-m-d", strtotime($request->date))
+        //     ];
+        // }
+
+        foreach( $getprotein as $key => $value){
+
+                $protein[] = [
+                    'protein'               => $value->protein,
+                    'protein_qty'           => $request->protein_qty[$key],
+                    'protein_price'         =>$value->protein_price,
+                    'protein_total'         =>$request->protein_qty[$key] * $value->protein_price,
+                    'vendor_id'             => $request->vendor,
+                    'added_by'              => Auth::user()->id,
+                    'sales_date'            =>date("Y-m-d", strtotime($request->date))
+                    ];
+    }
+       
+        \DB::table('offline_sales')->insert($protein);
+ 
+        if($protein){
+            return redirect()->back()->with('sales-status', 'You have successfully added a protein');
+        }
+        else{
+            return redirect()->back()->with('sales-error', 'Opps! something happend');
+        }
+    }
+
+
+    public function storeVendorOfflineOthersSales(Request $request){
+        $this->validate($request, [ 
+            'vendor'        => 'required|max:255', 
+            'date'          => 'required|string|max:255'         
+        ]);
+
+        $getothers = DB::table('offline_foodmenu')->where('vendor_id', $request->vendor)
+        ->whereIn('others', $request->others)
+        ->get();
+
+        $others= [];
+        // for ($s = 0; $s < count($request->others); $s++) {
+        // $others[] = [
+        //     'others' => $request->others[$s],
+        //     'others_qty' => $request->others_qty[$s],
+        //     'others_price' =>$request->others_price[$s],
+        //     'vendor_id' => $request->vendor,
+        //     'added_by' => Auth::user()->id,
+        //     'sales_date' =>date("Y-m-d", strtotime($request->date))
+        //     ];
+        // }
+
+        foreach( $getothers as $key => $value){
+
+                $others[] = [
+                    'others'                => $value->others,
+                    'others_qty'            => $request->others_qty[$key],
+                    'others_price'          =>$value->others_price,
+                    'others_total'          =>$request->others_qty[$key] * $value->others_price,
+                    'vendor_id'             => $request->vendor,
+                    'added_by'              => Auth::user()->id,
+                    'sales_date'            =>date("Y-m-d", strtotime($request->date))
+                    ];
+}
+       
+        \DB::table('offline_sales')->insert($others);
+ 
+        if($others){
+            return redirect()->back()->with('sales-status', 'You have successfully added a others');
+        }
+        else{
+            return redirect()->back()->with('sales-error', 'Opps! something happend');
+        }
+    }
+
+    public function editOfflineSales(Request $request, $id){
+        if( Auth::user()){
+            $name = Auth::user()->name;
+            $user_id = Auth::user()->id;
+            $role = DB::table('role')->select('role_name')
+            ->join('users', 'users.role_id', 'role.id')
+            ->where('users.id', $user_id)
+            ->pluck('role_name')->first();
+
+            $sales = offlineSales::find($id);
+      
+
+            return view('cashier.edit-offline-sales', compact('sales', 
+            'role', 'name')); 
+        }
+          else { return Redirect::to('/login');
+        }
+  }
+
+
+    public function updateOfflineSales(Request $request, $id)
+    {
+        // $this->validate($request, [
+        //     'fullname'      => 'max:255',
+        //     'email'         => 'max:255',
+        //     'role'          => 'max:255',
+        //     ]);
+        $soupPrice = DB::table('offline_sales')
+        ->where('id', $id)
+        ->get()->pluck('soup_price')->first();
+
+        $swallowPrice = DB::table('offline_sales')
+        ->where('id', $id)
+        ->get()->pluck('swallow_price')->first();
+
+        $proteinPrice = DB::table('offline_sales')
+        ->where('id', $id)
+        ->get()->pluck('protein_price')->first();
+
+        $othersPrice = DB::table('offline_sales')
+        ->where('id', $id)
+        ->get()->pluck('others_price')->first();
+
+        
+            $sales = offlineSales::find($id);
+            if(!empty($sales->soup_qty)){
+                $sales->soup_qty         = $request->soup;
+                $sales->soup_total       = $request->soup * (int)$soupPrice;
+                $sales->swallow_total    = ' ';
+                $sales->protein_total    = ' ';
+                $sales->others_total     = ' ';
+                $sales->update();
+            }
+
+            if(!empty($sales->swallow_qty)){
+                $sales->swallow_qty      = $request->swallow;
+                $sales->swallow_total    = $request->swallow * (int)$swallowPrice;
+                $sales->soup_total       = ' ';
+                $sales->protein_total    = ' ';
+                $sales->others_total     = ' ';
+                $sales->update();
+            }
+
+            if(!empty($sales->protein_qty)){
+                $sales->protein_qty      = $request->protein;
+                $sales->protein_total    = $request->protein * (int)$proteinPrice;
+                $sales->soup_total       = ' ';
+                $sales->swallow_total    = ' ';
+                $sales->others_total     = ' ';
+                $sales->update();
+            }
+
+            if(!empty($sales->others_qty)){
+                $sales->others_qty      = $request->others;
+                $sales->others_total    = $request->others * (int)$othersPrice ;
+                $sales->soup_total       = ' ';
+                $sales->swallow_total    = ' ';
+                $sales->protein_total     = ' ';
+                $sales->update();
+            }
+        
+        
+
+
+
+            if($sales){
+                return redirect()->back()->with('update-user', 'Record Updated');
+  
+            }
+            else{
+                return redirect()->back()->with('update-error', 'Opps! something went wrong'); 
+            }
     }
 }//class

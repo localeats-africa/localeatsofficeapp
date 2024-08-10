@@ -108,20 +108,12 @@
                   </li>
 
                   <li class="nav-item">
-                        <a class="nav-link" href="" target="">
-                              <span class="menu-title">Reports</span>
-                              <i class="mdi mdi-chart-timeline-variant-shimmer fs-24 menu-icon"></i>
-                        </a>
-                  </li>
-
-                  <li class="nav-item">
                         <a class="nav-link" href="{{ url('all-food-menu') }}" >
                               <span class="menu-title">Food Menu</span>
                               <i class="mdi mdi-menu   menu-icon fs-24"></i>
 
                         </a>
                   </li>
-
 
                   <li class="nav-item">
                         <a class="nav-link" data-bs-toggle="collapse" href="#vendor" aria-expanded="false"
@@ -145,7 +137,6 @@
                         </div>
                   </li>
 
-
                   <li class="nav-item">
                         <a class="nav-link" href="{{ url('restaurant')}}" target="">
                               <span class="menu-title">Restaurant Type</span>
@@ -158,24 +149,6 @@
                         <a class="nav-link" href="{{ url('food-type')}}" target="">
                               <span class="menu-title">Food Type</span>
                               <i class="mdi mdi-food fs-24 menu-icon"></i>
-
-                        </a>
-                  </li>
-
-
-
-                  <li class="nav-item">
-                        <a class="nav-link" href="" target="">
-                              <span class="menu-title">PayOut</span>
-                              <i class="mdi mdi-cash fs-24 menu-icon"></i>
-
-                        </a>
-                  </li>
-
-                  <li class="nav-item">
-                        <a class="nav-link" href="" target="">
-                              <span class="menu-title">Commission (s)</span>
-                              <i class="mdi mdi-hand-coin fs-24 menu-icon"></i>
 
                         </a>
                   </li>
@@ -248,12 +221,10 @@
                         </div>
                   </li>
 
-
                   <li class="nav-item">
                         <a class="nav-link" href="{{ url('setup-vendor') }}" target="">
                               <span class="menu-title">Setup</span>
                               <i class="mdi mdi-cog-outline fs-24 menu-icon"></i>
-
                         </a>
                   </li>
 
@@ -360,7 +331,6 @@
                         <a class="nav-link" href="{{ url('setup-vendor') }}" target="">
                               <span class="menu-title">Setup</span>
                               <i class="mdi mdi-cog-outline fs-24 menu-icon"></i>
-
                         </a>
                   </li>
 
@@ -368,7 +338,6 @@
                         <a class="nav-link" href="{{ url('all-food-menu') }}" >
                               <span class="menu-title">Food Menu</span>
                               <i class="mdi mdi-menu   menu-icon fs-24"></i>
-
                         </a>
                   </li>
 
@@ -378,7 +347,6 @@
                               <span class="menu-title">Invoice (s)</span>
                               <i class="menu-arrow"></i>
                               <i class="mdi mdi-invoice-text-multiple   menu-icon fs-24"></i>
-
                         </a>
                         <div class="collapse" id="invoice">
                               <ul class="nav flex-column sub-menu">
@@ -404,7 +372,6 @@
                               <span class="menu-title">Bookkeeping</span>
                               <i class="menu-arrow"></i>
                               <i class="mdi mdi-menu   menu-icon fs-24"></i>
-
                         </a>
                         <div class="collapse" id="food-menu">
                               <ul class="nav flex-column sub-menu">

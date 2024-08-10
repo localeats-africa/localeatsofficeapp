@@ -9,13 +9,13 @@
       <div class="content-wrapper">
             <div class="page-header">
                   <h3 class="page-title">
-                       Profit & Loss
+                        Profit & Loss
                   </h3>
             </div>
 
             <div class="row ">
 
-            <form method="GET" action="{{ route('profit-and-loss') }}" name="submit"
+                  <form method="GET" action="{{ route('profit-and-loss') }}" name="submit"
                         enctype="multipart/form-data">
                         @csrf
                         {{csrf_field()}}
@@ -75,11 +75,30 @@
             <p></p>
             <div class="row ">
                   <div class="col-12">
-                  <h4><span class="text-info">{{$vendorName}}</span> Profit & Loss for <span class="text-info">
-                  {{$startDate}} - {{$endDate}}</span></h4>
-                  <p></p>
+                        <h4><span class="text-info">{{$vendorName}}</span> Profit & Loss for <span class="text-info">
+                                    {{$startDate}} - {{$endDate}}</span></h4>
+                        <p></p>
                         <div class="row row-cards">
-                        <div class="col-md-4 stretch-card grid-margin">
+                        <div class="col-md-3 stretch-card grid-margin">
+                                    <div class="card bg-gradient-dark card-img-holder text-white">
+                                          <div class="card-body">
+                                                <img src="{{ asset('assets/images/dashboard/circle.svg')}}"
+                                                      class="card-img-absolute" alt="circle-image">
+                                                <h4 class="font-weight-normal">Number of Plates <i
+                                                            class="fa fa-money mdi-24px float-end"></i>
+                                                </h4>
+                                                <h2 class="mb-5"> {{$countAllPlates  }}</h2>
+                                                <hr class="w-100">
+                                                <h6 class="card-text">From <span class="text-white">(
+                                                            {{$totalItemSold}} )</span>
+                                                      <span style="float:right;">item sold</span>
+
+                                                </h6>
+                                          </div>
+                                    </div>
+                              </div>
+
+                              <div class="col-md-3 stretch-card grid-margin">
                                     <div class="card bg-gradient-info card-img-holder text-white">
                                           <div class="card-body">
                                                 <img src="{{ asset('assets/images/dashboard/circle.svg')}}"
@@ -87,14 +106,14 @@
                                                 <h4 class="font-weight-normal">Total Sales <i
                                                             class="fa fa-money mdi-24px float-end"></i>
                                                 </h4>
-                                                <h2 class="mb-5"> {{$vendorTotalSales}}</h2>
+                                                <h2 class="mb-5"> {{$total}}</h2>
                                                 <hr class="w-100">
                                                 <h6 class="card-text"> </h6>
                                           </div>
                                     </div>
                               </div>
 
-                              <div class="col-md-4 stretch-card grid-margin">
+                              <div class="col-md-3 stretch-card grid-margin">
                                     <div class="card bg-gradient-danger card-img-holder text-white">
                                           <div class="card-body">
                                                 <img src="{{ asset('assets/images/dashboard/circle.svg')}}"
@@ -109,7 +128,7 @@
                                     </div>
                               </div>
 
-                              <div class="col-md-4 stretch-card grid-margin">
+                              <div class="col-md-3 stretch-card grid-margin">
                                     <div class="card bg-gradient-success card-img-holder text-white">
                                           <div class="card-body">
                                                 <img src="{{ asset('assets/images/dashboard/circle.svg')}}"
@@ -127,7 +146,7 @@
                         </div>
                   </div>
             </div>
-         
+
 
       </div>
       <!--- content wrapper---->

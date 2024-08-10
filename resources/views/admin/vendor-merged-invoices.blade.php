@@ -149,6 +149,14 @@
 
 
                                                             @endif
+
+                                                            @if(Auth::user()->role_id == '8')
+
+                                                            <a href="computed-invoice/{{$data->id}}/{{$data->number_of_order_merge}}/{{$data->invoice_ref}}"
+                                                                  class="text-danger"><i class="fa fa-eye"></i></a>
+
+
+                                                            @endif
                                                             @endauth
                                                       </td>
                                                   

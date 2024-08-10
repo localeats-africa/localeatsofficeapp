@@ -210,30 +210,30 @@
                                                             </thead>
                                                             <tbody>
                                                                   @foreach($orders as $data)
-                                                                 
+
                                                                   <tr>
                                                                         <td class="align-items-center">
                                                                               <small>{{$loop->iteration}} </small>
-                                                                            
+
                                                                               @if($invoicePaymentStatus == 'paid')
                                                                               @else
                                                                               @auth
                                                                               @if(Auth::user()->role_id =='2')
-                                                                              &nbsp; &nbsp; 
+                                                                              &nbsp; &nbsp;
                                                                               <input type="hidden" id="order_id"
                                                                                     value="{{$data->id}}">
                                                                               <button onclick="deleteOrderRow()"
                                                                                     class="text-danger"><i
                                                                                           class="fa fa-trash"></i></button>
-                                                                                          <span id="delete_order"></span> 
+                                                                              <span id="delete_order"></span>
 
                                                                               @endif
                                                                               @endauth
                                                                               @endif
-                                                                             
+
                                                                         </td>
-                                                                     
-                                                                        <td>  
+
+                                                                        <td>
                                                                               <p><small>{{$data->order_ref}}</small></p>
                                                                               <p><small>{{$data->name}}</small></p>
                                                                               <p><small>{{ date('d/m/Y', strtotime($data->delivery_date))}}</small>
@@ -320,7 +320,31 @@
                                                                         </td>
 
                                                                         <td>
-                                                                              <p> {{number_format(floatval($data->extra))}}
+                                                                              <p>
+                                                                              <div class="dropdown text-dark">
+                                                                                    <a class="dropdown-toggle text-dark "
+                                                                                          href="#"
+                                                                                          data-bs-toggle="dropdown"
+                                                                                          aria-haspopup="true"
+                                                                                          aria-expanded="false"
+                                                                                          style="text-decoration:none;">  {{number_format(floatval($data->extra))}}</a>
+                                                                                    <div
+                                                                                          class="dropdown-menu dropdown-menu-end">
+                                                                                          <p class="dropdown-item text-dark"
+                                                                                                style="white-space:wrap; line-height:1.6">
+                                                                                                <ul  >
+                                                                                                @foreach(\App\Models\OrderExtraFoodMenu::select('foodmenu')->where('foodmenu', '!=', null)->where('order_id', $data->id)->get() as $food)
+                                                                                                <li style="margin-left:20px;  margin-right:20px;">    
+                                                                                                      {{ $food['foodmenu'] }}
+                                                                                                </li>
+                                                                                                 @endforeach      
+                                                                                              
+                                                                                                </ul>
+                                                                                    
+                                                                                          </p>
+                                                                                    </div>
+                                                                              </div>
+                                                                             
                                                                               </p>
                                                                               @if($invoicePaymentStatus == 'paid')
                                                                               @else
@@ -566,8 +590,8 @@ function deleteOrderRow() {
                   // document.getElementById('delete_order').style.display = '';
                   // document.getElementById('delete_order').style.color = 'green';
                   // document.getElementById('delete_order').innerHTML =
-                // location.reload();   
-                window.location.reload();
+                  // location.reload();   
+                  window.location.reload();
             },
             error: function(data) {
                   console.log(data);
@@ -575,10 +599,10 @@ function deleteOrderRow() {
             complete: function() {
                   setTimeout(ajax, 1000);
             }
-            
-          
+
+
       });
-  
+
 
 }
 </script>

@@ -8,7 +8,7 @@
       <div class="content-wrapper">
             <div class="page-header">
                   <h3 class="page-title">
-                        Edit >>> {{$user->fullname}}
+                        Edit >>>  Sales For >>> {{$sales->sales_date}} 
                   </h3>
             </div>
             <!--Alert here--->
@@ -89,7 +89,8 @@
 
             <div class="row ">
                   <div class="col-12">
-                        <form action="{{ route('update-user', [$user->id] )}}" method="post">
+                        <a href="{{ url('offline-sales')}}">Go Back <<<</a>
+                        <form action="{{ route('update-offlinesales', [$sales->id] )}}" method="post">
                               @csrf
                               <div class="card">
                                     <div class="card-header">
@@ -99,60 +100,55 @@
 
                                           <div class="row">
                                                 <p>
-                                                <h5>Staff: </h5>
+                                                <h5></h5>
                                                 </p>
                                                 <div class="col-md-3">
                                                       <div class="form-group">
-                                                            <h6>Name</h6>
-                                                            <input type="text" value="{{$user->fullname}}"
-                                                                  name="fullname" class="form-control" disable>
-                                                      </div>
-                                                </div>
-
-                                                <div class="col-md-3">
-                                                      <div class="form-group">
-                                                            <h6>Email </h6>
-                                                            <input type="text" value="{{$user->email}}" name="email"
+                                                            @if(empty($sales->soup_qty))
+                                                            @else
+                                                            <h6>Soup quantity</h6>
+                                                            <input type="text" value="{{$sales->soup_qty}}" name="soup"
                                                                   class="form-control">
+                                                            @endif
+
+                                                            @if(empty($sales->protein_qty))
+                                                            @else
+                                                            <h6>Protein quantity</h6>
+                                                            <input type="text" value="{{$sales->protein_qty}}"
+                                                                  name="protein" class="form-control">
+                                                            @endif
+
+                                                            @if(empty($sales->swallow_qty))
+                                                            @else
+                                                            <h6>Swallow quantity</h6>
+                                                            <input type="text" class="form-control" name="swallow"
+                                                                  value="{{$sales->swallow_qty}}">
+                                                            @endif
+
+                                                            @if(empty($sales->others_qty))
+                                                      @else
+                                                            <h6>Others quantity </h6>
+                                                            <input type="text" class="form-control" name="others"
+                                                                  value="{{$sales->others_qty}}">
+                                                                  @endif
                                                       </div>
                                                 </div>
-                                                <div class="col-md-3">
+
+                                                <div class="col-md-6">
                                                       <div class="form-group">
-                                                            <h6>Current role </h6>
-                                                            <input type="text" class="form-control" disabled
-                                                                  value="{{$staffRoleName}}">
+                                                          
                                                       </div>
                                                 </div>
-
-                                                <div class="col-md-3">
-                                                      <div class="form-group">
-                                                            <h6>Assign new role </h6>
-                                                            <select class="js-example-basic-single" style="width:100%"
-                                                                  name="role" id="bank">
-                                                                  <option value="">
-                                                                        Search / Choose
-                                                                  </option>
-                                                                  @foreach($userRole as $data)
-                                                                  <option value="{{$data->id}}">
-                                                                        {{$data->role_name}}</option>
-                                                                  @endforeach
-                                                            </select>
-                                                      </div>
-                                                </div>
-
-
+                                               
                                           </div>
 
 
                                           <div class="row">
                                                 <p></p>
-                                                <div class="col-md-6">
-                                                </div>
-                                                <div
-                                                      class="col-md-6 col-12 grid-margin stretch-card justify-content-end">
+                                                <div class="col-md-6 col-12 grid-margin stretch-card ">
 
                                                       <!-- send button here -->
-                                                      <div class="card-footer bg-transparent mt-auto">
+                                                      <div class=" bg-transparent mt-auto">
                                                             <div class="btn-list ">
                                                                   <button type="submit" name="submit"
                                                                         class="btn bg-gradient-primary  text-white">

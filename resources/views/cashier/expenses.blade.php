@@ -79,7 +79,7 @@
                                           <select id="item" class="" name="item" type="text" style="width:90%">
                                                 <option value=""></option>
                                                 @foreach($expensesList as $data)
-                                                <option value="{{$data->id}}">
+                                                <option value="{{$data->item}}">
                                                       {{$data->item}}
                                                 </option>
                                                 @endforeach

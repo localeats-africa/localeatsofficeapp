@@ -14,8 +14,9 @@
                   <nav aria-label="breadcrumb">
                         <ul class="breadcrumb">
                               <li class="breadcrumb-item active" aria-current="page">
-                                    <span></span><a href="{{ url ('new-offline-foodmenu') }}" class="btn btn-block btn-danger"><i
-                                                class="fa fa-plus-square"></i> &nbsp;Create New FoodMenu / Item </a>
+                                    <span></span><a href="{{ url ('new-offline-foodmenu') }}"
+                                          class="btn btn-block btn-danger"><i class="fa fa-plus-square"></i>
+                                          &nbsp;Create New FoodMenu / Item </a>
                               </li>
                         </ul>
                   </nav>
@@ -148,7 +149,7 @@
                                                 <h4 class="font-weight-normal">Total Sales <i
                                                             class="fa fa-money mdi-24px float-end"></i>
                                                 </h4>
-                                                <h2 class="mb-5"> {{$vendorTotalSales}}</h2>
+                                                <h2 class="mb-5"> {{$total}}</h2>
                                                 <hr class="w-100">
                                                 <h6 class="card-text"> </h6>
                                           </div>
@@ -174,30 +175,50 @@
                                     @foreach($vendorSales as $data)
                                     <tr>
                                           <td>{{$loop->iteration}}</td>
-                                          <td>{{ date('Y-m-d', strtotime($data->sales_date)) }}</td>
+                                          <td>{{ date('Y-m-d', strtotime($data->sales_date)) }} Time: <span class="text-info"> {{\Carbon\Carbon::parse($data->created_at)->format('H:i:s')}}</span></td>
                                           <td>
                                                 {{$data->sales_item}}
                                                 @if($data->soup ==' ')
-                                                            @else
-                                                            {{$data->soup_qty }} {{$data->soup}}
-                                                            @endif
+                                                @else
+                                                {{$data->soup_qty }} {{$data->soup}}
+                                                @endif
 
-                                                            @if($data->swallow ==' ')
-                                                            @else
-                                                            , {{$data->swallow_qty }} {{$data->swallow}}
-                                                            @endif
+                                                @if($data->swallow ==' ')
+                                                @else
+                                                {{$data->swallow_qty }} {{$data->swallow}}
+                                                @endif
 
-                                                            @if($data->protein ==' ')
-                                                            @else
-                                                            , {{$data->protein_qty }} {{$data->protein}}
-                                                            @endif
+                                                @if($data->protein ==' ')
+                                                @else
+                                                {{$data->protein_qty }} {{$data->protein}}
+                                                @endif
 
-                                                            @if($data->others ==' ')
-                                                            @else
-                                                            , {{$data->others_qty }}, {{$data->others}}
-                                                            @endif
+                                                @if($data->others ==' ')
+                                                @else
+                                                {{$data->others_qty }}, {{$data->others}}
+                                                @endif
                                           </td>
-                                          <td>{{$data->price}}</td>
+                                          <td>{{$data->price}}
+                                                @if($data->soup ==' ')
+                                                @else
+                                                {{$data->soup_price }}
+                                                @endif
+
+                                                @if($data->swallow ==' ')
+                                                @else
+                                               {{$data->swallow_price}}
+                                                @endif
+
+                                                @if($data->protein ==' ')
+                                                @else
+                                               {{$data->protein_price}}
+                                                @endif
+
+                                                @if($data->others ==' ')
+                                                @else
+                                               {{$data->others_price}}
+                                                @endif
+                                          </td>
                                     </tr>
                                     @endforeach
                               </tbody>

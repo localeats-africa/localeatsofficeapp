@@ -12,9 +12,13 @@ class OfflineFoodMenu extends Model
     protected $fillable = [
         'item',
         'swallow',
+        'swallow_price',
         'soup',
+        'soup_price' ,
         'protein',
+        'protein_price',
         'others',
+        'others_price',
         'vendor_id',
         'added_by',
     ];

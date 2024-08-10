@@ -29,6 +29,7 @@ use App\Imports\FoodMenuImportClass;
 use App\Imports\OrdersImportClass;
 use App\Imports\ImportExpensesList;
 use App\Imports\ImportOfflineFoodMenu;
+use App\Exports\ExportOfflineFoodMenu;
 use App\Models\Invoice;
 use App\Models\Payout;
 use App\Models\ExpensesList;
@@ -110,7 +111,7 @@ class AdminController extends Controller
         $sumAllOrders = Orders::where('deleted_at', null)
         ->where('orders.order_amount', '!=', null)
         ->where('orders.order_ref', '!=', null)
-        ->whereYear('orders.delivery_date', '=', Carbon::now()->year)
+        //->whereYear('orders.delivery_date', '=', Carbon::now()->year)
         ->sum('order_amount');
 
         $averageWeeklySales = DB::table('orders')
@@ -118,20 +119,20 @@ class AdminController extends Controller
         ->where('orders.order_amount', '!=', null)
         ->where('orders.order_ref', '!=', null)
         ->whereDate('delivery_date', '=', $lastSevenDays)   
-       ->whereYear('orders.delivery_date', '=', Carbon::now()->year)
+       //->whereYear('orders.delivery_date', '=', Carbon::now()->year)
         ->sum('order_amount');
 
         $countAllOrder = Orders::where('deleted_at', null)
         ->where('orders.order_amount', '!=', null)
         ->where('orders.order_ref', '!=', null)
-        ->whereYear('orders.delivery_date', '=', Carbon::now()->year)
+        //->whereYear('orders.delivery_date', '=', Carbon::now()->year)
         ->count();
 
         $getOrderItem = DB::table('orders')
         ->where('deleted_at', null)
         ->where('orders.order_amount', '!=', null)
         ->where('orders.order_ref', '!=', null)
-        ->whereYear('orders.delivery_date', '=', Carbon::now()->year)
+        //->whereYear('orders.delivery_date', '=', Carbon::now()->year)
         ->get('description')->pluck('description');
 
         $string =  $getOrderItem;
@@ -143,14 +144,14 @@ class AdminController extends Controller
         ->where('orders.deleted_at', null)
         ->where('orders.order_amount', '!=', null)
         ->where('orders.order_ref', '!=', null)
-        ->whereYear('orders.delivery_date', '=', Carbon::now()->year)
+        //->whereYear('orders.delivery_date', '=', Carbon::now()->year)
         ->count('platforms.id');
 
         $payouts = DB::table('orders')
         ->where('deleted_at', null)
         ->where('orders.order_amount', '!=', null)
         ->where('orders.order_ref', '!=', null)
-        ->whereYear('orders.delivery_date', '=', Carbon::now()->year)
+        //->whereYear('orders.delivery_date', '=', Carbon::now()->year)
         ->sum('payout');
 
         $averageWeeklyPayouts = DB::table('orders')
@@ -160,7 +161,7 @@ class AdminController extends Controller
        ->where('payout', '!=', null)
         //->whereBetween('updated_at',  [$lastSevenDays, $today])
         ->whereDate('updated_at', '=', $lastSevenDays)    
-        ->whereYear('orders.delivery_date', '=', Carbon::now()->year)
+        //->whereYear('orders.delivery_date', '=', Carbon::now()->year)
         ->sum('payout');
 
         $commissionPaid = Orders::whereYear('orders.delivery_date', '=', Carbon::now()->year)
@@ -173,7 +174,7 @@ class AdminController extends Controller
         ->where('payout', '!=', null)
         //->whereDate('updated_at', '>=', $lastSevenDays)   
         ->whereDate('updated_at', '<', $today)  
-        ->whereYear('orders.delivery_date', '=', Carbon::now()->year)
+        //->whereYear('orders.delivery_date', '=', Carbon::now()->year)
         ->sum('commission');
 
         $commission = (int)$sumAllOrders - (int)$payouts ;
@@ -186,7 +187,8 @@ class AdminController extends Controller
         ->where('deleted_at', null)
         ->where('orders.order_amount', '!=', null)
         ->where('orders.order_ref', '!=', null)
-        ->whereYear('orders.delivery_date', '=', Carbon::now()->year)
+        //->whereYear('orders.delivery_date', '=', Carbon::now()->year)
+      //  ->orderBy('created_at', 'desc')
         ->groupby('year')
         ->get();
 
@@ -197,8 +199,8 @@ class AdminController extends Controller
         )->where('deleted_at', null)
         ->where('orders.order_amount', '!=', null)
         ->where('orders.order_ref', '!=', null)
-        ->whereYear('orders.delivery_date', '=', Carbon::now()->year)
-        ->groupby('month')
+        //->whereYear('orders.delivery_date', '=', Carbon::now()->year)
+        ->groupBy('month')
         ->get();
         $chartSalesMonth = Arr::pluck($chartMonthlyTotalSales, 'month');
         $chartSalesVolume = Arr::pluck($chartMonthlyTotalSales, 'sales_volume');
@@ -207,7 +209,7 @@ class AdminController extends Controller
         $monthlist = array_map(fn($month) => Carbon::create(null, $month)->format('M'), range(1, 12));
         $salesYear =  Arr::pluck($chartYearlyTotalSales, 'year');
         $data = [
-         'month' =>  $monthlist ,
+         'month' =>  $chartSalesMonth ,
          'sales' =>  $chartSalesVolume,
          'total' =>  $chartSalesTotal,
         ];
@@ -218,7 +220,7 @@ class AdminController extends Controller
         ->where('orders.deleted_at', null)
         ->where('orders.order_amount', '!=', null)
         ->where('orders.order_ref', '!=', null)
-        ->whereYear('orders.delivery_date', '=', Carbon::now()->year)
+       // ->whereYear('orders.delivery_date', '=', Carbon::now()->year)
         ->get('orders.platform_id')->count();
 
         $glovoOrderCount= DB::table('orders')
@@ -227,7 +229,7 @@ class AdminController extends Controller
         ->where('orders.deleted_at', null)
         ->where('orders.order_amount', '!=', null)
         ->where('orders.order_ref', '!=', null)
-        ->whereYear('orders.delivery_date', '=', Carbon::now()->year)
+        //->whereYear('orders.delivery_date', '=', Carbon::now()->year)
         ->get('orders.platform_id')->count();
 
         $edenOrderCount= DB::table('orders')
@@ -236,13 +238,13 @@ class AdminController extends Controller
         ->where('orders.deleted_at', null)
         ->where('orders.order_amount', '!=', null)
         ->where('orders.order_ref', '!=', null)
-        ->whereYear('orders.delivery_date', '=', Carbon::now()->year)
+       // ->whereYear('orders.delivery_date', '=', Carbon::now()->year)
         ->get('orders.platform_id')->count();
 
         $platformOrders = DB::table('orders')
         ->join('platforms', 'platforms.id', '=', 'orders.platform_id')->distinct()
         ->where('platforms.deleted_at', null)
-        ->whereYear('orders.delivery_date', '=', Carbon::now()->year)
+       // ->whereYear('orders.delivery_date', '=', Carbon::now()->year)
         ->get(['platforms.*']);
         
         // bar chart
@@ -260,26 +262,29 @@ class AdminController extends Controller
     ->select(
         \DB::raw('DATE_FORMAT(orders.delivery_date,"%M ") as month'),
         \DB::raw('SUM(orders.order_amount) as sales'),
+        \DB::raw('COUNT(orders.order_amount) as count'),
         )
         ->where('platforms.name', 'chowdeck')
         ->where('orders.deleted_at', null)
         ->where('orders.order_amount', '!=', null)
         ->where('orders.order_ref', '!=', null)
-        ->whereYear('orders.delivery_date', '=', Carbon::now()->year)
+       // ->whereYear('orders.delivery_date', '=', Carbon::now()->year)
         ->groupby('month')
         ->get();
     $barChartChowdeckSales = Arr::pluck($chowdeckOrder, 'sales');
+    $barChartChowdeckSCount = Arr::pluck($chowdeckOrder, 'count');
 
     $glovoOrder = Orders::join('platforms', 'platforms.id', '=', 'orders.platform_id')
     ->select(
         \DB::raw('DATE_FORMAT(orders.delivery_date,"%M ") as month'),
         \DB::raw('SUM(orders.order_amount) as sales'),
+        \DB::raw('COUNT(orders.order_amount) as count'),
         )
         ->where('platforms.name', 'glovo')
         ->where('orders.deleted_at', null)
         ->where('orders.order_amount', '!=', null)
         ->where('orders.order_ref', '!=', null)
-        ->whereYear('orders.delivery_date', '=', Carbon::now()->year)
+        //->whereYear('orders.delivery_date', '=', Carbon::now()->year)
         ->groupby('month')
         ->get();
         $barChartGlovoSales = Arr::pluck($glovoOrder, 'sales');
@@ -288,18 +293,19 @@ class AdminController extends Controller
     ->select(
         \DB::raw('DATE_FORMAT(orders.delivery_date,"%M ") as month'),
         \DB::raw('SUM(orders.order_amount) as sales'),
+        \DB::raw('COUNT(orders.order_amount) as count'),
         )
         ->where('platforms.name', 'edenlife')
         ->where('orders.deleted_at', null)
         ->where('orders.order_amount', '!=', null)
         ->where('orders.order_ref', '!=', null)
-        ->whereYear('orders.delivery_date', '=', Carbon::now()->year)
+        //->whereYear('orders.delivery_date', '=', Carbon::now()->year)
         ->groupby('month')
         ->get();
         $barChartEdenSales = Arr::pluck($edenOrder, 'sales');
   
     $barChartData = [
-        'months'        =>  $monthlist,
+        'months'        =>  $chartSalesMonth,
         'chocdekSales'  =>  $barChartChowdeckSales,
         'glovoSales'    =>  $barChartGlovoSales,
         'edenSales'     =>  $barChartEdenSales,
@@ -348,7 +354,6 @@ class AdminController extends Controller
          ->where('orders.order_ref', '!=', null)
          ->whereDate('delivery_date', '>=', $startDate)                                 
          ->whereDate('delivery_date', '<=', $endDate) 
-         ->whereYear('orders.delivery_date', '=', Carbon::now()->year)
          ->sum('order_amount');
  
          $countAllOrder = Orders::where('deleted_at', null)
@@ -356,8 +361,8 @@ class AdminController extends Controller
          ->where('orders.order_ref', '!=', null)
          ->whereDate('delivery_date', '>=', $startDate)                                 
          ->whereDate('delivery_date', '<=', $endDate) 
-         ->whereYear('orders.delivery_date', '=', Carbon::now()->year)
          ->count();
+        // dd( $countAllOrder );
  
          $getOrderItem = DB::table('orders')
          ->where('deleted_at', null)
@@ -365,7 +370,6 @@ class AdminController extends Controller
          ->where('orders.order_ref', '!=', null)
          ->whereDate('delivery_date', '>=', $startDate)                                 
          ->whereDate('delivery_date', '<=', $endDate) 
-         ->whereYear('orders.delivery_date', '=', Carbon::now()->year)
          ->get('description')->pluck('description');
  
          $string =  $getOrderItem;
@@ -379,7 +383,6 @@ class AdminController extends Controller
          ->where('orders.order_ref', '!=', null)
          ->whereDate('delivery_date', '>=', $startDate)                                 
          ->whereDate('delivery_date', '<=', $endDate) 
-         ->whereYear('orders.delivery_date', '=', Carbon::now()->year)
          ->count('platforms.id');
  
          $payouts = DB::table('orders')
@@ -388,7 +391,6 @@ class AdminController extends Controller
          ->where('orders.order_ref', '!=', null)
          ->whereDate('delivery_date', '>=', $startDate)                                 
          ->whereDate('delivery_date', '<=', $endDate) 
-         ->whereYear('orders.delivery_date', '=', Carbon::now()->year)
          ->sum('payout');
  
          $commission = (int)$sumAllOrders - (int)$payouts ;
@@ -405,7 +407,6 @@ class AdminController extends Controller
             ->where('orders.order_ref', '!=', null)
             ->whereDate('delivery_date', '>=', $startDate)                                 
             ->whereDate('delivery_date', '<=', $endDate) 
-            ->whereYear('orders.delivery_date', '=', Carbon::now()->year)
             ->groupby('year')
             ->get();
     
@@ -418,7 +419,6 @@ class AdminController extends Controller
             ->where('orders.order_ref', '!=', null)
             ->whereDate('delivery_date', '>=', $startDate)                                 
             ->whereDate('delivery_date', '<=', $endDate) 
-            ->whereYear('orders.delivery_date', '=', Carbon::now()->year)
             ->groupby('month')
             ->get();
 
@@ -429,7 +429,7 @@ class AdminController extends Controller
             $monthlist = array_map(fn($month) => Carbon::create(null, $month)->format('M'), range(1, 12));
             $salesYear =  Arr::pluck($chartYearlyTotalSales, 'year');
             $data = [
-             'month' =>  $monthlist ,
+             'month' =>  $chartSalesMonth ,
              'sales' =>  $chartSalesVolume,
              'total' =>  $chartSalesTotal,
             ];
@@ -442,7 +442,6 @@ class AdminController extends Controller
             ->where('orders.order_ref', '!=', null)
             ->whereDate('delivery_date', '>=', $startDate)                                 
             ->whereDate('delivery_date', '<=', $endDate) 
-            ->whereYear('orders.delivery_date', '=', Carbon::now()->year)
             ->get('orders.platform_id')->count();
     
             $glovoOrderCount= DB::table('orders')
@@ -453,7 +452,6 @@ class AdminController extends Controller
             ->where('orders.order_ref', '!=', null)
             ->whereDate('delivery_date', '>=', $startDate)                                 
             ->whereDate('delivery_date', '<=', $endDate) 
-            ->whereYear('orders.delivery_date', '=', Carbon::now()->year)
             ->get('orders.platform_id')->count();
     
             $edenOrderCount= DB::table('orders')
@@ -464,7 +462,6 @@ class AdminController extends Controller
             ->where('orders.order_ref', '!=', null)
             ->whereDate('delivery_date', '>=', $startDate)                                 
             ->whereDate('delivery_date', '<=', $endDate) 
-            ->whereYear('orders.delivery_date', '=', Carbon::now()->year)
             ->get('orders.platform_id')->count();
     
             $platformOrders = DB::table('orders')
@@ -472,13 +469,19 @@ class AdminController extends Controller
             ->where('platforms.deleted_at', null)
             ->whereDate('delivery_date', '>=', $startDate)                                 
             ->whereDate('delivery_date', '<=', $endDate) 
-            ->whereYear('orders.delivery_date', '=', Carbon::now()->year)
             ->get(['platforms.*']);
             
             // bar chart
-            $chowdeckSalesPercentageChart = $chowdeckOrderCount / $countAllOrder * 100;
-            $glovoSalesPercentageChart = $glovoOrderCount / $countAllOrder * 100;
-            $edenSalesPercentageChart = $edenOrderCount / $countAllOrder * 100;
+            if($countAllOrder < 1){
+                $chowdeckSalesPercentageChart = $chowdeckOrderCount / 1 * 100;
+                $glovoSalesPercentageChart = $glovoOrderCount / 1 * 100;
+                $edenSalesPercentageChart = $edenOrderCount / 1 * 100;
+            }
+            else{
+                $chowdeckSalesPercentageChart = $chowdeckOrderCount / $countAllOrder * 100;
+                $glovoSalesPercentageChart = $glovoOrderCount / $countAllOrder * 100;
+                $edenSalesPercentageChart = $edenOrderCount / $countAllOrder * 100;
+            }
     
             $piechartData = [            
             'label' => ['Chowdeck', 'Glovo', 'Eden'],
@@ -497,7 +500,6 @@ class AdminController extends Controller
             ->where('orders.order_ref', '!=', null)
             ->whereDate('delivery_date', '>=', $startDate)                                 
             ->whereDate('delivery_date', '<=', $endDate) 
-            ->whereYear('orders.delivery_date', '=', Carbon::now()->year)
             ->groupby('month')
             ->get();
         $barChartChowdeckSales = Arr::pluck($chowdeckOrder, 'sales');
@@ -513,7 +515,6 @@ class AdminController extends Controller
             ->where('orders.order_ref', '!=', null)
             ->whereDate('delivery_date', '>=', $startDate)                                 
             ->whereDate('delivery_date', '<=', $endDate) 
-            ->whereYear('orders.delivery_date', '=', Carbon::now()->year)
             ->groupby('month')
             ->get();
             $barChartGlovoSales = Arr::pluck($glovoOrder, 'sales');
@@ -529,13 +530,12 @@ class AdminController extends Controller
             ->where('orders.order_ref', '!=', null)
             ->whereDate('delivery_date', '>=', $startDate)                                 
             ->whereDate('delivery_date', '<=', $endDate) 
-            ->whereYear('orders.delivery_date', '=', Carbon::now()->year)
             ->groupby('month')
             ->get();
             $barChartEdenSales = Arr::pluck($edenOrder, 'sales');
       
         $barChartData = [
-            'months'        =>  $monthlist,
+            'months'        =>  $chartSalesMonth,
             'chocdekSales'  =>  $barChartChowdeckSales,
             'glovoSales'    =>  $barChartGlovoSales,
             'edenSales'     =>  $barChartEdenSales,
@@ -1205,10 +1205,32 @@ class AdminController extends Controller
             ->whereDate('sales_date', '>=', $startDate)                                 
             ->whereDate('sales_date', '<=', $endDate) 
             ->sum('price');
+
+            $totalSoup = OfflineSales::where('vendor_id',  $vendor_id)
+            ->whereDate('sales_date', '>=', $startDate)                                 
+            ->whereDate('sales_date', '<=', $endDate) 
+            ->sum('soup_total');
+
+            $totalSwallow = OfflineSales::where('vendor_id',  $vendor_id)
+            ->whereDate('sales_date', '>=', $startDate)                                 
+            ->whereDate('sales_date', '<=', $endDate) 
+            ->sum('swallow_total');
+
+            $totalProtein = OfflineSales::where('vendor_id',  $vendor_id)
+            ->whereDate('sales_date', '>=', $startDate)                                 
+            ->whereDate('sales_date', '<=', $endDate) 
+            ->sum('protein_total');
+
+            $totalOthers = OfflineSales::where('vendor_id',  $vendor_id)
+            ->whereDate('sales_date', '>=', $startDate)                                 
+            ->whereDate('sales_date', '<=', $endDate) 
+            ->sum('others_total');
         
+            $total =  $vendorTotalSales + $totalSoup + $totalSwallow + $totalProtein + $totalOthers ;
+
             return view('admin.vendor-sales-list', compact('role', 'vendor',
             'vendorSales', 'vendorTotalSales', 'vendorName',
-            'startDate', 'endDate',  'vendorSales', 'vendorTotalSales'));
+            'startDate', 'endDate',  'vendorSales', 'vendorTotalSales', 'total'));
         }
 
         public function newOfflineFoodMenu(Request $request){
@@ -1293,11 +1315,80 @@ class AdminController extends Controller
         ->whereDate('sales_date', '<=', $endDate) 
         ->sum('price');
 
-        $profitAndLoss = $vendorTotalSales - $vendorTotalExpense;
+        $totalSoup = OfflineSales::where('vendor_id',  $vendor_id)
+        ->whereDate('sales_date', '>=', $startDate)                                 
+        ->whereDate('sales_date', '<=', $endDate) 
+        ->sum('soup_total');
+
+        $totalSwallow = OfflineSales::where('vendor_id',  $vendor_id)
+        ->whereDate('sales_date', '>=', $startDate)                                 
+        ->whereDate('sales_date', '<=', $endDate) 
+        ->sum('swallow_total');
+
+        $totalProtein = OfflineSales::where('vendor_id',  $vendor_id)
+        ->whereDate('sales_date', '>=', $startDate)                                 
+        ->whereDate('sales_date', '<=', $endDate) 
+        ->sum('protein_total');
+
+        $totalOthers = OfflineSales::where('vendor_id',  $vendor_id)
+        ->whereDate('sales_date', '>=', $startDate)                                 
+        ->whereDate('sales_date', '<=', $endDate) 
+        ->sum('others_total');
+    
+        $total =  $vendorTotalSales + $totalSoup + $totalSwallow + $totalProtein + $totalOthers ;
+        $profitAndLoss = $total - $vendorTotalExpense;
+
+        $soupSold = OfflineSales::where('vendor_id',  $vendor_id)
+        ->whereDate('sales_date', '>=', $startDate)                                 
+        ->whereDate('sales_date', '<=', $endDate) 
+        ->sum('soup_qty');
+
+        $swallowSold = OfflineSales::where('vendor_id',  $vendor_id)
+        ->whereDate('sales_date', '>=', $startDate)                                 
+        ->whereDate('sales_date', '<=', $endDate) 
+        ->sum('swallow_qty');
+
+        $proteinSold = OfflineSales::where('vendor_id',  $vendor_id)
+        ->whereDate('sales_date', '>=', $startDate)                                 
+        ->whereDate('sales_date', '<=', $endDate) 
+        ->sum('protein_qty');
+
+        $othersSold = OfflineSales::where('vendor_id',  $vendor_id)
+        ->whereDate('sales_date', '>=', $startDate)                                 
+        ->whereDate('sales_date', '<=', $endDate) 
+        ->sum('others_qty');
+
+        $totalItemSold =   $soupSold + $swallowSold + $proteinSold + $othersSold ;
+
+        $plateOfSoup = OfflineSales::where('vendor_id',  $vendor_id)
+        ->whereDate('sales_date', '>=', $startDate)                                 
+        ->whereDate('sales_date', '<=', $endDate) 
+        ->where('soup', '!=', null)
+        ->get('soup')->pluck('soup');
+        
+        $plateOfRice = OfflineSales::where('vendor_id',  $vendor_id)
+        ->whereDate('sales_date', '>=', $startDate)                                 
+        ->whereDate('sales_date', '<=', $endDate) 
+        ->where('others', '!=', null)
+        ->where('others', 'rice')
+        ->count();
+
+       $quantityOfRiceSold =  OfflineSales::where('vendor_id',  $vendor_id)
+        ->whereDate('sales_date', '>=', $startDate)                                 
+        ->whereDate('sales_date', '<=', $endDate) 
+        ->where('others', '!=', null)
+        ->where('others', 'rice')
+        ->sum('others_qty');
+
+        //$stringSoup =  $plateOfSoup;
+        $soupString = 'plate';
+        $countPlateOfSoup = substr_count($plateOfSoup, $soupString);
+        $countAllPlates = $soupSold + $quantityOfRiceSold;
 
         return view('admin.profit-and-loss', compact('role', 'vendor',
        'vendorTotalExpense', 'vendorTotalSales', 'profitAndLoss', 
-        'vendorName', 'startDate', 'endDate'));
+        'vendorName', 'startDate', 'endDate', 'total', 
+        'totalItemSold', 'countAllPlates'));
     }
 
     public function vendorInvoiceCommisionPaid(Request $request){
@@ -1496,6 +1587,11 @@ class AdminController extends Controller
             else{
                 return redirect()->back()->with('update-error', 'Opps! something went wrong'); 
             }
+    }
+
+    public function exportOfflineFoodMenuTemplate(Request $request){
+       
+        return Excel::download(new ExportOfflineFoodMenu(), 'offline-foodmenu-template.xlsx');
     }
 
 }//class

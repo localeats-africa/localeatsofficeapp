@@ -123,7 +123,12 @@ Route::controller(HomeController::class)->group(function () {
     Route::post('add-vendor-expenses', 'storeVendorDailyExpenses')->name('add-vendor-expenses');
     Route::get('offline-sales', 'offlineSales')->name('offline-sales');
     Route::post('offline-sales-list', 'OfflineSaleList')->name('offline-sales-list');
-    Route::post('add-vendor-offline-sales', 'storeVendorOfflineSale')->name('add-vendor-offline-sales');
+    Route::post('add-vendor-offline-soup', 'storeVendorOfflineSoupSales')->name('add-vendor-offline-soup');
+    Route::post('add-vendor-offline-swallow', 'storeVendorOfflineSwallowSales')->name('add-vendor-offline-swallow');
+    Route::post('add-vendor-offline-protein', 'storeVendorOfflineProteinSales')->name('add-vendor-offline-protein');
+    Route::post('add-vendor-offline-others', 'storeVendorOfflineOthersSales')->name('add-vendor-offline-others');
+    Route::get('edit-offline-sales/{id}', 'editOfflineSales')->name('edit-offline-sales');
+    Route::post('update-offlinesales/{id}',  'updateOfflineSales')->name('update-offlinesales');
 
 });
 
@@ -162,14 +167,15 @@ Route::controller(AdminController::class)->group(function () {
     Route::get('new-offline-foodmenu', 'newOfflineFoodMenu')->name('new-offline-foodmenu');
     Route::post('add-offline-foodmenu', 'addOfflineFoodMenu')->name('add-offline-foodmenu');
     Route::post('import-offline-foodmenu', 'importOfflineFoodMenu')->name('import-offline-foodmenu');
-    
     Route::get('show-deleted-invoice',  'showDeletedInvoice')->name('show-deleted-invoice');
     Route::post('restore-invoice/{id}',  'restoreDeletedInvoice')->name('restore-invoice');
-    
     Route::get('show-deleted-rows',  'allDeletedRows')->name('show-deleted-rows');
     Route::post('restore-row/{id}',  'restoreDeletedRow')->name('restore-row');
     Route::get('edit-user/{id}',  'editUser')->name('edit-user');
     Route::post('update-user/{id}',  'updateUser')->name('update-user');
+    //export
+    Route::get('export-offline-foodmenu-template', 'exportOfflineFoodMenuTemplate')->name('export-offline-foodmenu-template');
+    
     
 });
 
