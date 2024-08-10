@@ -357,13 +357,7 @@ class AdminController extends Controller
          ->whereDate('delivery_date', '>=', $startDate)                                 
          ->whereDate('delivery_date', '<=', $endDate) 
          ->count();
-         dd( $countAllOrder );
-
-        //  $countAllOrder = Orders::where('deleted_at', null)
-        //  ->where('orders.order_amount', '!=', null)
-        //  ->where('orders.order_ref', '!=', null)
-        //  //->whereYear('orders.delivery_date', '=', Carbon::now()->year)
-        //  ->count();
+        // dd( $countAllOrder );
  
          $getOrderItem = DB::table('orders')
          ->where('deleted_at', null)
@@ -473,9 +467,16 @@ class AdminController extends Controller
             ->get(['platforms.*']);
             
             // bar chart
-            $chowdeckSalesPercentageChart = $chowdeckOrderCount / $countAllOrder * 100;
-            $glovoSalesPercentageChart = $glovoOrderCount / $countAllOrder * 100;
-            $edenSalesPercentageChart = $edenOrderCount / $countAllOrder * 100;
+            if($countAllOrder < 1){
+                $chowdeckSalesPercentageChart = $chowdeckOrderCount / 1 * 100;
+                $glovoSalesPercentageChart = $glovoOrderCount / 1 * 100;
+                $edenSalesPercentageChart = $edenOrderCount / 1 * 100;
+            }
+            else{
+                $chowdeckSalesPercentageChart = $chowdeckOrderCount / $countAllOrder * 100;
+                $glovoSalesPercentageChart = $glovoOrderCount / $countAllOrder * 100;
+                $edenSalesPercentageChart = $edenOrderCount / $countAllOrder * 100;
+            }
     
             $piechartData = [            
             'label' => ['Chowdeck', 'Glovo', 'Eden'],
