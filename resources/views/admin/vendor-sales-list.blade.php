@@ -175,7 +175,7 @@
                                     @foreach($vendorSales as $data)
                                     <tr>
                                           <td>{{$loop->iteration}}</td>
-                                          <td>{{ date('Y-m-d', strtotime($data->sales_date)) }}</td>
+                                          <td>{{ date('Y-m-d', strtotime($data->sales_date)) }} Time: <span class="text-info"> {{\Carbon\Carbon::parse($data->created_at)->format('H:i:s')}}</span></td>
                                           <td>
                                                 {{$data->sales_item}}
                                                 @if($data->soup ==' ')

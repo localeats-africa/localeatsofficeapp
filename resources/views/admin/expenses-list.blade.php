@@ -173,7 +173,7 @@
                               @foreach($vendorExpense as $data)
                               <tr>
                                     <td>{{$loop->iteration}}</td>
-                                    <td>{{ date('Y-m-d', strtotime($data->expense_date)) }}</td>
+                                    <td>{{ date('Y-m-d', strtotime($data->expense_date)) }} Time: <span class="text-info"> {{\Carbon\Carbon::parse($data->created_at)->format('H:i:s')}}</span></td>
                                     <td>{{$data->description}}</td>
                                     <td>{{$data->cost}}</td>
                               </tr>
