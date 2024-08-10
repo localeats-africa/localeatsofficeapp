@@ -116,6 +116,34 @@
 .bg-eden{
   background: #a29995  !important;
 }
+@keyframes animationName {
+  0% {
+      opacity: 1;
+  }
+  50% {
+      opacity: 0;
+  }
+  100% {
+      opacity: 1;
+  }
+}
+
+#square {
+  font-size: 14px;
+  -webkit-animation: animationName 1.5s ease 0s infinite normal; /* Safari 4+ */
+  -moz-aanimation: animationName 1.5s ease 0s infinite normal; /* Fx 5+ */
+  -o-animation: animationName 1.5s ease 0s infinite normal;/* Opera 12+ */
+  animation: animationName 1.5s ease 0s infinite normal; 
+}
+#square:hover 
+{
+  -webkit-animation-play-state:paused;
+  -moz-animation-play-state:paused;
+  -o-animation-play-state:paused;
+  animation-play-state:paused;
+  cursor: pointer;
+  color:#000000;
+}
 
 @-moz-keyframes flash {
   0% {

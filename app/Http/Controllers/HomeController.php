@@ -27,6 +27,7 @@ use App\Imports\OrderList;
 use App\Imports\OrdersImportClass;
 use App\Imports\FoodMenuImportClass;
 use App\Exports\ExportOrderList;
+use App\Exports\ExportInvoiceTemplate;
 use App\Models\Invoice;
 use App\Models\Payout;
 use App\Mail\NewUserEmail;
@@ -2111,17 +2112,17 @@ class HomeController extends Controller
                 $sales->protein_total     = ' ';
                 $sales->update();
             }
-        
-        
-
-
 
             if($sales){
                 return redirect()->back()->with('update-user', 'Record Updated');
-  
             }
             else{
                 return redirect()->back()->with('update-error', 'Opps! something went wrong'); 
             }
+    }
+
+    public function exportInvoiceTemplate(Request $request){
+       
+        return Excel::download(new ExportInvoiceTemplate(), 'invoice-template.xlsx');
     }
 }//class

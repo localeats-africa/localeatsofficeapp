@@ -14,7 +14,7 @@
                   <nav aria-label="breadcrumb">
                         <ul class="breadcrumb">
                               <li class="breadcrumb-item active" aria-current="page">
-                                    <a class="" href="{{ url('export-offline-foodmenu-template') }}">Download Excel Template</a>
+                                    <a id="square" class="" href="{{ url('export-offline-foodmenu-template') }}">Download Excel Template</a>
                               </li>
                         </ul>
                   </nav>

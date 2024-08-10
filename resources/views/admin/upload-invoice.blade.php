@@ -9,6 +9,14 @@
 
             <div class="page-header">
                   <h3 class="page-title">Create Invoice</h3>
+
+                  <nav aria-label="breadcrumb">
+                        <ul class="breadcrumb">
+                              <li class="breadcrumb-item active" aria-current="page">
+                                    <a id="square" class="blinking-text" href="{{ url('invoice-template') }}">Download Invoice Template</a>
+                              </li>
+                        </ul>
+                  </nav>
             </div>
             <!---Alert --->
 
