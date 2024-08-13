@@ -702,7 +702,30 @@ class HomeController extends Controller
         ->where('deleted_at', '=', null)
         ->get();
 
-        return view('vendormanager.setup-chowdeck-vendor', compact('role', 'name', 'platform', 'vendor'));
+        $perPage = $request->perPage ?? 15;
+        $search = $request->input('search');
+
+        $vendorKey = DB::table('chowdeck_reference')
+        ->join('vendor', 'vendor.id', 'chowdeck_reference.vendor_id')
+        ->select(['vendor.vendor_name', 
+        'chowdeck_reference.code', 
+        'chowdeck_reference.ref',
+        'chowdeck_reference.sk_live',
+        'chowdeck_reference.sk_test'])
+        ->where(function ($query) use ($search) {  // <<<
+            $query->where('vendor_name', 'LIKE', '%'.$search.'%')
+                   ->orderBy('created_at', 'desc');
+            })->paginate($perPage, $columns = ['*'], $pageName = 'vendor'
+            )->appends(['per_page'   => $perPage]);
+        
+            $pagination = $vendorKey->appends ( array ('search' => $search) );
+                if (count ( $pagination ) > 0){
+                    return view('vendormanager.setup-chowdeck-vendor',  compact(
+                    'perPage', 'role', 'name', 'platform', 'vendor', 'vendorKey'))->withDetails( $pagination );     
+                } 
+                else{return redirect()->back()->with('vendor-status', 'No record order found'); };
+
+        return view('vendormanager.setup-chowdeck-vendor', compact('role', 'name', 'platform', 'vendor', 'vendorKey'));
     }
 
     public function setupChowdeck(Request $request){
