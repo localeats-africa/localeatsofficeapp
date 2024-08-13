@@ -28,5 +28,7 @@ class Orders extends Model
         'payout',
         'payment_status',
         'invoice_ref',
+        'past_number_of_orders',
+        'past_number_of_plates'
     ];
 }
