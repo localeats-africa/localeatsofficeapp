@@ -219,7 +219,7 @@
                         <div class="col-md-4 grid-margin stretch-card">
                               <div class="card">
                                     <div class="card-body">
-                                          <div class="form-label required">Reference <i class="text-danger">*</i>
+                                          <div class="form-label required">Merchant Reference <i class="text-danger">*</i>
                                           </div>
                                           <input type="text" class="form-control bg-muted" placeholder="ref_c17f2390692b981d6f6"
                                                 name="reference">
@@ -252,7 +252,7 @@
                         <div class="col-md-4 grid-margin stretch-card">
                               <div class="card">
                                     <div class="card-body">
-                                          <div class="form-label required">Live Secret Key <i class="text-danger">*</i>
+                                          <div class="form-label required">Live Integration Key <i class="text-danger">*</i>
                                           </div>
                                           <input type="text" class="form-control bg-muted" placeholder="sk_live_02a6392ce854e01958090"
                                                 name="live_key">
@@ -286,7 +286,7 @@
                         <div class="col-md-4 grid-margin stretch-card">
                               <div class="card">
                                     <div class="card-body">
-                                          <div class="form-label required">Test Secret Key <i class="text-danger">*</i>
+                                          <div class="form-label required">Test Integration Key <i class="text-danger">*</i>
                                           </div>
                                           <input type="text" class="form-control bg-muted" placeholder="sk_test_f3e2d85609542d1759"
                                                 name="test_key">
