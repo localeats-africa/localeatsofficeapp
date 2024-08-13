@@ -94,6 +94,9 @@ Route::controller(HomeController::class)->group(function () {
     Route::post('import-food-menu', 'importFoodMenu')->name('import-food-menu');
     Route::get('setup-vendor',  'setupApprovedVendor')->name('setup-vendor');
     Route::post('setup',  'setup')->name('setup');
+    Route::get('setup-chowdeck-vendor',  'setupChowdeckVendor')->name('setup-chowdeck-vendor');
+    Route::post('setup-chowdeck',  'setupChowdeck')->name('setup-chowdeck');
+    
     Route::get('create-invoice',  'createInvoice')->name('create-invoice');
     Route::get('upload-invoice/{id}',  'uploadInvoice')->name('upload-invoice');
     Route::post('add-invoice',  'storeInvoice')->name('add-invoice');

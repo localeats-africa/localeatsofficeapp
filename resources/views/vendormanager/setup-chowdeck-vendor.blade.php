@@ -8,7 +8,7 @@
       <div class="content-wrapper">
             <div class="page-header">
                   <h3 class="page-title">
-                        Setup Vendor Approved Vendors
+                        Setup Vendor on Chowdeck
                   </h3>
             </div>
             <!--Alert here--->
@@ -89,14 +89,14 @@
 
             <div class="row">
                   <div class="col-12">
-                        <h6 class="page-title">
-                              Manual Setup:
+                        <h6 class="page-title text-danger">
+                              Note: This information must be correct for it's API to synchronize
                         </h6>
                   </div>
             </div>
             <p></p>
 
-            <form method="post" action="{{ route('setup') }}" name="submit" enctype="multipart/form-data">
+            <form method="post" action="{{ route('setup-chowdeck') }}" name="submit" enctype="multipart/form-data">
                   @csrf
                   {{csrf_field()}}
                   <div class="row">
@@ -105,9 +105,10 @@
                                     <div class="card-body">
                                           <div class="form-label required">Platform <i class="text-danger">*</i>
                                           </div>
-                                       
-                                          <input type="text" class="form-control bg-muted" value="{{$data->name}}"   name="platform">
+                                          <input type="hidden" class="form-control bg-muted" value="{{$platform}}"
+                                                name="platform">
 
+                                          <input type="text" class="form-control bg-muted" value="{{$platform}}" disabled >
                                           @error('platform')
                                           <div class="alert alert-danger alert-dismissible" role="alert">
                                                 <div class="d-flex">
@@ -183,9 +184,45 @@
                         <div class="col-md-4 grid-margin stretch-card">
                               <div class="card">
                                     <div class="card-body">
-                                          <div class="form-label ">Reference / Code <i class="text-danger">*</i>
+                                          <div class="form-label ">Code / ID <i class="text-danger">*</i>
                                           </div>
-                                          <input type="text" class="form-control" name="reference">
+                                          <input type="text" class="form-control" name="code"  placeholder="107456">
+                                          @error('code')
+                                          <div class="alert alert-danger alert-dismissible" role="alert">
+                                                <div class="d-flex">
+                                                      <div>
+                                                            <!-- Download SVG icon from http://tabler-icons.io/i/alert-circle -->
+                                                            <svg xmlns="http://www.w3.org/2000/svg"
+                                                                  class="icon alert-icon" width="24" height="24"
+                                                                  viewBox="0 0 24 24" stroke-width="2"
+                                                                  stroke="currentColor" fill="none"
+                                                                  stroke-linecap="round" stroke-linejoin="round">
+                                                                  <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                                                                  <path d="M3 12a9 9 0 1 0 18 0a9 9 0 0 0 -18 0" />
+                                                                  <path d="M12 8v4" />
+                                                                  <path d="M12 16h.01" />
+                                                            </svg>
+                                                      </div>
+                                                      <div>
+                                                            {{ $message }}
+                                                      </div>
+                                                </div>
+                                                <a class="btn-close" data-bs-dismiss="alert" aria-label="close"></a>
+                                          </div>
+                                          @enderror
+                                    </div>
+                              </div>
+                        </div>
+                  </div>
+                  <!--- row---->
+                  <div class="row">
+                        <div class="col-md-4 grid-margin stretch-card">
+                              <div class="card">
+                                    <div class="card-body">
+                                          <div class="form-label required">Reference <i class="text-danger">*</i>
+                                          </div>
+                                          <input type="text" class="form-control bg-muted" placeholder="ref_c17f2390692b981d6f6"
+                                                name="ref">
                                           @error('reference')
                                           <div class="alert alert-danger alert-dismissible" role="alert">
                                                 <div class="d-flex">
@@ -212,10 +249,76 @@
                                     </div>
                               </div>
                         </div>
+                        <div class="col-md-4 grid-margin stretch-card">
+                              <div class="card">
+                                    <div class="card-body">
+                                          <div class="form-label required">Live Secret Key <i class="text-danger">*</i>
+                                          </div>
+                                          <input type="text" class="form-control bg-muted" placeholder="sk_live_02a6392ce854e01958090"
+                                                name="live_key">
+                                          @error('live_key')
+                                          <div class="alert alert-danger alert-dismissible" role="alert">
+                                                <div class="d-flex">
+                                                      <div>
+                                                            <!-- Download SVG icon from http://tabler-icons.io/i/alert-circle -->
+                                                            <svg xmlns="http://www.w3.org/2000/svg"
+                                                                  class="icon alert-icon" width="24" height="24"
+                                                                  viewBox="0 0 24 24" stroke-width="2"
+                                                                  stroke="currentColor" fill="none"
+                                                                  stroke-linecap="round" stroke-linejoin="round">
+                                                                  <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                                                                  <path d="M3 12a9 9 0 1 0 18 0a9 9 0 0 0 -18 0" />
+                                                                  <path d="M12 8v4" />
+                                                                  <path d="M12 16h.01" />
+                                                            </svg>
+                                                      </div>
+                                                      <div>
+                                                            {{ $message }}
+                                                      </div>
+                                                </div>
+                                                <a class="btn-close" data-bs-dismiss="alert" aria-label="close"></a>
+                                          </div>
+                                          @enderror
+                                    </div>
+                              </div>
+                        </div>
 
+                        <div class="col-md-4 grid-margin stretch-card">
+                              <div class="card">
+                                    <div class="card-body">
+                                          <div class="form-label required">Test Secret Key <i class="text-danger">*</i>
+                                          </div>
+                                          <input type="text" class="form-control bg-muted" placeholder="sk_test_f3e2d85609542d1759"
+                                                name="test_key">
+                                          @error('test_key')
+                                          <div class="alert alert-danger alert-dismissible" role="alert">
+                                                <div class="d-flex">
+                                                      <div>
+                                                            <!-- Download SVG icon from http://tabler-icons.io/i/alert-circle -->
+                                                            <svg xmlns="http://www.w3.org/2000/svg"
+                                                                  class="icon alert-icon" width="24" height="24"
+                                                                  viewBox="0 0 24 24" stroke-width="2"
+                                                                  stroke="currentColor" fill="none"
+                                                                  stroke-linecap="round" stroke-linejoin="round">
+                                                                  <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                                                                  <path d="M3 12a9 9 0 1 0 18 0a9 9 0 0 0 -18 0" />
+                                                                  <path d="M12 8v4" />
+                                                                  <path d="M12 16h.01" />
+                                                            </svg>
+                                                      </div>
+                                                      <div>
+                                                            {{ $message }}
+                                                      </div>
+                                                </div>
+                                                <a class="btn-close" data-bs-dismiss="alert" aria-label="close"></a>
+                                          </div>
+                                          @enderror
+                                    </div>
+                              </div>
+                        </div>
 
                   </div>
-                  <!--- row---->
+                  <!-- row -->
 
                   <!-- row -->
                   <div class="row">

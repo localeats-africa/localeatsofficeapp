@@ -35,11 +35,26 @@
                         </div>
                   </li>
                   <li class="nav-item">
-                        <a class="nav-link" href="{{ url('setup-vendor') }}" target="">
-                              <span class="menu-title">Setup</span>
+                        <a class="nav-link" data-bs-toggle="collapse" href="#setup" aria-expanded="false"
+                              aria-controls="setup">
+                              <span class="menu-title">Setup </span>
+                              <i class="menu-arrow"></i>
                               <i class="mdi mdi-cog-outline fs-24 menu-icon"></i>
 
                         </a>
+                        <div class="collapse" id="setup">
+                              <ul class="nav flex-column sub-menu">
+                                    <li class="nav-item">
+                                          <a class="nav-link" href="{{ url('setup-chowdeck-vendor') }}"> Chowdeck </a>
+                                    </li>
+
+                                    <li class="nav-item">
+                                          <a class="nav-link" href="{{ url('setup-vendor') }}">Other Platforms
+                                          </a>
+                                    </li>
+
+                              </ul>
+                        </div>
                   </li>
                   <!-- <li class="nav-item">
                               <a class="nav-link" href="" target="">
@@ -72,7 +87,8 @@
                                     </li>
 
                                     <li class="nav-item">
-                                          <a class="nav-link" href="{{ url('show-deleted-invoice') }}">Deleted Invoices</a>
+                                          <a class="nav-link" href="{{ url('show-deleted-invoice') }}">Deleted
+                                                Invoices</a>
                                     </li>
 
                                     <li class="nav-item">
@@ -108,7 +124,7 @@
                   </li>
 
                   <li class="nav-item">
-                        <a class="nav-link" href="{{ url('all-food-menu') }}" >
+                        <a class="nav-link" href="{{ url('all-food-menu') }}">
                               <span class="menu-title">Food Menu</span>
                               <i class="mdi mdi-menu   menu-icon fs-24"></i>
 
@@ -222,14 +238,30 @@
                   </li>
 
                   <li class="nav-item">
-                        <a class="nav-link" href="{{ url('setup-vendor') }}" target="">
-                              <span class="menu-title">Setup</span>
+                        <a class="nav-link" data-bs-toggle="collapse" href="#setup" aria-expanded="false"
+                              aria-controls="setup">
+                              <span class="menu-title">Setup </span>
+                              <i class="menu-arrow"></i>
                               <i class="mdi mdi-cog-outline fs-24 menu-icon"></i>
+
                         </a>
+                        <div class="collapse" id="setup">
+                              <ul class="nav flex-column sub-menu">
+                                    <li class="nav-item">
+                                          <a class="nav-link" href="{{ url('setup-chowdeck-vendor') }}"> Chowdeck </a>
+                                    </li>
+
+                                    <li class="nav-item">
+                                          <a class="nav-link" href="{{ url('setup-vendor') }}">Other Platforms
+                                          </a>
+                                    </li>
+
+                              </ul>
+                        </div>
                   </li>
 
                   <li class="nav-item">
-                        <a class="nav-link" href="{{ url('all-food-menu') }}" >
+                        <a class="nav-link" href="{{ url('all-food-menu') }}">
                               <span class="menu-title">Food Menu</span>
                               <i class="mdi mdi-menu   menu-icon fs-24"></i>
 
@@ -328,14 +360,30 @@
 
 
                   <li class="nav-item">
-                        <a class="nav-link" href="{{ url('setup-vendor') }}" target="">
-                              <span class="menu-title">Setup</span>
+                        <a class="nav-link" data-bs-toggle="collapse" href="#setup" aria-expanded="false"
+                              aria-controls="setup">
+                              <span class="menu-title">Setup </span>
+                              <i class="menu-arrow"></i>
                               <i class="mdi mdi-cog-outline fs-24 menu-icon"></i>
+
                         </a>
+                        <div class="collapse" id="setup">
+                              <ul class="nav flex-column sub-menu">
+                                    <li class="nav-item">
+                                          <a class="nav-link" href="{{ url('setup-chowdeck-vendor') }}"> Chowdeck </a>
+                                    </li>
+
+                                    <li class="nav-item">
+                                          <a class="nav-link" href="{{ url('setup-vendor') }}">Other Platforms
+                                          </a>
+                                    </li>
+
+                              </ul>
+                        </div>
                   </li>
 
                   <li class="nav-item">
-                        <a class="nav-link" href="{{ url('all-food-menu') }}" >
+                        <a class="nav-link" href="{{ url('all-food-menu') }}">
                               <span class="menu-title">Food Menu</span>
                               <i class="mdi mdi-menu   menu-icon fs-24"></i>
                         </a>

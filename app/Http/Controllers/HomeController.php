@@ -39,6 +39,7 @@ use App\Models\OfflineSales;
 use App\Models\VendorExpenses;
 use App\Models\OfflineFoodMenu;
 use App\Models\OrderExtraFoodMenu;
+use App\Models\ChowdeckReference;
 
 use Excel;
 use Auth;
@@ -642,7 +643,7 @@ class HomeController extends Controller
         ->where('users.id', $id)
         ->pluck('role_name')->first();
 
-        $platform = Platforms::all();
+        $platform = Platforms::where('name', '!=', 'chowdeck')->get('*');
         $vendor = Vendor::where('vendor_status', 'approved')
         ->where('deleted_at', '=', null)
         ->get();
@@ -650,28 +651,11 @@ class HomeController extends Controller
         return view('admin.setup-vendor', compact('role', 'name', 'platform', 'vendor'));
     }
 
-    public function setupChowdeckVendor(Request $request){
-        $name = Auth::user()->name;
-        $id = Auth::user()->id;
-        $role = DB::table('role')->select('role_name')
-        ->join('users', 'users.role_id', 'role.id')
-        ->where('users.id', $id)
-        ->pluck('role_name')->first();
-
-        $platform = Platforms::where('name', 'chowdeck')
-        ->get(['name']);
-        $vendor = Vendor::where('vendor_status', 'approved')
-        ->where('deleted_at', '=', null)
-        ->get();
-
-        return view('vendormanager.setup-chowdeck-vendor', compact('role', 'name', 'platform', 'vendor'));
-    }
-
     public function setup(Request $request){
         $this->validate($request, [ 
             'platform'      => 'required|string|max:255',
             'vendor'        => 'required|string|max:255',
-            'reference'     => 'required|max:255',
+            'code'          => 'required|max:255',
         ]);
 
         $checkVendorStatus = SalesPlatform::where('vendor_id', $request->vendor)
@@ -689,8 +673,73 @@ class HomeController extends Controller
             ->where('platform_name', $request->platform)
             ->update([
                 'vendor_status' => $status,
-                'platform_ref'  => $request->reference
+                'platform_ref'  => $request->code
             ]);
+
+            $vendorName = Vendor::where('id', $request->vendor)
+            ->get('*')->pluck('vendor_name')->first();
+
+            return redirect('all-vendor')->with('setup-vendor', 'Setup successful for ' .$vendorName. ' on ' .$request->platform);
+        }
+        else{
+            return redirect()->back()->with('setup-error', 'Opps something went wrong');
+        
+        }
+    }
+    
+
+    public function setupChowdeckVendor(Request $request){
+        $name = Auth::user()->name;
+        $id = Auth::user()->id;
+        $role = DB::table('role')->select('role_name')
+        ->join('users', 'users.role_id', 'role.id')
+        ->where('users.id', $id)
+        ->pluck('role_name')->first();
+
+        $platform = Platforms::where('name', 'chowdeck')
+        ->get(['*'])->pluck('name')->first();
+        $vendor = Vendor::where('vendor_status', 'approved')
+        ->where('deleted_at', '=', null)
+        ->get();
+
+        return view('vendormanager.setup-chowdeck-vendor', compact('role', 'name', 'platform', 'vendor'));
+    }
+
+    public function setupChowdeck(Request $request){
+        $this->validate($request, [ 
+            'platform'      => 'required|string|max:255',
+            'vendor'        => 'required|string|max:255',
+            'code'          => 'required|max:255',
+            'reference'     => 'required|max:255',
+            'live_key'      => 'required|max:255',
+            'test_key'      => 'required|max:255',
+        ]);
+
+        $checkVendorStatus = SalesPlatform::where('vendor_id', $request->vendor)
+        ->where('platform_name', $request->platform)
+        ->get('vendor_status');
+
+        $checkVendorCode = SalesPlatform::where('vendor_id', $request->vendor)
+        ->where('platform_name', $request->platform)
+        ->get('platform_ref');
+
+        $status = 'active';
+        if(empty($checkVendorCode && $checkVendorStatus == 'inactive')){
+            $setupVendor = DB::table('sales_platform')
+            ->where('vendor_id', $request->vendor)
+            ->where('platform_name', $request->platform)
+            ->update([
+                'vendor_status' => $status,
+                'platform_ref'  => $request->code
+            ]);
+
+            $setupChowdeck = new ChowdeckReference();
+            $setupChowdeck->vendor_id       = $request->vendor;
+            $setupChowdeck->code            = $request->code;
+            $setupChowdeck->ref             = $request->reference;
+            $setupChowdeck->sk_live         = $request->live_key;
+            $setupChowdeck->sk_test         = $request->test_key;
+            $setupChowdeck->save();
 
             $vendorName = Vendor::where('id', $request->vendor)
             ->get('*')->pluck('vendor_name')->first();
