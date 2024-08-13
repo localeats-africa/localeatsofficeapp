@@ -351,6 +351,145 @@
                   </div>
                   <!-- row -->
             </form>
+
+
+            <p></p>
+            <div class="row ">
+                  <div class="col-12">
+                        <div class="card">
+                              <div class="card-header">
+                                    <h4 class="card-title"> </h4>
+                              </div>
+                              <div class="card-body border-bottom py-3">
+                                    <div class="d-flex">
+                                          <div class="text-secondary">
+                                                Show
+                                                <div class="mx-2 d-inline-block">
+                                                      <select id="pagination" class="form-control form-control-sm"
+                                                            name="perPage">
+                                                            <option value="5" @if($perPage==5) selected @endif>5
+                                                            </option>
+                                                            <option value="10" @if($perPage==10) selected @endif>
+                                                                  10
+                                                            </option>
+                                                            <option value="25" @if($perPage==25) selected @endif>
+                                                                  25
+                                                            </option>
+                                                            <option value="50" @if($perPage==50) selected @endif>
+                                                                  50
+                                                            </option>
+                                                      </select>
+                                                </div>
+                                                records
+                                          </div>
+                                          <div class="ms-auto text-secondary">
+                                                Search:
+                                                <div class="ms-2 d-inline-block">
+
+                                                      <form action="{{ route('setup-chowdeck-vendor') }}" method="GET" role="search">
+                                                            {{ csrf_field() }}
+                                                            <div class="input-group mb-2">
+                                                                  <input type="text" class="form-control"
+                                                                        placeholder="Search for…" name="search">
+                                                                  <button type="submit" class="btn"
+                                                                        type="button">Go!</button>
+                                                            </div>
+                                                      </form>
+                                                </div>
+                                          </div>
+                                    </div>
+                              </div>
+
+                              <div class="table-responsive " id="card">
+                                    <table class="table table-striped card-table table-vcenter text-nowrap datatable"
+                                          id="orders">
+                                          <thead>
+                                                <tr>
+                                                      <th class="w-1"><input class="form-check-input m-0 align-middle"
+                                                                  type="checkbox" aria-label="Select all product">
+                                                      </th>
+                                                      <th>Vendor</th>
+                                                      <th>Code</th>
+                                                      <th>Reference</th>
+                                                      <th>Live Key</th>
+                                                      <th>Test Key</th>
+                                                </tr>
+                                          </thead>
+                                          <tbody>
+                                                @foreach($vendorKey as $data)
+                                                <tr>
+                                                      <td><input class="form-check-input m-0 align-middle"
+                                                                  type="checkbox" aria-label="Select"></td>
+                                                      <td  class="text-capitalize">{{$data->vendor_name}}
+                                                      </td>
+                                                      <td>{{$data->code}}</td>
+                                                      <td>{{$data->ref}}</td>
+                                                      <td>{{$data->sk_live}}</td>
+                                                      <td>{{$data->sk_test}}</td>
+
+                                                </tr>
+                                                @endforeach
+
+                                          </tbody>
+
+                                    </table>
+                              </div>
+                              <div class="card-footer d-flex align-items-center">
+                                    <p class="m-0 text-secondary">
+
+                                          Showing
+                                          {{ ($vendorKey->currentPage() - 1) * $vendorKey->perPage() + 1; }} to
+                                          {{ min($vendorKey->currentPage()* $vendorKey->perPage(), $vendorKey->total()) }}
+                                          of
+                                          {{$vendorKey->total()}} entries
+                                    </p>
+
+                                    <ul class="pagination m-0 ms-auto">
+                                          @if(isset($vendorKey))
+                                          @if($vendorKey->currentPage() > 1)
+                                          <li class="page-item ">
+                                                <a class="page-link text-danger"
+                                                      href="{{ $vendorKey->previousPageUrl() }}" tabindex="-1"
+                                                      aria-disabled="true">
+                                                      <!-- Download SVG icon from http://tabler-icons.io/i/chevron-left -->
+                                                      <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24"
+                                                            height="24" viewBox="0 0 24 24" stroke-width="2"
+                                                            stroke="currentColor" fill="none" stroke-linecap="round"
+                                                            stroke-linejoin="round">
+                                                            <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                                                            <path d="M15 6l-6 6l6 6" />
+                                                      </svg>
+                                                      prev
+                                                </a>
+                                          </li>
+                                          @endif
+
+
+                                          <li class="page-item">
+                                                {{ $vendorKey->appends(compact('perPage'))->links()  }}
+                                          </li>
+                                          @if($vendorKey->hasMorePages())
+                                          <li class="page-item">
+                                                <a class="page-link text-danger" href="{{ $vendorKey->nextPageUrl() }}">
+                                                      next
+                                                      <!-- Download SVG icon from http://tabler-icons.io/i/chevron-right -->
+                                                      <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24"
+                                                            height="24" viewBox="0 0 24 24" stroke-width="2"
+                                                            stroke="currentColor" fill="none" stroke-linecap="round"
+                                                            stroke-linejoin="round">
+                                                            <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                                                            <path d="M9 6l6 6l-6 6" />
+                                                      </svg>
+                                                </a>
+                                          </li>
+                                          @endif
+                                          @endif
+                                    </ul>
+                              </div>
+                        </div>
+                        <!--- card-->
+                  </div>
+            </div>
       </div>
       <!--- content wrapper---->
       <!-- partial -->
