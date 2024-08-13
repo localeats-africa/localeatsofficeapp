@@ -405,9 +405,7 @@
                                           id="orders">
                                           <thead>
                                                 <tr>
-                                                      <th class="w-1"><input class="form-check-input m-0 align-middle"
-                                                                  type="checkbox" aria-label="Select all product">
-                                                      </th>
+                                                      <th class="w-1">SN</th>
                                                       <th>Vendor</th>
                                                       <th>Code</th>
                                                       <th>Reference</th>
@@ -418,8 +416,7 @@
                                           <tbody>
                                                 @foreach($vendorKey as $data)
                                                 <tr>
-                                                      <td><input class="form-check-input m-0 align-middle"
-                                                                  type="checkbox" aria-label="Select"></td>
+                                                      <td>{{$loop->iteration}}</td>
                                                       <td  class="text-capitalize">{{$data->vendor_name}}
                                                       </td>
                                                       <td>{{$data->code}}</td>
