@@ -650,6 +650,22 @@ class HomeController extends Controller
         return view('admin.setup-vendor', compact('role', 'name', 'platform', 'vendor'));
     }
 
+    public function setupChowdeckVendor(Request $request){
+        $name = Auth::user()->name;
+        $id = Auth::user()->id;
+        $role = DB::table('role')->select('role_name')
+        ->join('users', 'users.role_id', 'role.id')
+        ->where('users.id', $id)
+        ->pluck('role_name')->first();
+
+        $platform = Platforms::all();
+        $vendor = Vendor::where('vendor_status', 'approved')
+        ->where('deleted_at', '=', null)
+        ->get();
+
+        return view('vendormanager.setup-chowdeck-vendor', compact('role', 'name', 'platform', 'vendor'));
+    }
+
     public function setup(Request $request){
         $this->validate($request, [ 
             'platform'      => 'required|string|max:255',
