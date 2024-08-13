@@ -767,7 +767,7 @@ class HomeController extends Controller
             $vendorName = Vendor::where('id', $request->vendor)
             ->get('*')->pluck('vendor_name')->first();
 
-            return redirect('all-vendor')->with('setup-vendor', 'Setup successful for ' .$vendorName. ' on ' .$request->platform);
+            return redirect()->back()->with('setup-vendor', 'Setup successful for ' .$vendorName. ' on ' .$request->platform);
         }
         else{
             return redirect()->back()->with('setup-error', 'Opps something went wrong');
