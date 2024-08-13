@@ -105,15 +105,8 @@
                                     <div class="card-body">
                                           <div class="form-label required">Platform <i class="text-danger">*</i>
                                           </div>
-                                          <select class="js-example-basic-single text-secondary" style="width:100%"
-                                                name="platform" id="platform">
-                                                <option> Search
-                                                </option>
-                                                @foreach($platform as $data)
-                                                <option value="{{$data->name}}">
-                                                      {{$data->name}}</option>
-                                                @endforeach
-                                          </select>
+                                       
+                                          <input type="text" class="form-control bg-muted" value="{{$data->name}}"   name="platform">
 
                                           @error('platform')
                                           <div class="alert alert-danger alert-dismissible" role="alert">
