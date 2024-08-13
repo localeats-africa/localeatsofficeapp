@@ -222,7 +222,7 @@
                                           <div class="form-label required">Reference <i class="text-danger">*</i>
                                           </div>
                                           <input type="text" class="form-control bg-muted" placeholder="ref_c17f2390692b981d6f6"
-                                                name="ref">
+                                                name="reference">
                                           @error('reference')
                                           <div class="alert alert-danger alert-dismissible" role="alert">
                                                 <div class="d-flex">
