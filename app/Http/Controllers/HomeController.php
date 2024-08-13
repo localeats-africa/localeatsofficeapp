@@ -658,7 +658,8 @@ class HomeController extends Controller
         ->where('users.id', $id)
         ->pluck('role_name')->first();
 
-        $platform = Platforms::all();
+        $platform = Platforms::where('name', 'chowdeck')
+        ->get(['name']);
         $vendor = Vendor::where('vendor_status', 'approved')
         ->where('deleted_at', '=', null)
         ->get();
