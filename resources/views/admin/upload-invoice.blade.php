@@ -171,6 +171,9 @@
                                                            
 
                                                             <div class="col-sm-7">
+                                                            @if($platform->platform_name == 'Chowdeck')
+                                                            @else  
+
                                                                   <form method="post" action="{{ route('add-invoice') }}" name="submit"  id=""  enctype="multipart/form-data">
                                                                   @csrf
                                                                   {{csrf_field()}}
@@ -197,12 +200,10 @@
                                                                                                 <i class="mdi mdi-upload btn-icon-prepend fs-24"></i> Upload </button>
                                                                                           </div>
                                                                                     </div>
-                                                                             
                                                                         </div>
-                                                                      
-                                                                      
                                                                   </form>
                                                                  
+                                                                  @endif 
                                                             </div>
                                                            
                                                           
