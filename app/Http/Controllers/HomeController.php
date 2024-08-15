@@ -40,6 +40,7 @@ use App\Models\VendorExpenses;
 use App\Models\OfflineFoodMenu;
 use App\Models\OrderExtraFoodMenu;
 use App\Models\ChowdeckReference;
+use App\Models\TempChowdeckOrder;
 
 use Excel;
 use Auth;
@@ -835,12 +836,129 @@ class HomeController extends Controller
             ->where('vendor.id', $vendorID)
             ->where('sales_platform.deleted_at', null)
             ->where('sales_platform.vendor_status', 'active')
-            ->get(['sales_platform.platform_name', 'platforms.img_url']);
+            ->get(['sales_platform.platform_name', 'platforms.img_url', 'platforms.id']);
 
             return view('admin.upload-invoice', compact('role', 'name', 
             'vendorLogo', 'vendorRef', 'vendorName', 'vendorPlatforms', 'status', 
             'vendorID'));
             }
+    }
+    public function  storeChowdeckTempOrder(Request $request){
+        $vendor_id      = $request->vendor;
+        $platform_id    = $request->platform;
+        $liveToken = DB::table('chowdeck_reference')
+        ->where('chowdeck_reference.vendor_id', $vendor_id)
+        ->select('*')->pluck('sk_live')->first();
+
+        $merchantRef = DB::table('chowdeck_reference')
+        ->where('chowdeck_reference.vendor_id', $vendor_id)
+        ->select('*')->pluck('ref')->first();
+     
+        $startDate      =   date("Y-m-d", strtotime($request->from)) ;
+        $endDate        =  date("Y-m-d", strtotime($request->to));
+
+        $chowdeckData = array(
+            "from"             => $startDate,
+            "to"               => $endDate,
+            );
+
+            $jsonData = json_encode($chowdeckData);
+            $url = "https://api.chowdeck.com/merchant/$merchantRef/order";
+            if($jsonData) {
+                     $curlopt = curl_init();
+                     curl_setopt_array($curlopt, array(
+                     CURLOPT_URL => $url,
+                     CURLOPT_RETURNTRANSFER => true,
+                     CURLOPT_CUSTOMREQUEST => 'GET',
+                     CURLOPT_HTTPHEADER => array(
+                       'Content-Type: application/json',
+                       'Authorization: Bearer '.$liveToken,
+                      )
+                     ));
+                  $response = curl_exec($curlopt);
+                  $error = curl_error($curlopt);
+                  curl_close($curlopt);
+                  $detail =  json_decode($response, true);
+                 // dd($detail);
+                }
+              
+                if($detail['status'] == 'success'){
+                  $data = $detail['data'];
+                  $collection = collect($detail['data']);
+                 // dd($data);
+                }
+                else{
+                    return redirect()->back()->with('invoice-error', $error);
+                }
+                 if($detail['status'] == 'error'){
+                 // Session::flash('no-wallet', $error); 
+                  return redirect()->back()->with('invoice-error', $error);
+                }
+
+                foreach($data as $value){
+                    //dd($value['id']);
+                    $record = new TempChowdeckOrder();
+                    $record->vendor_id          =   $vendor_id;
+                    $record->order_id           =   $value['id'];
+                    $record->vendor_code        =   $value['vendor_id'];
+                    $record->fetch_url          =  "https://api.chowdeck.com/merchant/$merchantRef/order/";
+                    $record->reference          =   $value['reference'];
+                    $record->order_created_at   =   date('Y-m-d', strtotime($value['created_at'])) ;
+                    $record->order_updated_at   =  date('Y-m-d', strtotime($value['updated_at'])) ;
+                    $record->save();
+                }
+
+                if($record){
+                    // filter record here
+                    $getOrderReference = DB::table('temp_chowdeck_order')
+                    ->where('vendor_id', $vendor_id)
+                    ->whereDate('order_created_at', '=', $startDate)                                 
+                    //->whereDate('order_created_at', '<=', $endDate) 
+
+                    // ->whereDate('order_created_at', '>=', $startDate)                                 
+                    // ->whereDate('order_created_at', '<=', $endDate) 
+                    ->get();
+                   // dd($getOrderReference);
+                   $siteURL = "https://api.chowdeck.com/merchant/$merchantRef/order/";
+                    //dd($sites);
+                    foreach($getOrderReference as $site){
+                          $refurl = $site->fetch_url.$site->reference;
+                       
+                        $curlref = curl_init();
+                        curl_setopt_array($curlref, array(
+                        CURLOPT_URL => $refurl,
+                        CURLOPT_RETURNTRANSFER => true,
+                        CURLOPT_CUSTOMREQUEST => 'GET',
+                        CURLOPT_HTTPHEADER => array(
+                            'Content-Type: application/json',
+                            'Authorization: Bearer '.$liveToken,
+                            )
+                        ));
+                        $result  = curl_exec($curlref);
+                        $ref_error = curl_error($curlref);
+                        curl_close($curlref);
+                        $ref_result =  json_decode($result, true);
+                       // dd($ref_result);
+                        if($ref_result['status'] == 'success'){
+                            $ref_data = $ref_result['data'];
+                            $order = new TempOrder();
+                            $order->platform_id     =   $platform_id;
+                            $order->vendor_id       =   $vendor_id ;
+                            $order->description     =    $ref_data['summary'];
+                            $order->order_ref       =    $ref_data['id'];
+                            $order->order_amount    =    $ref_data['total_price'];
+                            $order->delivery_date   =    $ref_data['created_at'];
+                            $order->save();
+
+                            TempChowdeckOrder::where('vendor_id', $vendor_id)->delete();
+                        }
+                        else{return redirect()->back()->with('invoice-error', $ref_error);}
+                        if($ref_result['status'] == 'error'){
+                            return redirect()->back()->with('invoice-error', $ref_error);
+                        }
+                        return redirect()->back()->with('invoice-error', 'record saved');  
+                    }
+                }      
     }
 
     public function storeInvoice(Request $request){

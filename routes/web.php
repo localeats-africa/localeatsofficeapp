@@ -100,6 +100,7 @@ Route::controller(HomeController::class)->group(function () {
     Route::get('create-invoice',  'createInvoice')->name('create-invoice');
     Route::get('upload-invoice/{id}',  'uploadInvoice')->name('upload-invoice');
     Route::post('add-invoice',  'storeInvoice')->name('add-invoice');
+    Route::get('add-chowdeck-order',  'storeChowdeckTempOrder')->name('add-chowdeck-order');
     Route::post('merge-invoice',  'mergeInvoice')->name('merge-invoice'); 
     Route::get('computed-invoice/{id}/{number_of_import}/{ref}',  'showMergeInvoices')->name('computed-invoice');
     Route::post('update-merge-invoice-food',  'updateMergeInvoiceFood')->name('update-merge-invoice-food'); 
