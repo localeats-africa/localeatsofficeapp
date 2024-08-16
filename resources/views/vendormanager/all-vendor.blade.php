@@ -179,13 +179,15 @@
                                           id="orders">
                                           <thead>
                                                 <tr>
-                                                      <th>Select</th>
-                                                      <th>Reference</th>
-                                                      <th>Restaurant Name</th>
+                                                      <th></th>
+                                                      <th>Status</th>
+                                                      <th>Vendor Name</th>
                                                       <th>Contact </th>
                                                       <th>Food Type</th>
                                                       <th>Delivery</th>
-                                                      <th>Status</th>
+
+                                                      <th>Location</th>
+                                                
 
                                                 </tr>
                                           </thead>
@@ -296,20 +298,6 @@
                                                       @endif
                                                       @endauth
 
-
-                                                      <td class="text-sm">{{$data->vendor_ref}}</td>
-                                                      <td>{{$data->vendor_name}}</td>
-                                                      <td class="text-capitalize">{{$data->contact_fname}}
-                                                            {{$data->contact_lname}} </td>
-                                                      <td>
-                                                            @php
-                                                            $f = str_replace( array('[',']') , '' , $data->food_type );
-                                                            $b = preg_replace('/"/i', ' ', $f);
-                                                            @endphp
-                                                            {{ $b}}
-
-                                                      </td>
-                                                      <td>{{$data->delivery_time}} min.</td>
                                                       <td class="text-capitalize">
                                                             @if($data->vendor_status =='pending')
                                                             <span class="badge badge-pill badge-warning text-dark">
@@ -322,7 +310,20 @@
                                                                   {{$data->vendor_status}} </span>
                                                             @endif
                                                       </td>
-
+                                                   
+                                                      <td>{{$data->vendor_name}}</td>
+                                                      <td class="text-capitalize">{{$data->contact_fname}}
+                                                            {{$data->contact_lname}} </td>
+                                                      <td>
+                                                            @php
+                                                            $f = str_replace( array('[',']') , '' , $data->food_type );
+                                                            $b = preg_replace('/"/i', ' ', $f);
+                                                            @endphp
+                                                            {{ $b}}
+                                                      </td>
+                                                      <td>{{$data->delivery_time}} min.</td>
+                                                  
+                                                      <td class="text-sm">{{$data->store_area}}, {{$data->state}}</td>
 
 
                                                 </tr>
