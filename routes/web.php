@@ -157,6 +157,7 @@ Route::controller(AdminController::class)->group(function () {
     Route::post('add-food-type',  'addFoodType')->name('add-food-type');
     Route::get('new-staff',  'newUser')->name('new-staff');
     Route::post('add-user',  'adduser')->name('add-user');
+    Route::post('activate-user',  'activateUser')->name('activate-user');
     Route::get('all-staff',  'allUser')->name('all-staff');
     Route::post('vendor-platform-ref/{id}',  'updateVendorPlatformRef')->name('vendor-platform-ref');
     Route::get('all-orders',  'allOrders')->name('all-orders');
