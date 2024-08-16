@@ -703,7 +703,7 @@ class HomeController extends Controller
         ->where('deleted_at', '=', null)
         ->get();
 
-        $perPage = $request->perPage ?? 15;
+        $perPage = $request->perPage ?? 25;
         $search = $request->input('search');
 
         $vendorKey = DB::table('chowdeck_reference')
@@ -713,6 +713,7 @@ class HomeController extends Controller
         'chowdeck_reference.ref',
         'chowdeck_reference.sk_live',
         'chowdeck_reference.sk_test'])
+        ->orderBy('chowdeck_reference.created_at', 'desc')
         ->where(function ($query) use ($search) {  // <<<
             $query->where('vendor_name', 'LIKE', '%'.$search.'%')
                    ->orderBy('created_at', 'desc');
