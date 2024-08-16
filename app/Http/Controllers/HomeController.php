@@ -136,12 +136,11 @@ class HomeController extends Controller
         ->pluck('role_name')->first();
 
         $stateID = DB::table('state')->select('*')
-        ->where('state', 'lagos')
-        ->pluck('id')->first();
+        //->where('state', 'lagos')
+        ->pluck('id');
 
-        $state = DB::table('state')->select('*')
-        ->where('state', 'lagos')
-        ->pluck('state')->first();
+        $state = DB::table('state')->select('*');
+        //->where('state', 'lagos');
 
         $countryID = DB::table('country')->select('*')
         ->where('country', 'Nigeria')
