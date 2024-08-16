@@ -41,6 +41,7 @@ use App\Models\OfflineFoodMenu;
 use App\Models\OrderExtraFoodMenu;
 use App\Models\ChowdeckReference;
 use App\Models\TempChowdeckOrder;
+use App\Models\State;
 
 use Excel;
 use Auth;
@@ -135,11 +136,11 @@ class HomeController extends Controller
         ->where('users.id', $id)
         ->pluck('role_name')->first();
 
-        $stateID = DB::table('state')->select('*')
+        $stateID = DB::table('state')->select(['*'])
         //->where('state', 'lagos')
         ->pluck('id');
 
-        $state = DB::table('state')->select('*');
+        $state = State::all();
         //->where('state', 'lagos');
 
         $countryID = DB::table('country')->select('*')
