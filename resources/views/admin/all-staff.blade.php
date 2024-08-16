@@ -200,7 +200,7 @@
                                           <div class="dropdown-menu dropdown-menu-end text-end">
                                                 <a class="dropdown-item btn btn-sm text-capitalize text-danger"
                                                       href="edit-user/{{$data->id}}">
-                                                     <i class=" fa fa-pencil"></i>
+                                                      <i class=" fa fa-pencil"></i>
                                                 </a>
                                           </div>
                                     </div>
@@ -290,6 +290,27 @@
                                     </div>
                                     @endif
                                     @endif
+
+                                    <!-- activate and deactivate--> 
+                                     @if($data->status =='active')
+                      
+                                          <label class="card-btn form-switch form-switch-lg">
+                                                <input data-id="{{$data->id}}" class="form-check-input" type="checkbox"
+                                                      data-onstyle="success" data-offstyle="danger" data-toggle="toggle"
+                                                      data-on="Active" data-off="InActive"
+                                                      {{ $data->status ? 'checked' : '' }} > &nbsp;
+                                                <span>{{$data->status}}</span>
+                                          </label>
+                                          @else 
+                                          <label class="card-btn form-switch form-switch-lg">
+                                                <input data-id="{{$data->id}}" class="form-check-input" type="checkbox"
+                                                      data-onstyle="success" data-offstyle="danger" data-toggle="toggle"
+                                                      data-on="Active" data-off="InActive"
+                                                      {{ $data->status ? '' : '' }}> &nbsp;
+                                                <span id="status"></span>
+                                          </label>
+                                          @endif 
+                                   
                               </div>
 
 
@@ -366,4 +387,35 @@
       <!--- content wrapper---->
 </div>
 <!-- main-panel -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+<script>
+$(function() {
+      $('.form-check-input').change(function() {
+            var status = $(this).prop('checked') == false ? 'inactive' : 'active';
+            var user_id = $(this).data('id');
+            var url = "{{ route('activate-user') }}";
+            $.ajaxSetup({
+                  headers: {
+                        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                  }
+            });
+
+            $.ajax({
+                  method: 'POST',
+                  enctype: 'multipart/form-data',
+                  url: url,
+                  dataType: "json",
+                  data: {
+                        'status': status,
+                        'user_id': user_id
+                  },
+                  success: function(data) {
+                        console.log(data.success);
+                        document.getElementById('status').innerHTML = data.status;
+                  }
+            });
+      })
+})
+</script>
+
 @endsection

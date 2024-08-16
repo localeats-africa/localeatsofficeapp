@@ -861,11 +861,12 @@ class AdminController extends Controller
         }
 
         $addUser = new User;
-        $addUser->fullname           = $request->name;
+        $addUser->fullname          = $request->name;
         $addUser->email             = $request->email;
         $addUser->role_id           = $request->role;
         $addUser->email_verified_at = $verified;
         $addUser->password          = $password;
+        $addUser->status            ='active';
         $addUser->save();
         
         if($addUser){
@@ -1551,6 +1552,7 @@ class AdminController extends Controller
 
             $user = User::find($id);
             $userRole = Role::where('id', '!=', '1')
+            ->where('id', '!=', '2')
             ->get();
             //->where('role.id', '!=', '2')//except admin
          
@@ -1592,6 +1594,38 @@ class AdminController extends Controller
     public function exportOfflineFoodMenuTemplate(Request $request){
        
         return Excel::download(new ExportOfflineFoodMenu(), 'offline-foodmenu-template.xlsx');
+    }
+
+    public function activateUser(Request $request)
+    {
+        $today= date("Y-m-d", strtotime(Carbon::now()));
+       if($request->status == 'inactive'){
+        $user = User::find($request->user_id);
+        User::where('id', $request->user_id)
+        ->update([
+            'status'        =>'inactive',
+            'deleted_at'    =>$today
+        ]);
+        // $user->status = 'inactive';
+        // $user->deleted_at = $today;
+        // $user->save();
+       }
+       if($request->status == 'active'){
+        $user = User::find($request->user_id);
+        User::withTrashed()->find($request->user_id)->restore([
+            'deleted_at'  => null
+          ]);
+          User::where('id', $request->user_id)
+          ->update([
+              'status'        =>'active',
+          ]);
+
+       }
+
+        return response()->json([
+            'success'=>$request->status.'Status change successfully.', 
+            'status'=>$request->status 
+    ]);
     }
 
 }//class

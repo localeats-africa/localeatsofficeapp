@@ -94,9 +94,13 @@ Route::controller(HomeController::class)->group(function () {
     Route::post('import-food-menu', 'importFoodMenu')->name('import-food-menu');
     Route::get('setup-vendor',  'setupApprovedVendor')->name('setup-vendor');
     Route::post('setup',  'setup')->name('setup');
+    Route::get('setup-chowdeck-vendor',  'setupChowdeckVendor')->name('setup-chowdeck-vendor');
+    Route::post('setup-chowdeck',  'setupChowdeck')->name('setup-chowdeck');
+    
     Route::get('create-invoice',  'createInvoice')->name('create-invoice');
     Route::get('upload-invoice/{id}',  'uploadInvoice')->name('upload-invoice');
     Route::post('add-invoice',  'storeInvoice')->name('add-invoice');
+    Route::get('add-chowdeck-order',  'storeChowdeckTempOrder')->name('add-chowdeck-order');
     Route::post('merge-invoice',  'mergeInvoice')->name('merge-invoice'); 
     Route::get('computed-invoice/{id}/{number_of_import}/{ref}',  'showMergeInvoices')->name('computed-invoice');
     Route::post('update-merge-invoice-food',  'updateMergeInvoiceFood')->name('update-merge-invoice-food'); 
@@ -153,6 +157,7 @@ Route::controller(AdminController::class)->group(function () {
     Route::post('add-food-type',  'addFoodType')->name('add-food-type');
     Route::get('new-staff',  'newUser')->name('new-staff');
     Route::post('add-user',  'adduser')->name('add-user');
+    Route::post('activate-user',  'activateUser')->name('activate-user');
     Route::get('all-staff',  'allUser')->name('all-staff');
     Route::post('vendor-platform-ref/{id}',  'updateVendorPlatformRef')->name('vendor-platform-ref');
     Route::get('all-orders',  'allOrders')->name('all-orders');

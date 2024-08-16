@@ -30,13 +30,16 @@ class ImportPastInvoices implements ToModel
     public function model(array $row)
     {
         return new Orders([
-            'order_amount'  => $row[0],
-            'payout'        => $row[1],
-            'delivery_date' => $row[2],
-            'added_by'      => Auth::id(),
-            'order_ref'     => $this->invoice_ref,
-            'invoice_ref'   =>  $this->invoice_ref,
-            'vendor_id'     => $this->vendor_id,
+            'order_amount'              => $row[0],
+            'payout'                    => $row[1],
+            'commission'                => $row[2],
+            'past_number_of_plates'     => $row[3],
+            'past_number_of_orders'     => $row[4],
+            'delivery_date'             => $row[5],
+            'added_by'                  => Auth::id(),
+            'order_ref'                 => $this->invoice_ref,
+            'invoice_ref'               =>  $this->invoice_ref,
+            'vendor_id'                 => $this->vendor_id,
         ]);
     }
 }
