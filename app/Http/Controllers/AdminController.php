@@ -903,7 +903,8 @@ class AdminController extends Controller
         ->where('users.deleted_at', null)
         ->where('users.email_verified_at', '!=', null)
         ->where('users.role_id', '!=', '1')
-        ->where('users.role_id', '!=', '2')//except self
+        ->where('users.role_id', '!=', '2')//except any admin user
+       // ->where('users.role_id', '!=', $role)//except self
         ->select(['users.*', 'role.role_name', 'vendor.vendor_name' ])
         ->orderBy('created_at', 'desc')
         ->where(function ($query) use ($search) {  // <<<
