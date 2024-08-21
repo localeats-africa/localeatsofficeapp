@@ -228,7 +228,7 @@
                                                                                     {{csrf_field()}}
                                                                                     <input type="hidden" id="order_id"
                                                                                           value="{{$data->id}}"
-                                                                                          name="order">
+                                                                                          name="order_id">
                                                                                     <button type="submit" name="submit"
                                                                                           class="text-danger"><i
                                                                                                 class="fa fa-trash"></i></button>
