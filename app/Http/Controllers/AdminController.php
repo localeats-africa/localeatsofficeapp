@@ -1006,24 +1006,23 @@ class AdminController extends Controller
  
         $order = DB::table('orders')
         ->where('invoice_ref', '=', $id)
-        //->where('vendor_id', '=', $vendor_id)
         ->update(array('deleted_at' => $today));
 
         if($order){
             $data = [
                 'status' => true,
-                'message'=> 'Invoice Number' .$id.' deleted successfully'
+                'message'=> 'Invoice Number ' .$id.' deleted successfully'
             ];
-            return response()->json($data);
-            //return redirect()->back()->with('invoice', 'Record Deleted');
+            //return response()->json($data);
+            return redirect()->back()->with('invoice',  $data['message']);
         }
         else{
             $data = [
                 'status' => false,
                 'message'=> 'Opps! something went wrong'
             ];
-            return response()->json($data);
-           // return redirect()->back()->with('merge-error', 'Opps! something went wrong'); 
+            //return response()->json($data);
+            return redirect()->back()->with('invoice-status', 'Opps! something went wrong'); 
         }
     }
 

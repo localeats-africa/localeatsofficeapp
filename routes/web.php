@@ -162,7 +162,7 @@ Route::controller(AdminController::class)->group(function () {
     Route::post('vendor-platform-ref/{id}',  'updateVendorPlatformRef')->name('vendor-platform-ref');
     Route::get('all-orders',  'allOrders')->name('all-orders');
     //delete all merge Invoice with same ref.
-    Route::post('delete-invoice/{id}',  'deleteInvoice')->name('delete-invoice');
+    Route::get('delete-invoice/{id}',  'deleteInvoice')->name('delete-invoice');
     Route::post('mark-invoice-paid/{id}',  'markInvoicePaid')->name('mark-invoice-paid');
     Route::get('assign-vendor/{id}', 'assignVendorToUser')->name('assign-vendor');
     Route::post('assign-user-vendor', 'storeAsignVendor')->name('assign-user-vendor');
