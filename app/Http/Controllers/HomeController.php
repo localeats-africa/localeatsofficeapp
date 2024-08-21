@@ -1566,8 +1566,9 @@ class HomeController extends Controller
  
 
 
-    public function deleteOrder(Request $request, $id){
+    public function deleteOrder(Request $request){
         $today = Carbon::now();
+        $id = $request->order_id;
         $order = Orders::find($id);
         $order->deleted_at  = $today ;
         $order->update();
