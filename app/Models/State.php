@@ -10,4 +10,5 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 class State extends Model
 {
     use HasFactory, SoftDeletes;
+    protected $table = 'state';
 }

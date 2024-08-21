@@ -213,18 +213,25 @@
 
                                                                   <tr>
                                                                         <td class="align-items-center">
-                                                                              <small>{{$loop->iteration}} </small>
-
+                                 
                                                                               @if($invoicePaymentStatus == 'paid')
                                                                               @else
                                                                               @auth
                                                                               @if(Auth::user()->role_id =='2')
                                                                               &nbsp; &nbsp;
-                                                                              <input type="hidden" id="order_id"
-                                                                                    value="{{$data->id}}">
-                                                                              <button onclick="deleteOrderRow()"
-                                                                                    class="text-danger"><i
-                                                                                          class="fa fa-trash"></i></button>
+                                                                              <form method="post" action="{{ route('delete-order') }}" name="submit" enctype="multipart/form-data">
+                                                                              @csrf
+                                                                              {{csrf_field()}}
+                                                                           <div class="input-group">
+                                                                           <small>{{$loop->iteration}} </small>
+                                                                                    <input type="hidden" id="order_id"
+                                                                                          value="{{$data->id}}"
+                                                                                          name="order_id">
+                                                                                    <button type="submit" name="submit"
+                                                                                          class="text-danger"><i
+                                                                                                class="fa fa-trash"></i></button>
+                                                                           </div>
+                                                                              </form>
                                                                               <span id="delete_order"></span>
 
                                                                               @endif

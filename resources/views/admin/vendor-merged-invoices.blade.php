@@ -18,6 +18,27 @@
             <div class="row ">
                   <div class="col-12">
 
+                  @if(session('invoice'))
+                        <div class="alert  alert-success alert-dismissible" role="alert">
+                              <div class="d-flex">
+                                    <div>
+                                          <!-- Download SVG icon from http://tabler-icons.io/i/alert-triangle -->
+                                          <svg xmlns="http://www.w3.org/2000/svg" class="icon alert-icon" width="24"
+                                                height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"
+                                                fill="none" stroke-linecap="round" stroke-linejoin="round">
+                                                <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                                                <path
+                                                      d="M10.24 3.957l-8.422 14.06a1.989 1.989 0 0 0 1.7 2.983h16.845a1.989 1.989 0 0 0 1.7 -2.983l-8.423 -14.06a1.989 1.989 0 0 0 -3.4 0z" />
+                                                <path d="M12 9v4" />
+                                                <path d="M12 17h.01" />
+                                          </svg>
+                                    </div>
+                                    <div> {!! session('invoice') !!}</div>
+                              </div>
+                              <a class="btn-close" data-bs-dismiss="alert" aria-label="close"></a>
+                        </div>
+                        @endif
+
                         @if(session('invoice-status'))
                         <div class="alert  alert-danger alert-dismissible" role="alert">
                               <div class="d-flex">
@@ -108,10 +129,10 @@
                                                       <td class="text-sm">{{$data->vendor_name}} </td>
                                                       <td>{{ $data->invoice_ref}}</td>
 
-                                                    
+
                                                       <td class="">
-                                                      @auth
-                                                      @if(Auth::user()->role_id == '2')
+                                                            @auth
+                                                            @if(Auth::user()->role_id == '2')
                                                             <span class="dropdown">
                                                                   <button
                                                                         class="btn dropdown-toggle align-text-top text-danger"
@@ -126,16 +147,17 @@
                                                                         </a>
                                                                         <br>
                                                                         @if($data->payment_status == 'paid')
-                                                                        @else 
-                                                                        <div class="dropdown-item text-danger">
-                                                                       
-                                                                              <input type="hidden" id="vendor_id" value="{{$data->vendor_id}}">
-                                                                              <input type="hidden" id="invoice_ref" value="{{$data->invoice_ref}}">
-                                                                              <button onclick="deleteInvoice()" class="text-danger"> Delete</button>
-                                                                     
-                                                                        </div>
-                                                                        @endif 
-                                                                   
+                                                                        @else
+
+                                                                        <input type="hidden" id="vendor_id"
+                                                                                    value="{{$data->vendor_id}}">
+                                                                              <input type="hidden" id="invoice_ref"
+                                                                                    value="{{$data->invoice_ref}}">
+                                                                              <a class="dropdown-item text-danger" href="delete-invoice/{{$data->invoice_ref}}">
+                                                                                    Delete</a>
+                    
+                                                                        @endif
+
                                                                   </div>
                                                             </span>
                                                             <p id="response"></p>
@@ -159,7 +181,7 @@
                                                             @endif
                                                             @endauth
                                                       </td>
-                                                  
+
                                                 </tr>
                                                 @endforeach
 
@@ -263,7 +285,7 @@ function deleteInvoice() {
                   document.getElementById('response').style.display = '';
                   document.getElementById('response').style.color = 'green';
                   document.getElementById('response').innerHTML = data.message;
-                 // location.reload();
+                  // location.reload();
             },
             error: function(data) {
                   console.log(data);

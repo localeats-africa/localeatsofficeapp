@@ -41,6 +41,7 @@ use App\Models\OfflineFoodMenu;
 use App\Models\OrderExtraFoodMenu;
 use App\Models\ChowdeckReference;
 use App\Models\TempChowdeckOrder;
+use App\Models\State;
 
 use Excel;
 use Auth;
@@ -135,13 +136,12 @@ class HomeController extends Controller
         ->where('users.id', $id)
         ->pluck('role_name')->first();
 
-        $stateID = DB::table('state')->select('*')
-        ->where('state', 'lagos')
-        ->pluck('id')->first();
+        $stateID = DB::table('state')->select(['*'])
+        //->where('state', 'lagos')
+        ->pluck('id');
 
-        $state = DB::table('state')->select('*')
-        ->where('state', 'lagos')
-        ->pluck('state')->first();
+        $state = State::all();
+        //->where('state', 'lagos');
 
         $countryID = DB::table('country')->select('*')
         ->where('country', 'Nigeria')
@@ -291,12 +291,7 @@ class HomeController extends Controller
             ->join('restaurant_type', 'restaurant_type.id', '=','vendor.restaurant_type')
             ->join('state', 'state.id', '=', 'vendor.state_id')
             ->join('country', 'country.id', '=', 'vendor.country_id')
-            ->select(['vendor.vendor_ref', 'vendor.vendor_name', 
-            'vendor.contact_phone', 'vendor.contact_fname', 
-            'vendor.contact_lname', 'vendor.vendor_status', 
-            'vendor.email', 'vendor.address',  'vendor.bank_name',
-            'vendor.account_number', 'vendor.account_name', 
-            'vendor.delivery_time',  'vendor.id',
+            ->select(['vendor.*', 'state.state',
             'restaurant_type.restaurant_type', 'vendor.food_type'])
             ->orderBy('vendor.created_at', 'desc')
             ->where(function ($query) use ($search) {  // <<<
@@ -703,7 +698,7 @@ class HomeController extends Controller
         ->where('deleted_at', '=', null)
         ->get();
 
-        $perPage = $request->perPage ?? 15;
+        $perPage = $request->perPage ?? 25;
         $search = $request->input('search');
 
         $vendorKey = DB::table('chowdeck_reference')
@@ -713,6 +708,7 @@ class HomeController extends Controller
         'chowdeck_reference.ref',
         'chowdeck_reference.sk_live',
         'chowdeck_reference.sk_test'])
+        ->orderBy('chowdeck_reference.created_at', 'desc')
         ->where(function ($query) use ($search) {  // <<<
             $query->where('vendor_name', 'LIKE', '%'.$search.'%')
                    ->orderBy('created_at', 'desc');
@@ -1570,8 +1566,9 @@ class HomeController extends Controller
  
 
 
-    public function deleteOrder(Request $request, $id){
+    public function deleteOrder(Request $request){
         $today = Carbon::now();
+        $id = $request->order_id;
         $order = Orders::find($id);
         $order->deleted_at  = $today ;
         $order->update();
@@ -1583,8 +1580,8 @@ class HomeController extends Controller
                 'message'=> 'Record Deleted'
             ] ;
               
-            return response()->json($data);
-            //return redirect()->back()->with('invoice', 'Record Deleted');
+            //return response()->json($data);
+            return redirect()->back()->with('invoice', 'Record Deleted');
         }
         else{
              
@@ -1594,7 +1591,7 @@ class HomeController extends Controller
             ] ;
               
             return response()->json($data);
-            //return redirect()->back()->with('merge-error', 'Opps! something went wrong'); 
+            return redirect()->back()->with('merge-error', 'Opps! something went wrong'); 
         }
     }
 

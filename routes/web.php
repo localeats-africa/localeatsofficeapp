@@ -112,7 +112,7 @@ Route::controller(HomeController::class)->group(function () {
     Route::get('all-invoices',  'showAllFinalInvoices')->name('all-invoices'); 
     Route::get('edit-vendor/{id}',  'editVendor')->name('edit-vendor');
     Route::post('update-vendor/{id}',  'updateVendor')->name('update-vendor');
-    Route::post('delete-order/{id}',  'deleteOrder')->name('delete-order');
+    Route::post('delete-order',  'deleteOrder')->name('delete-order');
     Route::post('reset-order-food-price/{id}',  'resetOrderFoodPrice')->name('reset-order-food-price');
     Route::post('reset-order-extra/{id}',  'resetOrderExtra')->name('reset-order-extra');
     //exportinvoice
@@ -162,7 +162,7 @@ Route::controller(AdminController::class)->group(function () {
     Route::post('vendor-platform-ref/{id}',  'updateVendorPlatformRef')->name('vendor-platform-ref');
     Route::get('all-orders',  'allOrders')->name('all-orders');
     //delete all merge Invoice with same ref.
-    Route::post('delete-invoice/{id}',  'deleteInvoice')->name('delete-invoice');
+    Route::get('delete-invoice/{id}',  'deleteInvoice')->name('delete-invoice');
     Route::post('mark-invoice-paid/{id}',  'markInvoicePaid')->name('mark-invoice-paid');
     Route::get('assign-vendor/{id}', 'assignVendorToUser')->name('assign-vendor');
     Route::post('assign-user-vendor', 'storeAsignVendor')->name('assign-user-vendor');
@@ -177,9 +177,9 @@ Route::controller(AdminController::class)->group(function () {
     Route::post('add-offline-foodmenu', 'addOfflineFoodMenu')->name('add-offline-foodmenu');
     Route::post('import-offline-foodmenu', 'importOfflineFoodMenu')->name('import-offline-foodmenu');
     Route::get('show-deleted-invoice',  'showDeletedInvoice')->name('show-deleted-invoice');
-    Route::post('restore-invoice/{id}',  'restoreDeletedInvoice')->name('restore-invoice');
+    Route::get('restore-invoice/{id}',  'restoreDeletedInvoice')->name('restore-invoice');
     Route::get('show-deleted-rows',  'allDeletedRows')->name('show-deleted-rows');
-    Route::post('restore-row/{id}',  'restoreDeletedRow')->name('restore-row');
+    Route::get('restore-row/{id}',  'restoreDeletedRow')->name('restore-row');
     Route::get('edit-user/{id}',  'editUser')->name('edit-user');
     Route::post('update-user/{id}',  'updateUser')->name('update-user');
     //export

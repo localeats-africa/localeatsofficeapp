@@ -903,7 +903,9 @@ class AdminController extends Controller
         ->where('users.deleted_at', null)
         ->where('users.email_verified_at', '!=', null)
         ->where('users.role_id', '!=', '1')
-        ->where('users.role_id', '!=', '2')//except self
+        //->where('users.role_id', '!=', '2')//except any admin user
+        ->where('users.role_id', '!=', $role)//except self
+        ->where('users.id', '!=', $id)//except self
         ->select(['users.*', 'role.role_name', 'vendor.vendor_name' ])
         ->orderBy('created_at', 'desc')
         ->where(function ($query) use ($search) {  // <<<
@@ -1004,24 +1006,23 @@ class AdminController extends Controller
  
         $order = DB::table('orders')
         ->where('invoice_ref', '=', $id)
-        //->where('vendor_id', '=', $vendor_id)
         ->update(array('deleted_at' => $today));
 
         if($order){
             $data = [
                 'status' => true,
-                'message'=> 'Invoice Number' .$id.' deleted successfully'
+                'message'=> 'Invoice Number ' .$id.' deleted successfully'
             ];
-            return response()->json($data);
-            //return redirect()->back()->with('invoice', 'Record Deleted');
+            //return response()->json($data);
+            return redirect()->back()->with('invoice',  $data['message']);
         }
         else{
             $data = [
                 'status' => false,
                 'message'=> 'Opps! something went wrong'
             ];
-            return response()->json($data);
-           // return redirect()->back()->with('merge-error', 'Opps! something went wrong'); 
+            //return response()->json($data);
+            return redirect()->back()->with('invoice-status', 'Opps! something went wrong'); 
         }
     }
 
@@ -1460,7 +1461,6 @@ class AdminController extends Controller
  
         $order = DB::table('orders')
         ->where('invoice_ref', '=', $invoice_ref)
-        //->where('vendor_id', '=', $vendor_id)
         ->update(array('deleted_at' => null));
 
         if($order){
@@ -1468,14 +1468,16 @@ class AdminController extends Controller
                 'status' => true,
                 'message'=> 'Invoice Number' .$invoice_ref.' restored successfully. Check merge invoices'
             ];
-            return response()->json($data);
+            //return response()->json($data);
+            return redirect()->back()->with('invoice',  $data['message']);
         }
         else{
             $data = [
                 'status' => false,
                 'message'=> 'Opps! something went wrong'
             ];
-            return response()->json($data);
+            //return response()->json($data);
+            return redirect()->back()->with('invoice',  $data['message']);
         }
     }
 
@@ -1522,7 +1524,6 @@ class AdminController extends Controller
  
         $order = DB::table('orders')
         ->where('id', '=', $id)
-        //->where('vendor_id', '=', $vendor_id)
         ->update(array('deleted_at' => null));
 
         if($order){
@@ -1530,14 +1531,16 @@ class AdminController extends Controller
                 'status' => true,
                 'message'=> 'Order restored successfully. Check merge invoices'
             ];
-            return response()->json($data);
+            //return response()->json($data);
+            return redirect()->back()->with('invoice',  $data['message']);
         }
         else{
             $data = [
                 'status' => false,
                 'message'=> 'Opps! something went wrong'
             ];
-            return response()->json($data);
+            //return response()->json($data);
+            return redirect()->back()->with('invoice',  $data['message']);
         }
     }
 

@@ -210,7 +210,9 @@
                                     <div class="text-info"></div>
 
                                     <div class="mt-3">
-                                          @if($data->role_id =='3')
+                                          @if($data->role_id =='2')
+                                          <span class="badge bg-info">{{$data->role_name}}</span>
+                                          @elseif($data->role_id =='3')
                                           <span class="badge bg-primary">{{$data->role_name}}</span>
                                           @elseif ($data->role_id =='4')
                                           <span class="badge bg-info">{{$data->role_name}}</span>
