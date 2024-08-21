@@ -213,25 +213,24 @@
 
                                                                   <tr>
                                                                         <td class="align-items-center">
-                                                                              <small>{{$loop->iteration}} </small>
-
+                                 
                                                                               @if($invoicePaymentStatus == 'paid')
                                                                               @else
                                                                               @auth
                                                                               @if(Auth::user()->role_id =='2')
                                                                               &nbsp; &nbsp;
-                                                                              <form method="post"
-                                                                                    action="{{ route('delete-order') }}"
-                                                                                    name="submit"
-                                                                                    enctype="multipart/form-data">
-                                                                                    @csrf
-                                                                                    {{csrf_field()}}
+                                                                              <form method="post" action="{{ route('delete-order') }}" name="submit" enctype="multipart/form-data">
+                                                                              @csrf
+                                                                              {{csrf_field()}}
+                                                                           <div class="input-group">
+                                                                           <small>{{$loop->iteration}} </small>
                                                                                     <input type="hidden" id="order_id"
                                                                                           value="{{$data->id}}"
                                                                                           name="order_id">
                                                                                     <button type="submit" name="submit"
                                                                                           class="text-danger"><i
                                                                                                 class="fa fa-trash"></i></button>
+                                                                           </div>
                                                                               </form>
                                                                               <span id="delete_order"></span>
 
@@ -335,30 +334,24 @@
                                                                                           data-bs-toggle="dropdown"
                                                                                           aria-haspopup="true"
                                                                                           aria-expanded="false"
-                                                                                          style="text-decoration:none;">
-                                                                                          {{number_format(floatval($data->extra))}}</a>
+                                                                                          style="text-decoration:none;">  {{number_format(floatval($data->extra))}}</a>
                                                                                     <div
                                                                                           class="dropdown-menu dropdown-menu-end">
                                                                                           <p class="dropdown-item text-dark"
                                                                                                 style="white-space:wrap; line-height:1.6">
-                                                                                          <ul>
-                                                                                                @foreach(\App\Models\OrderExtraFoodMenu::select('foodmenu')->where('foodmenu',
-                                                                                                '!=',
-                                                                                                null)->where('order_id',
-                                                                                                $data->id)->get() as
-                                                                                                $food)
-                                                                                                <li
-                                                                                                      style="margin-left:20px;  margin-right:20px;">
+                                                                                                <ul  >
+                                                                                                @foreach(\App\Models\OrderExtraFoodMenu::select('foodmenu')->where('foodmenu', '!=', null)->where('order_id', $data->id)->get() as $food)
+                                                                                                <li style="margin-left:20px;  margin-right:20px;">    
                                                                                                       {{ $food['foodmenu'] }}
                                                                                                 </li>
-                                                                                                @endforeach
-
-                                                                                          </ul>
-
+                                                                                                 @endforeach      
+                                                                                              
+                                                                                                </ul>
+                                                                                    
                                                                                           </p>
                                                                                     </div>
                                                                               </div>
-
+                                                                             
                                                                               </p>
                                                                               @if($invoicePaymentStatus == 'paid')
                                                                               @else
