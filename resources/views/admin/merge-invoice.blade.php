@@ -222,7 +222,7 @@
                                                                               &nbsp; &nbsp;
                                                                               <input type="hidden" id="order_id"
                                                                                     value="{{$data->id}}">
-                                                                              <button onclick="deleteOrderRow()"
+                                                                              <a href="delete-order/{{$data->id}}"
                                                                                     class="text-danger"><i
                                                                                           class="fa fa-trash"></i></button>
                                                                               <span id="delete_order"></span>
