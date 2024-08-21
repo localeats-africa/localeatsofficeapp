@@ -177,7 +177,7 @@ Route::controller(AdminController::class)->group(function () {
     Route::post('add-offline-foodmenu', 'addOfflineFoodMenu')->name('add-offline-foodmenu');
     Route::post('import-offline-foodmenu', 'importOfflineFoodMenu')->name('import-offline-foodmenu');
     Route::get('show-deleted-invoice',  'showDeletedInvoice')->name('show-deleted-invoice');
-    Route::post('restore-invoice/{id}',  'restoreDeletedInvoice')->name('restore-invoice');
+    Route::get('restore-invoice/{id}',  'restoreDeletedInvoice')->name('restore-invoice');
     Route::get('show-deleted-rows',  'allDeletedRows')->name('show-deleted-rows');
     Route::post('restore-row/{id}',  'restoreDeletedRow')->name('restore-row');
     Route::get('edit-user/{id}',  'editUser')->name('edit-user');
