@@ -1579,8 +1579,8 @@ class HomeController extends Controller
                 'message'=> 'Record Deleted'
             ] ;
               
-            return response()->json($data);
-            //return redirect()->back()->with('invoice', 'Record Deleted');
+            //return response()->json($data);
+            return redirect()->back()->with('invoice', 'Record Deleted');
         }
         else{
              
@@ -1590,7 +1590,7 @@ class HomeController extends Controller
             ] ;
               
             return response()->json($data);
-            //return redirect()->back()->with('merge-error', 'Opps! something went wrong'); 
+            return redirect()->back()->with('merge-error', 'Opps! something went wrong'); 
         }
     }
 
