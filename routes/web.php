@@ -112,7 +112,7 @@ Route::controller(HomeController::class)->group(function () {
     Route::get('all-invoices',  'showAllFinalInvoices')->name('all-invoices'); 
     Route::get('edit-vendor/{id}',  'editVendor')->name('edit-vendor');
     Route::post('update-vendor/{id}',  'updateVendor')->name('update-vendor');
-    Route::post('delete-order/{id}',  'deleteOrder')->name('delete-order');
+    Route::post('delete-order',  'deleteOrder')->name('delete-order');
     Route::post('reset-order-food-price/{id}',  'resetOrderFoodPrice')->name('reset-order-food-price');
     Route::post('reset-order-extra/{id}',  'resetOrderExtra')->name('reset-order-extra');
     //exportinvoice
