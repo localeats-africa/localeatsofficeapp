@@ -177,8 +177,8 @@ class AdminController extends Controller
         //->whereYear('orders.delivery_date', '=', Carbon::now()->year)
         ->sum('commission');
 
-        $commission = (int)$sumAllOrders - (int)$payouts ;
-        //Commission::all()->sum('localeats_comm');
+        //$commission = (int)$sumAllOrders - (int)$payouts ;
+        $commission = Commission::all()->sum('localeats_comm');
         $averageWeeklyComm =$averageWeeklySales - $averageWeeklyPayouts ;
 
     
@@ -348,6 +348,7 @@ class AdminController extends Controller
          //filter dashboard Start here
          $startDate      =   date("Y-m-d", strtotime($request->from)) ;
          $endDate        =  date("Y-m-d", strtotime($request->to));
+
  
          $sumAllOrders = Orders::where('deleted_at', null)
          ->where('orders.order_amount', '!=', null)
@@ -394,6 +395,10 @@ class AdminController extends Controller
          ->sum('payout');
  
          $commission = (int)$sumAllOrders - (int)$payouts ;
+         $commission = Commission::join('orders', 'orders.id', '=', 'commission.order_id')
+         ->whereDate('orders.delivery_date', '>=', $startDate)                                 
+         ->whereDate('orders.delivery_date', '<=', $endDate) 
+         ->sum('commission.localeats_comm');
  
          $commissionPaid = Orders::whereYear('orders.delivery_date', '=', Carbon::now()->year)
          ->whereDate('delivery_date', '>=', $startDate)                                 

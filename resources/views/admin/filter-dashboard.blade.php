@@ -8,7 +8,7 @@
       <div class="content-wrapper">
             <div class="page-header">
                   <h3 class="page-title">
-                        Overview >>> <span class="text-info"> {{ date('M-d, Y'), strtotime($startDate) }}</span> - <span class="text-info"> {{date('M-d, Y'), strtotime($endDate)   }}</span>
+                        Overview >>> <span class="text-info"> {{ $startDate }}</span> - <span class="text-info"> {{ $endDate   }}</span>
                   </h3>
                   <nav aria-label="breadcrumb">
                         <ul class="breadcrumb">

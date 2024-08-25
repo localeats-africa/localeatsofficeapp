@@ -228,7 +228,7 @@
                                           <div class="card-body">
                                                 <img src="{{ asset('assets/images/dashboard/circle.svg')}}"
                                                       class="card-img-absolute" alt="circle-image">
-                                                <h4 class="font-weight-normal"> Expected Commission
+                                                <h4 class="font-weight-normal"> Total Commission
                                                       <i class="mdi mdi-hand-coin mdi-24px float-end"></i>
                                                 </h4>
                                                 <h2 class="mb-5">₦ {{number_format($commission, 2) }}</h2>
