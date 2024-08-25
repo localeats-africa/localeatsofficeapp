@@ -1550,6 +1550,7 @@ class HomeController extends Controller
         $query->where('orders.created_at', 'LIKE', '%'.$search.'%')
                ->orWhere('vendor.vendor_name', 'LIKE', '%'.$search.'%')
                ->orWhere('orders.invoice_ref', 'LIKE', '%'.$search.'%')
+               ->orWhere('orders.payment_status', 'LIKE', '%'.$search.'%')
                ->orderBy('orders.created_at', 'desc');
         })->paginate($perPage, $columns = ['*'], $pageName = 'orders'
         )->appends(['per_page'   => $perPage]);
