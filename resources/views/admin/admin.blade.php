@@ -209,7 +209,7 @@
                                           <div class="card-body">
                                                 <img src="{{ asset('assets/images/dashboard/circle.svg')}}"
                                                       class="card-img-absolute" alt="circle-image">
-                                                <h4 class="font-weight-normal">Food  Price
+                                                <h4 class="font-weight-normal">Estimated Vendor  Sales
                                                       <i class="mdi mdi-cash mdi-24px float-end"></i>
                                                 </h4>
                                                 <h2 class="mb-5">₦{{number_format($vendorFoodPrice, 2)}}</h2>
