@@ -8,7 +8,7 @@
       <div class="content-wrapper">
             <div class="page-header">
                   <h3 class="page-title">
-                        Final Invoices
+                        Filtered {{$status}} Invoices
                   </h3>
             </div>
 
@@ -49,7 +49,7 @@
                         @csrf
                         {{csrf_field()}}
                         <div class="row text-end">
-                        <h6></h6>
+                        <h6><a href="{{ url('all-invoices') }}">Veiw all</a> </h6>
                               <div class="col-md-3">
                               </div>
                               <div class="col-md-3">
@@ -69,7 +69,7 @@
                                               
                                                 <select class="js-example-basic-single text-secondary"
                                                       name="status" style="width:50%">
-                                                      <option>Invoice Status</option>
+                                                      <option> Search</option>
                                                       <option value="paid">Paid</option>
                                                       <option value="unpaid">UnPaid</option>
                                                 </select>
@@ -91,34 +91,36 @@
             <div class="row ">
                   <div class="col-12">
                         <div class="row row-cards">
-
+                        @if($status == 'paid')
                               <div class="col-md-3 stretch-card grid-margin">
-                                    <div class="card bg-gradient-success card-img-holder text-white">
+                                    <div class="card bg-gradient-success card-img-holder text-dark">
                                           <div class="card-body">
                                                 <img src="{{ asset('assets/images/dashboard/circle.svg')}}"
                                                       class="card-img-absolute" alt="circle-image">
-                                                <h4 class="font-weight-normal">Paid Invoices <i
+                                                <h4 class="font-weight-normal text-capitalize">{{$status}} Invoices <i
                                                             class="mdi mdi-cash mdi-24px float-end"></i>
                                                 </h4>
-                                                <h2 class="mb-5">{{$paidInvoice}}</h2>
+                                                <h2 class="mb-5">{{$InvoiceStatus}}</h2>
                                                 <hr class="w-100">
                                           </div>
                                     </div>
                               </div>
+                              @endif 
+                              @if($status == 'unpaid')
                               <div class="col-md-3 stretch-card grid-margin">
                                     <div class="card bg-gradient-warning card-img-holder text-dark">
                                           <div class="card-body">
-                                                <img src="{{ asset('assets/images/dashboard/circle.svg') }}"
+                                                <img src="{{ asset('assets/images/dashboard/circle.svg')}}"
                                                       class="card-img-absolute" alt="circle-image">
-                                                <h4 class="font-weight-normal">Unpaid Invoices <i
+                                                <h4 class="font-weight-normal text-capitalize">{{$status}} Invoices <i
                                                             class="mdi mdi-cash mdi-24px float-end"></i>
                                                 </h4>
-                                                <h2 class="mb-5">{{$unPaidInvoice}}</h2>
+                                                <h2 class="mb-5">{{$InvoiceStatus}}</h2>
                                                 <hr class="w-100">
                                           </div>
-
                                     </div>
                               </div>
+                              @endif 
                         </div>
                   </div>
             </div>
