@@ -996,9 +996,10 @@ class AdminController extends Controller
         ->pluck('role_name')->first();
 
         $sumAllOrders = Orders::where('deleted_at', null)
-        ->where('orders.order_amount', '!=', null)
-        ->where('orders.order_ref', '!=', null)
-        ->whereNotNull('food_price')  
+        ->where('order_amount', '!=', null)
+        ->where('order_ref', '!=', null)
+        ->where('food_price', '!=', null)
+        //->whereNotNull('food_price')  
         ->sum('order_amount');
 
         $countAllOrder = Orders::where('deleted_at', null)
