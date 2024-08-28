@@ -199,6 +199,12 @@
                                                                  Unpaid</span>
                                                             @endif
 
+                                                            @if( $data->payment_status =='pending')
+                                                            <span
+                                                                  class="badge badge-round bg-warning  text-dark text-capitalize">
+                                                                 Unpaid</span>
+                                                            @endif
+
                                                             @if( $data->payment_status =='paid')
                                                             <span
                                                                   class="badge badge-round bg-success  text-dark text-capitalize">
