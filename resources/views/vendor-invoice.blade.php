@@ -179,9 +179,10 @@
                                                                   @if($payment_status == 'paid')
                                                                   <h3 class="text-success text-uppercase">
                                                                         {{$payment_status}}</h3>
-                                                                  @else
+                                                                        @endif
+                                                                   @if($payment_status == 'pending ')
                                                                   <h3 class="text-info text-uppercase">
-                                                                        {{$payment_status}}</h3>
+                                                                        Unpaid</h3>
                                                                   @endif
                                                             </div>
                                                       </div>

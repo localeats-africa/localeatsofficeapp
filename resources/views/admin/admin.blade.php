@@ -226,7 +226,7 @@
                                           <div class="card-body">
                                                 <img src="{{ asset('assets/images/dashboard/circle.svg')}}"
                                                       class="card-img-absolute" alt="circle-image">
-                                                <h4 class="font-weight-normal"> Platform Commission
+                                                <h4 class="font-weight-normal"> Glovo Commission
                                                       <i class="mdi mdi-hand-coin mdi-24px float-end"></i>
                                                 </h4>
                                                 <h2 class="mb-5">₦ {{number_format($sumGlovoComm, 2) }}</h2>

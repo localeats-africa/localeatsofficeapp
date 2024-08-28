@@ -1095,6 +1095,12 @@ class AdminController extends Controller
             'payment_status' => 'paid'
             ]);
 
+            Orders::where('invoice_ref', $invoice_ref)
+            ->where('vendor_id', $vendor)
+             ->update([ 
+            'order_status' => 'paid'
+            ]);
+
         if($paid){
             $data = [
                 'status' => true,
