@@ -113,7 +113,7 @@
                                                 <h4 class="font-weight-normal">Total Payout <i
                                                             class="mdi mdi-cash mdi-24px float-end"></i>
                                                 </h4>
-                                                <h2 class="mb-5">{{number_format($payout, 2)}}</h2>
+                                                <h2 class="mb-5">₦{{number_format($payout, 2)}}</h2>
                                                 <hr class="w-100">
                                           </div>
 
@@ -142,7 +142,7 @@
                                                 <h4 class="font-weight-normal">Unpaid EVS <i
                                                             class="mdi mdi-cash mdi-24px float-end"></i>
                                                 </h4>
-                                                <h2 class="mb-5">{{number_format($unpaidEVS, 2)}}</h2>
+                                                <h2 class="mb-5">₦{{number_format($unpaidEVS, 2)}}</h2>
                                                 <hr class="w-100">
                                           </div>
 
