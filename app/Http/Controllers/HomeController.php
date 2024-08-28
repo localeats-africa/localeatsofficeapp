@@ -1233,6 +1233,18 @@ class HomeController extends Controller
         ->update([
             'food_price' => $addFoodPrice,
         ]);
+
+        $extraFoodMenu = DB::table('food_menu')->whereIn('id', $food_price_id)
+        ->get();
+
+       foreach($extraFoodMenu as  $value){
+           $storeExtraMenu = new OrderExtraFoodMenu();
+           $storeExtraMenu->order_id      =   $order_id ;
+           $storeExtraMenu->foodmenu_id   =   $value->id;
+           $storeExtraMenu->foodmenu      =   $value->item  ;
+           $storeExtraMenu->save();
+       }
+
         if($updateOrder){
           
             if($platformName == 'Chowdeck' ){

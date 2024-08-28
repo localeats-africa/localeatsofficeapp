@@ -261,8 +261,31 @@
                                                                               <small>{{$data->description}}</small>
 
                                                                         <td>
-                                                                              <p> {{number_format(floatval($data->food_price))}}
-                                                                              </p>
+          
+                                                                              <div class="dropdown text-dark">
+                                                                                    <a class="dropdown-toggle text-dark "
+                                                                                          href="#"
+                                                                                          data-bs-toggle="dropdown"
+                                                                                          aria-haspopup="true"
+                                                                                          aria-expanded="false"
+                                                                                          style="text-decoration:none;">  {{number_format(floatval($data->food_price))}}</a>
+                                                                                    <div
+                                                                                          class="dropdown-menu dropdown-menu-end">
+                                                                                          <p class="dropdown-item text-dark"
+                                                                                                style="white-space:wrap; line-height:1.6">
+                                                                                                <ul  >
+                                                                                                @foreach(\App\Models\OrderExtraFoodMenu::select('foodmenu')->where('foodmenu', '!=', null)->where('order_id', $data->id)->get() as $food)
+                                                                                                <li style="margin-left:20px;  margin-right:20px;">    
+                                                                                                      {{ $food['foodmenu'] }}
+                                                                                                </li>
+                                                                                                 @endforeach      
+                                                                                              
+                                                                                                </ul>
+                                                                                    
+                                                                                          </p>
+                                                                                    </div>
+                                                                              </div>
+
                                                                               <p> </p>
                                                                               @if($invoicePaymentStatus == 'paid')
                                                                               @else
