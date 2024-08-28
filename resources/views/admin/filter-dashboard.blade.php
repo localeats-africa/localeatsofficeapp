@@ -8,7 +8,7 @@
       <div class="content-wrapper">
             <div class="page-header">
                   <h3 class="page-title">
-                        Overview >>> <span class="text-info"> {{ date('M-d, Y'), strtotime($startDate) }}</span> - <span class="text-info"> {{date('M-d, Y'), strtotime($endDate)   }}</span>
+                        Overview >>> <span class="text-info"> {{ $startDate }}</span> - <span class="text-info"> {{ $endDate   }}</span>
                   </h3>
                   <nav aria-label="breadcrumb">
                         <ul class="breadcrumb">
@@ -174,8 +174,6 @@
             <div class="row ">
                   <div class="col-12">
                         <div class="row row-cards">
-
-
                               <div class="col-md-3 stretch-card grid-margin">
                                     <div class="card bg-gradient-info card-img-holder text-white">
                                           <div class="card-body">
@@ -214,10 +212,10 @@
                                           <div class="card-body">
                                                 <img src="{{ asset('assets/images/dashboard/circle.svg')}}"
                                                       class="card-img-absolute" alt="circle-image">
-                                                <h4 class="font-weight-normal">Actual Payouts
+                                                <h4 class="font-weight-normal">Food  Price
                                                       <i class="mdi mdi-cash mdi-24px float-end"></i>
                                                 </h4>
-                                                <h2 class="mb-5">₦{{number_format($payouts, 2)}}</h2>
+                                                <h2 class="mb-5">₦{{number_format($vendorFoodPrice, 2)}}</h2>
                                                 <hr class="w-100">
                                           </div>
                                     </div>
@@ -228,10 +226,10 @@
                                           <div class="card-body">
                                                 <img src="{{ asset('assets/images/dashboard/circle.svg')}}"
                                                       class="card-img-absolute" alt="circle-image">
-                                                <h4 class="font-weight-normal"> Expected Commission
+                                                <h4 class="font-weight-normal"> Platform Commission
                                                       <i class="mdi mdi-hand-coin mdi-24px float-end"></i>
                                                 </h4>
-                                                <h2 class="mb-5">₦ {{number_format($commission, 2) }}</h2>
+                                                <h2 class="mb-5">₦ {{number_format($sumGlovoComm, 2) }}</h2>
                                                 <hr class="w-100">
                                           </div>
                                     </div>
@@ -243,6 +241,39 @@
                                           <div class="card-body">
                                                 <img src="{{ asset('assets/images/dashboard/circle.svg')}}"
                                                       class="card-img-absolute" alt="circle-image">
+                                                <h4 class="font-weight-normal"> Total Commission
+                                                      <i class="mdi mdi-hand-coin mdi-24px float-end"></i>
+                                                </h4>
+                                                <h2 class="mb-5">₦ {{number_format($commission, 2) }}</h2>
+                                                <hr class="w-100">
+                                          </div>
+                                    </div>
+                              </div>
+                        </div>
+                        <!--row--->
+
+                        <!--row-->
+                        <div class="row row-cards">
+                              <div class="col-sm-3 col-12 stretch-card grid-margin">
+                                    <div class="card bg-danger card-img-holder text-white">
+                                          <div class="card-body">
+                                                <img src="{{ asset('assets/images/dashboard/circle.svg')}}"
+                                                      class="card-img-absolute" alt="circle-image">
+                                                <h4 class="font-weight-normal">Actual Payouts
+                                                      <i class="mdi mdi-cash mdi-24px float-end"></i>
+                                                </h4>
+                                                <h2 class="mb-5">₦{{number_format($payouts, 2)}}</h2>
+                                                <hr class="w-100">
+                                          </div>
+                                    </div>
+                              </div>
+
+
+                              <div class="col-sm-3  col-12 stretch-card grid-margin">
+                                    <div class="card bg-secondary card-img-holder text-white">
+                                          <div class="card-body">
+                                                <img src="{{ asset('assets/images/dashboard/circle.svg')}}"
+                                                      class="card-img-absolute" alt="circle-image">
                                                 <h4 class="font-weight-normal"> Commission Paid
                                                       <i class="mdi mdi-hand-coin mdi-24px float-end"></i>
                                                 </h4>
@@ -251,7 +282,6 @@
                                           </div>
                                     </div>
                               </div>
-
 
                         </div>
                         <!--row--->

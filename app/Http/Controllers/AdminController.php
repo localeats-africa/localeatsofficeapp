@@ -108,31 +108,22 @@ class AdminController extends Controller
          ->where('sales_platform.vendor_status', 'active')
          ->get('sales_platform.vendor_id');
       
-        $sumAllOrders = Orders::where('deleted_at', null)
-        ->where('orders.order_amount', '!=', null)
-        ->where('orders.order_ref', '!=', null)
-        //->whereYear('orders.delivery_date', '=', Carbon::now()->year)
-        ->sum('order_amount');
-
         $averageWeeklySales = DB::table('orders')
         ->where('deleted_at', null)
         ->where('orders.order_amount', '!=', null)
         ->where('orders.order_ref', '!=', null)
         ->whereDate('delivery_date', '=', $lastSevenDays)   
-       //->whereYear('orders.delivery_date', '=', Carbon::now()->year)
         ->sum('order_amount');
 
         $countAllOrder = Orders::where('deleted_at', null)
         ->where('orders.order_amount', '!=', null)
         ->where('orders.order_ref', '!=', null)
-        //->whereYear('orders.delivery_date', '=', Carbon::now()->year)
         ->count();
 
         $getOrderItem = DB::table('orders')
         ->where('deleted_at', null)
         ->where('orders.order_amount', '!=', null)
         ->where('orders.order_ref', '!=', null)
-        //->whereYear('orders.delivery_date', '=', Carbon::now()->year)
         ->get('description')->pluck('description');
 
         $string =  $getOrderItem;
@@ -144,14 +135,54 @@ class AdminController extends Controller
         ->where('orders.deleted_at', null)
         ->where('orders.order_amount', '!=', null)
         ->where('orders.order_ref', '!=', null)
-        //->whereYear('orders.delivery_date', '=', Carbon::now()->year)
         ->count('platforms.id');
 
-        $payouts = DB::table('orders')
+        $sumAllOrders = DB::table('orders')
         ->where('deleted_at', null)
         ->where('orders.order_amount', '!=', null)
         ->where('orders.order_ref', '!=', null)
-        //->whereYear('orders.delivery_date', '=', Carbon::now()->year)
+        ->where('orders.food_price', '!=', null)
+        ->sum('order_amount'); 
+
+        $sumFoodPrice = DB::table('orders')
+        ->where('deleted_at', null)
+        ->where('orders.order_amount', '!=', null)
+        ->where('orders.order_ref', '!=', null)
+        ->sum('food_price');
+
+        $sumExtra =  DB::table('orders')
+        ->where('deleted_at', null)
+        ->where('orders.order_amount', '!=', null)
+        ->where('orders.order_ref', '!=', null)
+        ->sum('extra');
+
+        $vendorFoodPrice =  $sumFoodPrice + $sumExtra ;
+
+        $sumGlovoComm = DB::table('commission')
+        ->join('orders', 'orders.id', 'commission.order_id')
+        ->where('orders.deleted_at', null)
+        ->where('orders.food_price', '!=', null)
+        ->sum('commission.platform_comm');
+
+        //$commission = (int)$sumAllOrders - (int)$payouts ;
+        //$averageWeeklyComm =$averageWeeklySales - $averageWeeklyPayouts ;
+        $commission =  DB::table('commission')
+        ->join('orders', 'orders.id', 'commission.order_id')
+        ->where('orders.deleted_at', null)
+        ->where('orders.food_price', '!=', null)
+        ->sum('commission.localeats_comm');
+
+        $averageWeeklyComm = DB::table('commission')
+        ->join('orders', 'orders.id', 'commission.order_id')
+        ->where('orders.deleted_at', null)
+        ->whereDate('commission.created_at', '=', $lastSevenDays)   
+        ->sum('commission.localeats_comm');
+
+        $payouts = DB::table('orders')
+        ->where('deleted_at', null)
+        ->where('order_amount', '!=', null)
+        ->where('order_ref', '!=', null)
+        //->where('payment_status',  'paid')
         ->sum('payout');
 
         $averageWeeklyPayouts = DB::table('orders')
@@ -159,36 +190,25 @@ class AdminController extends Controller
         ->where('orders.order_amount', '!=', null)
         ->where('orders.order_ref', '!=', null)
        ->where('payout', '!=', null)
-        //->whereBetween('updated_at',  [$lastSevenDays, $today])
         ->whereDate('updated_at', '=', $lastSevenDays)    
-        //->whereYear('orders.delivery_date', '=', Carbon::now()->year)
         ->sum('payout');
 
-        $commissionPaid = Orders::whereYear('orders.delivery_date', '=', Carbon::now()->year)
-        ->sum('commission');
+        $commissionPaid = DB::table('orders')->sum('commission');
 
         $averageWeeklyCommissionPaid = DB::table('orders')
         ->where('deleted_at', null)
         ->where('orders.order_amount', '!=', null)
         ->where('orders.order_ref', '!=', null)
-        ->where('payout', '!=', null)
+       // ->where('payout', '!=', null)
         //->whereDate('updated_at', '>=', $lastSevenDays)   
         ->whereDate('updated_at', '<', $today)  
-        //->whereYear('orders.delivery_date', '=', Carbon::now()->year)
         ->sum('commission');
-
-        $commission = (int)$sumAllOrders - (int)$payouts ;
-        //Commission::all()->sum('localeats_comm');
-        $averageWeeklyComm =$averageWeeklySales - $averageWeeklyPayouts ;
-
     
         $chartYearlyTotalSales = Orders::select(
         \DB::raw('YEAR(delivery_date) as year'),)
         ->where('deleted_at', null)
         ->where('orders.order_amount', '!=', null)
         ->where('orders.order_ref', '!=', null)
-        //->whereYear('orders.delivery_date', '=', Carbon::now()->year)
-      //  ->orderBy('created_at', 'desc')
         ->groupby('year')
         ->get();
 
@@ -320,7 +340,8 @@ class AdminController extends Controller
         'averageWeeklyComm', 'data', 'salesYear', 'platformOrders',
         'chowdeckOrderCount','glovoOrderCount', 'edenOrderCount', 'currentYear',
         'chowdeckSalesPercentageChart', 'glovoSalesPercentageChart', 
-        'edenSalesPercentageChart', 'piechartData' ,  'barChartData'));
+        'edenSalesPercentageChart', 'piechartData' ,  'barChartData',
+        'sumGlovoComm', 'vendorFoodPrice'));
       }
     }
 
@@ -349,13 +370,42 @@ class AdminController extends Controller
          $startDate      =   date("Y-m-d", strtotime($request->from)) ;
          $endDate        =  date("Y-m-d", strtotime($request->to));
  
-         $sumAllOrders = Orders::where('deleted_at', null)
+         $sumAllOrders = DB::table('orders')
+         ->where('deleted_at', null)
+         ->where('orders.order_amount', '!=', null)
+         ->where('orders.order_ref', '!=', null)
+         ->where('orders.food_price', '!=', null)
+         ->whereDate('delivery_date', '>=', $startDate)                                 
+         ->whereDate('delivery_date', '<=', $endDate) 
+         ->sum('order_amount');
+
+         $sumFoodPrice = DB::table('orders')
+         ->where('deleted_at', null)
          ->where('orders.order_amount', '!=', null)
          ->where('orders.order_ref', '!=', null)
          ->whereDate('delivery_date', '>=', $startDate)                                 
          ->whereDate('delivery_date', '<=', $endDate) 
-         ->sum('order_amount');
+         ->sum('food_price');
  
+         $sumExtra =  DB::table('orders')
+         ->where('deleted_at', null)
+         ->where('orders.order_amount', '!=', null)
+         ->where('orders.order_ref', '!=', null)
+         ->whereDate('delivery_date', '>=', $startDate)                                 
+         ->whereDate('delivery_date', '<=', $endDate) 
+         ->sum('extra');
+ 
+         $vendorFoodPrice =  $sumFoodPrice + $sumExtra ;
+ 
+         $sumGlovoComm = DB::table('commission')
+         ->join('orders', 'orders.id', 'commission.order_id')
+         ->where('orders.deleted_at', null)
+         ->where('orders.food_price', '!=', null)
+         ->whereDate('orders.delivery_date', '>=', $startDate)                                 
+         ->whereDate('orders.delivery_date', '<=', $endDate) 
+         ->sum('commission.platform_comm');
+ 
+      
          $countAllOrder = Orders::where('deleted_at', null)
          ->where('orders.order_amount', '!=', null)
          ->where('orders.order_ref', '!=', null)
@@ -393,18 +443,26 @@ class AdminController extends Controller
          ->whereDate('delivery_date', '<=', $endDate) 
          ->sum('payout');
  
-         $commission = (int)$sumAllOrders - (int)$payouts ;
+         //$commission = (int)$sumAllOrders - (int)$payouts ;
+         $commission = Commission::join('orders', 'orders.id', '=', 'commission.order_id')
+         ->where('orders.deleted_at', null)
+         ->where('orders.food_price', '!=', null)
+         ->whereDate('orders.delivery_date', '>=', $startDate)                                 
+         ->whereDate('orders.delivery_date', '<=', $endDate) 
+         ->sum('commission.localeats_comm');
  
-         $commissionPaid = Orders::whereYear('orders.delivery_date', '=', Carbon::now()->year)
+         $commissionPaid = DB::table('orders')
          ->whereDate('delivery_date', '>=', $startDate)                                 
-         ->whereDate('delivery_date', '<=', $endDate) 
+         ->whereDate('delivery_date', '<=', $endDate)
          ->sum('commission');
+
 
          $chartYearlyTotalSales = Orders::select(
             \DB::raw('YEAR(delivery_date) as year'),)
             ->where('deleted_at', null)
             ->where('orders.order_amount', '!=', null)
             ->where('orders.order_ref', '!=', null)
+            ->where('orders.food_price', '!=', null)
             ->whereDate('delivery_date', '>=', $startDate)                                 
             ->whereDate('delivery_date', '<=', $endDate) 
             ->groupby('year')
@@ -417,6 +475,7 @@ class AdminController extends Controller
             )->where('deleted_at', null)
             ->where('orders.order_amount', '!=', null)
             ->where('orders.order_ref', '!=', null)
+            ->where('orders.food_price', '!=', null)
             ->whereDate('delivery_date', '>=', $startDate)                                 
             ->whereDate('delivery_date', '<=', $endDate) 
             ->groupby('month')
@@ -549,7 +608,7 @@ class AdminController extends Controller
             'chowdeckOrderCount','glovoOrderCount', 'edenOrderCount', 
             'chowdeckSalesPercentageChart', 'glovoSalesPercentageChart', 
             'edenSalesPercentageChart', 'piechartData' ,  'barChartData',
-            'startDate', 'endDate'));
+            'startDate', 'endDate',  'sumGlovoComm', 'vendorFoodPrice'));
           
     }
 
@@ -937,8 +996,10 @@ class AdminController extends Controller
         ->pluck('role_name')->first();
 
         $sumAllOrders = Orders::where('deleted_at', null)
-        ->where('orders.order_amount', '!=', null)
-        ->where('orders.order_ref', '!=', null)
+        ->where('order_amount', '!=', null)
+        ->where('order_ref', '!=', null)
+        ->where('food_price', '!=', null)
+        //->whereNotNull('food_price')  
         ->sum('order_amount');
 
         $countAllOrder = Orders::where('deleted_at', null)
@@ -966,7 +1027,8 @@ class AdminController extends Controller
         ->count('platforms.id');
 
         $perPage = $request->perPage ?? 10;
-        $search = $request->input('search');  
+        $search = $request->input('search'); 
+       
 
         $orders = DB::table('orders')
         ->join('vendor', 'orders.vendor_id', '=', 'vendor.id')
@@ -1031,12 +1093,17 @@ class AdminController extends Controller
         $paid =  DB::table('orders')
             ->where('orders.vendor_id', $vendor)
             ->where('orders.invoice_ref', $invoice_ref)
-            ->where('orders.payment_status', '!=', null)
+            ->where('orders.payment_status', '!=', null)// use this to get paid unique inv
             ->update([
             'payment_status' => 'paid'
             ]);
-
         if($paid){
+              // use this to count all paid inv
+              Orders::where('invoice_ref', $invoice_ref)
+              ->where('vendor_id', $vendor)
+               ->update([ 
+              'order_status' => 'paid'
+              ]);
             $data = [
                 'status' => true,
                 'message'=> 'Invoice Number' .$invoice_ref.' paid successfully'

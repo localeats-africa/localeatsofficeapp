@@ -1005,6 +1005,7 @@ class HomeController extends Controller
                 $storeOrder->food_price      = $order->food_price;
                 $storeOrder->extra           = $order->extra;
                 $storeOrder->description     = $order->description;
+                $storeOrder->order_status    = 'pending';
                 $storeOrder->delivery_date   = $order->delivery_date;
                 $storeOrder->save();
 
@@ -1038,7 +1039,7 @@ class HomeController extends Controller
                 Orders::where('id', $storeOrder->id)
                 ->update([
                 'number_of_order_merge' => $countRow,
-                'payment_status' => 'unpaid',
+                'payment_status' => 'pending',
                 ]);
                 
                 TempOrder::where('vendor_id', $vendor)->delete();
@@ -1207,6 +1208,18 @@ class HomeController extends Controller
         ->update([
             'food_price' => $addFoodPrice,
         ]);
+
+        $extraFoodMenu = DB::table('food_menu')->whereIn('id', $food_price_id)
+        ->get();
+
+       foreach($extraFoodMenu as  $value){
+           $storeExtraMenu = new OrderExtraFoodMenu();
+           $storeExtraMenu->order_id      =   $order_id ;
+           $storeExtraMenu->foodmenu_id   =   $value->id;
+           $storeExtraMenu->foodmenu      =   $value->item  ;
+           $storeExtraMenu->save();
+       }
+
         if($updateOrder){
           
             if($platformName == 'Chowdeck' ){
@@ -1382,7 +1395,7 @@ class HomeController extends Controller
       // ->join('merge_invoices', 'merge_invoices.number_of_order_merge', '=', 'orders.number_of_order_merge')
         ->join('vendor', 'orders.vendor_id', '=', 'vendor.id')
         ->where('orders.deleted_at', null)
-        ->where('orders.payment_status', 'unpaid')
+        ->where('orders.payment_status', 'pending')
         ->orderBy('orders.created_at', 'desc')
         ->select(['orders.*', 
         'vendor.vendor_name', 'vendor.id'])
@@ -1529,20 +1542,52 @@ class HomeController extends Controller
      public function showAllFinalInvoices(Request $request){
         $name = Auth::user()->name;
         $user_id = Auth::user()->id;
+
         $role = DB::table('role')->select('role_name')
         ->join('users', 'users.role_id', 'role.id')
         ->where('users.id', $user_id)
         ->pluck('role_name')->first();
 
+        $paidInvoice =  DB::table('orders')
+        ->where('deleted_at', null)
+        ->where('payment_status', 'paid')
+        ->count();
+
+        $payout =  DB::table('orders')
+        ->where('deleted_at', null)
+        //->where('payment_status', 'paid')
+        ->sum('payout');
+
+        $unPaidInvoice =  DB::table('orders')
+        ->where('deleted_at', null)
+        ->where('payment_status', 'pending')
+        ->count();
+
+        $unpaidVendorFoodPrice =  DB::table('orders')
+        ->where('deleted_at', null)
+        ->where('order_status', 'pending')
+        ->whereNotNull('food_price')
+        ->sum('food_price');
+        
+        $unpaidVendorExtra = DB::table('orders')
+        ->where('deleted_at', null)
+        ->where('order_status', 'pending')
+        ->whereNotNull('extra')
+        ->sum('extra');
+
+
+        $unpaidEVS =  $unpaidVendorFoodPrice + $unpaidVendorExtra;
+
         $perPage = $request->perPage ?? 25;
         $search = $request->input('search');
 
-
         $orders = DB::table('orders')->distinct()
-        //->join('merge_invoices', 'orders.number_of_order_merge', '=', 'merge_invoices.number_of_order_merge')
+        //->leftjoin('merge_invoices', 'orders.number_of_order_merge', '=', 'merge_invoices.number_of_order_merge')
         ->join('vendor', 'orders.vendor_id', '=', 'vendor.id')
         ->where('orders.deleted_at', null)
-        ->where('orders.payment_status', '!=', null)
+        ->whereNotNull('payment_status')
+         //->where('orders.payment_status', 'paid')
+        // ->orwhere('orders.payment_status', 'pending')
         ->orderBy('orders.created_at', 'desc')
         ->select(['orders.*', 
         'vendor.vendor_name', 'vendor.id' ])
@@ -1550,20 +1595,96 @@ class HomeController extends Controller
         $query->where('orders.created_at', 'LIKE', '%'.$search.'%')
                ->orWhere('vendor.vendor_name', 'LIKE', '%'.$search.'%')
                ->orWhere('orders.invoice_ref', 'LIKE', '%'.$search.'%')
+               ->orWhere('orders.payment_status', 'LIKE', '%'.$search.'%')
                ->orderBy('orders.created_at', 'desc');
-        })->paginate($perPage, $columns = ['*'], $pageName = 'orders'
+        })->paginate($perPage, $pageName = 'orders'
         )->appends(['per_page'   => $perPage]);
-
-     
         $pagination = $orders->appends ( array ('search' => $search) );
             if (count ( $pagination ) > 0){
                 return view('admin.vendor-final-invoices',  compact(
-                'perPage', 'name', 'role', 'orders'))->withDetails( $pagination );     
+                'perPage', 'name', 'role', 'orders', 
+                'paidInvoice', 'unPaidInvoice', 'unpaidEVS', 'payout'))->withDetails( $pagination );     
             } 
             else{return redirect()->back()->with('invoice-status', 'No record order found');}
-        return view('admin.vendor-final-invoices', compact('name', 'role', 'orders'));
+        return view('admin.vendor-final-invoices', compact('name', 'role', 'orders',
+        'paidInvoice', 'unPaidInvoice', 'unpaidEVS', 'payout'));
      }
- 
+
+     
+     public function filterAllFinalInvoices(Request $request){
+        $name = Auth::user()->name;
+        $user_id = Auth::user()->id;
+        $role = DB::table('role')->select('role_name')
+        ->join('users', 'users.role_id', 'role.id')
+        ->where('users.id', $user_id)
+        ->pluck('role_name')->first();
+
+        $status = $request->status;
+
+        $paidInvoice =  DB::table('orders')
+        ->where('deleted_at', null)
+        ->where('payment_status', $status)
+        ->count();
+
+        $payout =  DB::table('orders')
+        ->where('deleted_at', null)
+        ->where('payment_status', $status)
+        ->sum('payout');
+
+        $unPaidInvoice =  DB::table('orders')
+        ->where('deleted_at', null)
+        ->where('payment_status', $status)
+        ->count();
+
+        $unpaidVendorFoodPrice =  DB::table('orders')
+        ->where('orders.deleted_at', null)
+        ->where('order_status', $status)
+        ->sum('orders.food_price');
+        
+        $unpaidVendorExtra = DB::table('orders')
+        ->where('orders.deleted_at', null)
+        ->where('order_status', $status)
+        ->sum('orders.extra');
+
+
+        $unpaidEVS =  $unpaidVendorFoodPrice + $unpaidVendorExtra;
+
+
+        $InvoiceStatus =  DB::table('orders')
+        ->where('orders.deleted_at', null)
+        ->where('payment_status', $status)
+        ->count();
+
+
+        $perPage = $request->perPage ?? 25;
+        $search = $request->input('search');
+
+        $orders = DB::table('orders')->distinct()
+        ->join('vendor', 'orders.vendor_id', '=', 'vendor.id')
+        ->where('orders.deleted_at', null)
+        ->where('orders.payment_status', $status)
+        ->orderBy('orders.created_at', 'desc')
+        ->select(['orders.*', 
+        'vendor.vendor_name', 'vendor.id' ])
+        ->where(function ($query) use ($search) {  // <<<
+        $query->where('orders.created_at', 'LIKE', '%'.$search.'%')
+               ->orWhere('vendor.vendor_name', 'LIKE', '%'.$search.'%')
+               ->orWhere('orders.invoice_ref', 'LIKE', '%'.$search.'%')
+               ->orWhere('orders.payment_status', 'LIKE', '%'.$search.'%')
+               ->orderBy('orders.created_at', 'desc');
+        })->paginate($perPage, $columns = ['*'], $pageName = 'orders'
+        )->appends(['per_page' => $perPage]);
+
+        $pagination = $orders->appends ( array ('search' => $search) );
+            if (count ( $pagination ) > 1){
+                return view('admin.filter-vendor-final-invoices',  compact(
+                'perPage', 'name', 'role', 'orders', 'status',
+                'paidInvoice', 'unPaidInvoice', 'unpaidEVS', 'payout'))->withDetails( $pagination );     
+            } 
+            else{return redirect()->back()->with('invoice-status', 'No record order found');}
+        return view('admin.filter-vendor-final-invoices', compact('name', 'role', 'orders',
+       'status',  'paidInvoice', 'unPaidInvoice', 'unpaidEVS', 'payout'));
+     }
 
 
     public function deleteOrder(Request $request){

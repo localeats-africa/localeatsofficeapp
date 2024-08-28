@@ -109,7 +109,8 @@ Route::controller(HomeController::class)->group(function () {
     Route::post('update-merge-invoice-payout',  'updateVendorInvoicePayout')->name('update-merge-invoice-payout');     
     Route::post('generate-invoice',  'generateInvoice')->name('generate-invoice');     
     Route::get('invoice/{id}/{vendor}',  'showInvoice')->name('invoice'); 
-    Route::get('all-invoices',  'showAllFinalInvoices')->name('all-invoices'); 
+    Route::get('all-invoices',  'showAllFinalInvoices')->name('all-invoices');
+    Route::get('filter-all-invoices',  'filterAllFinalInvoices')->name('filter-all-invoices');  
     Route::get('edit-vendor/{id}',  'editVendor')->name('edit-vendor');
     Route::post('update-vendor/{id}',  'updateVendor')->name('update-vendor');
     Route::post('delete-order',  'deleteOrder')->name('delete-order');

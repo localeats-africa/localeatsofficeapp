@@ -8,7 +8,7 @@
       <div class="content-wrapper">
             <div class="page-header">
                   <h3 class="page-title">
-                        Final Invoices
+                        Filtered {{$status}} Invoices
                   </h3>
             </div>
 
@@ -49,7 +49,7 @@
                         @csrf
                         {{csrf_field()}}
                         <div class="row text-end">
-                        <h6></h6>
+                        <h6><a href="{{ url('all-invoices') }}">Veiw all</a> </h6>
                               <div class="col-md-3">
                               </div>
                               <div class="col-md-3">
@@ -69,9 +69,9 @@
                                               
                                                 <select class="js-example-basic-single text-secondary"
                                                       name="status" style="width:50%">
-                                                      <option>Invoice Status</option>
+                                                      <option> Search</option>
                                                       <option value="paid">Paid</option>
-                                                      <option value="pending ">UnPaid</option>
+                                                      <option value="unpaid">UnPaid</option>
                                                 </select>
 
                                                 <button type="submit" name="submit"
@@ -91,13 +91,13 @@
             <div class="row ">
                   <div class="col-12">
                         <div class="row row-cards">
-
+                        @if($status == 'paid')
                               <div class="col-md-3 stretch-card grid-margin">
-                                    <div class="card bg-gradient-success card-img-holder text-white">
+                                    <div class="card bg-gradient-success card-img-holder text-dark">
                                           <div class="card-body">
                                                 <img src="{{ asset('assets/images/dashboard/circle.svg')}}"
                                                       class="card-img-absolute" alt="circle-image">
-                                                <h4 class="font-weight-normal">Paid Invoices <i
+                                                <h4 class="font-weight-normal text-capitalize">{{$status}} Invoices <i
                                                             class="mdi mdi-cash mdi-24px float-end"></i>
                                                 </h4>
                                                 <h2 class="mb-5">{{$paidInvoice}}</h2>
@@ -105,50 +105,22 @@
                                           </div>
                                     </div>
                               </div>
-                              <div class="col-md-3 stretch-card grid-margin">
-                                    <div class="card bg-gradient-secondary card-img-holder text-dark">
-                                          <div class="card-body">
-                                                <img src="{{ asset('assets/images/dashboard/circle.svg') }}"
-                                                      class="card-img-absolute" alt="circle-image">
-                                                <h4 class="font-weight-normal">Total Payout <i
-                                                            class="mdi mdi-cash mdi-24px float-end"></i>
-                                                </h4>
-                                                <h2 class="mb-5">₦{{number_format($payout, 2)}}</h2>
-                                                <hr class="w-100">
-                                          </div>
-
-                                    </div>
-                              </div>
+                              @endif 
+                              @if($status == 'pending')
                               <div class="col-md-3 stretch-card grid-margin">
                                     <div class="card bg-gradient-warning card-img-holder text-dark">
                                           <div class="card-body">
-                                                <img src="{{ asset('assets/images/dashboard/circle.svg') }}"
+                                                <img src="{{ asset('assets/images/dashboard/circle.svg')}}"
                                                       class="card-img-absolute" alt="circle-image">
-                                                <h4 class="font-weight-normal">Unpaid Invoices <i
+                                                <h4 class="font-weight-normal text-capitalize">Unpaid Invoices <i
                                                             class="mdi mdi-cash mdi-24px float-end"></i>
                                                 </h4>
                                                 <h2 class="mb-5">{{$unPaidInvoice}}</h2>
                                                 <hr class="w-100">
                                           </div>
-
                                     </div>
                               </div>
-
-                              <div class="col-md-3 stretch-card grid-margin">
-                                    <div class="card bg-gradient-secondary card-img-holder text-dark">
-                                          <div class="card-body">
-                                                <img src="{{ asset('assets/images/dashboard/circle.svg') }}"
-                                                      class="card-img-absolute" alt="circle-image">
-                                                <h4 class="font-weight-normal">Unpaid EVS <i
-                                                            class="mdi mdi-cash mdi-24px float-end"></i>
-                                                </h4>
-                                                <h2 class="mb-5">₦{{number_format($unpaidEVS, 2)}}</h2>
-                                                <hr class="w-100">
-                                          </div>
-
-                                    </div>
-                              </div>
-
+                              @endif 
                         </div>
                   </div>
             </div>
@@ -218,19 +190,19 @@
 
                                                       <td>{{ date('d/m/Y', strtotime($data->created_at))}}</td>
 
-                                                      <td class="text-sm">{{$data->vendor_name}}
-                                                             </td>
+                                                      <td class="text-sm">{{$data->vendor_name}} </td>
                                                       <td>{{ $data->invoice_ref}}</td>
                                                       <td>
                                                             @if( $data->payment_status =='pending ')
                                                             <span
                                                                   class="badge badge-round bg-warning  text-dark text-capitalize">
-                                                                  Unpaid</span>
+                                                                 Unpaid</span>
                                                             @endif
+
                                                             @if( $data->payment_status =='pending')
                                                             <span
                                                                   class="badge badge-round bg-warning  text-dark text-capitalize">
-                                                                  Unpaid</span>
+                                                                 Unpaid</span>
                                                             @endif
 
                                                             @if( $data->payment_status =='paid')

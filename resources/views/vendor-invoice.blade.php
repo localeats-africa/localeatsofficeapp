@@ -179,9 +179,10 @@
                                                                   @if($payment_status == 'paid')
                                                                   <h3 class="text-success text-uppercase">
                                                                         {{$payment_status}}</h3>
-                                                                  @else
+                                                                        @endif
+                                                                   @if($payment_status == 'pending ')
                                                                   <h3 class="text-info text-uppercase">
-                                                                        {{$payment_status}}</h3>
+                                                                        Unpaid</h3>
                                                                   @endif
                                                             </div>
                                                       </div>
@@ -238,14 +239,13 @@
                                                                         <th colspan="3" class="text-end">
                                                                               @auth
                                                                               @if(Auth::user()->role_id =='2')
-                                                                              @if($payment_status == 'paid')
-                                                                              @else
+                                                                            
                                                                               <input type="hidden" value="{{$vendor}}" id="vendor_id">
                                                                               <input type="hidden" value="{{$invoice_ref}}" id="invoiceRef">
                                                                               <button onclick="markAsPaid()"
                                                                                     class="btn btn-block btn-success text-dark">Mark
                                                                                     This Invoice As Paid</button>
-                                                                              @endif
+                                                                             
                                                                               @else
                                                                               @endif
                                                                               @endauth
