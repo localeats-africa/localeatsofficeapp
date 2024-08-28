@@ -1005,6 +1005,7 @@ class HomeController extends Controller
                 $storeOrder->food_price      = $order->food_price;
                 $storeOrder->extra           = $order->extra;
                 $storeOrder->description     = $order->description;
+                $storeOrder->order_status    = 'pending';
                 $storeOrder->delivery_date   = $order->delivery_date;
                 $storeOrder->save();
 
@@ -1062,32 +1063,6 @@ class HomeController extends Controller
             ->join('users', 'users.role_id', 'role.id')
             ->where('users.id', $user_id)
             ->pluck('role_name')->first();
-
-            $getpaidInvoice =  DB::table('orders')
-            ->where('orders.vendor_id', $vendor)
-            ->where('orders.invoice_ref', $invoice_ref)
-            ->where('payment_status', 'paid')
-            ->get();
-            if(!empty($getpaidInvoice)){
-                Orders::where('vendor_id', $vendor)
-                ->where('invoice_ref', $invoice_ref)
-                    ->update([ 
-                'order_status' => 'paid'
-                ]);
-            }
-
-            $getUnPaidInvoice =  DB::table('orders')
-            ->where('orders.vendor_id', $vendor)
-            ->where('orders.invoice_ref', $invoice_ref)
-            ->where('payment_status', 'pending')
-            ->get();
-            if(!empty($getpaidInvoice)){
-                Orders::where('vendor_id', $vendor)
-                ->where('invoice_ref', $invoice_ref)
-                    ->update([ 
-                'order_status' => 'pending',
-                ]);
-            }
             
             $vendorID = Vendor::where('id', $vendor)
             ->get('*')->pluck('id')->first();
@@ -1588,17 +1563,17 @@ class HomeController extends Controller
         ->where('payment_status', 'pending')
         ->count();
 
-        $unpaidVendorFoodPrice =  DB::table('orders')->distinct()
-        ->join('vendor', 'orders.vendor_id', '=', 'vendor.id')
-        ->where('orders.deleted_at', null)
+        $unpaidVendorFoodPrice =  DB::table('orders')
+        ->where('deleted_at', null)
         ->where('order_status', 'pending')
-        ->sum('orders.food_price');
+        ->whereNotNull('food_price')
+        ->sum('food_price');
         
-        $unpaidVendorExtra = DB::table('orders')->distinct()
-        ->join('vendor', 'orders.vendor_id', '=', 'vendor.id')
-        ->where('orders.deleted_at', null)
+        $unpaidVendorExtra = DB::table('orders')
+        ->where('deleted_at', null)
         ->where('order_status', 'pending')
-        ->sum('orders.extra');
+        ->whereNotNull('extra')
+        ->sum('extra');
 
 
         $unpaidEVS =  $unpaidVendorFoodPrice + $unpaidVendorExtra;
@@ -1610,8 +1585,9 @@ class HomeController extends Controller
         //->leftjoin('merge_invoices', 'orders.number_of_order_merge', '=', 'merge_invoices.number_of_order_merge')
         ->join('vendor', 'orders.vendor_id', '=', 'vendor.id')
         ->where('orders.deleted_at', null)
-         ->where('orders.payment_status', 'paid')
-         ->orwhere('orders.payment_status', 'pending')
+        ->whereNotNull('payment_status')
+         //->where('orders.payment_status', 'paid')
+        // ->orwhere('orders.payment_status', 'pending')
         ->orderBy('orders.created_at', 'desc')
         ->select(['orders.*', 
         'vendor.vendor_name', 'vendor.id' ])

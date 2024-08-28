@@ -998,6 +998,7 @@ class AdminController extends Controller
         $sumAllOrders = Orders::where('deleted_at', null)
         ->where('orders.order_amount', '!=', null)
         ->where('orders.order_ref', '!=', null)
+        ->whereNotNull('food_price')  
         ->sum('order_amount');
 
         $countAllOrder = Orders::where('deleted_at', null)
@@ -1025,7 +1026,8 @@ class AdminController extends Controller
         ->count('platforms.id');
 
         $perPage = $request->perPage ?? 10;
-        $search = $request->input('search');  
+        $search = $request->input('search'); 
+       
 
         $orders = DB::table('orders')
         ->join('vendor', 'orders.vendor_id', '=', 'vendor.id')
@@ -1090,18 +1092,17 @@ class AdminController extends Controller
         $paid =  DB::table('orders')
             ->where('orders.vendor_id', $vendor)
             ->where('orders.invoice_ref', $invoice_ref)
-            ->where('orders.payment_status', '!=', null)
+            ->where('orders.payment_status', '!=', null)// use this to get paid unique inv
             ->update([
             'payment_status' => 'paid'
             ]);
-
-            Orders::where('invoice_ref', $invoice_ref)
-            ->where('vendor_id', $vendor)
-             ->update([ 
-            'order_status' => 'paid'
-            ]);
-
         if($paid){
+              // use this to count all paid inv
+              Orders::where('invoice_ref', $invoice_ref)
+              ->where('vendor_id', $vendor)
+               ->update([ 
+              'order_status' => 'paid'
+              ]);
             $data = [
                 'status' => true,
                 'message'=> 'Invoice Number' .$invoice_ref.' paid successfully'
