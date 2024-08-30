@@ -37,6 +37,7 @@ class ImportPastInvoices implements ToModel
             'past_number_of_orders'     => $row[4],
             'delivery_date'             => $row[5],
             'payment_status'            => 'paid',
+            'order_status'              => 'paid',
             'added_by'                  => Auth::id(),
             'order_ref'                 => $this->invoice_ref,
             'invoice_ref'               =>  $this->invoice_ref,
