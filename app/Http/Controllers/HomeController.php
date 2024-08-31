@@ -2492,7 +2492,56 @@ class HomeController extends Controller
       }
     }
 
-    public function showVendorDashboard(Request $request){
+    public function showVendorDashboard(Request $request, $vendor_id){
+        $name = Auth::user()->name;
+        $user_id = Auth::user()->id;
+        $role = DB::table('role')->select('role_name')
+        ->join('users', 'users.role_id', 'role.id')
+        ->where('users.id', $user_id)
+        ->pluck('role_name')->first();
+
+        $status = DB::table('vendor')->where('vendor.id', $vendor_id)
+        ->select('*')->pluck('vendor_status')->first();
+
+        $vendorLogo = Vendor::where('id', $vendor_id)
+        ->get('vendor_logo');
+
+        $vendorRef = DB::table('vendor')->where('id', $vendor_id)
+        ->select('*')->pluck('vendor_ref')->first();
+           
+        $vendorName = DB::table('vendor')->where('id', $vendor_id)
+        ->select('*')->pluck('vendor_name')->first();
+
+        $activePlatform = DB::table('sales_platform')
+       ->join('platforms', 'platforms.name', '=', 'sales_platform.platform_name')->distinct()
+        ->where('sales_platform.vendor_status', 'active')
+        ->where('sales_platform.vendor_id', $vendor_id)
+        ->get('sales_platform.platform_name');
+
+        $sumAllOrders = DB::table('orders')
+        ->where('deleted_at', null)
+        ->where('orders.order_amount', '!=', null)
+        ->where('orders.order_ref', '!=', null)
+        ->where('vendor_id', $vendor_id)   
+        ->sum('order_amount');
+
+        $sumFoodPrice = DB::table('orders')
+        ->where('deleted_at', null)
+        ->where('orders.order_amount', '!=', null)
+        ->where('orders.order_ref', '!=', null)
+        ->where('vendor_id', $vendor_id)            
+        ->sum('food_price');
+
+        $sumExtra =  DB::table('orders')
+        ->where('deleted_at', null)
+        ->where('orders.order_amount', '!=', null)
+        ->where('orders.order_ref', '!=', null)
+        ->where('vendor_id', $vendor_id)   
+        ->sum('extra');
+
+        $vendorFoodPrice =  $sumFoodPrice + $sumExtra ;
+
+
         return view('vendormanager.vendor-dashboard');
 
     }
