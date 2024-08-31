@@ -145,9 +145,21 @@
                                     </div>
                               </div>
                               <div class="d-flex">
+                                    
+                                    @if($data->vendor_status == 'suspended')
                                     <a href="vendor-profile/{{$data->id}}" class="card-btn text-danger" style="text-decoration:none;" title="Profile">
                                     <small>Profile </small> <small class="text-danger"> &nbsp;<i class="fa fa-eye"></i></small>
                                     </a>
+
+                                    <a href="upload-past-invoice/{{$data->id}}" class="card-btn " style="text-decoration:none;" title="Invoice">
+                                          <!-- Download SVG icon from http://tabler-icons.io/i/phone -->
+                                    <small>Past Invoices </small>   
+                                    </a>
+                                    @else 
+                                    <a href="vendor-profile/{{$data->id}}" class="card-btn text-danger" style="text-decoration:none;" title="Profile">
+                                    <small>Profile </small> <small class="text-danger"> &nbsp;<i class="fa fa-eye"></i></small>
+                                    </a>
+
                                     <a href="upload-invoice/{{$data->id}}" class="card-btn " style="text-decoration:none;" title="Invoice">
                                           <!-- Download SVG icon from http://tabler-icons.io/i/phone -->
                                     <small>Create Invoice </small> <small class="text-success"> &nbsp;<i class="fa fa-plus"></i></small>  
@@ -156,6 +168,8 @@
                                           <!-- Download SVG icon from http://tabler-icons.io/i/phone -->
                                     <small>Past Invoices </small>   
                                     </a>
+                                    @endif 
+                                   
                               </div>
 
 
