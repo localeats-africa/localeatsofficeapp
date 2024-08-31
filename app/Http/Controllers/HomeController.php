@@ -582,7 +582,7 @@ class HomeController extends Controller
                     'vendorName'))->withDetails($pagination);     
                 } 
             else{ 
-                    Session::flash('food-status', 'No record order found'); 
+                // Session::flash('food-status', 'No record order found'); 
                 return view('vendormanager.vendor-food-menu',  compact(
                 'perPage', 'name', 'role', 'foodMenu', 
                 'vendorName'))->with('food-status', 'No record order found'); }
