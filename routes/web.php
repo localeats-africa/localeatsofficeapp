@@ -141,6 +141,7 @@ Route::controller(HomeController::class)->group(function () {
     Route::get('upload-past-invoice/{id}',  'uploadPastInvoices')->name('upload-past-invoice');
     Route::post('past-invoices',  'storePastInvoices')->name('past-invoices');
     Route::get('vendor-dashboard/{id}', 'showVendorDashboard')->name('vendor-dashboard');
+    Route::get('filter-vendor-dashboard/{id}', 'filterVendorDashboard')->name('filter-vendor-dashboard');
 });
 
 Route::controller(SuperAdminController::class)->group(function () {

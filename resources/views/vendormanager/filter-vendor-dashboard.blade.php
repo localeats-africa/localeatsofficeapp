@@ -8,7 +8,7 @@
       <div class="content-wrapper">
             <div class="page-header">
                   <h3 class="page-title">
-                  <span class="text-info"> {{ $vendorName }}</span> >>> Sales Insight  </span>
+                  <span class="text-info"> {{ $vendorName }}</span> >>> Sales Insight  </span>For >>> <span class="text-info"> {{ $startDate }}</span> - <span class="text-info"> {{ $endDate   }}</span>
                   </h3>
                   <nav aria-label="breadcrumb">
                         <ul class="breadcrumb">
@@ -23,23 +23,24 @@
                   </nav>
             </div>
 
-          <!-- filter dashboard  -->
-          <div class="row ">
+            <div class="row ">
+
                   <form method="GET" action="{{ route('filter-vendor-dashboard', [$vendor_id]) }}" name="submit"
                         enctype="multipart/form-data">
                         @csrf
                         {{csrf_field()}}
+                        <div class="row">
                         <div class="row text-end">
-                        <h6>Filter record:</h6>
+                        <h6>Filter record: &nbsp; <a href="{{ url('vendor-dashboard', [$vendor_id]) }}" class="btn bg-info btn-sm  text-white"> View All</a>
+                        </h6>
                               <div class="col-md-3">
                               </div>
-                              <div class="col-md-3">
+                              <div class="col-md-3 col-12">
                               </div>
-                              
                               <div class="col-md-3 col-12">
                                     <div class="form-group">
                                           <div class="input-group date">
-                                                <span class="input-group-append">
+                                          <span class="input-group-append">
                                                       <span class="input-group-text text-dark d-block">
                                                             Start
                                                       </span>
@@ -58,7 +59,7 @@
                               <div class="col-md-3 col-12">
                                     <div class="form-group">
                                           <div class="input-group date">
-                                                <span class="input-group-append">
+                                          <span class="input-group-append">
                                                       <span class="input-group-text text-dark d-block">
                                                             End
                                                       </span>
@@ -76,7 +77,7 @@
                                     </div>
                               </div>
 
-
+                           
                         </div>
                         <!---end row--->
                   </form>
