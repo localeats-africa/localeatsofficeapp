@@ -207,10 +207,21 @@
                                                 </a>
 
                                                 <br>
-                                                <a class="dropdown-item text-capitalize text-dark"
-                                                      href="vendor-profile/{{$data->id}}">
-                                                      <small>Suspend</small>
-                                                </a>
+                                                @auth
+                                                @if(Auth::user()->role_id =='2')
+                                                <form action="{{route('suspend-vendor', [$data->id])}}" method="POST"
+                                                      role="search">
+                                                      {{ csrf_field() }}
+                                                      <div class="input-group mb-2">
+                                                            <input type="hidden" class="form-control"
+                                                                  placeholder="Search for…" name="suspend"
+                                                                  value="{{$data->id}}">
+                                                            <button type="submit"
+                                                                  class="dropdown-item text-capitalize text-dark">Suspend</button>
+                                                      </div>
+                                                </form>
+                                                @endif
+                                                @endauth
                                                 <p></p>
                                                 <p></p>
                                                 @endif
@@ -220,11 +231,14 @@
                                                       href="vendor-profile/{{$data->id}}">
                                                       <small>View</small>
                                                 </a>
-                                                <br>
+                                                @auth
+                                                @if(Auth::user()->role_id =='2')
                                                 <a class="dropdown-item text-capitalize text-dark"
-                                                      href="edit-vendor/{{$data->id}}">
-                                                      <small>Edit</small>
+                                                      href="approve-vendor/{{$data->id}}">
+                                                      <small>Re-activate</small>
                                                 </a>
+                                                @endif
+                                                @endauth
                                                 <p></p>
                                                 <p></p>
                                                 @endif
@@ -240,15 +254,30 @@
                                                       <small>Edit</small>
                                                 </a>
                                                 <br>
+
+                                                @auth
+                                                @if(Auth::user()->role_id =='2')
+
                                                 <a class="dropdown-item text-capitalize text-dark"
-                                                      href="vendor-profile/{{$data->id}}">
+                                                      href="approve-vendor/{{$data->id}}">
                                                       <small>Approve</small>
                                                 </a>
                                                 <br>
-                                                <a class="dropdown-item text-capitalize text-dark"
-                                                      href="vendor-profile/{{$data->id}}">
-                                                      <small>Suspend</small>
-                                                </a>
+
+                                                <form action="{{route('suspend-vendor', [$data->id])}}" method="POST"
+                                                      role="search">
+                                                      {{ csrf_field() }}
+                                                      <div class="input-group mb-2">
+                                                            <input type="hidden" class="form-control"
+                                                                  placeholder="Search for…" name="suspend"
+                                                                  value="{{$data->id}}">
+                                                            <button type="submit"
+                                                                  class="dropdown-item text-capitalize text-dark">Suspend</button>
+                                                      </div>
+                                                </form>
+                                                @endif
+                                                @endauth
+
                                                 <p></p>
                                                 <p></p>
                                                 @endif
@@ -277,11 +306,55 @@
                                     </div>
                               </div>
                               <div class="d-flex">
+                                   
+                                    @if($data->vendor_status == 'suspended')
+                                    @auth
+                                    @if(Auth::user()->role_id =='2')
                                     <a href="vendor-dashboard/{{$data->id}}" class="card-btn "
                                           style="text-decoration:none;" title="Profile">
                                           <small>Dashboard </small> <small class="text-info"> &nbsp;<i
                                                       class="fa fa-dashboard"></i></small>
                                     </a>
+                                    @endif
+                                    @endauth
+
+                                    @auth
+                                    @if(Auth::user()->role_id =='8')
+                                    <a href="vendor-dashboard/{{$data->id}}" class="card-btn "
+                                          style="text-decoration:none;" title="Profile">
+                                          <small>Dashboard </small> <small class="text-info"> &nbsp;<i
+                                                      class="fa fa-dashboard"></i></small>
+                                    </a>
+                                    @endif
+                                    @endauth
+
+                                    <a href="upload-past-invoice/{{$data->id}}" class="card-btn "
+                                          style="text-decoration:none;" title="Invoice">
+                                          <!-- Download SVG icon from http://tabler-icons.io/i/phone -->
+                                          <small>Past Invoices </small>
+                                    </a>
+
+                                    @else 
+                                    @auth
+                                    @if(Auth::user()->role_id =='2')
+                                    <a href="vendor-dashboard/{{$data->id}}" class="card-btn "
+                                          style="text-decoration:none;" title="Profile">
+                                          <small>Dashboard </small> <small class="text-info"> &nbsp;<i
+                                                      class="fa fa-dashboard"></i></small>
+                                    </a>
+                                    @endif
+                                    @endauth
+
+                                    @auth
+                                    @if(Auth::user()->role_id =='8')
+                                    <a href="vendor-dashboard/{{$data->id}}" class="card-btn "
+                                          style="text-decoration:none;" title="Profile">
+                                          <small>Dashboard </small> <small class="text-info"> &nbsp;<i
+                                                      class="fa fa-dashboard"></i></small>
+                                    </a>
+                                    @endif
+                                    @endauth
+
                                     <a href="vendor-food-menu/{{$data->id}}" class="card-btn "
                                           style="text-decoration:none;" title="Profile">
                                           <small>FoodMenu </small> <small class="text-info"> &nbsp;<i
@@ -300,6 +373,8 @@
                                           <!-- Download SVG icon from http://tabler-icons.io/i/phone -->
                                           <small>Past Invoices </small>
                                     </a>
+                                    @endif
+                    
                               </div>
 
 

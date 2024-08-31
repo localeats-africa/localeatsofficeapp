@@ -749,13 +749,37 @@ class AdminController extends Controller
         ->join('users', 'users.role_id', 'role.id')
         ->where('users.id', $id)
         ->pluck('role_name')->first();
+        $vendorName = Vendor::where('id', $vendor_id)->get()->pluck('vendor_name')->first();
 
         $updateVendor=  Vendor::where('id', $vendor_id)->update([
             'vendor_status'     =>  'approved',
         ]);
          
         if($updateVendor){
-          return  redirect('all-vendor')->with('update-vendor', 'Approved successfully');
+          return  redirect('all-vendor')->with('update-vendor',    $vendorName. ' Approved successfully');
+        }
+        else{
+          return  redirect()->back('update-error', 'Opps! something happen');
+        }
+    }
+
+    public function suspendVendor(Request $request, $vendor_id){
+
+        $name = Auth::user()->name;
+        $id = Auth::user()->id;
+        $role = DB::table('role')->select('role_name')
+        ->join('users', 'users.role_id', 'role.id')
+        ->where('users.id', $id)
+        ->pluck('role_name')->first();
+
+        $vendorName = Vendor::where('id', $vendor_id)->get()->pluck('vendor_name')->first();
+
+        $updateVendor=  Vendor::where('id', $vendor_id)->update([
+            'vendor_status'     =>  'suspended',
+        ]);
+         
+        if($updateVendor){
+          return  redirect('all-vendor')->with('update-vendor', $vendorName. ' has been suspended successfully');
         }
         else{
           return  redirect()->back('update-error', 'Opps! something happen');
