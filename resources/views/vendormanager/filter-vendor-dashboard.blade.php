@@ -31,7 +31,7 @@
                         {{csrf_field()}}
                         <div class="row">
                         <div class="row text-end">
-                        <h6>Filter record: &nbsp; <a href="{{ url('vendor-dashboard', [$vendor_id]) }}" class="btn bg-info btn-sm  text-white"> View All</a>
+                        <h6>Filter record: &nbsp; <a href="{{ url('vendor-dashboard', [$vendor_id]) }}" class="btn bg-info btn-sm  text-white"> All</a>
                         </h6>
                               <div class="col-md-3">
                               </div>
