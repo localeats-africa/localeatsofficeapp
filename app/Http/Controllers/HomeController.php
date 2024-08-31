@@ -2491,4 +2491,9 @@ class HomeController extends Controller
         return redirect()->back()->with('invoice-error', 'Opps! something went wrong');
       }
     }
+
+    public function showVendorDashboard(Request $request){
+        return view('vendor');
+
+    }
 }//class
