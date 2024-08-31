@@ -119,6 +119,20 @@
                                              
                                           </div>
                                           <!--- row-->
+
+                                          <div class="row">
+
+                                                <div class="col-md-12">
+                                                      <div class="form-group">
+                                                            <h6>Address </h6>
+                                                            <input type="text" value="{{$vendor->address}}"
+                                                                  name="store_area" class="form-control">
+                                                      </div>
+                                                </div>
+
+                                             
+                                          </div>
+                                          <!--- row-->
                                           <div class="row">
                                                 <p><h5>Contact Person:</h5></p>
                                                 <div class="col-md-3">
