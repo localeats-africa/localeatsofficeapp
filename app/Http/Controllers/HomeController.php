@@ -2493,7 +2493,7 @@ class HomeController extends Controller
     }
 
     public function showVendorDashboard(Request $request){
-        return view('vendor');
+        return view('vendormanager.vendor-dashboard');
 
     }
 }//class
