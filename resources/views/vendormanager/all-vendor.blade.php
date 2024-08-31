@@ -174,7 +174,7 @@
                   $initials .= $w[0];
                   }
                   @endphp
-                  <div class="col-md-4 col-12">
+                  <div class="col-md-6 col-12">
                         <div class="card" style=" border:2px;">
                               <div class="card-body p-4 text-center">
                                     <div class="dropdown  text-muted text-end">
@@ -282,12 +282,18 @@
                                           <small>Dashboard </small> <small class="text-info"> &nbsp;<i
                                                       class="fa fa-dashboard"></i></small>
                                     </a>
+                                    <a href="vendor-food-menu/{{$data->id}}" class="card-btn "
+                                          style="text-decoration:none;" title="Profile">
+                                          <small>FoodMenu </small> <small class="text-info"> &nbsp;<i class="fa fa-cutlery" aria-hidden="true"></i></small>
+                                    </a>
+                                  
                                     <a href="upload-invoice/{{$data->id}}" class="card-btn "
                                           style="text-decoration:none;" title="Invoice">
                                           <!-- Download SVG icon from http://tabler-icons.io/i/phone -->
                                           <small>Create Invoice </small> <small class="text-info"> &nbsp;<i
                                                       class="fa fa-plus"></i></small>
                                     </a>
+
                                     <a href="upload-past-invoice/{{$data->id}}" class="card-btn "
                                           style="text-decoration:none;" title="Invoice">
                                           <!-- Download SVG icon from http://tabler-icons.io/i/phone -->

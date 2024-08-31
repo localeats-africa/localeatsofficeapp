@@ -83,6 +83,7 @@ Route::controller(HomeController::class)->group(function () {
     Route::get('all-vendor',  'allVendor')->name('all-vendor');
     Route::get('vendor-profile/{id}',  'vendorProfile')->name('vendor-profile');
     Route::get('food-menu',  'foodMenu')->name('food-menu');
+    Route::get('vendor-food-menu/{id}',  'vendorFoodMenu')->name('vendor-food-menu');
     Route::get('all-food-menu',  'allFoodMenu')->name('all-food-menu');
     Route::get('edit-food-menu/{id}', 'editFoodMenu')->name('edit-food-menu');
     Route::post('update-food-menu/{id}',  'updateFoodMenu')->name('update-food-menu');
