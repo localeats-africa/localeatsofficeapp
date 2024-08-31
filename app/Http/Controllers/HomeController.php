@@ -433,10 +433,12 @@ class HomeController extends Controller
             'bank_name'     => 'max:255',
             'account_name'  => 'max:255',
             'account_number' => 'max:255',
+            'address'       => 'max:255',
             ]);
             $vendor = Vendor::find($id);
             $vendor->vendor_name    = $request->vendor_name;
             $vendor->store_area     = $request->store_area;
+            $vendor->address        = $request->address;
             $vendor->contact_fname  = $request->first_name;
             $vendor->contact_lname  = $request->last_name;
             $vendor->email          = $request->email;
