@@ -277,16 +277,17 @@
                                     </div>
                               </div>
                               <div class="d-flex">
-                                    <a href="vendor-profile/{{$data->id}}" class="card-btn "
+                                    <a href="vendor-dashboard/{{$data->id}}" class="card-btn "
                                           style="text-decoration:none;" title="Profile">
                                           <small>Dashboard </small> <small class="text-info"> &nbsp;<i
                                                       class="fa fa-dashboard"></i></small>
                                     </a>
                                     <a href="vendor-food-menu/{{$data->id}}" class="card-btn "
                                           style="text-decoration:none;" title="Profile">
-                                          <small>FoodMenu </small> <small class="text-info"> &nbsp;<i class="fa fa-cutlery" aria-hidden="true"></i></small>
+                                          <small>FoodMenu </small> <small class="text-info"> &nbsp;<i
+                                                      class="fa fa-cutlery" aria-hidden="true"></i></small>
                                     </a>
-                                  
+
                                     <a href="upload-invoice/{{$data->id}}" class="card-btn "
                                           style="text-decoration:none;" title="Invoice">
                                           <!-- Download SVG icon from http://tabler-icons.io/i/phone -->
@@ -370,7 +371,7 @@
             <!--row  --->
 
             <p></p>
-      
+
 
       </div>
       <!--- content-wrapper-->

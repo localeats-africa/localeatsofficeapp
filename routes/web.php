@@ -140,6 +140,7 @@ Route::controller(HomeController::class)->group(function () {
     // past invoices
     Route::get('upload-past-invoice/{id}',  'uploadPastInvoices')->name('upload-past-invoice');
     Route::post('past-invoices',  'storePastInvoices')->name('past-invoices');
+    Route::get('vendor-dashboard/{id}', 'showVendorDashboard')->name('vendor-dashboard');
 });
 
 Route::controller(SuperAdminController::class)->group(function () {
