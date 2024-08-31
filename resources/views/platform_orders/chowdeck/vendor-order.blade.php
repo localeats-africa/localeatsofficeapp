@@ -8,14 +8,14 @@
       <div class="content-wrapper">
             <div class="page-header">
                   <h3 class="page-title">
-                        New Invoice
+                      Chowdeck Order (s)
                   </h3>
             </div>
             <!--Alert here--->
             <div class="row">
                   <div class="col-12">
 
-                        @if(session('order-status'))
+                        @if(session('vendor-status'))
                         <div class="alert  alert-success alert-dismissible" role="alert">
                               <div class="d-flex">
                                     <div>
@@ -112,7 +112,7 @@
                               Search:
                               <div class="ms-2 d-inline-block">
 
-                                    <form action="{{ route('create-invoice') }}" method="GET" role="search">
+                                    <form action="{{ route('chowdeck-vendor') }}" method="GET" role="search">
                                           {{ csrf_field() }}
                                           <div class="input-group mb-2">
                                                 <input type="text" class="form-control" placeholder="Search for…"
@@ -124,7 +124,7 @@
                         </div>
                   </div>
 
-                  @foreach($vendor as $data)
+                  @foreach($chowdeckVendor as $data)
                   @php
                   $words = explode(" ", $data->vendor_name, 2 );
                   $initials = null;
@@ -140,38 +140,23 @@
                                     <h6 class="m-0 mb-1"> 
                                     {!! Str::limit("$data->vendor_name", 25, '...') !!}      
                                     </h6>
-                                    <div class="text-info">{{$data->vendor_status }}</div>
                                     <div class="mt-3">
                                     </div>
                               </div>
                               <div class="d-flex">
-                                    
-                                    @if($data->vendor_status == 'suspended')
-                                    <a href="vendor-profile/{{$data->id}}" class="card-btn text-danger" style="text-decoration:none;" title="Profile">
-                                    <small>Profile </small> <small class="text-danger"> &nbsp;<i class="fa fa-eye"></i></small>
+                                    <a href="vendor-profile/{{$data->id}}" class="card-btn text-info" style="text-decoration:none;" title="order">
+                                    <small>New Order </small> 
                                     </a>
-
-                                    <a href="upload-past-invoice/{{$data->id}}" class="card-btn " style="text-decoration:none;" title="Invoice">
+                                    <a href="upload-invoice/{{$data->id}}" class="card-btn " style="text-decoration:none;" title="order">
                                           <!-- Download SVG icon from http://tabler-icons.io/i/phone -->
-                                    <small>Past Invoices </small>   
+                                    <small>Accept </small> <small class="text-success"> &nbsp; <i class="mdi mdi-check-bold  menu-icon fs-24"></i></small>  
                                     </a>
-                                    @else 
-                                    <a href="vendor-profile/{{$data->id}}" class="card-btn text-danger" style="text-decoration:none;" title="Profile">
-                                    <small>Profile </small> <small class="text-danger"> &nbsp;<i class="fa fa-eye"></i></small>
-                                    </a>
-
-                                    <a href="upload-invoice/{{$data->id}}" class="card-btn " style="text-decoration:none;" title="Invoice">
+                                    <a href="upload-past-invoice/{{$data->id}}" class="card-btn " style="text-decoration:none;" title="order">
                                           <!-- Download SVG icon from http://tabler-icons.io/i/phone -->
-                                    <small>Create Invoice </small> <small class="text-success"> &nbsp;<i class="fa fa-plus"></i></small>  
+                                    <small>Reject </small> &nbsp;   <small class="text-danger"><i class="mdi mdi-cancel  menu-icon fs-24"></i></small> 
                                     </a>
-                                    <a href="upload-past-invoice/{{$data->id}}" class="card-btn " style="text-decoration:none;" title="Invoice">
-                                          <!-- Download SVG icon from http://tabler-icons.io/i/phone -->
-                                    <small>Past Invoices </small>   
-                                    </a>
-                                    @endif 
-                                   
                               </div>
-
+                           
 
                         </div>
                         <!--card  --->
@@ -188,17 +173,17 @@
                               <p class="m-0 text-secondary">
 
                                     Showing
-                                    {{ ($vendor->currentPage() - 1) * $vendor->perPage() + 1; }} to
-                                    {{ min($vendor->currentPage()* $vendor->perPage(), $vendor->total()) }}
+                                    {{ ($chowdeckVendor->currentPage() - 1) * $chowdeckVendor->perPage() + 1; }} to
+                                    {{ min($chowdeckVendor->currentPage()* $chowdeckVendor->perPage(), $chowdeckVendor->total()) }}
                                     of
-                                    {{$vendor->total()}} entries
+                                    {{$chowdeckVendor->total()}} entries
                               </p>
 
                               <ul class="pagination m-0 ms-auto">
-                                    @if(isset($vendor))
-                                    @if($vendor->currentPage() > 1)
+                                    @if(isset($chowdeckVendor))
+                                    @if($chowdeckVendor->currentPage() > 1)
                                     <li class="page-item ">
-                                          <a class="page-link text-danger" href="{{ $vendor->previousPageUrl() }}"
+                                          <a class="page-link text-danger" href="{{ $chowdeckVendor->previousPageUrl() }}"
                                                 tabindex="-1" aria-disabled="true">
                                                 <!-- Download SVG icon from http://tabler-icons.io/i/chevron-left -->
                                                 <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24"
@@ -215,11 +200,11 @@
 
 
                                     <li class="page-item">
-                                          {{ $vendor->appends(compact('perPage'))->links()  }}
+                                          {{ $chowdeckVendor->appends(compact('perPage'))->links()  }}
                                     </li>
-                                    @if($vendor->hasMorePages())
+                                    @if($chowdeckVendor->hasMorePages())
                                     <li class="page-item">
-                                          <a class="page-link text-danger" href="{{ $vendor->nextPageUrl() }}">
+                                          <a class="page-link text-danger" href="{{ $chowdeckVendor->nextPageUrl() }}">
                                                 next
                                                 <!-- Download SVG icon from http://tabler-icons.io/i/chevron-right -->
                                                 <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24"

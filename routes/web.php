@@ -83,6 +83,7 @@ Route::controller(HomeController::class)->group(function () {
     Route::get('all-vendor',  'allVendor')->name('all-vendor');
     Route::get('vendor-profile/{id}',  'vendorProfile')->name('vendor-profile');
     Route::get('food-menu',  'foodMenu')->name('food-menu');
+    Route::get('vendor-food-menu/{id}',  'vendorFoodMenu')->name('vendor-food-menu');
     Route::get('all-food-menu',  'allFoodMenu')->name('all-food-menu');
     Route::get('edit-food-menu/{id}', 'editFoodMenu')->name('edit-food-menu');
     Route::post('update-food-menu/{id}',  'updateFoodMenu')->name('update-food-menu');
@@ -139,6 +140,8 @@ Route::controller(HomeController::class)->group(function () {
     // past invoices
     Route::get('upload-past-invoice/{id}',  'uploadPastInvoices')->name('upload-past-invoice');
     Route::post('past-invoices',  'storePastInvoices')->name('past-invoices');
+    Route::get('vendor-dashboard/{id}', 'showVendorDashboard')->name('vendor-dashboard');
+    Route::get('filter-vendor-dashboard/{id}', 'filterVendorDashboard')->name('filter-vendor-dashboard');
 });
 
 Route::controller(SuperAdminController::class)->group(function () {
@@ -148,7 +151,8 @@ Route::controller(SuperAdminController::class)->group(function () {
 Route::controller(AdminController::class)->group(function () {
     Route::get('admin',  'index')->name('admin');
     Route::get('admin-filter-dashboard', 'adminFilterDashboard')->name('admin-filter-dashboard');
-    Route::post('approve-vendor/{id}',  'approveVendor')->name('approve-vendor');
+    Route::get('approve-vendor/{id}',  'approveVendor')->name('approve-vendor');
+    Route::post('suspend-vendor/{id}',  'suspendVendor')->name('suspend-vendor');
     Route::get('new-platform',  'newPlatform')->name('new-platform');
     Route::post('add-platform',  'addPlatform')->name('add-platform');
     Route::get('all-platform',  'allPlatform')->name('all-platform');
