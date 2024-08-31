@@ -126,7 +126,7 @@
                                                       <div class="form-group">
                                                             <h6>Address </h6>
                                                             <input type="text" value="{{$vendor->address}}"
-                                                                  name="store_area" class="form-control">
+                                                                  name="address" class="form-control">
                                                       </div>
                                                 </div>
 
