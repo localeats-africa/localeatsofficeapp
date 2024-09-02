@@ -4,6 +4,7 @@ namespace App\Console;
 
 use Illuminate\Console\Scheduling\Schedule;
 use Illuminate\Foundation\Console\Kernel as ConsoleKernel;
+use Illuminate\Support\Facades\DB;
 
 class Kernel extends ConsoleKernel
 {
@@ -15,15 +16,16 @@ class Kernel extends ConsoleKernel
      */
     protected function schedule(Schedule $schedule)
     {
-         $schedule->command('inspire')->hourly();
+        // $schedule->command('inspire')->hourly();
+         $schedule->command('cache:clear')->hourly();
+        $schedule->command('config:clear')->hourly();
+        $schedule->command('view:clear')->hourly();
+        $schedule->command('route:clear')->hourly();
+        $schedule->command('optimize:clear')->hourly();
         $schedule->call(function () {
             Artisan::call('cache:clear'); // you can move this part to Job
         })
         ->hourly();
-
-        $schedule->command('cache:clear')->hourly();
-        $schedule->command('route:clear')->hourly();
-        $schedule->command('config:clear')->hourly();
     }
 
     /**
