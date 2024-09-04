@@ -101,7 +101,7 @@
                                                 <p>
                                                 <h5>Staff: </h5>
                                                 </p>
-                                                <div class="col-md-3">
+                                                <div class="col-md-6">
                                                       <div class="form-group">
                                                             <h6>Name</h6>
                                                             <input type="text" value="{{$user->fullname}}"
@@ -109,28 +109,35 @@
                                                       </div>
                                                 </div>
 
-                                                <div class="col-md-3">
+                                                <div class="col-md-6">
                                                       <div class="form-group">
                                                             <h6>Email </h6>
                                                             <input type="text" value="{{$user->email}}" name="email"
                                                                   class="form-control">
                                                       </div>
                                                 </div>
-                                                <div class="col-md-3">
+
+                                          </div>
+
+                                          <div class="row">
+                                                <div class="col-md-6">
                                                       <div class="form-group">
                                                             <h6>Current role </h6>
                                                             <input type="text" class="form-control" disabled
                                                                   value="{{$staffRoleName}}">
+
+                                                                  <input type="hidden" class="form-control" name="old_role"
+                                                                  value="{{$staffRoleName}}">
                                                       </div>
                                                 </div>
 
-                                                <div class="col-md-3">
+                                                <div class="col-md-6">
                                                       <div class="form-group">
                                                             <h6>Assign new role </h6>
                                                             <select class="js-example-basic-single" style="width:100%"
                                                                   name="role" id="bank">
-                                                                  <option value="">
-                                                                        Search / Choose
+                                                                  <option value="{{$staffRoleName}}">
+                                                                        Search Role
                                                                   </option>
                                                                   @foreach($userRole as $data)
                                                                   <option value="{{$data->id}}">
@@ -139,9 +146,38 @@
                                                             </select>
                                                       </div>
                                                 </div>
+                                          </div>
+                                          <div class="row">
+                                          <div class="col-md-6">
+                                                      <div class="form-group">
+                                                            <h6>Current Vendor Assigned </h6>
+                                                            <input type="text" class="form-control" disabled
+                                                                  value="{{$staffVendorAssignedTo}}">
+
+                                                                  <input type="hidden" class="form-control" name="old_vendor"
+                                                                  value="{{$staffVendorAssignedTo}}">
+                                                      </div>
+                                                </div>
+
+                                                <div class="col-md-6">
+                                                      <div class="form-group">
+                                                            <h6>Assign to a new Vendor </h6>
+                                                            <select class="platform2" style="width:100%"
+                                                                  name="vendor" id="">
+                                                                  <option value="{{$staffVendorAssignedTo}}">
+                                                                        Search / Choose
+                                                                  </option>
+                                                                  @foreach($vendor as $data)
+                                                                  <option value="{{$data->id}}">
+                                                                        {{$data->vendor_name}}</option>
+                                                                  @endforeach
+                                                            </select>
+                                                      </div>
+                                                </div>
 
 
                                           </div>
+
 
 
                                           <div class="row">

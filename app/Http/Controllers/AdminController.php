@@ -1654,10 +1654,17 @@ class AdminController extends Controller
             ->join('users', 'users.role_id', 'role.id')
             ->where('users.id', $id)
             ->pluck('role_name')->first();
+
+            $staffVendorAssignedTo = DB::table('vendor')->select('vendor_name')
+            ->join('users', 'users.vendor', 'vendor.id')
+            ->where('users.id', $id)
+            ->pluck('vendor_name')->first();
+
+            $vendor = Vendor::all();
       
 
             return view('admin.edit-user-role', compact('userRole', 'user', 
-            'role', 'name', 'staffRoleName')); 
+            'role', 'name', 'staffRoleName', 'vendor', 'staffVendorAssignedTo')); 
         }
           else { return Redirect::to('/login');
         }
@@ -1666,14 +1673,34 @@ class AdminController extends Controller
     public function updateUser(Request $request, $id)
     {
         $this->validate($request, [
-            'fullname'      => 'max:255',
-            'email'         => 'max:255',
-            'role'          => 'max:255',
+            'fullname'      => 'required|max:255',
+            'email'         => 'required|max:255',
+            'role'          => 'required|max:255',
+            'vendor'        => 'required|max:255',
             ]);
+
+            // $role = $request->role;
+            // $vendor = $request->vendor;
+            if($request->role){
+                //
+                $role = $request->role;
+            }
+            else{
+                $role = $request->old_role;
+            }
+
+            if($request->vendor){
+                //
+                $vendor = $request->vendor;
+            }
+            else{
+                $vendor = $request->old_vendor;
+            }
             $user = User::find($id);
             $user->fullname         = $request->fullname;
             $user->email            = $request->email;
-            $user->role_id          = $request->role;
+            $user->role_id          = $role ;
+            $user->vendor           = $vendor;
             $user->update();
 
             if($user){

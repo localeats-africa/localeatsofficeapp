@@ -30,13 +30,18 @@ return [
     |         "memcached", "redis", "dynamodb", "octane", "null"
     |
     */
-
+  
     'stores' => [
 
+        'none' => [
+            'driver' => 'null',
+        ],
+        
         'apc' => [
             'driver' => 'apc',
         ],
 
+        
         'array' => [
             'driver' => 'array',
             'serialize' => false,
