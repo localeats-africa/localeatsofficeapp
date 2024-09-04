@@ -227,6 +227,13 @@
                                                                   class="badge badge-round bg-warning  text-dark text-capitalize">
                                                                   Unpaid</span>
                                                             @endif
+
+                                                            @if( $data->payment_status =='unpaid')
+                                                            <span
+                                                                  class="badge badge-round bg-warning  text-dark text-capitalize">
+                                                                  Unpaid</span>
+                                                            @endif
+
                                                             @if( $data->payment_status =='pending')
                                                             <span
                                                                   class="badge badge-round bg-warning  text-dark text-capitalize">
@@ -251,6 +258,8 @@
                                                                   <a href="computed-invoice/{{$data->id}}/{{$data->number_of_order_merge}}/{{$data->invoice_ref}}"
                                                                         class="text-danger"><i
                                                                               class="fa fa-edit"></i></a></span>
+
+                                                                        
                                                             @endif
                                                             @endauth
                                                       </td>

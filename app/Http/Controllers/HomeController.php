@@ -1443,6 +1443,7 @@ class HomeController extends Controller
         ->join('vendor', 'orders.vendor_id', '=', 'vendor.id')
         ->where('orders.deleted_at', null)
         ->where('orders.payment_status', 'pending')
+        ->orwhere('orders.payment_status', 'unpaid')
         ->orderBy('orders.created_at', 'desc')
         ->select(['orders.*', 
         'vendor.vendor_name', 'vendor.id'])
