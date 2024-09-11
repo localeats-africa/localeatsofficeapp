@@ -192,8 +192,8 @@
                                     <div class="card-body">
                                           <div class="form-label ">Code / ID<i class="text-danger">*</i>
                                           </div>
-                                          <input type="text" class="form-control" name="reference">
-                                          @error('reference')
+                                          <input type="text" class="form-control" name="code">
+                                          @error('code')
                                           <div class="alert alert-danger alert-dismissible" role="alert">
                                                 <div class="d-flex">
                                                       <div>

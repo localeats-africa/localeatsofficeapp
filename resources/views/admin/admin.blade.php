@@ -33,7 +33,7 @@
                               
                               <div class="col-md-3 col-12">
                                     <div class="form-group">
-                                          <div class="input-group date">
+                                          <div class="input-group ">
                                                 <span class="input-group-append">
                                                       <span class="input-group-text text-dark d-block">
                                                             Start
@@ -52,7 +52,7 @@
 
                               <div class="col-md-3 col-12">
                                     <div class="form-group">
-                                          <div class="input-group date">
+                                          <div class="input-group ">
                                                 <span class="input-group-append">
                                                       <span class="input-group-text text-dark d-block">
                                                             End
@@ -483,6 +483,12 @@
 <!-- <script src="{{ asset('assets/js/dashboard.js') }}"></script> -->
 <!-- <script src="{{ asset('assets/js/chart.js') }}"></script> -->
 <!-- End custom js for this page -->
+
+<link rel="stylesheet" href="https://code.jquery.com/ui/1.13.3/themes/base/jquery-ui.css">
+
+<script src="https://code.jquery.com/jquery-3.7.1.js"></script>
+<script src="https://code.jquery.com/ui/1.13.3/jquery-ui.js"></script>
+
 
 <script>
 $(function() {
