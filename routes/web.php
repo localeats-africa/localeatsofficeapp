@@ -158,6 +158,8 @@ Route::controller(AdminController::class)->group(function () {
     Route::get('all-platform',  'allPlatform')->name('all-platform');
     Route::get('restaurant',  'restaurant')->name('restaurant');
     Route::post('add-restaurant',  'addRestaurant')->name('add-restaurant');
+    Route::get('roles',  'role')->name('roles');
+    Route::post('add-role',  'addRole')->name('add-role');
     Route::get('food-type',  'foodType')->name('food-type');
     Route::post('add-food-type',  'addFoodType')->name('add-food-type');
     Route::get('new-staff',  'newUser')->name('new-staff');
