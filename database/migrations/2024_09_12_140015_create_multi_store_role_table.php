@@ -16,6 +16,7 @@ return new class extends Migration
         Schema::create('multi_store_role', function (Blueprint $table) {
             $table->id();
             $table->timestamps();
+            $table->string('multi_store_id');
             $table->string('role');
             $table->string('level');
         });
