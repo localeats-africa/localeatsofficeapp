@@ -1828,12 +1828,14 @@ class AdminController extends Controller
         $search = $request->input('search');
 
         $allRoles = DB::table('multi_store_role')
+        ->join('vendor', 'vendor.id', 'multi_store_role.vendor_id')
         ->orderBy('role.created_at', 'desc')
-        ->select(['multi_store_role.*' ])
+        ->select(['multi_store_role.*', 'vendor.store_name' ])
         ->where(function ($query) use ($search) {  // <<<
-        $query->where('role.created_at', 'LIKE', '%'.$search.'%')
-               ->orWhere('role.role_name', 'LIKE', '%'.$search.'%')
-               ->orderBy('role.created_at', 'desc');
+        $query->where('multi_store_role.created_at', 'LIKE', '%'.$search.'%')
+               ->orWhere('multi_store_role.role', 'LIKE', '%'.$search.'%')
+               ->orWhere('vendor.store_name', 'LIKE', '%'.$search.'%')
+               ->orderBy('multi_store_role.created_at', 'desc');
         })->paginate($perPage, $columns = ['*'], $pageName = 'role'
         )->appends(['per_page'   => $perPage]);
         $pagination = $allRoles->appends ( array ('search' => $search) );
