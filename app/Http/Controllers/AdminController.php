@@ -1830,7 +1830,8 @@ class AdminController extends Controller
         $search = $request->input('search');
 
         $allRoles = DB::table('multi_store_role')
-        ->join('vendor', 'vendor.id', 'multi_store_role.vendor_id')
+        ->join('multi_store', 'multi_store.id', 'multi_store_role.multi_store_id')
+        ->join('vendor', 'vendor.id', 'multi_store.vendor_id')
         ->orderBy('role.created_at', 'desc')
         ->select(['multi_store_role.*', 'vendor.store_name' ])
         ->where(function ($query) use ($search) {  // <<<
