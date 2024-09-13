@@ -178,6 +178,14 @@
                   </li>
 
                   <li class="nav-item">
+                        <a class="nav-link" href="{{ url('roles')}}" target="">
+                              <span class="menu-title">LocalEats Roles</span>
+                              <i class="mdi mdi-account fs-24 menu-icon"></i>
+
+                        </a>
+                  </li>
+
+                  <li class="nav-item">
                         <a class="nav-link" data-bs-toggle="collapse" href="#food-menu" aria-expanded="false"
                               aria-controls="food-menu">
                               <span class="menu-title">Bookkeeping</span>
@@ -208,16 +216,13 @@
                   <li class="nav-item">
                         <a class="nav-link" data-bs-toggle="collapse" href="#role" aria-expanded="false"
                               aria-controls="role">
-                              <span class="menu-title">Roles </span>
+                              <span class="menu-title">Multi-Vendor </span>
                               <i class="menu-arrow"></i>
                               <i class="mdi mdi-cog-outline fs-24 menu-icon"></i>
 
                         </a>
                         <div class="collapse" id="role">
                               <ul class="nav flex-column sub-menu">
-                                    <li class="nav-item">
-                                          <a class="nav-link" href="{{ url('roles') }}"> LocalEats Roles </a>
-                                    </li>
 
                                     <li class="nav-item">
                                           <a class="nav-link" href="{{ url('setup-vendor') }}">Multi-Vendor Roles
