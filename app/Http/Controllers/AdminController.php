@@ -1832,12 +1832,12 @@ class AdminController extends Controller
         $allRoles = DB::table('multi_store_role')
         ->join('multi_store', 'multi_store.id', 'multi_store_role.multi_store_id')
         //->join('vendor', 'vendor.id', 'multi_store.vendor_id')
-        ->orderBy('role.created_at', 'desc')
-        ->select(['multi_store_role.*', 'vendor.store_name' ])
+        ->orderBy('multi_store_role.created_at', 'desc')
+        ->select(['multi_store_role.*', ])
         ->where(function ($query) use ($search) {  // <<<
         $query->where('multi_store_role.created_at', 'LIKE', '%'.$search.'%')
                ->orWhere('multi_store_role.role', 'LIKE', '%'.$search.'%')
-               ->orWhere('vendor.store_name', 'LIKE', '%'.$search.'%')
+            //    ->orWhere('vendor.store_name', 'LIKE', '%'.$search.'%')
                ->orderBy('multi_store_role.created_at', 'desc');
         })->paginate($perPage, $columns = ['*'], $pageName = 'role'
         )->appends(['per_page'   => $perPage]);
