@@ -1824,6 +1824,8 @@ class AdminController extends Controller
         ->where('users.id', $user_id)
         ->pluck('role_name')->first();
 
+        $vendors = Vendor::all();
+
         $perPage = $request->perPage ?? 25;
         $search = $request->input('search');
 
@@ -1841,9 +1843,9 @@ class AdminController extends Controller
         $pagination = $allRoles->appends ( array ('search' => $search) );
             if (count ( $pagination ) > 0){
                 return view('multistore.multistore-roles',  compact(
-                'perPage', 'name', 'role', 'allRoles'))->withDetails( $pagination );     
+                'perPage', 'name', 'role', 'allRoles', 'vendors'))->withDetails( $pagination );     
             } 
             else{return redirect()->back()->with('status', 'No record order found');}
-        return view('multistore.multistore-roles', compact('name', 'role', 'allRoles'));
+        return view('multistore.multistore-roles', compact('name', 'role', 'allRoles', 'vendors'));
     }
 }//class
