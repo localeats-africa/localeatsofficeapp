@@ -1772,11 +1772,11 @@ class AdminController extends Controller
         )->appends(['per_page'   => $perPage]);
         $pagination = $allRoles->appends ( array ('search' => $search) );
             if (count ( $pagination ) > 0){
-                return view('admin.roles',  compact(
+                return view('admin.role',  compact(
                 'perPage', 'name', 'role', 'allRoles'))->withDetails( $pagination );     
             } 
             else{return redirect()->back()->with('status', 'No record order found');}
-        return view('admin.roles', compact('name', 'role', 'allRoles'));
+        return view('admin.role', compact('name', 'role', 'allRoles'));
     }
 
     public function multiStoreRolePage(Request $request){
