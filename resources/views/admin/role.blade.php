@@ -228,7 +228,7 @@
                                                 </tr>
                                           </thead>
                                           <tbody>
-                                                @foreach($role as $data)
+                                                @foreach($allRoles as $data)
                                                 <tr>
                                                       <td><input class="form-check-input m-0 align-middle"
                                                                   type="checkbox" aria-label="Select"></td>
@@ -266,18 +266,18 @@
                                     <p class="m-0 text-secondary">
 
                                           Showing
-                                          {{ ($role->currentPage() - 1) * $role->perPage() + 1; }} to
-                                          {{ min($role->currentPage()* $role->perPage(), $role->total()) }}
+                                          {{ ($allRoles->currentPage() - 1) * $allRoles->perPage() + 1; }} to
+                                          {{ min($allRoles->currentPage()* $allRoles->perPage(), $allRoles->total()) }}
                                           of
-                                          {{$role->total()}} entries
+                                          {{$allRoles->total()}} entries
                                     </p>
 
                                     <ul class="pagination m-0 ms-auto">
-                                          @if(isset($role))
-                                          @if($role->currentPage() > 1)
+                                          @if(isset($allRoles))
+                                          @if($allRoles->currentPage() > 1)
                                           <li class="page-item ">
                                                 <a class="page-link text-danger"
-                                                      href="{{ $role->previousPageUrl() }}" tabindex="-1"
+                                                      href="{{ $allRoles->previousPageUrl() }}" tabindex="-1"
                                                       aria-disabled="true">
                                                       <!-- Download SVG icon from http://tabler-icons.io/i/chevron-left -->
                                                       <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24"
@@ -294,11 +294,11 @@
 
 
                                           <li class="page-item">
-                                                {{ $role->appends(compact('perPage'))->links()  }}
+                                                {{ $allRoles->appends(compact('perPage'))->links()  }}
                                           </li>
-                                          @if($role->hasMorePages())
+                                          @if($allRoles->hasMorePages())
                                           <li class="page-item">
-                                                <a class="page-link text-danger" href="{{ $role->nextPageUrl() }}">
+                                                <a class="page-link text-danger" href="{{ $allRoles->nextPageUrl() }}">
                                                       next
                                                       <!-- Download SVG icon from http://tabler-icons.io/i/chevron-right -->
                                                       <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24"
