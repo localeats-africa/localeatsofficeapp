@@ -223,6 +223,10 @@
                         </a>
                         <div class="collapse" id="role">
                               <ul class="nav flex-column sub-menu">
+                              <li class="nav-item">
+                                          <a class="nav-link" href="{{ url('setup-vendor') }}">Parent Vendors
+                                          </a>
+                                    </li>
 
                                     <li class="nav-item">
                                           <a class="nav-link" href="{{ url('setup-vendor') }}">Roles
