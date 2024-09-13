@@ -1801,10 +1801,10 @@ class AdminController extends Controller
         )->appends(['per_page'   => $perPage]);
         $pagination = $allRoles->appends ( array ('search' => $search) );
             if (count ( $pagination ) > 0){
-                return view('admin.multistore-roles',  compact(
+                return view('multistore.multistore-roles',  compact(
                 'perPage', 'name', 'role', 'allRoles'))->withDetails( $pagination );     
             } 
             else{return redirect()->back()->with('status', 'No record order found');}
-        return view('admin.multistore-roles', compact('name', 'role', 'allRoles'));
+        return view('multistore.multistore-roles', compact('name', 'role', 'allRoles'));
     }
 }//class
