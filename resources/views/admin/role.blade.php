@@ -236,7 +236,7 @@
                                                            {{$loop->iteration}}
                                                       </td>
 
-                                                      <td class="text-capitalize">{{$data->role}}</td>
+                                                      <td class="text-capitalize">{{$data->role_name}}</td>
 
                                                       
                                                       <td class="text-end">
