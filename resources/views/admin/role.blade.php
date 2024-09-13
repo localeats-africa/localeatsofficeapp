@@ -93,7 +93,7 @@
             </div>
             <p></p>
 
-            <form method="post" action="{{ route('add-restaurant') }}" name="submit" enctype="multipart/form-data">
+            <form method="post" action="{{ route('add-role') }}" name="submit" enctype="multipart/form-data">
                   @csrf
                   {{csrf_field()}}
                   <div class="row">
@@ -200,7 +200,7 @@
                                                 Search:
                                                 <div class="ms-2 d-inline-block">
 
-                                                      <form action="{{ route('restaurant') }}" method="GET" role="search">
+                                                      <form action="{{ route('roles') }}" method="GET" role="search">
                                                             {{ csrf_field() }}
                                                             <div class="input-group mb-2">
                                                                   <input type="text" class="form-control"
@@ -236,7 +236,7 @@
                                                            {{$loop->iteration}}
                                                       </td>
 
-                                                      <td class="text-capitalize">{{$data->restaurant_type}}</td>
+                                                      <td class="text-capitalize">{{$data->role}}</td>
 
                                                       
                                                       <td class="text-end">
