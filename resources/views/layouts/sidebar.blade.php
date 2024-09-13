@@ -225,7 +225,7 @@
                               <ul class="nav flex-column sub-menu">
 
                                     <li class="nav-item">
-                                          <a class="nav-link" href="{{ url('setup-vendor') }}">Multi-Vendor Roles
+                                          <a class="nav-link" href="{{ url('setup-vendor') }}">Roles
                                           </a>
                                     </li>
 
