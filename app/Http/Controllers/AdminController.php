@@ -1824,7 +1824,7 @@ class AdminController extends Controller
         ->where('users.id', $user_id)
         ->pluck('role_name')->first();
 
-        $vendors = Vendor::all();
+        $vendors = MultiStore::all();
 
         $perPage = $request->perPage ?? 25;
         $search = $request->input('search');
