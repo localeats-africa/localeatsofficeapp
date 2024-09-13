@@ -140,7 +140,7 @@
                                           </div>
                                           <select class="js-example-basic-single text-secondary" style="width:100%" name="vendor" id="vendor">
                                                 <option>Choose</option>
-                                                @foreach($vendor as $data)
+                                                @foreach($vendors as $data)
                                                 <option value="{{$data->id}}">
                                                       {{$data->store_name}}
                                                 </option>
