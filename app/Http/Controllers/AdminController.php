@@ -1831,7 +1831,7 @@ class AdminController extends Controller
 
         $allRoles = DB::table('multi_store_role')
         ->join('multi_store', 'multi_store.id', 'multi_store_role.multi_store_id')
-        ->join('vendor', 'vendor.id', 'multi_store.vendor_id')
+        //->join('vendor', 'vendor.id', 'multi_store.vendor_id')
         ->orderBy('role.created_at', 'desc')
         ->select(['multi_store_role.*', 'vendor.store_name' ])
         ->where(function ($query) use ($search) {  // <<<
