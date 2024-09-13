@@ -1762,6 +1762,7 @@ class AdminController extends Controller
         $search = $request->input('search');
 
         $allRoles = DB::table('role')
+        ->where('role_name', '!=',  'superadmin')// except superadmin
         ->orderBy('role.created_at', 'desc')
         ->select(['role.*' ])
         ->where(function ($query) use ($search) {  // <<<
