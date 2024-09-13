@@ -36,6 +36,9 @@ use App\Models\ExpensesList;
 use App\Models\OfflineSales;
 use App\Models\VendorExpenses;
 use App\Models\OfflineFoodMenu;
+use App\Models\MultiStoreRole;
+use App\Models\MultiStore;
+use App\Models\SubStore;
 
 use Excel;
 use Auth;
@@ -1802,8 +1805,9 @@ class AdminController extends Controller
             'role'   => 'required|string|max:255',
         ]);
 
-        $addRole = new Role;
+        $addRole = new MultiStoreRole;
         $addRole->role_name = $request->role;
+        $addRole->multi_store_id = $request->store_id;
         $addRole->save();
         
         if($addRole){
