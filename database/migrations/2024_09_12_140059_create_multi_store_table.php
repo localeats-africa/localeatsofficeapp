@@ -16,6 +16,7 @@ return new class extends Migration
         Schema::create('multi_store', function (Blueprint $table) {
             $table->id();
             $table->timestamps();
+            $table->string('multi_store_name');
             $table->string('user_id');
             $table->string('vendor_id');
             $table->string('role');
