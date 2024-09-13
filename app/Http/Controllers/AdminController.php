@@ -1829,7 +1829,7 @@ class AdminController extends Controller
 
         $allRoles = DB::table('multi_store_role')
         ->orderBy('role.created_at', 'desc')
-        ->select(['role.*' ])
+        ->select(['multi_store_role.*' ])
         ->where(function ($query) use ($search) {  // <<<
         $query->where('role.created_at', 'LIKE', '%'.$search.'%')
                ->orWhere('role.role_name', 'LIKE', '%'.$search.'%')
