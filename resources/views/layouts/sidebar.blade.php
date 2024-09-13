@@ -229,7 +229,7 @@
                                     </li>
 
                                     <li class="nav-item">
-                                          <a class="nav-link" href="{{ url('setup-vendor') }}">Roles
+                                          <a class="nav-link" href="{{ url('multi-vendor-roles') }}">Roles
                                           </a>
                                     </li>
 
