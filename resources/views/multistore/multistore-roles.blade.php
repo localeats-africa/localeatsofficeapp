@@ -259,6 +259,7 @@
                                                       </th>
                                                       <th>SN</th>
                                                       <th>Roles</th>
+                                                      <th>Vendor</th>
                                                       <th></th>
                                                 </tr>
                                           </thead>
@@ -270,8 +271,9 @@
                                                       <td class="py-1">
                                                            {{$loop->iteration}}
                                                       </td>
+                                                      <td class="text-capitalize">{{$data->store_name}}</td>
 
-                                                      <td class="text-capitalize">{{$data->role_name}}</td>
+                                                      <td class="text-capitalize">{{$data->role}}</td>
 
                                                       
                                                       <td class="text-end">
