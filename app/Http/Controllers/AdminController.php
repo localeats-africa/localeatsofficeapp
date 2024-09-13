@@ -1749,4 +1749,33 @@ class AdminController extends Controller
     ]);
     }
 
+
+    public function userRolePage(Request $request){
+        $name = Auth::user()->name;
+        $user_id = Auth::user()->id;
+        $role = DB::table('role')->select('role_name')
+        ->join('users', 'users.role_id', 'role.id')
+        ->where('users.id', $user_id)
+        ->pluck('role_name')->first();
+
+        $perPage = $request->perPage ?? 25;
+        $search = $request->input('search');
+
+        $allRoles = DB::table('role')
+        ->orderBy('role.created_at', 'desc')
+        ->select(['role.*' ])
+        ->where(function ($query) use ($search) {  // <<<
+        $query->where('role.created_at', 'LIKE', '%'.$search.'%')
+               ->orWhere('role.role_name', 'LIKE', '%'.$search.'%')
+               ->orderBy('role.created_at', 'desc');
+        })->paginate($perPage, $columns = ['*'], $pageName = 'role'
+        )->appends(['per_page'   => $perPage]);
+        $pagination = $allRoles->appends ( array ('search' => $search) );
+            if (count ( $pagination ) > 0){
+                return view('admin.roles',  compact(
+                'perPage', 'name', 'role', 'allRoles'))->withDetails( $pagination );     
+            } 
+            else{return redirect()->back()->with('invoice-status', 'No record order found');}
+        return view('admin.roles', compact('name', 'role', 'allRoles'));
+    }
 }//class
