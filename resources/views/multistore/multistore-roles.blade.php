@@ -138,9 +138,16 @@
                                           <div class="form-label required">Vendor <i
                                                       class="text-danger">*</i>
                                           </div>
-                                          <input type="text" class="form-control" name="vendor">
+                                          <select class="js-example-basic-single text-secondary" style="width:100%" name="vendor" id="vendor">
+                                                <option>Choose</option>
+                                                @foreach($vendor as $data)
+                                                <option value="{{$data->id}}">
+                                                      {{$data->store_name}}
+                                                </option>
+                                                @endforeach
+                                          </select>
 
-                                          @error('role')
+                                          @error('vendor')
                                           <div class="alert alert-danger alert-dismissible" role="alert">
                                                 <div class="d-flex">
                                                       <div>
