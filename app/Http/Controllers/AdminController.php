@@ -1780,6 +1780,22 @@ class AdminController extends Controller
         return view('admin.role', compact('name', 'role', 'allRoles'));
     }
 
+
+    public function addRole(Request $request){
+        $this->validate($request, [ 
+            'role'   => 'required|string|max:255',
+        ]);
+
+        $addRole = new Role;
+        $addRole->role_name = $request->role;
+        $addRole->save();
+        
+        if($addRole){
+           return redirect()->back()->with('add-role', 'New Role Added!');
+        }
+        else{return redirect()->back()->with('error', 'Opps! something went wrong.'); }
+    }
+
     public function multiStoreRolePage(Request $request){
         $name = Auth::user()->name;
         $user_id = Auth::user()->id;
