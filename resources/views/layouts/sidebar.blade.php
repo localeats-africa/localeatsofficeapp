@@ -205,6 +205,29 @@
                         </div>
                   </li>
 
+                  <li class="nav-item">
+                        <a class="nav-link" data-bs-toggle="collapse" href="#role" aria-expanded="false"
+                              aria-controls="role">
+                              <span class="menu-title">Roles </span>
+                              <i class="menu-arrow"></i>
+                              <i class="mdi mdi-cog-outline fs-24 menu-icon"></i>
+
+                        </a>
+                        <div class="collapse" id="role">
+                              <ul class="nav flex-column sub-menu">
+                                    <li class="nav-item">
+                                          <a class="nav-link" href="{{ url('roles') }}"> LocalEats Roles </a>
+                                    </li>
+
+                                    <li class="nav-item">
+                                          <a class="nav-link" href="{{ url('setup-vendor') }}">Multi-Vendor Roles
+                                          </a>
+                                    </li>
+
+                              </ul>
+                        </div>
+                  </li>
+
 
                   @endif
                   <!--- vendor manager sidebar ---->
