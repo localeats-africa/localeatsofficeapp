@@ -278,7 +278,7 @@
                                                       <td class="py-1">
                                                            {{$loop->iteration}}
                                                       </td>
-                                                      <td class="text-capitalize">{{$data->store_name}}</td>
+                                                      <!-- <td class="text-capitalize">{{$data->store_name}}</td> -->
 
                                                       <td class="text-capitalize">{{$data->role}}</td>
 
