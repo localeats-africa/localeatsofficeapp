@@ -3074,7 +3074,7 @@ class HomeController extends Controller
         'startDate', 'endDate','vendor_id' ));
     }
 
-    public function newMultiVendor(Request $request){
+    public function newParentVendor(Request $request){
         $name = Auth::user()->name;
         $id = Auth::user()->id;
         $role = DB::table('role')->select('role_name')
@@ -3104,8 +3104,9 @@ class HomeController extends Controller
         'selectFoodType', 'selectRestaurantType', 'stateID', 'countryID', 'location'));
     }
 
-    public function addMultiVendor(Request $request){
+    public function addParentVendor(Request $request){
         if(Auth::user()){
+        //parentvendor
             $name = Auth::user()->name;
             $id = Auth::user()->id;
             // generate a pin based on 2 * 5 digits + a random character
@@ -3193,10 +3194,13 @@ class HomeController extends Controller
                     return redirect()->back()->with('error', 'This user is existing'); 
                 }
 
+                $role = Role::where('role_name', 'parentvendor')
+                ->get()->pluck('id')->first();
+
                 $addUser = new User;
                 $addUser->fullname          = $request->first_name .$request->last_name;
                 $addUser->email             = $request->email;
-                $addUser->role_id           = $request->role;
+                $addUser->role_id           = $role;
                 $addUser->email_verified_at = $verified;
                 $addUser->password          = $password;
                 $addUser->status            ='active';
@@ -3237,7 +3241,7 @@ class HomeController extends Controller
         }
     }
 
-    public function allMultiVendor(Request $request){
+    public function allParentVendor(Request $request){
         if(Auth::user()){
             $name = Auth::user()->name;
             $id = Auth::user()->id;
