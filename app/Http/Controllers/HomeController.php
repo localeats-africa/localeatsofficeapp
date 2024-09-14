@@ -3217,8 +3217,6 @@ class HomeController extends Controller
                 //->bcc('admin@localeats.africa')
                 ->send(new NewUserEmail($data));
 
-              
-
                 $response = [
                     'code'      => '',
                     'message'   => 'Parent Vendor added successfully',
