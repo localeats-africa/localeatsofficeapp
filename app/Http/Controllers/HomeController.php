@@ -3085,11 +3085,12 @@ class HomeController extends Controller
     
             $countVendor =  DB::table('multi_store')
             ->join('vendor', 'vendor.id', 'multi_store.vendor_id')
-            ->where('multi_store.level', 'parent');
+            ->where('multi_store.level', 'parent')
+            ->get();
              // a vendor is consider active if it's active on one or more platform
             $countActivevendor = DB::table('sales_platform')
             ->join('vendor', 'vendor.id', '=', 'sales_platform.vendor_id')->distinct()
-            ->join('vendor', 'vendor.id', 'multi_store.vendor_id')
+            ->join('multi_store', 'multi_store.vendor_id', 'vendor.id')
             ->where('sales_platform.vendor_status', 'active')
             ->get('sales_platform.vendor_id');
        
