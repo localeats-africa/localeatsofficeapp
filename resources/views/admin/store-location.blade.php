@@ -138,8 +138,8 @@
                                           <div class="form-label required">State <i
                                                       class="text-danger">*</i>
                                           </div>
-                                          <select class="js-example-basic-single text-secondary" style="width:100%" name="state" id="vendor">
-                                                <option>Choose</option>
+                                          <select class="js-example-basic-single text-secondary" style="width:100%" name="state" >
+                                       
                                                 @foreach($state as $data)
                                                 <option value="{{$data->id}}">
                                                       {{$data->state}}
