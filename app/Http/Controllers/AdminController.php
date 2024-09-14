@@ -19,6 +19,7 @@ use App\Models\Vendor;
 use App\Models\Orders;
 use App\Models\TempOrder;
 use App\Models\Area;
+use App\Models\State;
 use App\Models\Role;
 use App\Models\Level;
 use App\Models\MergeInvoice;
@@ -36,6 +37,9 @@ use App\Models\ExpensesList;
 use App\Models\OfflineSales;
 use App\Models\VendorExpenses;
 use App\Models\OfflineFoodMenu;
+use App\Models\MultiStoreRole;
+use App\Models\MultiStore;
+use App\Models\SubStore;
 
 use Excel;
 use Auth;
@@ -1747,6 +1751,156 @@ class AdminController extends Controller
             'success'=>$request->status.'Status change successfully.', 
             'status'=>$request->status 
     ]);
+    }
+
+
+    public function userRolePage(Request $request){
+        $name = Auth::user()->name;
+        $user_id = Auth::user()->id;
+        $role = DB::table('role')->select('role_name')
+        ->join('users', 'users.role_id', 'role.id')
+        ->where('users.id', $user_id)
+        ->pluck('role_name')->first();
+
+        $perPage = $request->perPage ?? 25;
+        $search = $request->input('search');
+
+        $allRoles = DB::table('role')
+        ->where('role_name', '!=',  'superadmin')// except superadmin
+        ->orderBy('role.created_at', 'desc')
+        ->select(['role.*' ])
+        ->where(function ($query) use ($search) {  // <<<
+        $query->where('role.created_at', 'LIKE', '%'.$search.'%')
+               ->orWhere('role.role_name', 'LIKE', '%'.$search.'%')
+               ->orderBy('role.created_at', 'desc');
+        })->paginate($perPage, $columns = ['*'], $pageName = 'role'
+        )->appends(['per_page'   => $perPage]);
+        $pagination = $allRoles->appends ( array ('search' => $search) );
+            if (count ( $pagination ) > 0){
+                return view('admin.role',  compact(
+                'perPage', 'name', 'role', 'allRoles'))->withDetails( $pagination );     
+            } 
+            else{return redirect()->back()->with('status', 'No record order found');}
+        return view('admin.role', compact('name', 'role', 'allRoles'));
+    }
+
+
+    public function addRole(Request $request){
+        $this->validate($request, [ 
+            'role'   => 'required|string|max:255',
+        ]);
+
+        $addRole = new Role;
+        $addRole->role_name = $request->role;
+        $addRole->save();
+        
+        if($addRole){
+           return redirect()->back()->with('add-role', 'New Role Added!');
+        }
+        else{return redirect()->back()->with('error', 'Opps! something went wrong.'); }
+    }
+
+
+    public function multiStoreAddRole(Request $request){
+        $this->validate($request, [ 
+            'role'   => 'required|string|max:255',
+        ]);
+
+        $addRole = new MultiStoreRole;
+        $addRole->role_name = $request->role;
+        $addRole->multi_store_id = $request->store_id;
+        $addRole->save();
+        
+        if($addRole){
+           return redirect()->back()->with('add-role', 'New Role Added!');
+        }
+        else{return redirect()->back()->with('error', 'Opps! something went wrong.'); }
+    }
+
+    public function multiStoreRolePage(Request $request){
+        $name = Auth::user()->name;
+        $user_id = Auth::user()->id;
+        $role = DB::table('role')->select('role_name')
+        ->join('users', 'users.role_id', 'role.id')
+        ->where('users.id', $user_id)
+        ->pluck('role_name')->first();
+
+        $vendors = MultiStore::all();
+
+        $perPage = $request->perPage ?? 25;
+        $search = $request->input('search');
+
+        $allRoles = DB::table('multi_store_role')
+        ->join('multi_store', 'multi_store.id', 'multi_store_role.multi_store_id')
+        //->join('vendor', 'vendor.id', 'multi_store.vendor_id')
+        ->orderBy('multi_store_role.created_at', 'desc')
+        ->select(['multi_store_role.*', ])
+        ->where(function ($query) use ($search) {  // <<<
+        $query->where('multi_store_role.created_at', 'LIKE', '%'.$search.'%')
+               ->orWhere('multi_store_role.role', 'LIKE', '%'.$search.'%')
+            //    ->orWhere('vendor.store_name', 'LIKE', '%'.$search.'%')
+               ->orderBy('multi_store_role.created_at', 'desc');
+        })->paginate($perPage, $columns = ['*'], $pageName = 'role'
+        )->appends(['per_page'   => $perPage]);
+        $pagination = $allRoles->appends ( array ('search' => $search) );
+            if (count ( $pagination ) > 0){
+                return view('multistore.multistore-roles',  compact(
+                'perPage', 'name', 'role', 'allRoles', 'vendors'))->withDetails( $pagination );     
+            } 
+            else{return redirect()->back()->with('status', 'No record order found');}
+        return view('multistore.multistore-roles', compact('name', 'role', 'allRoles', 'vendors'));
+    }
+
+
+    public function storeLocation(Request $request){
+        $name = Auth::user()->name;
+        $user_id = Auth::user()->id;
+        $role = DB::table('role')->select('role_name')
+        ->join('users', 'users.role_id', 'role.id')
+        ->where('users.id', $user_id)
+        ->pluck('role_name')->first();
+
+        $state = State::all();
+
+        $perPage = $request->perPage ?? 10;
+        $search = $request->input('search');
+
+        $location = DB::table('area')
+        ->join('state', 'state.id', 'area.state_id')
+        ->orderBy('area.created_at', 'desc')
+        ->select(['area.*' , 'state.state'])
+        ->where(function ($query) use ($search) {  // <<<
+        $query->where('area.created_at', 'LIKE', '%'.$search.'%')
+               ->orWhere('area.area', 'LIKE', '%'.$search.'%')
+               ->orWhere('state.state', 'LIKE', '%'.$search.'%')
+               ->orderBy('area.created_at', 'desc');
+        })->paginate($perPage, $columns = ['*'], $pageName = 'area'
+        )->appends(['per_page'   => $perPage]);
+        $pagination = $location->appends ( array ('search' => $search) );
+            if (count ( $pagination ) > 0){
+                return view('admin.store-location',  compact(
+                'perPage', 'name', 'role', 'location', 'state'))->withDetails( $pagination );     
+            } 
+            else{return redirect()->back()->with('status', 'No record order found');}
+        return view('admin.store-location', compact('name', 'role', 'location', 'state'));
+    }
+
+
+    public function addLocation(Request $request){
+        $this->validate($request, [ 
+            'location'   => 'required|string|max:255',
+            'state'      => 'required|max:255',
+        ]);
+
+        $area = new Area;
+        $area->area         = $request->location;
+        $area->state_id     = $request->state;
+        $area->save();
+        
+        if($area){
+           return redirect()->back()->with('add-role', 'New Location Added!');
+        }
+        else{return redirect()->back()->with('error', 'Opps! something went wrong.'); }
     }
 
 }//class

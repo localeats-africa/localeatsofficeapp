@@ -13,9 +13,11 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('multi_store_level', function (Blueprint $table) {
+        Schema::create('multi_store_role', function (Blueprint $table) {
             $table->id();
             $table->timestamps();
+            $table->string('multi_store_id');
+            $table->string('role');
             $table->string('level');
         });
     }
@@ -27,6 +29,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('multi_store_level');
+        Schema::dropIfExists('multi_store_role');
     }
 };

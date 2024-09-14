@@ -7,14 +7,14 @@
 <div class="main-panel">
       <div class="content-wrapper">
             <div class="page-header">
-                  <h3 class="page-title"> New Vendor </h3>
+                  <h3 class="page-title"> New Multi-Vendor (Parent Vendor) </h3>
             </div>
             <!--Alert here--->
             <div class="row">
                   <div class="col-12">
 
                         @if(session('add-vendor'))
-                        <div class="alert  alert-danger alert-dismissible" role="alert">
+                        <div class="alert  alert-success alert-dismissible" role="alert">
                               <div class="d-flex">
                                     <div>
                                           <!-- Download SVG icon from http://tabler-icons.io/i/alert-triangle -->
@@ -68,7 +68,7 @@
             </div>
             <!---end row --->
          
-            <form method="post" action="{{ route('add-vendor') }}" name="submit" enctype="multipart/form-data">
+            <form method="post" action="{{ route('add-parent-vendor') }}" name="submit" enctype="multipart/form-data">
                   @csrf
                   {{csrf_field()}}
                   <div class="row">
@@ -301,12 +301,12 @@
                         <div class="col-md-4 col-12 grid-margin stretch-card">
                               <div class="card">
                                     <div class="card-body">
-                                          <div class="form-label required">Store Area / Location <i class="text-danger">*</i>
+                                          <div class="form-label required">Store Area / Location <i class="text-danger">*</i> 
                                           </div>
                                                 <select class="js-example-basic-single2 text-secondary" style="width:100%" name="area" >
                                                 <option value="">Choose</option>
                                                 @foreach($location as $data)
-                                                <option value="{{$data->id}}">
+                                                <option value="{{$data->area}}">
                                                       {{$data->area}}
                                                 </option>
                                                 @endforeach
@@ -344,7 +344,7 @@
                                           <div class="form-label required">State <i class="text-danger">*</i>
                                           </div>
                                           <select  class="js-example-basic-single" style="width:100%" name="state" id="">
-                                          <option value="">Choose</option>     
+                                          <option value="">Choose</option>      
                                           @foreach($state as $data)
                                                 <option value="{{$data->id}}">{{$data->state}}</option>
                                                 @endforeach

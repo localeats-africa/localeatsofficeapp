@@ -110,9 +110,15 @@
 
                                                 <div class="col-md-6">
                                                       <div class="form-group">
-                                                            <h6>Store Area / Location:<i class="text-danger">*</i> <br> <small class="text-danger">(this is not address. <b class="text-dark">Example  Enter Ikeja or Ojota</b>)</small> </h6>
-                                                            <input type="text" value="{{$vendor->store_area}}"
-                                                                  name="store_area" class="form-control">
+                                                            <h6>Store Area / Location:<i class="text-danger">*</i> 
+                                                            <select class="js-example-basic-single2 text-secondary" style="width:100%" name="store_area" >
+                                                            <option value="{{$vendor->store_area}}">{{$vendor->store_area}}</option>
+                                                            @foreach($location as $data)
+                                                            <option value="{{$data->id}}">
+                                                                  {{$data->area}}
+                                                            </option>
+                                                            @endforeach
+                                                      </select>
                                                       </div>
                                                 </div>
 

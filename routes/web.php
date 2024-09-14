@@ -12,6 +12,7 @@ use App\Http\Controllers\VendorManagerController;
 use App\Http\Controllers\CashierController;
 use App\Http\Controllers\TwitterController;
 use App\Http\Controllers\AccountManagerController;
+use App\Http\Controllers\ParentVendorController;
 
 
 /*
@@ -89,7 +90,6 @@ Route::controller(HomeController::class)->group(function () {
     Route::post('update-food-menu/{id}',  'updateFoodMenu')->name('update-food-menu');
     Route::post('delete-food-menu/{id}', 'deleteFoodMenu')->name('delete-food-menu');
     Route::post('bulk-delete-foodmenu', 'bulkDeleteFoodMenu')->name('bulk-delete-foodmenu');
-   
     Route::post('add-food-menu',  'addFoodMenu')->name('add-food-menu');
     Route::get('show-change-password', 'showChangePassword')->name('show-change-password');
     Route::post('import-food-menu', 'importFoodMenu')->name('import-food-menu');
@@ -97,7 +97,6 @@ Route::controller(HomeController::class)->group(function () {
     Route::post('setup',  'setup')->name('setup');
     Route::get('setup-chowdeck-vendor',  'setupChowdeckVendor')->name('setup-chowdeck-vendor');
     Route::post('setup-chowdeck',  'setupChowdeck')->name('setup-chowdeck');
-    
     Route::get('create-invoice',  'createInvoice')->name('create-invoice');
     Route::get('upload-invoice/{id}',  'uploadInvoice')->name('upload-invoice');
     Route::post('add-invoice',  'storeInvoice')->name('add-invoice');
@@ -120,12 +119,10 @@ Route::controller(HomeController::class)->group(function () {
     //exportinvoice
     Route::post('export-invoice/{id}', 'exportInvoice')->name('export-invoice');
     Route::get('invoice-template', 'exportInvoiceTemplate')->name('invoice-template');
-    
     Route::get('email-invoice/{id}', 'emailPdfInvoice')->name('email-invoice');
     Route::post('send-email-pdf/{id}', 'sendEmailPdfInvoice')->name('send-email-pdf');
     Route::get('add-invoice-row/{id}', 'addInvoiceRow')->name('add-invoice-row');
     Route::post('update-invoice-newrow', 'storeAddNewInvoiceRow')->name('update-invoice-newrow');
-
     Route::get('add-expenses', 'addVendorExpenses')->name('add-expenses');
     Route::post('add-expenses-list', 'addExpensesList')->name('add-expenses-list');
     Route::post('add-vendor-expenses', 'storeVendorDailyExpenses')->name('add-vendor-expenses');
@@ -142,11 +139,13 @@ Route::controller(HomeController::class)->group(function () {
     Route::post('past-invoices',  'storePastInvoices')->name('past-invoices');
     Route::get('vendor-dashboard/{id}', 'showVendorDashboard')->name('vendor-dashboard');
     Route::get('filter-vendor-dashboard/{id}', 'filterVendorDashboard')->name('filter-vendor-dashboard');
+    //MultiStore
+    Route::get('parent-vendor',  'allParentVendor')->name('parent-vendor');
+    Route::get('new-parent-vendor',  'newParentVendor')->name('new-parent-vendor');
+    Route::post('add-parent-vendor',  'addParentVendor')->name('add-parent-vendor');
 });
 
-Route::controller(SuperAdminController::class)->group(function () {
-    Route::get('superadmin',  'index')->name('superadmin');
-});
+
 
 Route::controller(AdminController::class)->group(function () {
     Route::get('admin',  'index')->name('admin');
@@ -158,6 +157,12 @@ Route::controller(AdminController::class)->group(function () {
     Route::get('all-platform',  'allPlatform')->name('all-platform');
     Route::get('restaurant',  'restaurant')->name('restaurant');
     Route::post('add-restaurant',  'addRestaurant')->name('add-restaurant');
+    Route::get('roles',  'userRolePage')->name('roles');
+    Route::post('add-role',  'addRole')->name('add-role');
+    Route::get('location', 'storeLocation')->name('location');
+    Route::post('add-location',  'addLocation')->name('add-location');
+    //multi-vendor
+    Route::get('multi-vendor-roles',  'multiStoreRolePage')->name('multi-vendor-roles');
     Route::get('food-type',  'foodType')->name('food-type');
     Route::post('add-food-type',  'addFoodType')->name('add-food-type');
     Route::get('new-staff',  'newUser')->name('new-staff');
@@ -214,4 +219,8 @@ Route::controller(AccountManagerController::class)->group(function () {
 
 Route::controller(CashierController::class)->group(function () {
     Route::get('cashier',  'index')->name('cashier');
+});
+
+Route::controller(ParentVendorController::class)->group(function () {
+    Route::get('parent_vendor',  'index')->name('parent_vendor');
 });
