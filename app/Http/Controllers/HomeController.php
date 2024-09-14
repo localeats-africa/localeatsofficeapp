@@ -335,6 +335,9 @@ class HomeController extends Controller
 
             $vendorRef = DB::table('vendor')->where('id', $vendorID)
             ->select('*')->pluck('vendor_ref')->first();
+
+            $storeName = DB::table('vendor')->where('id', $vendorID)
+            ->select('*')->pluck('store_name')->first();
            
             $vendorName = DB::table('vendor')->where('id', $vendorID)
             ->select('*')->pluck('vendor_name')->first();
@@ -399,7 +402,7 @@ class HomeController extends Controller
             'vendorFoodType', 'vendorPhone', 'vendorEmail', 'vendorFname',
             'vendorLname', 'vendorAddress', 'vendorBank', 'vendorNumberOfLocation',
             'vendorDeliveryTime', 'vendorState', 'vendorCountry', 'vendorAccountName',
-            'vendorAccountNumber', 'vendorPlatforms', 'status', 'vendorID'));
+            'vendorAccountNumber', 'vendorPlatforms', 'status', 'vendorID', 'storeName'));
         }
     }
     public function editVendor(Request $request, $id){
