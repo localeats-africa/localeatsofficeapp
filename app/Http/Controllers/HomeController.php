@@ -3151,7 +3151,7 @@ class HomeController extends Controller
             ->get()->pluck('id')->first();
 
             $addUser = new User;
-            $addUser->fullname          = $request->first_name .$request->last_name;
+            $addUser->fullname          = $request->first_name. ' ' .$request->last_name;
             $addUser->email             = $request->email;
             $addUser->role_id           = $role;
             $addUser->email_verified_at = $verified;
