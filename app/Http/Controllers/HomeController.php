@@ -3285,7 +3285,11 @@ class HomeController extends Controller
                     'perPage', 'name', 'role', 'vendor', 'countVendor',
                     'countActivevendor'))->withDetails( $pagination );     
                 } 
-            else{ return  redirect()->back()->with('vendor-status', 'No record order found'); }
+            else{ 
+                //return  redirect()->back()->with('vendor-status', 'No record order found');
+                return view('multistore.parent-vendor',  compact('perPage' , 'name', 'role', 
+                'vendor', 'countVendor', 'countActivevendor')); 
+                }
 
             return view('multistore.parent-vendor',  compact('perPage' , 'name', 'role', 
             'vendor', 'countVendor', 'countActivevendor'));
