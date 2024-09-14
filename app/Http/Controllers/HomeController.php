@@ -3121,11 +3121,11 @@ class HomeController extends Controller
                 'restaurant_type'           => 'required|string|max:255',
                 'food_type'                 => 'required|max:255',
                 'number_of_store_location'  => 'required|string|max:255',
-                'delivery_time'             => 'required|string|max:255',
+                'delivery_time'             => 'max:255',
                 'first_name'                => 'required|string|max:255',
                 'last_name'                 => 'required|string|max:255',
                 'phone'                     => 'regex:/^([0-9\s\-\+\(\)]*)$/|min:9|max:13',
-                'email'                     => 'max:255', 
+                'email'                     => 'required|email|max:255', 
                 'address'                   => 'required|string|max:255', 
                 'bankName'                  => 'string|max:255', 
                 'accountNumber'             => 'max:255', 
@@ -3166,7 +3166,6 @@ class HomeController extends Controller
               $parentStore->multi_store_name = $addVendor->store_name;
               $parentStore->level            = 'parent';
               $parentStore->save();
-
                 //create vendor id in sales platform table
                 $platformStatus ='inactive';
                 $platforms = Platforms::all();
@@ -3178,6 +3177,43 @@ class HomeController extends Controller
                     $addPlatform->vendor_status     = $platformStatus;
                     $addPlatform->save();
                }
+
+              $verified = Carbon::now();
+                $characters = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
+                $randomString = '';
+                $num = 8;
+                for ($a = 0; $a < $num; $a++) {
+                $index = rand(0, strlen($characters) - 1);
+                $randomString .= $characters[$index];
+                }
+                $tempoaryPassword = str_shuffle($randomString);
+                $password =  Hash::make($tempoaryPassword);
+                $checkUser = User::where('email', $request->email)->exists();
+                if($checkUser){
+                    return redirect()->back()->with('error', 'This user is existing'); 
+                }
+
+                $addUser = new User;
+                $addUser->fullname          = $request->first_name .$request->last_name;
+                $addUser->email             = $request->email;
+                $addUser->role_id           = $request->role;
+                $addUser->email_verified_at = $verified;
+                $addUser->password          = $password;
+                $addUser->status            ='active';
+                $addUser->save();
+        
+            $data = array(
+                'name'     => $request->name,
+                'email'    => $request->email,
+                'password' => $tempoaryPassword,        
+                );
+                //dd($data);
+                Mail::to($request->email)
+                ->cc('admin@localeats.africa')
+                //->bcc('admin@localeats.africa')
+                ->send(new NewUserEmail($data));
+
+              
 
                 $response = [
                     'code'      => '',
