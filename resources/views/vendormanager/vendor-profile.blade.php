@@ -246,13 +246,21 @@
                                     <div class="col-lg-7">
                                           <div class="card">
                                                 <div class="card-body">
+                                                <div class="row mb-3">
+                                                            <p></p>
+                                                            <div class="col-sm-4">
+                                                                  <h6 class="mb-0">Business</h6>
+                                                            </div>
+                                                            <div class="col-sm-8 text-secondary">
+                                                                  <span class="form-control text-capitalize">{{$vendorFname}}</span>
+                                                            </div>
+                                                      </div>
                                                       <div class="row mb-3">
                                                             <p></p>
                                                             <div class="col-sm-4">
                                                                   <h6 class="mb-0">Contact Person</h6>
                                                             </div>
                                                             <div class="col-sm-8 text-secondary">
-
                                                                   <span class="form-control text-capitalize">{{$vendorFname}}
                                                                         {{$vendorLname}}</span>
                                                             </div>
