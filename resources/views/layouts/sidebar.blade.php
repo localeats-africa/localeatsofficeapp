@@ -224,7 +224,7 @@
                         <div class="collapse" id="role">
                               <ul class="nav flex-column sub-menu">
                               <li class="nav-item">
-                                          <a class="nav-link" href="{{ url('setup-vendor') }}">Parent Vendors
+                                          <a class="nav-link" href="{{ url('parent-vendor') }}">Parent Vendors
                                           </a>
                                     </li>
 
