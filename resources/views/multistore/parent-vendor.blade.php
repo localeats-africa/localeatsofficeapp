@@ -10,6 +10,13 @@
                   <h3 class="page-title">
                         Multi-Vendor (s)
                   </h3>
+                  <nav aria-label="breadcrumb">
+                <ul class="breadcrumb">
+                  <li class="breadcrumb-item active" aria-current="page">
+                    <span></span><a href="{{ url('new-parent-vendor') }}" class="btn btn-outline-danger">Create Parent Vendor </a>
+                  </li>
+                </ul>
+              </nav>
             </div>
             <div class="row ">
                   <div class="col-12">
