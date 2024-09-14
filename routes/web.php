@@ -12,6 +12,7 @@ use App\Http\Controllers\VendorManagerController;
 use App\Http\Controllers\CashierController;
 use App\Http\Controllers\TwitterController;
 use App\Http\Controllers\AccountManagerController;
+use App\Http\Controllers\ParentVendorController;
 
 
 /*
@@ -144,7 +145,7 @@ Route::controller(HomeController::class)->group(function () {
     Route::post('add-parent-vendor',  'addParentVendor')->name('add-parent-vendor');
 });
 
-Route::controller(SuperAdminController::class)->group(function () {
+Route::controller(ParentVendorController::class)->group(function () {
     Route::get('superadmin',  'index')->name('superadmin');
 });
 
