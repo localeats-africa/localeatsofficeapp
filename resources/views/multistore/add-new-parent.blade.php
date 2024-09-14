@@ -7,7 +7,7 @@
 <div class="main-panel">
       <div class="content-wrapper">
             <div class="page-header">
-                  <h3 class="page-title"> New Vendor </h3>
+                  <h3 class="page-title"> New Multi-Vendor </h3>
             </div>
             <!--Alert here--->
             <div class="row">
