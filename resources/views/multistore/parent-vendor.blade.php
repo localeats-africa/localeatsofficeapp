@@ -168,7 +168,7 @@
 
                   @foreach($vendor as $data)
                   @php
-                  $words = explode(" ", $data->store_name, 2 );
+                  $words = explode(" ", $data->multi_store_name, 2 );
                   $initials = null;
                   foreach ($words as $w) {
                   $initials .= $w[0];
@@ -275,7 +275,7 @@
                                     </div>
                                     <span class="avatar avatar-xl mb-3 rounded">{{$initials}}</span>
                                     <h6 class="m-0 mb-1">
-                                          {!! Str::limit("$data->store_name", 25, '...') !!}
+                                          {!! Str::limit("$data->multi_store_name", 25, '...') !!}
                                     </h6>
                                     <div class="text-dark"> <small>{{$data->store_area}}, {{$data->state}}</small></div>
 
