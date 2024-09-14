@@ -44,4 +44,8 @@ class ParentVendorController extends Controller
     public function __construct(){
         $this->middleware(['auth', 'user-access:9', 'verified']);
     }
+
+    public function index(Request $request){
+        return view('multistore.parent.admin');
+    }
 }
