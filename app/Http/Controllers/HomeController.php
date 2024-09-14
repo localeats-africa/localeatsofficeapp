@@ -42,6 +42,9 @@ use App\Models\OrderExtraFoodMenu;
 use App\Models\ChowdeckReference;
 use App\Models\TempChowdeckOrder;
 use App\Models\State;
+use App\Models\MultiStoreRole;
+use App\Models\MultiStore;
+use App\Models\SubStore;
 
 use Excel;
 use Auth;
@@ -3069,6 +3072,50 @@ class HomeController extends Controller
        'edenSalesPercentageChart', 'piechartData' ,  'barChartData',
         'vendorFoodPrice', 'vendorName', 'sumGlovoComm',   
         'startDate', 'endDate','vendor_id' ));
+    }
 
+    public function allMultiVendor(Request $request){
+        if(Auth::user()){
+            $name = Auth::user()->name;
+            $id = Auth::user()->id;
+            $role = DB::table('role')->select('role_name')
+            ->join('users', 'users.role_id', 'role.id')
+            ->where('users.id', $id)
+            ->pluck('role_name')->first();
+    
+            $countVendor =  DB::table('multi_store')
+            ->join('vendor', 'vendor.id', 'multi_store.vendor_id')
+            ->where('multi_store.level', 'parent');
+             // a vendor is consider active if it's active on one or more platform
+            $countActivevendor = DB::table('sales_platform')
+            ->join('vendor', 'vendor.id', '=', 'sales_platform.vendor_id')->distinct()
+            ->join('vendor', 'vendor.id', 'multi_store.vendor_id')
+            ->where('sales_platform.vendor_status', 'active')
+            ->get('sales_platform.vendor_id');
+       
+            $perPage = $request->perPage ?? 25;
+            $search = $request->input('search');
+    
+            $vendor =  DB::table('multi_store')
+            ->join('vendor', 'vendor.id', 'multi_store.vendor_id')
+            ->where('multi_store.level', 'parent')
+            ->select(['vendor.*', 'multi_store.multi_store_name'])
+            ->orderBy('vendor.created_at', 'desc')
+            ->where(function ($query) use ($search) {  // <<<
+            $query->where('multi_store.multi_store_name', 'LIKE', '%'.$search.'%')
+                    ->orWhere('vendor.vendor_status', 'LIKE', '%'.$search.'%');
+            })
+            ->paginate($perPage,  $pageName = 'vendor')->appends(['per_page'   => $perPage]);
+            $pagination = $vendor->appends ( array ('search' => $search) );
+                if (count ( $pagination ) > 0){
+                    return view('multistore.parent-vendor',  compact(
+                    'perPage', 'name', 'role', 'vendor', 'countVendor',
+                    'countActivevendor'))->withDetails( $pagination );     
+                } 
+            else{ return  redirect()->back()->with('vendor-status', 'No record order found'); }
+
+            return view('multistore.parent-vendor',  compact('perPage' , 'name', 'role', 
+            'vendor', 'countVendor', 'countActivevendor'));
+        }
     }
 }//class
