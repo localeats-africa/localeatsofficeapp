@@ -19,6 +19,7 @@ use App\Models\Vendor;
 use App\Models\Orders;
 use App\Models\TempOrder;
 use App\Models\Area;
+use App\Models\State;
 use App\Models\Role;
 use App\Models\Level;
 use App\Models\MergeInvoice;
