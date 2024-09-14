@@ -8,7 +8,7 @@
       <div class="content-wrapper">
             <div class="page-header">
                   <h3 class="page-title">
-                        Multi-Vendor (s)
+                        Parent-Vendor (s)
                   </h3>
             </div>
             <div class="row ">
@@ -19,7 +19,7 @@
                                           <div class="card-body">
                                                 <img src="/assets/images/dashboard/circle.svg" class="card-img-absolute"
                                                       alt="circle-image">
-                                                <h4 class="font-weight-normal mb-3">Vendors
+                                                <h4 class="font-weight-normal mb-3">Parent Vendors
                                                       <i class="mdi mdi-pot-steam  mdi-24px float-end"></i>
                                                 </h4>
                                                 <h2 class="">{{$countVendor->count()}}</h2>
