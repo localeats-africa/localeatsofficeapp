@@ -139,7 +139,7 @@
                                                       class="text-danger">*</i>
                                           </div>
                                           <select class="js-example-basic-single text-secondary" style="width:100%" name="state" >
-                                                <option>Choose</option>
+                                                <option value="">Choose</option>
                                                 @foreach($state as $data)
                                                 <option value="{{$data->id}}">
                                                       {{$data->state}}
