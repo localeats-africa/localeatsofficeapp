@@ -1849,4 +1849,55 @@ class AdminController extends Controller
             else{return redirect()->back()->with('status', 'No record order found');}
         return view('multistore.multistore-roles', compact('name', 'role', 'allRoles', 'vendors'));
     }
+
+
+    public function storeLocation(Request $request){
+        $name = Auth::user()->name;
+        $user_id = Auth::user()->id;
+        $role = DB::table('role')->select('role_name')
+        ->join('users', 'users.role_id', 'role.id')
+        ->where('users.id', $user_id)
+        ->pluck('role_name')->first();
+
+        $state = State::all();
+
+        $perPage = $request->perPage ?? 25;
+        $search = $request->input('search');
+
+        $location = DB::table('area')
+        ->join('state', 'state.id', 'area.state_id')
+        ->orderBy('area.created_at', 'desc')
+        ->select(['area.*' , 'state.state'])
+        ->where(function ($query) use ($search) {  // <<<
+        $query->where('area.created_at', 'LIKE', '%'.$search.'%')
+               ->orWhere('area.area', 'LIKE', '%'.$search.'%')
+               ->orWhere('state.state', 'LIKE', '%'.$search.'%')
+               ->orderBy('area.created_at', 'desc');
+        })->paginate($perPage, $columns = ['*'], $pageName = 'area'
+        )->appends(['per_page'   => $perPage]);
+        $pagination = $location->appends ( array ('search' => $search) );
+            if (count ( $pagination ) > 0){
+                return view('admin.store-location',  compact(
+                'perPage', 'name', 'role', 'location', 'state'))->withDetails( $pagination );     
+            } 
+            else{return redirect()->back()->with('status', 'No record order found');}
+        return view('admin.store-location', compact('name', 'role', 'location', 'state'));
+    }
+
+
+    public function addLocation(Request $request){
+        $this->validate($request, [ 
+            'role'   => 'required|string|max:255',
+        ]);
+
+        $addRole = new Role;
+        $addRole->role_name = $request->role;
+        $addRole->save();
+        
+        if($addRole){
+           return redirect()->back()->with('add-role', 'New Role Added!');
+        }
+        else{return redirect()->back()->with('error', 'Opps! something went wrong.'); }
+    }
+
 }//class
