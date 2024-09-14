@@ -144,8 +144,7 @@ class HomeController extends Controller
         ->pluck('id');
 
         $state = State::all();
-        //->where('state', 'lagos');
-
+        $location = Area::all();
         $countryID = DB::table('country')->select('*')
         ->where('country', 'Nigeria')
         ->pluck('id')->first();
@@ -160,7 +159,7 @@ class HomeController extends Controller
 
         return view('vendormanager.add-new-vendor', compact('name', 
         'role', 'state', 'country', 'selectBankName',
-        'selectFoodType', 'selectRestaurantType', 'stateID', 'countryID'));
+        'selectFoodType', 'selectRestaurantType', 'stateID', 'countryID', 'location'));
     }
 
     public function addVendor(Request $request){
@@ -177,6 +176,7 @@ class HomeController extends Controller
             $this->validate($request, [ 
                 'store_name'               => 'required|string|max:255',
                 'area'                      => 'required|string|max:255',
+                'state'                     => 'required|string|max:255',
                 'restaurant_type'           => 'required|string|max:255',
                 'food_type'                 => 'required|max:255',
                 'number_of_store_location'  => 'required|string|max:255',
