@@ -247,8 +247,6 @@
                         </div>
                   </li>
                   
-
-
                   @endif
                   <!--- vendor manager sidebar ---->
                   @if(Auth::user()->role_id == '6')
