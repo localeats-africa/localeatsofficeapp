@@ -131,6 +131,48 @@
                         </a>
                   </li>
 
+              
+
+                  <li class="nav-item">
+                        <a class="nav-link" href="{{ url('restaurant')}}" target="">
+                              <span class="menu-title">Restaurant Type</span>
+                              <i class="mdi mdi-store fs-24 menu-icon"></i>
+
+                        </a>
+                  </li>
+
+                  <li class="nav-item">
+                        <a class="nav-link" href="{{ url('food-type')}}" target="">
+                              <span class="menu-title">Food Type</span>
+                              <i class="mdi mdi-food fs-24 menu-icon"></i>
+
+                        </a>
+                  </li>
+
+                  <li class="nav-item">
+                        <a class="nav-link" href="{{ url('roles')}}" target="">
+                              <span class="menu-title">Store Locations</span>
+                              <i class="mdi mdi-location-enter fs-24 menu-icon"></i>
+
+                        </a>
+                  </li>
+
+                  <li class="nav-item">
+                        <a class="nav-link" href="{{ url('all-staff')}}" target="">
+                              <span class="menu-title">Staff (s)</span>
+                              <i class="mdi mdi-account-multiple fs-24 menu-icon"></i>
+
+                        </a>
+                  </li>
+
+                  <li class="nav-item">
+                        <a class="nav-link" href="{{ url('roles')}}" target="">
+                              <span class="menu-title">LocalEats Roles</span>
+                              <i class="mdi mdi-account-tag fs-24 menu-icon"></i>
+
+                        </a>
+                  </li>
+
                   <li class="nav-item">
                         <a class="nav-link" data-bs-toggle="collapse" href="#vendor" aria-expanded="false"
                               aria-controls="vendor">
@@ -151,38 +193,6 @@
 
                               </ul>
                         </div>
-                  </li>
-
-                  <li class="nav-item">
-                        <a class="nav-link" href="{{ url('restaurant')}}" target="">
-                              <span class="menu-title">Restaurant Type</span>
-                              <i class="mdi mdi-store fs-24 menu-icon"></i>
-
-                        </a>
-                  </li>
-
-                  <li class="nav-item">
-                        <a class="nav-link" href="{{ url('food-type')}}" target="">
-                              <span class="menu-title">Food Type</span>
-                              <i class="mdi mdi-food fs-24 menu-icon"></i>
-
-                        </a>
-                  </li>
-
-                  <li class="nav-item">
-                        <a class="nav-link" href="{{ url('all-staff')}}" target="">
-                              <span class="menu-title">Staff (s)</span>
-                              <i class="mdi mdi-account-multiple fs-24 menu-icon"></i>
-
-                        </a>
-                  </li>
-
-                  <li class="nav-item">
-                        <a class="nav-link" href="{{ url('roles')}}" target="">
-                              <span class="menu-title">LocalEats Roles</span>
-                              <i class="mdi mdi-account fs-24 menu-icon"></i>
-
-                        </a>
                   </li>
 
                   <li class="nav-item">
@@ -218,7 +228,7 @@
                               aria-controls="role">
                               <span class="menu-title">Multi-Vendor </span>
                               <i class="menu-arrow"></i>
-                              <i class="mdi mdi-cog-outline fs-24 menu-icon"></i>
+                              <i class="mdi mdi-store-cog fs-24 menu-icon"></i>
 
                         </a>
                         <div class="collapse" id="role">
@@ -236,6 +246,7 @@
                               </ul>
                         </div>
                   </li>
+                  
 
 
                   @endif
