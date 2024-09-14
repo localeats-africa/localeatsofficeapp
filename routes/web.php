@@ -160,6 +160,8 @@ Route::controller(AdminController::class)->group(function () {
     Route::post('add-restaurant',  'addRestaurant')->name('add-restaurant');
     Route::get('roles',  'userRolePage')->name('roles');
     Route::post('add-role',  'addRole')->name('add-role');
+    Route::get('location', 'storeLocation')->name('location');
+    Route::post('add-location',  'addLocation')->name('add-location');
     //multi-vendor
     Route::get('multi-vendor-roles',  'multiStoreRolePage')->name('multi-vendor-roles');
     Route::get('food-type',  'foodType')->name('food-type');
