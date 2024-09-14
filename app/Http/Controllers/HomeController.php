@@ -3131,16 +3131,43 @@ class HomeController extends Controller
                 'bankName'                  => 'string|max:255', 
                 'accountNumber'             => 'max:255', 
             ]);
-            //$foodType = json_encode($request->food_type);
-            $foodType = $request->food_type;
-            $vendorStatus = 'pending';
+            
+            $verified = Carbon::now();
+            $characters = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
+            $randomString = '';
+            $num = 8;
+            for ($a = 0; $a < $num; $a++) {
+            $index = rand(0, strlen($characters) - 1);
+            $randomString .= $characters[$index];
+            }
+            $tempoaryPassword = str_shuffle($randomString);
+            $password =  Hash::make($tempoaryPassword);
+            $checkUser = User::where('email', $request->email)->exists();
+            if($checkUser){
+                return redirect()->back()->with('error', 'This user is existing'); 
+            }
 
+            $role = Role::where('role_name', 'parentvendor')
+            ->get()->pluck('id')->first();
+
+            $addUser = new User;
+            $addUser->fullname          = $request->first_name .$request->last_name;
+            $addUser->email             = $request->email;
+            $addUser->role_id           = $role;
+            $addUser->email_verified_at = $verified;
+            $addUser->password          = $password;
+            $addUser->status            ='active';
+            $addUser->save();
+
+            $foodType = $request->food_type;
+           
+            if($addUser){
+            $vendorStatus = 'pending';
             $vendorName = $request->area. '-' .$foodType;
-       
             $addVendor = new Vendor();
             $addVendor->vendor_ref                  = $vendorRef;
             $addVendor->added_by                    = $id;
-            $addVendor->store_name                 = $request->store_name;
+            $addVendor->store_name                  = $request->store_name;
             $addVendor->store_area                 = $request->area;
             $addVendor->vendor_name                 = $vendorName;
             $addVendor->restaurant_type             = $request->restaurant_type;
@@ -3160,34 +3187,6 @@ class HomeController extends Controller
             $addVendor->account_name                = $request->accountName;
             $addVendor->vendor_status               = $vendorStatus;
             $addVendor->save();
-
-            if($addVendor){
-                $verified = Carbon::now();
-                $characters = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
-                $randomString = '';
-                $num = 8;
-                for ($a = 0; $a < $num; $a++) {
-                $index = rand(0, strlen($characters) - 1);
-                $randomString .= $characters[$index];
-                }
-                $tempoaryPassword = str_shuffle($randomString);
-                $password =  Hash::make($tempoaryPassword);
-                $checkUser = User::where('email', $request->email)->exists();
-                if($checkUser){
-                    return redirect()->back()->with('error', 'This user is existing'); 
-                }
-
-                $role = Role::where('role_name', 'parentvendor')
-                ->get()->pluck('id')->first();
-
-                $addUser = new User;
-                $addUser->fullname          = $request->first_name .$request->last_name;
-                $addUser->email             = $request->email;
-                $addUser->role_id           = $role;
-                $addUser->email_verified_at = $verified;
-                $addUser->password          = $password;
-                $addUser->status            ='active';
-                $addUser->save();
 
               $parentStore = new MultiStore();
               $parentStore->vendor_id        = $addVendor->id;
