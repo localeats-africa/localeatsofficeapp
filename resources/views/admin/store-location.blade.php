@@ -103,7 +103,7 @@
                                           <div class="form-label required">Add New Location <i
                                                       class="text-danger">*</i>
                                           </div>
-                                          <input type="text" class="form-control" name="area">
+                                          <input type="text" class="form-control" name="location">
 
                                           @error('area')
                                           <div class="alert alert-danger alert-dismissible" role="alert">
