@@ -303,11 +303,11 @@
                                     <div class="card-body">
                                           <div class="form-label required">Store Area / Location <i class="text-danger">*</i> 
                                           </div>
-                                                <select class="js-example-basic-single text-secondary" style="width:100%" name="area" >
+                                                <select class="js-example-basic-single2 text-secondary" style="width:100%" name="area" >
                                                 <option value="">Choose</option>
                                                 @foreach($location as $data)
                                                 <option value="{{$data->id}}">
-                                                      {{$data->state}}
+                                                      {{$data->area}}
                                                 </option>
                                                 @endforeach
                                           </select>
@@ -344,7 +344,8 @@
                                           <div class="form-label required">State <i class="text-danger">*</i>
                                           </div>
                                           <select  class="js-example-basic-single" style="width:100%" name="state" id="">
-                                                @foreach($state as $data)
+                                          <option value="">Choose</option>      
+                                          @foreach($state as $data)
                                                 <option value="{{$data->id}}">{{$data->state}}</option>
                                                 @endforeach
                                           </select>
