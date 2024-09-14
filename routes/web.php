@@ -139,9 +139,9 @@ Route::controller(HomeController::class)->group(function () {
     Route::get('vendor-dashboard/{id}', 'showVendorDashboard')->name('vendor-dashboard');
     Route::get('filter-vendor-dashboard/{id}', 'filterVendorDashboard')->name('filter-vendor-dashboard');
     //MultiStore
-    Route::get('parent-vendor',  'allMultiVendor')->name('parent-vendor');
-    Route::get('new-parent-vendor',  'newMultiVendor')->name('new-parent-vendor');
-    Route::post('add-parent-vendor',  'addMultiVendor')->name('add-parent-vendor');
+    Route::get('parent-vendor',  'allParentVendor')->name('parent-vendor');
+    Route::get('new-parent-vendor',  'newParentVendor')->name('new-parent-vendor');
+    Route::post('add-parent-vendor',  'addParentVendor')->name('add-parent-vendor');
 });
 
 Route::controller(SuperAdminController::class)->group(function () {
