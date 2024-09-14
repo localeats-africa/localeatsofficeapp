@@ -1,6 +1,6 @@
 @extends('layouts.head')
 @extends('layouts.header')
-@extends('layouts.sidebar')
+@extends('layouts.multistore-sidebard')
 @extends('layouts.footer')
 @section('content')
 @endsection
