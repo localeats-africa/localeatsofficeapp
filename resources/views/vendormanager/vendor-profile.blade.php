@@ -252,7 +252,7 @@
                                                                   <h6 class="mb-0">Business</h6>
                                                             </div>
                                                             <div class="col-sm-8 text-secondary">
-                                                                  <span class="form-control text-capitalize">{{$vendorFname}}</span>
+                                                                  <span class="form-control text-capitalize">{{$storeName}}</span>
                                                             </div>
                                                       </div>
                                                       <div class="row mb-3">
