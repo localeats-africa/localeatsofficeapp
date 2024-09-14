@@ -3086,6 +3086,7 @@ class HomeController extends Controller
         ->pluck('id');
 
         $state = State::all();
+        $location = Area::all();
         $countryID = DB::table('country')->select('*')
         ->where('country', 'Nigeria')
         ->pluck('id')->first();
@@ -3100,7 +3101,7 @@ class HomeController extends Controller
 
         return view('multistore.add-new-parent', compact('name', 
         'role', 'state', 'country', 'selectBankName',
-        'selectFoodType', 'selectRestaurantType', 'stateID', 'countryID'));
+        'selectFoodType', 'selectRestaurantType', 'stateID', 'countryID', 'location'));
     }
 
     public function addMultiVendor(Request $request){
