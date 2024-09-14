@@ -150,7 +150,7 @@
                   </li>
 
                   <li class="nav-item">
-                        <a class="nav-link" href="{{ url('roles')}}" target="">
+                        <a class="nav-link" href="{{ url('location')}}" target="">
                               <span class="menu-title">Store Locations</span>
                               <i class="mdi mdi-location-enter fs-24 menu-icon"></i>
 
