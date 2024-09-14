@@ -145,9 +145,7 @@ Route::controller(HomeController::class)->group(function () {
     Route::post('add-parent-vendor',  'addParentVendor')->name('add-parent-vendor');
 });
 
-Route::controller(ParentVendorController::class)->group(function () {
-    Route::get('superadmin',  'index')->name('superadmin');
-});
+
 
 Route::controller(AdminController::class)->group(function () {
     Route::get('admin',  'index')->name('admin');
@@ -221,4 +219,8 @@ Route::controller(AccountManagerController::class)->group(function () {
 
 Route::controller(CashierController::class)->group(function () {
     Route::get('cashier',  'index')->name('cashier');
+});
+
+Route::controller(ParentVendorController::class)->group(function () {
+    Route::get('parent_vendor',  'index')->name('parent_vendor');
 });
