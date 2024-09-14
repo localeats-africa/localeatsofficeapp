@@ -3267,10 +3267,9 @@ class HomeController extends Controller
             $perPage = $request->perPage ?? 25;
             $search = $request->input('search');
     
-            $vendor =  DB::table('multi_store')
-            ->join('vendor', 'vendor.id', 'multi_store.vendor_id')
+            $vendor =  DB::table('vendor')
+            ->join('multi_store', 'multi_store.vendor_id', 'vendor.id')
             ->join('state', 'state.id', '=', 'vendor.state_id')
-            ->join('country', 'country.id', '=', 'vendor.country_id')
             ->where('multi_store.level', 'parent')
             ->select(['vendor.*', 'multi_store.multi_store_name', 'state.state'])
             ->orderBy('vendor.created_at', 'desc')
