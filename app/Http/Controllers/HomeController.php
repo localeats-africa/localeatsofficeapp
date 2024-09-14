@@ -3117,6 +3117,7 @@ class HomeController extends Controller
             $this->validate($request, [ 
                 'store_name'               => 'required|string|max:255',
                 'area'                      => 'required|string|max:255',
+                'state'                     => 'required|string|max:255',
                 'restaurant_type'           => 'required|string|max:255',
                 'food_type'                 => 'required|max:255',
                 'number_of_store_location'  => 'required|string|max:255',
