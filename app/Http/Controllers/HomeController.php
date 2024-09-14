@@ -3074,6 +3074,131 @@ class HomeController extends Controller
         'startDate', 'endDate','vendor_id' ));
     }
 
+    public function newMultiVendor(Request $request){
+        $name = Auth::user()->name;
+        $id = Auth::user()->id;
+        $role = DB::table('role')->select('role_name')
+        ->join('users', 'users.role_id', 'role.id')
+        ->where('users.id', $id)
+        ->pluck('role_name')->first();
+
+        $stateID = DB::table('state')->select(['*'])
+        ->pluck('id');
+
+        $state = State::all();
+        $countryID = DB::table('country')->select('*')
+        ->where('country', 'Nigeria')
+        ->pluck('id')->first();
+
+        $country = DB::table('country')->select('*')
+        ->where('country', 'Nigeria')
+        ->pluck('country')->first();
+
+        $selectBankName = BankList::all();
+        $selectFoodType = FoodType::all();
+        $selectRestaurantType = RestaurantType::all();
+
+        return view('multistore.add-new-parent', compact('name', 
+        'role', 'state', 'country', 'selectBankName',
+        'selectFoodType', 'selectRestaurantType', 'stateID', 'countryID'));
+    }
+
+    public function addMultiVendor(Request $request){
+        if(Auth::user()){
+            $name = Auth::user()->name;
+            $id = Auth::user()->id;
+            // generate a pin based on 2 * 5 digits + a random character
+            $pin = mt_rand(100000, 999999);
+            // shuffle pin
+            $vendorRef = 'V'.str_shuffle($pin); 
+            // dd( $vendor_ref);
+
+            $this->validate($request, [ 
+                'store_name'               => 'required|string|max:255',
+                'area'                      => 'required|string|max:255',
+                'restaurant_type'           => 'required|string|max:255',
+                'food_type'                 => 'required|max:255',
+                'number_of_store_location'  => 'required|string|max:255',
+                'delivery_time'             => 'required|string|max:255',
+                'first_name'                => 'required|string|max:255',
+                'last_name'                 => 'required|string|max:255',
+                'phone'                     => 'regex:/^([0-9\s\-\+\(\)]*)$/|min:9|max:13',
+                'email'                     => 'max:255', 
+                'address'                   => 'required|string|max:255', 
+                'bankName'                  => 'string|max:255', 
+                'accountNumber'             => 'max:255', 
+            ]);
+            //$foodType = json_encode($request->food_type);
+            $foodType = $request->food_type;
+            $vendorStatus = 'pending';
+
+            $vendorName = $request->area. '-' .$foodType;
+       
+            $addVendor = new Vendor();
+            $addVendor->vendor_ref                  = $vendorRef;
+            $addVendor->added_by                    = $id;
+            $addVendor->store_name                 = $request->store_name;
+            $addVendor->store_area                 = $request->area;
+            $addVendor->vendor_name                 = $vendorName;
+            $addVendor->restaurant_type             = $request->restaurant_type;
+            $addVendor->food_type                   = $foodType;
+            $addVendor->number_of_store_locations   = $request->number_of_store_location;
+            $addVendor->delivery_time               = $request->delivery_time;
+            $addVendor->description                 = $request->description;
+            $addVendor->contact_fname               = $request->first_name;
+            $addVendor->contact_lname               = $request->last_name;
+            $addVendor->contact_phone               = $request->phone;
+            $addVendor->email                       = $request->email;
+            $addVendor->address                     = $request->address;
+            $addVendor->state_id                    = $request->state;
+            $addVendor->country_id                  = $request->country;
+            $addVendor->bank_name                   = $request->bankName;
+            $addVendor->account_number              = $request->accountNumber;
+            $addVendor->account_name                = $request->accountName;
+            $addVendor->vendor_status               = $vendorStatus;
+            $addVendor->save();
+
+            if($addVendor){
+              $parentStore = new MultiStore();
+              $parentStore->vendor_id        = $addVendor->id;
+              $parentStore->multi_store_name = $addVendor->store_name;
+              $parentStore->level            = 'parent';
+              $parentStore->save();
+
+                //create vendor id in sales platform table
+                $platformStatus ='inactive';
+                $platforms = Platforms::all();
+                
+               foreach($platforms as $platform){
+                    $addPlatform = new SalesPlatform();
+                    $addPlatform->vendor_id         = $addVendor->id;
+                    $addPlatform->platform_name     = $platform->name;
+                    $addPlatform->vendor_status     = $platformStatus;
+                    $addPlatform->save();
+               }
+
+                $response = [
+                    'code'      => '',
+                    'message'   => 'Parent Vendor added successfully',
+                    'status'    => 'success',
+                ];
+                $data = json_encode($response, true);
+
+                return redirect()->back()->with('add-vendor', 'Parent Vendor  successfully added');
+            }
+            else{
+                $error = [
+                    'code'      => '',
+                    'message'   => 'Something went wrong',
+                    'status'    => 'error'
+                ]; 
+                $data = json_encode($error);
+                return redirect()->back()->with('add-vendor', 'Something went wrong');
+            }
+      
+        }
+    }
+
     public function allMultiVendor(Request $request){
         if(Auth::user()){
             $name = Auth::user()->name;
