@@ -3162,24 +3162,7 @@ class HomeController extends Controller
             $addVendor->save();
 
             if($addVendor){
-              $parentStore = new MultiStore();
-              $parentStore->vendor_id        = $addVendor->id;
-              $parentStore->multi_store_name = $addVendor->store_name;
-              $parentStore->level            = 'parent';
-              $parentStore->save();
-                //create vendor id in sales platform table
-                $platformStatus ='inactive';
-                $platforms = Platforms::all();
-                
-               foreach($platforms as $platform){
-                    $addPlatform = new SalesPlatform();
-                    $addPlatform->vendor_id         = $addVendor->id;
-                    $addPlatform->platform_name     = $platform->name;
-                    $addPlatform->vendor_status     = $platformStatus;
-                    $addPlatform->save();
-               }
-
-              $verified = Carbon::now();
+                $verified = Carbon::now();
                 $characters = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
                 $randomString = '';
                 $num = 8;
@@ -3205,8 +3188,26 @@ class HomeController extends Controller
                 $addUser->password          = $password;
                 $addUser->status            ='active';
                 $addUser->save();
-        
-            $data = array(
+
+              $parentStore = new MultiStore();
+              $parentStore->vendor_id        = $addVendor->id;
+              $parentStore->user_id          = $addUser->id;
+              $parentStore->multi_store_name = $addVendor->store_name;
+              $parentStore->level            = 'parent';
+              $parentStore->save();
+                //create vendor id in sales platform table
+                $platformStatus ='inactive';
+                $platforms = Platforms::all();
+                
+               foreach($platforms as $platform){
+                    $addPlatform = new SalesPlatform();
+                    $addPlatform->vendor_id         = $addVendor->id;
+                    $addPlatform->platform_name     = $platform->name;
+                    $addPlatform->vendor_status     = $platformStatus;
+                    $addPlatform->save();
+               }
+
+                $data = array(
                 'name'     => $request->name,
                 'email'    => $request->email,
                 'password' => $tempoaryPassword,        
