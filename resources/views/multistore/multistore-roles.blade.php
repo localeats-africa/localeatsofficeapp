@@ -142,7 +142,7 @@
                                                 <option>Choose</option>
                                                 @foreach($vendors as $data)
                                                 <option value="{{$data->id}}">
-                                                      {{$data->store_name}}
+                                                      {{$data->multi_store_name}}
                                                 </option>
                                                 @endforeach
                                           </select>
