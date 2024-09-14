@@ -154,7 +154,7 @@
                               Search:
                               <div class="ms-2 d-inline-block">
 
-                                    <form action="/all-vendor" method="GET" role="search">
+                                    <form action="/parent-vendor" method="GET" role="search">
                                           {{ csrf_field() }}
                                           <div class="input-group mb-2">
                                                 <input type="text" class="form-control" placeholder="Search for…"
