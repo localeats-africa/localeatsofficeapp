@@ -261,9 +261,6 @@
                                           id="orders">
                                           <thead>
                                                 <tr>
-                                                      <th class="w-1"><input class="form-check-input m-0 align-middle"
-                                                                  type="checkbox" aria-label="Select all product">
-                                                      </th>
                                                       <th>SN</th>
                                                       <th>Location</th>
                                                       <th>State</th>
@@ -273,8 +270,6 @@
                                           <tbody>
                                                 @foreach($location as $data)
                                                 <tr>
-                                                      <td><input class="form-check-input m-0 align-middle"
-                                                                  type="checkbox" aria-label="Select"></td>
                                                       <td class="py-1">
                                                            {{$loop->iteration}}
                                                       </td>
