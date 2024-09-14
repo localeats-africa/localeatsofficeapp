@@ -34,7 +34,7 @@ class NewUserEmail extends Mailable
     public function envelope()
     {
         return new Envelope(
-            from: new Address('noreplay@localeats.africa', 'LocalEats'),
+            from: new Address('admin@localeats.africa', 'LocalEats'),
             subject: 'Account Created',
         );
     }
