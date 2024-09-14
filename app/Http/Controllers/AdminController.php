@@ -1887,15 +1887,17 @@ class AdminController extends Controller
 
     public function addLocation(Request $request){
         $this->validate($request, [ 
-            'role'   => 'required|string|max:255',
+            'location'   => 'required|string|max:255',
+            'state'      => 'required|string|max:255',
         ]);
 
-        $addRole = new Role;
-        $addRole->role_name = $request->role;
-        $addRole->save();
+        $area = new Area;
+        $area->area         = $request->location;
+        $area->state_id     = $request->state;
+        $area->save();
         
-        if($addRole){
-           return redirect()->back()->with('add-role', 'New Role Added!');
+        if($area){
+           return redirect()->back()->with('add-role', 'New Location Added!');
         }
         else{return redirect()->back()->with('error', 'Opps! something went wrong.'); }
     }
