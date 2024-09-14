@@ -415,13 +415,15 @@ class HomeController extends Controller
             ->pluck('role_name')->first();
 
             $selectBankName = BankList::all();
+            $location = Area::all();
             $vendor = Vendor::find($id);
 
             $vendorBank = DB::table('vendor')->where('vendor.id', $id)
             ->join('banks', 'banks.code', '=', 'vendor.bank_name')
             ->select('banks.name')->pluck('name')->first();
 
-            return view('vendormanager.edit-vendor', compact('vendor', 'vendorBank', 'selectBankName', 'role', 'name')); 
+            return view('vendormanager.edit-vendor', compact('vendor', 'vendorBank', 
+            'selectBankName', 'role', 'name', 'location')); 
         }
           else { return Redirect::to('/login');
         }
