@@ -1862,7 +1862,7 @@ class AdminController extends Controller
 
         $state = State::all();
 
-        $perPage = $request->perPage ?? 20;
+        $perPage = $request->perPage ?? 10;
         $search = $request->input('search');
 
         $location = DB::table('area')
