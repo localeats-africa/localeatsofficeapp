@@ -1889,7 +1889,7 @@ class AdminController extends Controller
     public function addLocation(Request $request){
         $this->validate($request, [ 
             'location'   => 'required|string|max:255',
-            'state'      => 'required|string|max:255',
+            'state'      => 'required|max:255',
         ]);
 
         $area = new Area;
