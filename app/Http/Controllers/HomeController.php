@@ -3155,7 +3155,10 @@ class HomeController extends Controller
             $role = Role::where('role_name', 'parentvendor')
             ->get()->pluck('id')->first();
 
+            $username = substr($request->store_name, -10);
+
             $addUser = new User;
+            $addUser->username          = $username;
             $addUser->fullname          = $request->first_name. ' ' .$request->last_name;
             $addUser->email             = $request->email;
             $addUser->role_id           = $role;
