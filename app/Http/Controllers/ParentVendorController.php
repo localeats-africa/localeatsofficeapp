@@ -53,4 +53,13 @@ class ParentVendorController extends Controller
         return view('multistore.parent.admin');
        }
     }
+
+    public function username(Request $request){
+        if ((Auth::user()->password_change_at == null)) {
+            return redirect(route('show-change-password'));
+         }
+       else{
+        return view('multistore.parent.admin');
+       }
+    }
 }
