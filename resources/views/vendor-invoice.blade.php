@@ -142,7 +142,7 @@
                                                                   <p></p>
                                                                   <br>
                                                             <div class="mt-1">
-                                                                  Payment Date: 
+                                                                <small><strong>Payment Date:</strong>  {{$payment_date}}</small>
                                                             </div>
                                                             </div>
                                                       </div>
