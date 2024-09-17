@@ -3138,17 +3138,17 @@ class HomeController extends Controller
                 'store_name'               => 'required|string|max:255',
                 'area'                      => 'required|string|max:255',
                 'state'                     => 'required|string|max:255',
-                'restaurant_type'           => 'required|string|max:255',
-                'food_type'                 => 'required|max:255',
+               // 'restaurant_type'           => 'required|string|max:255',
+               // 'food_type'                 => 'required|max:255',
                 'number_of_store_location'  => 'required|string|max:255',
-                'delivery_time'             => 'max:255',
+                //'delivery_time'             => 'max:255',
                 'first_name'                => 'required|string|max:255',
                 'last_name'                 => 'required|string|max:255',
                 'phone'                     => 'regex:/^([0-9\s\-\+\(\)]*)$/|min:9|max:13',
                 'email'                     => 'required|email|max:255', 
                 'address'                   => 'required|string|max:255', 
-                'bankName'                  => 'string|max:255', 
-                'accountNumber'             => 'max:255', 
+                //'bankName'                  => 'string|max:255', 
+                //'accountNumber'             => 'max:255', 
             ]);
             
             $verified = Carbon::now();
@@ -3192,10 +3192,10 @@ class HomeController extends Controller
             $addVendor->store_name                  = $request->store_name;
             $addVendor->store_area                 = $request->area;
             $addVendor->vendor_name                 = $vendorName;
-            $addVendor->restaurant_type             = $request->restaurant_type;
-            $addVendor->food_type                   = $foodType;
+            // $addVendor->restaurant_type             = $request->restaurant_type;
+            // $addVendor->food_type                   = $foodType;
             $addVendor->number_of_store_locations   = $request->number_of_store_location;
-            $addVendor->delivery_time               = $request->delivery_time;
+            // $addVendor->delivery_time               = $request->delivery_time;
             $addVendor->description                 = $request->description;
             $addVendor->contact_fname               = $request->first_name;
             $addVendor->contact_lname               = $request->last_name;
@@ -3204,9 +3204,9 @@ class HomeController extends Controller
             $addVendor->address                     = $request->address;
             $addVendor->state_id                    = $request->state;
             $addVendor->country_id                  = $request->country;
-            $addVendor->bank_name                   = $request->bankName;
-            $addVendor->account_number              = $request->accountNumber;
-            $addVendor->account_name                = $request->accountName;
+            // $addVendor->bank_name                   = $request->bankName;
+            // $addVendor->account_number              = $request->accountNumber;
+            // $addVendor->account_name                = $request->accountName;
             $addVendor->vendor_status               = $vendorStatus;
             $addVendor->save();
 
