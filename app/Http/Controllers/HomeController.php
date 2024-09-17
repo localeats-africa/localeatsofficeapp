@@ -3341,7 +3341,6 @@ class HomeController extends Controller
             ->where('sales_platform.vendor_status', 'active')
             ->where('sub_store.multi_store_id', $parent)
             ->get('sales_platform.vendor_id');
-
             //dd( $parent);
 
             $perPage = $request->perPage ?? 25;
