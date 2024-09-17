@@ -8,15 +8,9 @@
       <div class="content-wrapper">
             <div class="page-header">
                   <h3 class="page-title">
-                        Multi-Vendor (s)
+                <span class="text-info">{{$vendorName}}</span>  >>>  Outlets (s)
                   </h3>
-                  <nav aria-label="breadcrumb">
-                <ul class="breadcrumb">
-                  <li class="breadcrumb-item active" aria-current="page">
-                    <span></span><a href="{{ url('new-parent-vendor') }}" class="btn btn-outline-danger">Create Parent Vendor </a>
-                  </li>
-                </ul>
-              </nav>
+                
             </div>
             <div class="row ">
                   <div class="col-12">
@@ -26,7 +20,7 @@
                                           <div class="card-body">
                                                 <img src="/assets/images/dashboard/circle.svg" class="card-img-absolute"
                                                       alt="circle-image">
-                                                <h4 class="font-weight-normal mb-3">Parent Vendors
+                                                <h4 class="font-weight-normal mb-3">Outlets
                                                       <i class="mdi mdi-pot-steam  mdi-24px float-end"></i>
                                                 </h4>
                                                 <h2 class="">{{$countVendor->count()}}</h2>
@@ -173,9 +167,9 @@
                         </div>
                   </div>
 
-                  @foreach($vendor as $data)
+                  @foreach($childVendor as $data)
                   @php
-                  $words = explode(" ", $data->multi_store_name, 2 );
+                  $words = explode(" ", $data->store_name, 2 );
                   $initials = null;
                   foreach ($words as $w) {
                   $initials .= $w[0];
@@ -351,25 +345,13 @@
                                     </a>
                                     @endif
                                     @endauth
-                                    @php
-                                    $outlets = 0;
-                                    $outlets += App\Models\SubStore::where('multi_store_id',
-                                    $data->id)->count();
-                                    @endphp
-
-                                    <a href="child-vendor/{{$data->id}}" class="card-btn "
-                                          style="text-decoration:none;" title="Outlets">
-                                          <small> ( {{$outlets}} ) Outlets </small> <small class="text-info"> &nbsp;<i
-                                                      class="fa fa-cutlery" aria-hidden="true"></i></small>
-                                    </a>
 
                                     <a href="vendor-food-menu/{{$data->id}}" class="card-btn "
                                           style="text-decoration:none;" title="Outlets">
-                                          <small> Create New Outlet </small> <small class="text-info"> &nbsp;<i
+                                          <small> Supplies </small> <small class="text-info"> &nbsp;<i
                                                       class="fa fa-cutlery" aria-hidden="true"></i></small>
                                     </a>
 
-                          
                                     @endif
                     
                               </div>
@@ -390,17 +372,17 @@
                               <p class="m-0 text-secondary">
 
                                     Showing
-                                    {{ ($vendor->currentPage() - 1) * $vendor->perPage() + 1; }} to
-                                    {{ min($vendor->currentPage()* $vendor->perPage(), $vendor->total()) }}
+                                    {{ ($childVendor->currentPage() - 1) * $childVendor->perPage() + 1; }} to
+                                    {{ min($childVendor->currentPage()* $childVendor->perPage(), $childVendor->total()) }}
                                     of
-                                    {{$vendor->total()}} entries
+                                    {{$childVendor->total()}} entries
                               </p>
 
                               <ul class="pagination m-0 ms-auto">
-                                    @if(isset($vendor))
-                                    @if($vendor->currentPage() > 1)
+                                    @if(isset($childVendor))
+                                    @if($childVendor->currentPage() > 1)
                                     <li class="page-item ">
-                                          <a class="page-link text-danger" href="{{ $vendor->previousPageUrl() }}"
+                                          <a class="page-link text-danger" href="{{ $childVendor->previousPageUrl() }}"
                                                 tabindex="-1" aria-disabled="true">
                                                 <!-- Download SVG icon from http://tabler-icons.io/i/chevron-left -->
                                                 <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24"
@@ -417,11 +399,11 @@
 
 
                                     <li class="page-item">
-                                          {{ $vendor->appends(compact('perPage'))->links()  }}
+                                          {{ $childVendor->appends(compact('perPage'))->links()  }}
                                     </li>
-                                    @if($vendor->hasMorePages())
+                                    @if($childVendor->hasMorePages())
                                     <li class="page-item">
-                                          <a class="page-link text-danger" href="{{ $vendor->nextPageUrl() }}">
+                                          <a class="page-link text-danger" href="{{ $childVendor->nextPageUrl() }}">
                                                 next
                                                 <!-- Download SVG icon from http://tabler-icons.io/i/chevron-right -->
                                                 <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24"
