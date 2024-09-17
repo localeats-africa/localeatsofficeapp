@@ -7,7 +7,7 @@
                   @if(Auth::user()->role_id == '9')
 
                   <li class="nav-item">
-                        <a class="nav-link" href="{{ url('parent_vendor') }}">
+                        <a class="nav-link" href="{{ url('/', [auth()->user()->username]) }}">
                               <span class="menu-title">Dashboard</span>
                               <i class="mdi mdi-home menu-icon"></i>
                         </a>
