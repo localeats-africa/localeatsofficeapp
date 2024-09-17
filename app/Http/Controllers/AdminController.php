@@ -213,6 +213,7 @@ class AdminController extends Controller
         ->where('deleted_at', null)
         ->where('orders.order_amount', '!=', null)
         ->where('orders.order_ref', '!=', null)
+        ->where('orders.food_price', '!=', null)
         ->groupby('year')
         ->get();
 
@@ -223,6 +224,7 @@ class AdminController extends Controller
         )->where('deleted_at', null)
         ->where('orders.order_amount', '!=', null)
         ->where('orders.order_ref', '!=', null)
+        ->where('orders.food_price', '!=', null)
         //->whereYear('orders.delivery_date', '=', Carbon::now()->year)
         ->groupBy('month')
         ->get();
@@ -280,8 +282,8 @@ class AdminController extends Controller
         'label' => ['Chowdeck', 'Glovo', 'Eden'],
         'data' => [round($chowdeckSalesPercentageChart) , round($glovoSalesPercentageChart),  round($edenSalesPercentageChart)] ,
         ];
+        
     //sales for barchart
-
     $chowdeckOrder =  Orders::join('platforms', 'platforms.id', '=', 'orders.platform_id')
     ->select(
         \DB::raw('DATE_FORMAT(orders.delivery_date,"%M ") as month'),
@@ -292,6 +294,7 @@ class AdminController extends Controller
         ->where('orders.deleted_at', null)
         ->where('orders.order_amount', '!=', null)
         ->where('orders.order_ref', '!=', null)
+        ->where('orders.food_price', '!=', null)
        // ->whereYear('orders.delivery_date', '=', Carbon::now()->year)
         ->groupby('month')
         ->get();
@@ -308,6 +311,7 @@ class AdminController extends Controller
         ->where('orders.deleted_at', null)
         ->where('orders.order_amount', '!=', null)
         ->where('orders.order_ref', '!=', null)
+        ->where('orders.food_price', '!=', null)
         //->whereYear('orders.delivery_date', '=', Carbon::now()->year)
         ->groupby('month')
         ->get();
@@ -323,6 +327,7 @@ class AdminController extends Controller
         ->where('orders.deleted_at', null)
         ->where('orders.order_amount', '!=', null)
         ->where('orders.order_ref', '!=', null)
+        ->where('orders.food_price', '!=', null)
         //->whereYear('orders.delivery_date', '=', Carbon::now()->year)
         ->groupby('month')
         ->get();
