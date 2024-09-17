@@ -145,6 +145,7 @@ Route::controller(HomeController::class)->group(function () {
     Route::post('add-parent-vendor',  'addParentVendor')->name('add-parent-vendor');
     //create outlets
     Route::get('child-vendor/{id}',  'childVendor')->name('child-vendor');
+    Route::get('new-child-vendor/{id}',  'createChildVendor')->name('new-child-vendor');
 });
 
 
