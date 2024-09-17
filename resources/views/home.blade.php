@@ -25,14 +25,29 @@
                               <!-- Admin menu-->
                               @if(Auth::user()->role_id == '2')
                               <a class="text-danger" href="{{ route('admin') }}">Click {{ __('Dashboard') }}</a>
-
                               @endif
 
-                              <!-- vendor sidebar menu-->
+                              <!-- vendor manager sidebar menu-->
                               @if(Auth::user()->role_id == '6')
                               <a class="text-danger" href="{{ route('vendor_manager') }}">Click {{ __('Dashboard') }}</a>
 
                               @endif
+
+                               <!-- casheir sidebar menu-->
+                              @if(Auth::user()->role_id == '7')
+                              <a class="text-danger" href="{{ route('cashier') }}">Click {{ __('Dashboard') }}</a>
+                              @endif
+
+                               <!-- account manager sidebar menu-->
+                              @if(Auth::user()->role_id == '8')
+                              <a class="text-danger" href="{{ route('account_manager') }}">Click {{ __('Dashboard') }}</a>
+                              @endif
+
+                              <!-- parent vendor sidebar menu-->
+                              @if(Auth::user()->role_id == '9')
+                              <a class="text-danger" href="{{ url('/', [auth()->user()->username]) }}">Click {{ __('Dashboard') }}</a>
+                              @endif
+
                               @endauth
                         </div>
                   </div>
