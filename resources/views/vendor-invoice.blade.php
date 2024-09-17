@@ -134,9 +134,19 @@
                                                                   <br>
                                                                   <i class="mdi mdi-web-check"></i>
                                                                   www.localeats.africa</small>
-
-
                                                       </div>
+
+                                                      <div class="row mb-3">
+                                                            <p></p>
+                                                            <div class="col-sm-12">
+                                                                  <p></p>
+                                                                  <br>
+                                                            <div class="mt-1">
+                                                                  Payment Date: 
+                                                            </div>
+                                                            </div>
+                                                      </div>
+                                                            <!---end row ---> 
                                                 </div>
                                           </div>
 
