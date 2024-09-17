@@ -1148,6 +1148,15 @@ class HomeController extends Controller
             $vendorLname = DB::table('vendor')->where('id', $vendor)
             ->select('*')->pluck('contact_lname')->first();
 
+            $bankName = DB::table('vendor')->where('id', $vendor)
+            ->select('*')->pluck('bank_name')->first();
+
+            $accountNumber = DB::table('vendor')->where('id', $vendor)
+            ->select('*')->pluck('account_number')->first();
+
+            $accountName = DB::table('vendor')->where('id', $vendor)
+            ->select('*')->pluck('account_name')->first();
+
             $totalComm = DB::table('orders')
             ->leftJoin('commission', 'orders.id', '=', 'commission.order_id')
             ->where('orders.vendor_id', $vendor)
@@ -1216,7 +1225,6 @@ class HomeController extends Controller
             ->where('order_extra_foodmenu_picked.foodmenu', '!=', null)
             ->get();
             
-
             $orders = DB::table('orders')
             ->Join('platforms', 'orders.platform_id', '=', 'platforms.id')
             ->Join('commission', 'orders.id', '=', 'commission.order_id')
@@ -1235,7 +1243,7 @@ class HomeController extends Controller
          'vendorEmail', 'vendorFname', 'vendorLname', 'orders',
          'totalComm', 'totalPlatformComm', 'sumAmount', 'sumFoodPrice', 'sumExtra',
         'vendorFoodPrice', 'payout', 'invoiceRef', 'vendorID', 'invoicePaymentStatus',
-        'commissionPiad', 'extraFoodMenu') );
+        'commissionPiad', 'extraFoodMenu', 'bankName', 'accountNumber', 'accountName') );
     }
 
     public function updateMergeInvoiceFood(Request $request){
