@@ -1584,6 +1584,12 @@ class HomeController extends Controller
          ->where('orders.invoice_ref', $invoice_ref)
          ->where('orders.payment_status', '!=', null)
          ->pluck('payment_status')->first();
+
+         $payment_date = DB::table('orders')
+         ->where('orders.vendor_id', $vendor)
+        ->where('orders.invoice_ref', $invoice_ref)
+        ->where('orders.payment_status', '!=', null)
+        ->pluck('payment_date')->first();
   
           $orders = DB::table('orders')
           ->leftJoin('merge_invoices', 'orders.id', '=', 'merge_invoices.order_id')
@@ -1598,7 +1604,7 @@ class HomeController extends Controller
             'vendorEmail', 'vendorFname', 'vendorLname', 'orders',
             'sumFoodPrice', 'sumExtra','vendorFoodPrice', 'payout', 
             'payment_status', 'invoice_ref', 'vendor', 
-            'vendorAccountNumber', 'vendorAccountName', 'vendorBankName'));
+            'vendorAccountNumber', 'vendorAccountName', 'vendorBankName', 'payment_date'));
 
      }
 
