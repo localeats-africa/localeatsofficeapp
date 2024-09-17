@@ -3371,8 +3371,48 @@ class HomeController extends Controller
             
                 return view('multistore.child-vendor',  compact('perPage', 
                 'childVendor', 'role', 'vendorName', 'countVendor', 'countActivevendor'));
+        }
+    }
 
 
+    public function createChildVendor(Request $request, $vendor_id){
+        if(Auth::user()){
+            $name = Auth::user()->name;
+            $user_id = Auth::user()->id;
+            $role = DB::table('role')->select('role_name')
+            ->join('users', 'users.role_id', 'role.id')
+            ->where('users.id', $user_id)
+            ->pluck('role_name')->first();
+
+            $vendorName = DB::table('vendor')->where('id', $vendor_id)
+            ->select('*')->pluck('store_name')->first();
+
+            $parent_id = DB::table('multi_store')
+            ->where('vendor_id', $vendor_id)
+            ->get('*')->pluck('id')->first();
+
+            $stateID = DB::table('state')->select(['*'])
+            ->pluck('id');
+    
+            $state = State::all();
+            $location = Area::all();
+            $countryID = DB::table('country')->select('*')
+            ->where('country', 'Nigeria')
+            ->pluck('id')->first();
+    
+            $country = DB::table('country')->select('*')
+            ->where('country', 'Nigeria')
+            ->pluck('country')->first();
+    
+            $selectBankName = BankList::all();
+            $selectFoodType = FoodType::all();
+            $selectRestaurantType = RestaurantType::all();
+    
+            return view('multistore.add-new-child-vendor', compact('name', 
+            'role', 'state', 'country', 'selectBankName',
+            'selectFoodType', 'selectRestaurantType', 'stateID', 
+            'countryID', 'location', 'vendorName', 'parent_id'));
+    
         }
     }
 
