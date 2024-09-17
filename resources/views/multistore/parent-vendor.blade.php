@@ -363,7 +363,7 @@
                                                       class="fa fa-cutlery" aria-hidden="true"></i></small>
                                     </a>
 
-                                    <a href="vendor-food-menu/{{$data->id}}" class="card-btn "
+                                    <a href="new-child-vendor/{{$data->id}}" class="card-btn "
                                           style="text-decoration:none;" title="Outlets">
                                           <small> Create New Outlet </small> <small class="text-info"> &nbsp;<i
                                                       class="fa fa-cutlery" aria-hidden="true"></i></small>
