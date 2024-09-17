@@ -1123,12 +1123,14 @@ class AdminController extends Controller
 
     public function markInvoicePaid(Request $request, $invoice_ref){
         $vendor = $request->vendor_id;
+        $today = Carbon::now();
         $paid =  DB::table('orders')
             ->where('orders.vendor_id', $vendor)
             ->where('orders.invoice_ref', $invoice_ref)
             ->where('orders.payment_status', '!=', null)// use this to get paid unique inv
             ->update([
-            'payment_status' => 'paid'
+            'payment_status' => 'paid',
+             'payment_date' =>  $today 
             ]);
         if($paid){
               // use this to count all paid inv
