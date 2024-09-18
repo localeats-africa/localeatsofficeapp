@@ -8,7 +8,7 @@
       <div class="content-wrapper">
             <div class="page-header">
                   <h3 class="page-title">
-                <span class="text-info">{{$vendorName}}</span>  >>>  Outlets (s)
+                <span class="text-info">{{$vendorName}}</span>  >>>  Outlet (s)
                   </h3>
                 
             </div>
@@ -20,7 +20,7 @@
                                           <div class="card-body">
                                                 <img src="/assets/images/dashboard/circle.svg" class="card-img-absolute"
                                                       alt="circle-image">
-                                                <h4 class="font-weight-normal mb-3">Outlets
+                                                <h4 class="font-weight-normal mb-3">Total Outlets
                                                       <i class="mdi mdi-pot-steam  mdi-24px float-end"></i>
                                                 </h4>
                                                 <h2 class="">{{$countVendor->count()}}</h2>
