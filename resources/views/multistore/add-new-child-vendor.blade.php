@@ -7,7 +7,7 @@
 <div class="main-panel">
       <div class="content-wrapper">
             <div class="page-header">
-                  <h3 class="page-title"> Add New Outlet >>> to >>> <span class="text-info">{{$vendorName}}</span></h3>
+                  <h3 class="page-title"> Add New Outlet >>> to >>> <a href="{{ url('child-vendor', [$parent_id]) }}" class="text-info">{{$vendorName}}</a></h3>
             </div>
             <!--Alert here--->
             <div class="row">
