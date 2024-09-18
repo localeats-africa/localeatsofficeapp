@@ -3184,13 +3184,14 @@ class HomeController extends Controller
             $foodType = $request->food_type;
            
             if($addUser){
-            $vendorStatus = 'pending';
-            $vendorName = $request->area. '-' .$foodType;
-            $addVendor = new Vendor();
+            $vendorStatus                           = 'pending';
+            $vendorName                             = $request->area. '-' .$foodType;
+
+            $addVendor                              = new Vendor();
             $addVendor->vendor_ref                  = $vendorRef;
             $addVendor->added_by                    = $id;
             $addVendor->store_name                  = $request->store_name;
-            $addVendor->store_area                 = $request->area;
+            $addVendor->store_area                  = $request->area;
             $addVendor->vendor_name                 = $vendorName;
             // $addVendor->restaurant_type             = $request->restaurant_type;
             // $addVendor->food_type                   = $foodType;
@@ -3246,7 +3247,7 @@ class HomeController extends Controller
                 ];
                 $data = json_encode($response, true);
 
-                return redirect()->back()->with('add-vendor', 'Parent Vendor  successfully added');
+                return redirect()->back()->with('add-vendor', 'Parent Vendor: ' .$request->store_name. '  successfully added');
             }
             else{
                 $error = [
@@ -3376,48 +3377,141 @@ class HomeController extends Controller
 
 
     public function createChildVendor(Request $request, $vendor_id){
-        if(Auth::user()){
+            //child vendor
             $name = Auth::user()->name;
-            $user_id = Auth::user()->id;
-            $role = DB::table('role')->select('role_name')
-            ->join('users', 'users.role_id', 'role.id')
-            ->where('users.id', $user_id)
-            ->pluck('role_name')->first();
+            $id = Auth::user()->id;
+            // generate a pin based on 2 * 5 digits + a random character
+            $pin = mt_rand(100000, 999999);
+            // shuffle pin
+            $vendorRef = 'V'.str_shuffle($pin); 
+            $this->validate($request, [ 
+            'store_name'               => 'required|string|max:255',
+            'area'                      => 'required|string|max:255',
+            'state'                     => 'required|string|max:255',
+            'restaurant_type'           => 'required|string|max:255',
+            'food_type'                 => 'required|max:255',
+            'number_of_store_location'  => 'required|string|max:255',
+            'delivery_time'             => 'max:255',
+            'first_name'                => 'required|string|max:255',
+            'last_name'                 => 'required|string|max:255',
+            'phone'                     => 'regex:/^([0-9\s\-\+\(\)]*)$/|min:9|max:13',
+            'email'                     => 'required|email|max:255', 
+            'address'                   => 'required|string|max:255', 
+            'bankName'                  => 'string|max:255', 
+             'accountNumber'             => 'max:255', 
+            ]);
+                    
+            $verified = Carbon::now();
+            $characters = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
+            $randomString = '';
+            $num = 8;
+            for ($a = 0; $a < $num; $a++) {
+                $index = rand(0, strlen($characters) - 1);
+                $randomString .= $characters[$index];
+            }
+            $tempoaryPassword = str_shuffle($randomString);
+            $password =  Hash::make($tempoaryPassword);
+            $checkUser = User::where('email', $request->email)->exists();
+            if($checkUser){
+                return redirect()->back()->with('error', 'This user is existing'); 
+            }
+            $role = Role::where('role_name', 'childvendor')
+            ->get()->pluck('id')->first();
+            $username = substr($request->store_name, -10);
+        
+            $addUser = new User;
+            $addUser->username          = $username;
+            $addUser->fullname          = $request->first_name. ' ' .$request->last_name;
+            $addUser->email             = $request->email;
+            $addUser->role_id           = $role;
+            $addUser->email_verified_at = $verified;
+            $addUser->password          = $password;
+            $addUser->status            ='active';
+            $addUser->save();
+        
+            $foodType = $request->food_type;
+            if($addUser){
+                $vendorStatus                           = 'pending';
+                $vendorName                             = $request->area. '-' .$foodType;
+                
+                $addVendor                              = new Vendor();
+                $addVendor->vendor_ref                  = $vendorRef;
+                $addVendor->added_by                    = $id;
+                $addVendor->store_name                  = $request->store_name;
+                $addVendor->store_area                  = $request->area;
+                $addVendor->vendor_name                 = $vendorName;
+                $addVendor->restaurant_type             = $request->restaurant_type;
+                $addVendor->food_type                   = $foodType;
+                $addVendor->number_of_store_locations   = $request->number_of_store_location;
+                $addVendor->delivery_time               = $request->delivery_time;
+                $addVendor->description                 = $request->description;
+                $addVendor->contact_fname               = $request->first_name;
+                $addVendor->contact_lname               = $request->last_name;
+                $addVendor->contact_phone               = $request->phone;
+                $addVendor->email                       = $request->email;
+                $addVendor->address                     = $request->address;
+                $addVendor->state_id                    = $request->state;
+                $addVendor->country_id                  = $request->country;
+                $addVendor->bank_name                   = $request->bankName;
+                $addVendor->account_number              = $request->accountNumber;
+                $addVendor->account_name                = $request->accountName;
+                $addVendor->vendor_status               = $vendorStatus;
+                $addVendor->save();
+        
+                $parentStore = new MultiStore();
+                $parentStore->vendor_id        = $addVendor->id;
+                $parentStore->user_id          = $addUser->id;
+                $parentStore->multi_store_name = $addVendor->store_name;
+                $parentStore->level            = 'child';
+                $parentStore->save();
+                //create vendor id in sales platform table
+                $platformStatus ='inactive';
+                $platforms = Platforms::all();
+                        
+                foreach($platforms as $platform){
+                    $addPlatform = new SalesPlatform();
+                    $addPlatform->vendor_id         = $addVendor->id;
+                    $addPlatform->platform_name     = $platform->name;
+                    $addPlatform->vendor_status     = $platformStatus;
+                    $addPlatform->save();
+                }
+        
+                $data = array(
+                'name'     => $request->name,
+                'email'    => $request->email,
+                'password' => $tempoaryPassword,        
+                );
+                Mail::to($request->email)
+                ->cc('admin@localeats.africa')
+                //->bcc('admin@localeats.africa')
+                ->send(new NewUserEmail($data));
+        
+                $response = [
+                    'code'      => '',
+                    'message'   => 'Vendor successfully added ',
+                    'status'    => 'success',
+                ];
+                 $data = json_encode($response, true);
+        
+                return redirect()->back()->with('add-vendor', 'New outlet: ' .$request->store_name. ' successfully added  ');
+            }
+            else{
+                $error = [
+                    'code'      => '',
+                    'message'   => 'Something went wrong',
+                    'status'    => 'error'
+                ]; 
+                $data = json_encode($error);
+                return redirect()->back()->with('add-vendor', 'Something went wrong');
+            }
+            return view('multistore.add-new-child-vendor', compact('name','role', 'state', 
+            'country', 'selectBankName', 'selectFoodType', 'selectRestaurantType', 
+            'stateID', 'countryID', 'location', 'vendorName', 'parent_id'));  
 
-            $vendorName = DB::table('vendor')->where('id', $vendor_id)
-            ->select('*')->pluck('store_name')->first();
-
-            $parent_id = DB::table('multi_store')
-            ->where('vendor_id', $vendor_id)
-            ->get('*')->pluck('id')->first();
-
-            $stateID = DB::table('state')->select(['*'])
-            ->pluck('id');
-    
-            $state = State::all();
-            $location = Area::all();
-            $countryID = DB::table('country')->select('*')
-            ->where('country', 'Nigeria')
-            ->pluck('id')->first();
-    
-            $country = DB::table('country')->select('*')
-            ->where('country', 'Nigeria')
-            ->pluck('country')->first();
-    
-            $selectBankName = BankList::all();
-            $selectFoodType = FoodType::all();
-            $selectRestaurantType = RestaurantType::all();
-    
-            return view('multistore.add-new-child-vendor', compact('name', 
-            'role', 'state', 'country', 'selectBankName',
-            'selectFoodType', 'selectRestaurantType', 'stateID', 
-            'countryID', 'location', 'vendorName', 'parent_id'));
-    
-        }
     }
 
-    public function importParentVendorSupplies(Request $request)
-    {
+
+    public function importParentVendorSupplies(Request $request){
         // Validate the uploaded file
         $request->validate([
             'file' => 'required|mimes:xlsx,xls',
