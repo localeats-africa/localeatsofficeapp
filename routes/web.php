@@ -143,8 +143,11 @@ Route::controller(HomeController::class)->group(function () {
     Route::get('parent-vendor',  'allParentVendor')->name('parent-vendor');
     Route::get('new-parent-vendor',  'newParentVendor')->name('new-parent-vendor');
     Route::post('add-parent-vendor',  'addParentVendor')->name('add-parent-vendor');
+    //create outlets
+    Route::get('child-vendor/{id}',  'childVendor')->name('child-vendor');
+    Route::get('new-child-vendor/{id}',  'newChildVendor')->name('new-child-vendor');
+    Route::post('add-child-vendor',  'storeChildVendor')->name('add-child-vendor');
 });
-
 
 
 Route::controller(AdminController::class)->group(function () {
@@ -223,4 +226,7 @@ Route::controller(CashierController::class)->group(function () {
 
 Route::controller(ParentVendorController::class)->group(function () {
     Route::get('parent_vendor',  'index')->name('parent_vendor');
+    //custom user url with username
+    Route::get('/{username}',  'username')->name('/');
+ 
 });

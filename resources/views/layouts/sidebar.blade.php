@@ -127,17 +127,14 @@
                         <a class="nav-link" href="{{ url('all-food-menu') }}">
                               <span class="menu-title">Food Menu</span>
                               <i class="mdi mdi-menu   menu-icon fs-24"></i>
-
                         </a>
                   </li>
-
-              
+      
 
                   <li class="nav-item">
                         <a class="nav-link" href="{{ url('restaurant')}}" target="">
                               <span class="menu-title">Restaurant Type</span>
                               <i class="mdi mdi-store fs-24 menu-icon"></i>
-
                         </a>
                   </li>
 
@@ -145,7 +142,6 @@
                         <a class="nav-link" href="{{ url('food-type')}}" target="">
                               <span class="menu-title">Food Type</span>
                               <i class="mdi mdi-food fs-24 menu-icon"></i>
-
                         </a>
                   </li>
 
@@ -153,7 +149,6 @@
                         <a class="nav-link" href="{{ url('location')}}" target="">
                               <span class="menu-title">Store Locations</span>
                               <i class="mdi mdi-location-enter fs-24 menu-icon"></i>
-
                         </a>
                   </li>
 
@@ -161,7 +156,6 @@
                         <a class="nav-link" href="{{ url('all-staff')}}" target="">
                               <span class="menu-title">Staff (s)</span>
                               <i class="mdi mdi-account-multiple fs-24 menu-icon"></i>
-
                         </a>
                   </li>
 
@@ -169,7 +163,6 @@
                         <a class="nav-link" href="{{ url('roles')}}" target="">
                               <span class="menu-title">LocalEats Roles</span>
                               <i class="mdi mdi-account-tag fs-24 menu-icon"></i>
-
                         </a>
                   </li>
 
@@ -179,7 +172,6 @@
                               <span class="menu-title">Vendor</span>
                               <i class="menu-arrow"></i>
                               <i class="mdi mdi-pot-steam   menu-icon fs-24"></i>
-
                         </a>
                         <div class="collapse" id="vendor">
                               <ul class="nav flex-column sub-menu">
@@ -190,7 +182,6 @@
                                     <li class="nav-item">
                                           <a class="nav-link" href="{{ url('all-vendor')}}">All Vendors</a>
                                     </li>
-
                               </ul>
                         </div>
                   </li>
@@ -222,31 +213,14 @@
                               </ul>
                         </div>
                   </li>
-
                   <li class="nav-item">
-                        <a class="nav-link" data-bs-toggle="collapse" href="#role" aria-expanded="false"
-                              aria-controls="role">
+                        <a class="nav-link" href="{{ url('parent-vendor') }}" target="">
                               <span class="menu-title">Multi-Vendor </span>
-                              <i class="menu-arrow"></i>
-                              <i class="mdi mdi-store-cog fs-24 menu-icon"></i>
+                              <i class="mdi mdi-pot-steam  fs-24 menu-icon"></i>
 
                         </a>
-                        <div class="collapse" id="role">
-                              <ul class="nav flex-column sub-menu">
-                              <li class="nav-item">
-                                          <a class="nav-link" href="{{ url('parent-vendor') }}">Parent Vendors
-                                          </a>
-                                    </li>
-
-                                    <li class="nav-item">
-                                          <a class="nav-link" href="{{ url('multi-vendor-roles') }}">Roles
-                                          </a>
-                                    </li>
-
-                              </ul>
-                        </div>
                   </li>
-                  
+
                   @endif
                   <!--- vendor manager sidebar ---->
                   @if(Auth::user()->role_id == '6')

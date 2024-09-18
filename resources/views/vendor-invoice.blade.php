@@ -134,9 +134,19 @@
                                                                   <br>
                                                                   <i class="mdi mdi-web-check"></i>
                                                                   www.localeats.africa</small>
-
-
                                                       </div>
+
+                                                      <div class="row mb-3">
+                                                            <p></p>
+                                                            <div class="col-sm-12">
+                                                                  <p></p>
+                                                                  <br>
+                                                            <div class="mt-1">
+                                                                <small><strong>Payment Date:</strong>  {{$payment_date}}</small>
+                                                            </div>
+                                                            </div>
+                                                      </div>
+                                                            <!---end row ---> 
                                                 </div>
                                           </div>
 
@@ -236,16 +246,27 @@
 
                                                                   </tr>
                                                                   <tr>
-                                                                        <th colspan="3" class="text-end">
+                                                                        <th>  
+                                                                        @if($payment_status == 'paid')
+                                                                      <span class="text-danger">{{$data->payment_remark}}</span>
+                                                                        @else
+                                                                        <input type="text"  class="form-control"  placeholder="leave a remark here; before you mark as paid. (Optional)"  id="remark" style="border-color:#000;">
+                                                                        @endif
+                                                                        </th>
+                                                                        
+                                                                        <th colspan="2" class="text-end">
                                                                               @auth
                                                                               @if(Auth::user()->role_id =='2')
-                                                                            
+                                                                              @if($payment_status == 'paid')
+                                                                              @else
                                                                               <input type="hidden" value="{{$vendor}}" id="vendor_id">
                                                                               <input type="hidden" value="{{$invoice_ref}}" id="invoiceRef">
+                                                                            
                                                                               <button onclick="markAsPaid()"
                                                                                     class="btn btn-block btn-success text-dark">Mark
                                                                                     This Invoice As Paid</button>
-                                                                             
+                                                                               @endif
+
                                                                               @else
                                                                               @endif
                                                                               @endauth
@@ -308,6 +329,7 @@ function markAsPaid() {
       document.getElementById('response').style.display = 'none';
       var id = document.getElementById('invoiceRef').value;
       var vendor_id = document.getElementById('vendor_id').value;
+      var remark = document.getElementById('remark').value;
       var showRoute = "{{ route('mark-invoice-paid', ':id') }}";
       url = showRoute.replace(':id', id);
 
@@ -322,7 +344,8 @@ function markAsPaid() {
             url: url,
             data: {
                   //you can more data here
-                  'vendor_id': vendor_id
+                  'vendor_id': vendor_id,
+                  'remark': remark
             },
             success: function(data) {
                   console.log(data.message);

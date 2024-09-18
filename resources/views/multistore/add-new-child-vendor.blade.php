@@ -7,14 +7,14 @@
 <div class="main-panel">
       <div class="content-wrapper">
             <div class="page-header">
-                  <h3 class="page-title"> New Multi-Vendor (Parent Vendor) </h3>
+                  <h3 class="page-title"> Add New Outlet >>> to >>> <span class="text-info">{{$vendorName}}</span></h3>
             </div>
             <!--Alert here--->
             <div class="row">
                   <div class="col-12">
 
                         @if(session('add-vendor'))
-                        <div class="alert  alert-success alert-dismissible" role="alert">
+                        <div class="alert  alert-danger alert-dismissible" role="alert">
                               <div class="d-flex">
                                     <div>
                                           <!-- Download SVG icon from http://tabler-icons.io/i/alert-triangle -->
@@ -68,11 +68,11 @@
             </div>
             <!---end row --->
          
-            <form method="post" action="{{ route('add-parent-vendor') }}" name="submit" enctype="multipart/form-data">
+            <form method="post" action="{{ route('add-vendor') }}" name="submit" enctype="multipart/form-data">
                   @csrf
                   {{csrf_field()}}
                   <div class="row">
-                        <div class="col-md-6 grid-margin stretch-card">
+                        <div class="col-md-4 grid-margin stretch-card">
                               <div class="card">
                                     <div class="card-body">
                                           <div class="form-label required">Business Name <i class="text-danger">*</i>
@@ -106,7 +106,87 @@
                               </div>
                         </div>
 
-                
+                        <div class="col-md-4 grid-margin stretch-card">
+                              <div class="card">
+                                    <div class="card-body">
+                                          <div class="form-label required">Restaurant Type <i class="text-danger">*</i>
+                                          </div>
+                                          <select class="js-example-basic-single" style="width:100%"
+                                                name="restaurant_type">
+                                                <option>Search</option>
+                                                @foreach($selectRestaurantType as $store)
+                                                <option value="{{$store->id}}">
+                                                      {{$store->restaurant_type}}</option>
+                                                @endforeach
+                                          </select>
+                                          @error('restaurant_type')
+                                          <div class="alert alert-danger alert-dismissible" role="alert">
+                                                <div class="d-flex">
+                                                      <div>
+                                                            <!-- Download SVG icon from http://tabler-icons.io/i/alert-circle -->
+                                                            <svg xmlns="http://www.w3.org/2000/svg"
+                                                                  class="icon alert-icon" width="24" height="24"
+                                                                  viewBox="0 0 24 24" stroke-width="2"
+                                                                  stroke="currentColor" fill="none"
+                                                                  stroke-linecap="round" stroke-linejoin="round">
+                                                                  <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                                                                  <path d="M3 12a9 9 0 1 0 18 0a9 9 0 0 0 -18 0" />
+                                                                  <path d="M12 8v4" />
+                                                                  <path d="M12 16h.01" />
+                                                            </svg>
+                                                      </div>
+                                                      <div>
+                                                            {{ $message }}
+                                                      </div>
+                                                </div>
+                                                <a class="btn-close" data-bs-dismiss="alert" aria-label="close"></a>
+                                          </div>
+                                          @enderror
+                                    </div>
+                              </div>
+                        </div>
+
+                        <div class="col-md-4 grid-margin stretch-card">
+                              <div class="card">
+                                    <div class="card-body">
+                                          <div class="form-label required">Select Food Type (s) <i class="text-danger">*</i>
+                                          </div>
+                                          <option>Search</option>
+                                          <select class="js-example-basic-single"
+                                                style="width:100%" name="food_type">
+
+                                                @foreach($selectFoodType as $food)
+                                                <option value="{{$food->food_type}}">
+                                                      {{$food->food_type}}</option>
+                                                @endforeach
+                                          </select>
+                                          @error('food_type')
+                                          <div class="alert alert-danger alert-dismissible" role="alert">
+                                                <div class="d-flex">
+                                                      <div>
+                                                            <!-- Download SVG icon from http://tabler-icons.io/i/alert-circle -->
+                                                            <svg xmlns="http://www.w3.org/2000/svg"
+                                                                  class="icon alert-icon" width="24" height="24"
+                                                                  viewBox="0 0 24 24" stroke-width="2"
+                                                                  stroke="currentColor" fill="none"
+                                                                  stroke-linecap="round" stroke-linejoin="round">
+                                                                  <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                                                                  <path d="M3 12a9 9 0 1 0 18 0a9 9 0 0 0 -18 0" />
+                                                                  <path d="M12 8v4" />
+                                                                  <path d="M12 16h.01" />
+                                                            </svg>
+                                                      </div>
+                                                      <div>
+                                                            {{ $message }}
+                                                      </div>
+                                                </div>
+                                                <a class="btn-close" data-bs-dismiss="alert" aria-label="close"></a>
+                                          </div>
+                                          @enderror
+                                    </div>
+                              </div>
+                        </div>
+
 
                         <div class="col-md-6 col-12 grid-margin stretch-card">
                               <div class="card">
@@ -147,6 +227,44 @@
                         </div>
 
 
+                        <div class="col-md-6 col-12 grid-margin stretch-card">
+                              <div class="card">
+                                    <div class="card-body">
+                                          <div class="form-label required">Delivery Time <i class="text-danger">*</i>
+                                          </div>
+                                          <input type="hidden" name="delivery_time" id="gtime" value="">
+
+                                          <div class="value"></div>
+                                          <input type='range' min='3' max='90' value='30' step='1' class='val'
+                                                id='r1' />
+
+                                          @error('delivery_time')
+                                          <div class="alert alert-danger alert-dismissible" role="alert">
+                                                <div class="d-flex">
+                                                      <div>
+                                                            <!-- Download SVG icon from http://tabler-icons.io/i/alert-circle -->
+                                                            <svg xmlns="http://www.w3.org/2000/svg"
+                                                                  class="icon alert-icon" width="24" height="24"
+                                                                  viewBox="0 0 24 24" stroke-width="2"
+                                                                  stroke="currentColor" fill="none"
+                                                                  stroke-linecap="round" stroke-linejoin="round">
+                                                                  <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                                                                  <path d="M3 12a9 9 0 1 0 18 0a9 9 0 0 0 -18 0" />
+                                                                  <path d="M12 8v4" />
+                                                                  <path d="M12 16h.01" />
+                                                            </svg>
+                                                      </div>
+                                                      <div>
+                                                            {{ $message }}
+                                                      </div>
+                                                </div>
+                                                <a class="btn-close" data-bs-dismiss="alert" aria-label="close"></a>
+                                          </div>
+                                          @enderror
+                                    </div>
+                              </div>
+                        </div>
+
                         <div class="col-md-12 col-12 grid-margin stretch-card">
                               <div class="card">
                                     <div class="card-body">
@@ -183,12 +301,12 @@
                         <div class="col-md-4 col-12 grid-margin stretch-card">
                               <div class="card">
                                     <div class="card-body">
-                                          <div class="form-label required">Store Area / Location <i class="text-danger">*</i> 
+                                          <div class="form-label required">Store Area / Location <i class="text-danger">*</i>
                                           </div>
                                                 <select class="js-example-basic-single2 text-secondary" style="width:100%" name="area" >
                                                 <option value="">Choose</option>
                                                 @foreach($location as $data)
-                                                <option value="{{$data->area}}">
+                                                <option value="{{$data->id}}">
                                                       {{$data->area}}
                                                 </option>
                                                 @endforeach
@@ -226,7 +344,7 @@
                                           <div class="form-label required">State <i class="text-danger">*</i>
                                           </div>
                                           <select  class="js-example-basic-single" style="width:100%" name="state" id="">
-                                          <option value="">Choose</option>      
+                                          <option value="">Choose</option>     
                                           @foreach($state as $data)
                                                 <option value="{{$data->id}}">{{$data->state}}</option>
                                                 @endforeach
@@ -439,7 +557,7 @@
                         <div class="col-md-6 col-12 grid-margin stretch-card">
                               <div class="card">
                                     <div class="card-body">
-                                          <div class="form-label required">Email<i class="text-danger">*</i>
+                                          <div class="form-label required">Email
                                           </div>
                                           <input type="email" class="form-control" name="email" placeholder="" value="">
                                           @error('email')
@@ -474,10 +592,139 @@
                   </div>
                   <!-- row -->
 
+                  <div class="row">
+                        <div class="col-md-4 col-12 grid-margin stretch-card">
+                              <div class="card">
+                                    <div class="card-body">
+                                          <div class="form-label required">Bank Name 
+                                          </div>
+
+                                          <select class="js-example-basic-single" style="width:100%" name="bankName"
+                                                id="bank">
+                                                <option>Search for bank
+                                                </option>
+                                                @foreach($selectBankName as $bank)
+                                                <option value="{{$bank->code}}">
+                                                      {{$bank->name}}</option>
+                                                @endforeach
+                                          </select>
+                                          
+
+                                          @error('bankName')
+                                          <div class="alert alert-danger alert-dismissible" role="alert">
+                                                <div class="d-flex">
+                                                      <div>
+                                                            <!-- Download SVG icon from http://tabler-icons.io/i/alert-circle -->
+                                                            <svg xmlns="http://www.w3.org/2000/svg"
+                                                                  class="icon alert-icon" width="24" height="24"
+                                                                  viewBox="0 0 24 24" stroke-width="2"
+                                                                  stroke="currentColor" fill="none"
+                                                                  stroke-linecap="round" stroke-linejoin="round">
+                                                                  <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                                                                  <path d="M3 12a9 9 0 1 0 18 0a9 9 0 0 0 -18 0" />
+                                                                  <path d="M12 8v4" />
+                                                                  <path d="M12 16h.01" />
+                                                            </svg>
+                                                      </div>
+                                                      <div>
+                                                            {{ $message }}
+                                                      </div>
+                                                </div>
+                                                <a class="btn-close" data-bs-dismiss="alert" aria-label="close"></a>
+                                          </div>
+                                          @enderror
+                                    </div>
+                              </div>
+                        </div>
+
+
+                        <div class="col-md-4 col-12 grid-margin stretch-card">
+                              <div class="card">
+                                    <div class="card-body">
+                                          <div class="form-label required">Account Number</div>
+                                          <input type="text" class="form-control" name="accountNumber"
+                                                placeholder="Valid account number only " value="" id="accountNumber"
+                                                maxlength="10" onkeyup="check_account_number()">
+                                          <!---account number validation error --->
+                                          <span class="" id="check_account"></span>
+                                          <span class="text-danger" id="accountError"></span>
+                                         
+                                          <div class="progress" id="show-progress" style="display:none;">
+                                                <div class="progress-bar progress-bar-striped  progress-bar-animated"
+                                                      role="progressbar" aria-valuenow="75" aria-valuemin="0"
+                                                      aria-valuemax="100" style="width: 75%"></div>
+                                          </div>
+
+                                          <!--- end validation error --->
+                                          @error('accountNumber')
+                                          <div class="alert alert-danger alert-dismissible" role="alert">
+                                                <div class="d-flex">
+                                                      <div>
+                                                            <!-- Download SVG icon from http://tabler-icons.io/i/alert-circle -->
+                                                            <svg xmlns="http://www.w3.org/2000/svg"
+                                                                  class="icon alert-icon" width="24" height="24"
+                                                                  viewBox="0 0 24 24" stroke-width="2"
+                                                                  stroke="currentColor" fill="none"
+                                                                  stroke-linecap="round" stroke-linejoin="round">
+                                                                  <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                                                                  <path d="M3 12a9 9 0 1 0 18 0a9 9 0 0 0 -18 0" />
+                                                                  <path d="M12 8v4" />
+                                                                  <path d="M12 16h.01" />
+                                                            </svg>
+                                                      </div>
+                                                      <div>
+                                                            {{ $message }}
+                                                      </div>
+                                                </div>
+                                                <a class="btn-close" data-bs-dismiss="alert" aria-label="close"></a>
+                                          </div>
+                                          @enderror
+                                    </div>
+                              </div>
+                        </div>
+
+
+                        <div class="col-md-4 col-12 grid-margin stretch-card">
+                              <div class="card">
+                                    <div class="card-body">
+                                          <div class="form-label">Account Name </div>
+                                          <input type="hidden" class="form-control text-muted-fg bg-muted"
+                                                name="accountName" id="showName" value="">
+                                          <input class="form-control " id="showName2" disabled="" value="">
+
+                                          @error('accountName')
+                                          <div class="alert alert-danger alert-dismissible" role="alert">
+                                                <div class="d-flex">
+                                                      <div>
+                                                            <!-- Download SVG icon from http://tabler-icons.io/i/alert-circle -->
+                                                            <svg xmlns="http://www.w3.org/2000/svg"
+                                                                  class="icon alert-icon" width="24" height="24"
+                                                                  viewBox="0 0 24 24" stroke-width="2"
+                                                                  stroke="currentColor" fill="none"
+                                                                  stroke-linecap="round" stroke-linejoin="round">
+                                                                  <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                                                                  <path d="M3 12a9 9 0 1 0 18 0a9 9 0 0 0 -18 0" />
+                                                                  <path d="M12 8v4" />
+                                                                  <path d="M12 16h.01" />
+                                                            </svg>
+                                                      </div>
+                                                      <div>
+                                                            {{ $message }}
+                                                      </div>
+                                                </div>
+                                                <a class="btn-close" data-bs-dismiss="alert" aria-label="close"></a>
+                                          </div>
+                                          @enderror
+                                    </div>
+                              </div>
+                        </div>
+
+                  </div>
                   <!-- row -->
                   <div class="row">
                         <p></p>
                         <div class="col-md-6">
+                              <input type="hidden" value="{{$parent_id}}">
                         </div>
                         <div class="col-md-6 col-12 grid-margin stretch-card justify-content-end">
 

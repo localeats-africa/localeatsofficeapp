@@ -148,6 +148,13 @@
                                                                               <i class="fa fa-phone"></i>
                                                                               {{$vendorPhone}}</small>
                                                                   </p>
+                                                                  <p class="text-secondary mb-1">
+                                                                        <small><strong class="text-dark">Bank:</strong> {{$bankName}} <br>
+                                                                            <strong class="text-dark">Account Number: </strong> {{$accountNumber}} <br>
+                                                                           <strong class="text-dark"> Account Name: </strong>  {{$accountName}} 
+                                                                        
+                                                                        </small>
+                                                                  </p>
                                                             </div>
                                                             <p></p>
                                                       </div>

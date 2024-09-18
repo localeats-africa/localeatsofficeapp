@@ -1148,6 +1148,15 @@ class HomeController extends Controller
             $vendorLname = DB::table('vendor')->where('id', $vendor)
             ->select('*')->pluck('contact_lname')->first();
 
+            $bankName = DB::table('vendor')->where('id', $vendor)
+            ->select('*')->pluck('bank_name')->first();
+
+            $accountNumber = DB::table('vendor')->where('id', $vendor)
+            ->select('*')->pluck('account_number')->first();
+
+            $accountName = DB::table('vendor')->where('id', $vendor)
+            ->select('*')->pluck('account_name')->first();
+
             $totalComm = DB::table('orders')
             ->leftJoin('commission', 'orders.id', '=', 'commission.order_id')
             ->where('orders.vendor_id', $vendor)
@@ -1216,7 +1225,6 @@ class HomeController extends Controller
             ->where('order_extra_foodmenu_picked.foodmenu', '!=', null)
             ->get();
             
-
             $orders = DB::table('orders')
             ->Join('platforms', 'orders.platform_id', '=', 'platforms.id')
             ->Join('commission', 'orders.id', '=', 'commission.order_id')
@@ -1235,7 +1243,7 @@ class HomeController extends Controller
          'vendorEmail', 'vendorFname', 'vendorLname', 'orders',
          'totalComm', 'totalPlatformComm', 'sumAmount', 'sumFoodPrice', 'sumExtra',
         'vendorFoodPrice', 'payout', 'invoiceRef', 'vendorID', 'invoicePaymentStatus',
-        'commissionPiad', 'extraFoodMenu') );
+        'commissionPiad', 'extraFoodMenu', 'bankName', 'accountNumber', 'accountName') );
     }
 
     public function updateMergeInvoiceFood(Request $request){
@@ -1576,6 +1584,12 @@ class HomeController extends Controller
          ->where('orders.invoice_ref', $invoice_ref)
          ->where('orders.payment_status', '!=', null)
          ->pluck('payment_status')->first();
+
+         $payment_date = DB::table('orders')
+         ->where('orders.vendor_id', $vendor)
+        ->where('orders.invoice_ref', $invoice_ref)
+        ->where('orders.payment_status', '!=', null)
+        ->pluck('payment_date')->first();
   
           $orders = DB::table('orders')
           ->leftJoin('merge_invoices', 'orders.id', '=', 'merge_invoices.order_id')
@@ -1590,7 +1604,7 @@ class HomeController extends Controller
             'vendorEmail', 'vendorFname', 'vendorLname', 'orders',
             'sumFoodPrice', 'sumExtra','vendorFoodPrice', 'payout', 
             'payment_status', 'invoice_ref', 'vendor', 
-            'vendorAccountNumber', 'vendorAccountName', 'vendorBankName'));
+            'vendorAccountNumber', 'vendorAccountName', 'vendorBankName', 'payment_date'));
 
      }
 
@@ -3124,17 +3138,17 @@ class HomeController extends Controller
                 'store_name'               => 'required|string|max:255',
                 'area'                      => 'required|string|max:255',
                 'state'                     => 'required|string|max:255',
-                'restaurant_type'           => 'required|string|max:255',
-                'food_type'                 => 'required|max:255',
+               // 'restaurant_type'           => 'required|string|max:255',
+               // 'food_type'                 => 'required|max:255',
                 'number_of_store_location'  => 'required|string|max:255',
-                'delivery_time'             => 'max:255',
+                //'delivery_time'             => 'max:255',
                 'first_name'                => 'required|string|max:255',
                 'last_name'                 => 'required|string|max:255',
                 'phone'                     => 'regex:/^([0-9\s\-\+\(\)]*)$/|min:9|max:13',
                 'email'                     => 'required|email|max:255', 
                 'address'                   => 'required|string|max:255', 
-                'bankName'                  => 'string|max:255', 
-                'accountNumber'             => 'max:255', 
+                //'bankName'                  => 'string|max:255', 
+                //'accountNumber'             => 'max:255', 
             ]);
             
             $verified = Carbon::now();
@@ -3155,7 +3169,10 @@ class HomeController extends Controller
             $role = Role::where('role_name', 'parentvendor')
             ->get()->pluck('id')->first();
 
+            $username = substr($request->store_name, -10);
+
             $addUser = new User;
+            $addUser->username          = $username;
             $addUser->fullname          = $request->first_name. ' ' .$request->last_name;
             $addUser->email             = $request->email;
             $addUser->role_id           = $role;
@@ -3167,18 +3184,19 @@ class HomeController extends Controller
             $foodType = $request->food_type;
            
             if($addUser){
-            $vendorStatus = 'pending';
-            $vendorName = $request->area. '-' .$foodType;
-            $addVendor = new Vendor();
+            $vendorStatus                           = 'pending';
+            $vendorName                             = $request->area. '-' .$foodType;
+
+            $addVendor                              = new Vendor();
             $addVendor->vendor_ref                  = $vendorRef;
             $addVendor->added_by                    = $id;
             $addVendor->store_name                  = $request->store_name;
-            $addVendor->store_area                 = $request->area;
+            $addVendor->store_area                  = $request->area;
             $addVendor->vendor_name                 = $vendorName;
-            $addVendor->restaurant_type             = $request->restaurant_type;
-            $addVendor->food_type                   = $foodType;
+            // $addVendor->restaurant_type             = $request->restaurant_type;
+            // $addVendor->food_type                   = $foodType;
             $addVendor->number_of_store_locations   = $request->number_of_store_location;
-            $addVendor->delivery_time               = $request->delivery_time;
+            // $addVendor->delivery_time               = $request->delivery_time;
             $addVendor->description                 = $request->description;
             $addVendor->contact_fname               = $request->first_name;
             $addVendor->contact_lname               = $request->last_name;
@@ -3187,9 +3205,9 @@ class HomeController extends Controller
             $addVendor->address                     = $request->address;
             $addVendor->state_id                    = $request->state;
             $addVendor->country_id                  = $request->country;
-            $addVendor->bank_name                   = $request->bankName;
-            $addVendor->account_number              = $request->accountNumber;
-            $addVendor->account_name                = $request->accountName;
+            // $addVendor->bank_name                   = $request->bankName;
+            // $addVendor->account_number              = $request->accountNumber;
+            // $addVendor->account_name                = $request->accountName;
             $addVendor->vendor_status               = $vendorStatus;
             $addVendor->save();
 
@@ -3229,7 +3247,7 @@ class HomeController extends Controller
                 ];
                 $data = json_encode($response, true);
 
-                return redirect()->back()->with('add-vendor', 'Parent Vendor  successfully added');
+                return redirect()->back()->with('add-vendor', 'Parent Vendor: ' .$request->store_name. '  successfully added');
             }
             else{
                 $error = [
@@ -3257,6 +3275,7 @@ class HomeController extends Controller
             ->join('vendor', 'vendor.id', 'multi_store.vendor_id')
             ->where('multi_store.level', 'parent')
             ->get();
+
              // a vendor is consider active if it's active on one or more platform
             $countActivevendor = DB::table('sales_platform')
             ->join('vendor', 'vendor.id', '=', 'sales_platform.vendor_id')->distinct()
@@ -3295,4 +3314,311 @@ class HomeController extends Controller
             'vendor', 'countVendor', 'countActivevendor'));
         }
     }
+
+    public function childVendor(Request $request, $vendor_id){
+        if(Auth::user()){
+            $name = Auth::user()->name;
+            $user_id = Auth::user()->id;
+            $role = DB::table('role')->select('role_name')
+            ->join('users', 'users.role_id', 'role.id')
+            ->where('users.id', $user_id)
+            ->pluck('role_name')->first();
+
+            $vendorName = DB::table('vendor')->where('id', $vendor_id)
+            ->select('*')->pluck('store_name')->first();
+
+            $parent = DB::table('multi_store')
+            ->where('vendor_id', $vendor_id)
+            ->get('*')->pluck('id');
+
+            $countVendor =  DB::table('vendor')
+            ->join('sub_store', 'sub_store.vendor_id', 'vendor.id')
+            ->where('sub_store.multi_store_id', $parent)
+            ->get();
+             // a vendor is consider active if it's active on one or more platform
+            $countActivevendor = DB::table('sales_platform')
+            ->join('vendor', 'vendor.id', '=', 'sales_platform.vendor_id')->distinct()
+            ->join('sub_store', 'sub_store.vendor_id', 'vendor.id')
+            ->where('sales_platform.vendor_status', 'active')
+            ->where('sub_store.multi_store_id', $parent)
+            ->get('sales_platform.vendor_id');
+            //dd( $parent);
+
+            $perPage = $request->perPage ?? 25;
+            $search = $request->input('search');
+    
+            $childVendor = DB::table('vendor')
+            ->join('sub_store', 'sub_store.vendor_id', 'vendor.id')
+            ->where('sub_store.multi_store_id', $parent)
+            ->select(['vendor.id', 'vendor.vendor_status', 'vendor.store_area',
+            'vendor.store_name', 'state.state'])
+            ->orderBy('sub_store.created_at', 'desc')
+            ->where(function ($query) use ($search) {  // <<<
+            $query->where('vendor.store_name', 'LIKE', '%'.$search.'%')
+                    ->orWhere('vendor.vendor_status', 'LIKE', '%'.$search.'%')
+                    ->orWhere('vendor.store_area', 'LIKE', '%'.$search.'%');
+            })
+            ->paginate($perPage,  $pageName = 'outlets')->appends(['per_page'   => $perPage]);
+            $pagination = $childVendor->appends ( array ('search' => $search) );
+                if (count ( $pagination ) > 0){
+                    return view('multistore.child-vendor',  compact(
+                    'perPage', 'childVendor', 'role', 'vendorName', 
+                    'countVendor', 'countActivevendor'))->withDetails($pagination);     
+                } 
+            else{ 
+                // Session::flash('food-status', 'No record order found'); 
+                return view('multistore.child-vendor',  compact('perPage', 
+                'childVendor', 'role', 'vendorName', 'countVendor', 'countActivevendor'))->with('food-status', 'No record order found'); }
+            
+                return view('multistore.child-vendor',  compact('perPage', 
+                'childVendor', 'role', 'vendorName', 'countVendor', 'countActivevendor'));
+        }
+    }
+
+    public function newChildVendor(Request $request, $parent_id){
+        $name = Auth::user()->name;
+        $id = Auth::user()->id;
+        $role = DB::table('role')->select('role_name')
+        ->join('users', 'users.role_id', 'role.id')
+        ->where('users.id', $id)
+        ->pluck('role_name')->first();
+
+        $vendorName = DB::table('vendor')->where('id', $parent_id)
+        ->select('*')->pluck('store_name')->first();
+
+        $parent = DB::table('multi_store')
+        ->where('vendor_id', $parent_id)
+        ->get('*')->pluck('id');
+
+        $stateID = DB::table('state')->select(['*'])
+        ->pluck('id');
+
+        $state = State::all();
+        $location = Area::all();
+        $countryID = DB::table('country')->select('*')
+        ->where('country', 'Nigeria')
+        ->pluck('id')->first();
+
+        $country = DB::table('country')->select('*')
+        ->where('country', 'Nigeria')
+        ->pluck('country')->first();
+
+        $selectBankName = BankList::all();
+        $selectFoodType = FoodType::all();
+        $selectRestaurantType = RestaurantType::all();
+        return view('multistore.add-new-child-vendor', compact('name','role', 'state', 
+        'country', 'selectBankName', 'selectFoodType', 'selectRestaurantType', 
+        'stateID', 'countryID', 'location', 'vendorName', 'parent_id'));  
+    }
+
+    public function storeChildVendor(Request $request){
+            //child vendor
+            $name = Auth::user()->name;
+            $id = Auth::user()->id;
+
+            $parent = DB::table('multi_store')
+            ->where('vendor_id', $request_parent_id)
+            ->get('*')->pluck('id');
+
+            $pin = mt_rand(100000, 999999);
+            // shuffle pin
+            $vendorRef = 'V'.str_shuffle($pin); 
+            $this->validate($request, [ 
+            'store_name'               => 'required|string|max:255',
+            'area'                      => 'required|string|max:255',
+            'state'                     => 'required|string|max:255',
+            'restaurant_type'           => 'required|string|max:255',
+            'food_type'                 => 'required|max:255',
+            'number_of_store_location'  => 'required|string|max:255',
+            'delivery_time'             => 'max:255',
+            'first_name'                => 'required|string|max:255',
+            'last_name'                 => 'required|string|max:255',
+            'phone'                     => 'regex:/^([0-9\s\-\+\(\)]*)$/|min:9|max:13',
+            'email'                     => 'required|email|max:255', 
+            'address'                   => 'required|string|max:255', 
+            'bankName'                  => 'string|max:255', 
+             'accountNumber'             => 'max:255', 
+            ]);
+                    
+            $verified = Carbon::now();
+            $characters = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
+            $randomString = '';
+            $num = 8;
+            for ($a = 0; $a < $num; $a++) {
+                $index = rand(0, strlen($characters) - 1);
+                $randomString .= $characters[$index];
+            }
+            $tempoaryPassword = str_shuffle($randomString);
+            $password =  Hash::make($tempoaryPassword);
+            $checkUser = User::where('email', $request->email)->exists();
+            if($checkUser){
+                return redirect()->back()->with('error', 'This user is existing'); 
+            }
+            $role = Role::where('role_name', 'childvendor')
+            ->get()->pluck('id')->first();
+            $username = substr($request->store_name, -10);
+        
+            $addUser = new User;
+            $addUser->username          = $username;
+            $addUser->fullname          = $request->first_name. ' ' .$request->last_name;
+            $addUser->email             = $request->email;
+            $addUser->role_id           = $role;
+            $addUser->email_verified_at = $verified;
+            $addUser->password          = $password;
+            $addUser->status            ='active';
+            $addUser->save();
+        
+            $foodType = $request->food_type;
+            if($addUser){
+                $vendorStatus                           = 'pending';
+                $vendorName                             = $request->area. '-' .$foodType;
+                
+                $addVendor                              = new Vendor();
+                $addVendor->vendor_ref                  = $vendorRef;
+                $addVendor->added_by                    = $id;
+                $addVendor->store_name                  = $request->store_name;
+                $addVendor->store_area                  = $request->area;
+                $addVendor->vendor_name                 = $vendorName;
+                $addVendor->restaurant_type             = $request->restaurant_type;
+                $addVendor->food_type                   = $foodType;
+                $addVendor->number_of_store_locations   = $request->number_of_store_location;
+                $addVendor->delivery_time               = $request->delivery_time;
+                $addVendor->description                 = $request->description;
+                $addVendor->contact_fname               = $request->first_name;
+                $addVendor->contact_lname               = $request->last_name;
+                $addVendor->contact_phone               = $request->phone;
+                $addVendor->email                       = $request->email;
+                $addVendor->address                     = $request->address;
+                $addVendor->state_id                    = $request->state;
+                $addVendor->country_id                  = $request->country;
+                $addVendor->bank_name                   = $request->bankName;
+                $addVendor->account_number              = $request->accountNumber;
+                $addVendor->account_name                = $request->accountName;
+                $addVendor->vendor_status               = $vendorStatus;
+                $addVendor->save();
+        
+                $childStore = new SubStore();
+                $childStore->vendor_id        = $addVendor->id;
+                $childStore->user_id          = $addUser->id;
+                $childStore->multi_store_id   = $parent_id;
+                $childStore->level            = 'child';
+                $childStore->save();
+                //create vendor id in sales platform table
+                $platformStatus ='inactive';
+                $platforms = Platforms::all();
+                        
+                foreach($platforms as $platform){
+                    $addPlatform = new SalesPlatform();
+                    $addPlatform->vendor_id         = $addVendor->id;
+                    $addPlatform->platform_name     = $platform->name;
+                    $addPlatform->vendor_status     = $platformStatus;
+                    $addPlatform->save();
+                }
+        
+                $data = array(
+                'name'     => $request->name,
+                'email'    => $request->email,
+                'password' => $tempoaryPassword,        
+                );
+                Mail::to($request->email)
+                ->cc('admin@localeats.africa')
+                //->bcc('admin@localeats.africa')
+                ->send(new NewUserEmail($data));
+        
+                $response = [
+                    'code'      => '',
+                    'message'   => 'Vendor successfully added ',
+                    'status'    => 'success',
+                ];
+                 $data = json_encode($response, true);
+        
+                return redirect()->back()->with('add-vendor', 'New outlet: ' .$request->store_name. ' successfully added  ');
+            }
+            else{
+                $error = [
+                    'code'      => '',
+                    'message'   => 'Something went wrong',
+                    'status'    => 'error'
+                ]; 
+                $data = json_encode($error);
+                return redirect()->back()->with('add-vendor', 'Something went wrong');
+            }
+            return redirect()->back()->with('add-vendor', 'Something went wrong');
+        
+
+    }
+
+
+    public function importParentVendorSupplies(Request $request){
+        // Validate the uploaded file
+        $request->validate([
+            'file' => 'required|mimes:xlsx,xls',
+            'vendor_name'=>'required|string|max:255',
+        ]);
+        // Get the uploaded file
+        $file = $request->file('file');
+        $vendor_id = $request->vendor_name;
+     
+        // Process the Excel file
+      $import =  Excel::import(new FoodMenuImportClass($vendor_id), $file);
+
+      if($import){
+        return redirect()->back()->with('food-status', 'File imported successfully!');
+      }
+      else{
+        return redirect()->back()->with('food-status', 'Opps!');
+      }
+ 
+    }
+
+    public function editSupplies(Request $request, $id){
+        if( Auth::user()){
+            $name = Auth::user()->name;
+            $user_id = Auth::user()->id;
+            $role = DB::table('role')->select('role_name')
+            ->join('users', 'users.role_id', 'role.id')
+            ->where('users.id', $user_id)
+            ->pluck('role_name')->first();
+
+            $menu = FoodMenu::find($id);
+            $vendor = Vendor::Join('food_menu', 'vendor.id', '=', 'food_menu.vendor_id')
+            ->where('food_menu.id', $id)
+            ->select('vendor.vendor_name')->pluck('vendor_name')->first();
+            return view('vendormanager.edit-food-menu', compact('menu', 'role', 'vendor')); 
+        }
+          else { return Redirect::to('/login');
+        }
+  }
+
+    public function updateParentVendorSupplies(Request $request, $id)
+    {
+        $this->validate($request, [
+            'item'  => 'max:255',
+            'price'  => 'max:255',
+            ]);
+            $menu = FoodMenu::find($id);
+            $menu->item         = $request->item;
+            $menu->price        = $request->price;
+            $menu->update();
+
+            if($menu){
+                return redirect()->back()->with('menu-status', 'Record Updated');
+            }
+            else{
+                return redirect()->back()->with('menu-error', 'Opps! something went wrong'); 
+            }
+
+    }
+
+    public function deleteSupplies(Request $request, $id){
+        $today = Carbon::now();
+        $food = FoodMenu::find($id);
+        $food->deleted_at  = $today ;
+        $food->update();
+        if($food){
+            return redirect('all-food-menu')->with('food-status', 'Record Deleted Successfully');
+        }
+        
+    }
+
 }//class

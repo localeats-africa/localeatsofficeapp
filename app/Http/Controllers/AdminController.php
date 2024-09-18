@@ -213,6 +213,7 @@ class AdminController extends Controller
         ->where('deleted_at', null)
         ->where('orders.order_amount', '!=', null)
         ->where('orders.order_ref', '!=', null)
+        ->where('orders.food_price', '!=', null)
         ->groupby('year')
         ->get();
 
@@ -223,6 +224,7 @@ class AdminController extends Controller
         )->where('deleted_at', null)
         ->where('orders.order_amount', '!=', null)
         ->where('orders.order_ref', '!=', null)
+        ->where('orders.food_price', '!=', null)
         //->whereYear('orders.delivery_date', '=', Carbon::now()->year)
         ->groupBy('month')
         ->get();
@@ -280,8 +282,8 @@ class AdminController extends Controller
         'label' => ['Chowdeck', 'Glovo', 'Eden'],
         'data' => [round($chowdeckSalesPercentageChart) , round($glovoSalesPercentageChart),  round($edenSalesPercentageChart)] ,
         ];
+        
     //sales for barchart
-
     $chowdeckOrder =  Orders::join('platforms', 'platforms.id', '=', 'orders.platform_id')
     ->select(
         \DB::raw('DATE_FORMAT(orders.delivery_date,"%M ") as month'),
@@ -292,6 +294,7 @@ class AdminController extends Controller
         ->where('orders.deleted_at', null)
         ->where('orders.order_amount', '!=', null)
         ->where('orders.order_ref', '!=', null)
+        ->where('orders.food_price', '!=', null)
        // ->whereYear('orders.delivery_date', '=', Carbon::now()->year)
         ->groupby('month')
         ->get();
@@ -308,6 +311,7 @@ class AdminController extends Controller
         ->where('orders.deleted_at', null)
         ->where('orders.order_amount', '!=', null)
         ->where('orders.order_ref', '!=', null)
+        ->where('orders.food_price', '!=', null)
         //->whereYear('orders.delivery_date', '=', Carbon::now()->year)
         ->groupby('month')
         ->get();
@@ -323,6 +327,7 @@ class AdminController extends Controller
         ->where('orders.deleted_at', null)
         ->where('orders.order_amount', '!=', null)
         ->where('orders.order_ref', '!=', null)
+        ->where('orders.food_price', '!=', null)
         //->whereYear('orders.delivery_date', '=', Carbon::now()->year)
         ->groupby('month')
         ->get();
@@ -797,16 +802,13 @@ class AdminController extends Controller
             'platform_ref' => $request->platform_ref
         ]);
 
-
         if($platformRef){
-
             $data = [
                 'success' => true,
                 'message'=> 'Update successful'
               ] ;
               
               return response()->json($data);
-
             //return  redirect()->back('update-status', 'Update successful');
         }
         else{
@@ -844,7 +846,6 @@ class AdminController extends Controller
                 'perPage', 'name', 'role', 'restaurant'))->withDetails( $pagination );     
             } 
         else{return redirect()->back()->with('error', 'No record order found'); }
-
 
         return view('admin.restaurant-type', compact('perPage', 'role', 'name', 'restaurant'));
     }
@@ -1118,12 +1119,15 @@ class AdminController extends Controller
 
     public function markInvoicePaid(Request $request, $invoice_ref){
         $vendor = $request->vendor_id;
+        $today = Carbon::now();
         $paid =  DB::table('orders')
             ->where('orders.vendor_id', $vendor)
             ->where('orders.invoice_ref', $invoice_ref)
             ->where('orders.payment_status', '!=', null)// use this to get paid unique inv
             ->update([
-            'payment_status' => 'paid'
+            'payment_status'     => 'paid',
+            'payment_date'       =>  $today ,
+            'payment_remark'     =>  $request->remark 
             ]);
         if($paid){
               // use this to count all paid inv
