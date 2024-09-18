@@ -3351,7 +3351,7 @@ class HomeController extends Controller
             ->join('sub_store', 'sub_store.vendor_id', 'vendor.id')
             ->where('sub_store.multi_store_id', $parent)
             ->select(['vendor.id', 'vendor.vendor_status', 'vendor.store_area',
-            'vendor.store_name', 'state.state'])
+            'vendor.store_name'])
             ->orderBy('sub_store.created_at', 'desc')
             ->where(function ($query) use ($search) {  // <<<
             $query->where('vendor.store_name', 'LIKE', '%'.$search.'%')
