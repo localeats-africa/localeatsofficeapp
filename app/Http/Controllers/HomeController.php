@@ -3192,7 +3192,7 @@ class HomeController extends Controller
             $addVendor->added_by                    = $id;
             $addVendor->store_name                  = $request->store_name;
             $addVendor->store_area                  = $request->area;
-            $addVendor->vendor_name                 = $vendorName;
+            $addVendor->vendor_name                 = $request->store_name;
             // $addVendor->restaurant_type             = $request->restaurant_type;
             // $addVendor->food_type                   = $foodType;
             $addVendor->number_of_store_locations   = $request->number_of_store_location;
@@ -3417,7 +3417,7 @@ class HomeController extends Controller
             $id = Auth::user()->id;
 
             $parent = DB::table('multi_store')
-            ->where('vendor_id', $request_parent_id)
+            ->where('vendor_id', $request->parent_id)
             ->get('*')->pluck('id');
 
             $pin = mt_rand(100000, 999999);
@@ -3500,7 +3500,7 @@ class HomeController extends Controller
                 $childStore = new SubStore();
                 $childStore->vendor_id        = $addVendor->id;
                 $childStore->user_id          = $addUser->id;
-                $childStore->multi_store_id   = $parent_id;
+                $childStore->multi_store_id   = $parent;
                 $childStore->level            = 'child';
                 $childStore->save();
                 //create vendor id in sales platform table
