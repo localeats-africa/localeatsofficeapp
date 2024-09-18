@@ -3500,7 +3500,7 @@ class HomeController extends Controller
                 $childStore = new SubStore();
                 $childStore->vendor_id        = $addVendor->id;
                 $childStore->user_id          = $addUser->id;
-                $childStore->multi_store_id   = $parent;
+                $childStore->multi_store_id   = $request->parent_id;
                 $childStore->level            = 'child';
                 $childStore->save();
                 //create vendor id in sales platform table
