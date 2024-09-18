@@ -246,14 +246,22 @@
 
                                                                   </tr>
                                                                   <tr>
-                                                                        <th colspan="3" class="text-end">
+                                                                        <th>  
+                                                                        @if($payment_status == 'paid')
+                                                                      <span class="text-danger">{{$data->payment_remark}}</span>
+                                                                        @else
+                                                                        <input type="text"  class="form-control"  placeholder="leave a remark here; before you mark as paid. (Optional)"  id="remark">
+                                                                        @endif
+                                                                        </th>
+                                                                        
+                                                                        <th colspan="2" class="text-end">
                                                                               @auth
                                                                               @if(Auth::user()->role_id =='2')
                                                                               @if($payment_status == 'paid')
                                                                               @else
                                                                               <input type="hidden" value="{{$vendor}}" id="vendor_id">
                                                                               <input type="hidden" value="{{$invoice_ref}}" id="invoiceRef">
-                                                                              <input type="text"   id="remark">
+                                                                            
                                                                               <button onclick="markAsPaid()"
                                                                                     class="btn btn-block btn-success text-dark">Mark
                                                                                     This Invoice As Paid</button>
