@@ -3329,8 +3329,8 @@ class HomeController extends Controller
 
             $parent = DB::table('multi_store')
             ->where('vendor_id', $vendor_id)
-            ->get('*')->pluck('id');
-
+            ->get('*')->pluck('id')->first();
+  //dd( $parent);
             $countVendor =  DB::table('vendor')
             ->join('sub_store', 'sub_store.vendor_id', 'vendor.id')
             ->where('sub_store.multi_store_id', $parent)
@@ -3342,7 +3342,7 @@ class HomeController extends Controller
             ->where('sales_platform.vendor_status', 'active')
             ->where('sub_store.multi_store_id', $parent)
             ->get('sales_platform.vendor_id');
-            //dd( $parent);
+          
 
             $perPage = $request->perPage ?? 25;
             $search = $request->input('search');
@@ -3375,7 +3375,7 @@ class HomeController extends Controller
         }
     }
 
-    public function newChildVendor(Request $request, $parent_id){
+    public function newChildVendor(Request $request, $vendor_id){
         $name = Auth::user()->name;
         $id = Auth::user()->id;
         $role = DB::table('role')->select('role_name')
@@ -3383,12 +3383,12 @@ class HomeController extends Controller
         ->where('users.id', $id)
         ->pluck('role_name')->first();
 
-        $vendorName = DB::table('vendor')->where('id', $parent_id)
+        $vendorName = DB::table('vendor')->where('id', $vendor_id)
         ->select('*')->pluck('store_name')->first();
 
-        $parent = DB::table('multi_store')
-        ->where('vendor_id', $parent_id)
-        ->get('*')->pluck('id');
+        $parent_id = DB::table('multi_store')
+        ->where('vendor_id', $vendor_id)
+        ->get('*')->pluck('id')->first();
 
         $stateID = DB::table('state')->select(['*'])
         ->pluck('id');
