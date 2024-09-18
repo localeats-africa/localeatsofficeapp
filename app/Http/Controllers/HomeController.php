@@ -3418,7 +3418,7 @@ class HomeController extends Controller
 
             $parent = DB::table('multi_store')
             ->where('vendor_id', $request->parent_id)
-            ->get('*')->pluck('id');
+            ->get('*')->pluck('id')->first();
 
             $pin = mt_rand(100000, 999999);
             // shuffle pin
