@@ -250,7 +250,7 @@
                                                                         @if($payment_status == 'paid')
                                                                       <span class="text-danger">{{$data->payment_remark}}</span>
                                                                         @else
-                                                                        <input type="text"  class="form-control"  placeholder="leave a remark here; before you mark as paid. (Optional)"  id="remark">
+                                                                        <input type="text"  class="form-control"  placeholder="leave a remark here; before you mark as paid. (Optional)"  id="remark" style="border-color:#000;">
                                                                         @endif
                                                                         </th>
                                                                         
