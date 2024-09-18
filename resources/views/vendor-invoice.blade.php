@@ -253,6 +253,7 @@
                                                                               @else
                                                                               <input type="hidden" value="{{$vendor}}" id="vendor_id">
                                                                               <input type="hidden" value="{{$invoice_ref}}" id="invoiceRef">
+                                                                              <input type="text"   id="remark">
                                                                               <button onclick="markAsPaid()"
                                                                                     class="btn btn-block btn-success text-dark">Mark
                                                                                     This Invoice As Paid</button>
@@ -320,6 +321,7 @@ function markAsPaid() {
       document.getElementById('response').style.display = 'none';
       var id = document.getElementById('invoiceRef').value;
       var vendor_id = document.getElementById('vendor_id').value;
+      var remark = document.getElementById('remark').value;
       var showRoute = "{{ route('mark-invoice-paid', ':id') }}";
       url = showRoute.replace(':id', id);
 
@@ -334,7 +336,8 @@ function markAsPaid() {
             url: url,
             data: {
                   //you can more data here
-                  'vendor_id': vendor_id
+                  'vendor_id': vendor_id,
+                  'remark': remark
             },
             success: function(data) {
                   console.log(data.message);
