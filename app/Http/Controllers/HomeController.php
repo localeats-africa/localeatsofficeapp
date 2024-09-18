@@ -3349,9 +3349,10 @@ class HomeController extends Controller
     
             $childVendor = DB::table('vendor')
             ->join('sub_store', 'sub_store.vendor_id', 'vendor.id')
+            ->join('state', 'state.id', '=', 'vendor.state_id')
             ->where('sub_store.multi_store_id', $parent)
             ->select(['vendor.id', 'vendor.vendor_status', 'vendor.store_area',
-            'vendor.store_name'])
+            'vendor.store_name', 'state.state'])
             ->orderBy('sub_store.created_at', 'desc')
             ->where(function ($query) use ($search) {  // <<<
             $query->where('vendor.store_name', 'LIKE', '%'.$search.'%')
