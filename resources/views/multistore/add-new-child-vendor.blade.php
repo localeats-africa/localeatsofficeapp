@@ -557,7 +557,7 @@
                         <div class="col-md-6 col-12 grid-margin stretch-card">
                               <div class="card">
                                     <div class="card-body">
-                                          <div class="form-label required">Email
+                                          <div class="form-label required">Email <i class="text-danger">*</i>
                                           </div>
                                           <input type="email" class="form-control" name="email" placeholder="" value="">
                                           @error('email')
