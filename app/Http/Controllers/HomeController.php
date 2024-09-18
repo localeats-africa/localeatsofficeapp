@@ -3456,7 +3456,7 @@ class HomeController extends Controller
             }
             $role = Role::where('role_name', 'childvendor')
             ->get()->pluck('id')->first();
-            $username = substr($request->store_name, -16);
+            $username = substr($request->store_name, 16);
         
             $addUser = new User;
             $addUser->username          = $username;
