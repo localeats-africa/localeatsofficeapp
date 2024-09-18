@@ -802,16 +802,13 @@ class AdminController extends Controller
             'platform_ref' => $request->platform_ref
         ]);
 
-
         if($platformRef){
-
             $data = [
                 'success' => true,
                 'message'=> 'Update successful'
               ] ;
               
               return response()->json($data);
-
             //return  redirect()->back('update-status', 'Update successful');
         }
         else{
@@ -849,7 +846,6 @@ class AdminController extends Controller
                 'perPage', 'name', 'role', 'restaurant'))->withDetails( $pagination );     
             } 
         else{return redirect()->back()->with('error', 'No record order found'); }
-
 
         return view('admin.restaurant-type', compact('perPage', 'role', 'name', 'restaurant'));
     }
@@ -1129,8 +1125,9 @@ class AdminController extends Controller
             ->where('orders.invoice_ref', $invoice_ref)
             ->where('orders.payment_status', '!=', null)// use this to get paid unique inv
             ->update([
-            'payment_status' => 'paid',
-             'payment_date' =>  $today 
+            'payment_status'     => 'paid',
+            'payment_date'       =>  $today ,
+            'payment_remark'     =>  $request->remark 
             ]);
         if($paid){
               // use this to count all paid inv
