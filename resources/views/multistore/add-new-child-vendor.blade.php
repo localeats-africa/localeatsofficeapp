@@ -14,7 +14,7 @@
                   <div class="col-12">
 
                         @if(session('add-vendor'))
-                        <div class="alert  alert-danger alert-dismissible" role="alert">
+                        <div class="alert  alert-success alert-dismissible" role="alert">
                               <div class="d-flex">
                                     <div>
                                           <!-- Download SVG icon from http://tabler-icons.io/i/alert-triangle -->
