@@ -3375,12 +3375,51 @@ class HomeController extends Controller
         }
     }
 
+    public function newChildVendor(Request $request, $parent_id){
+        $name = Auth::user()->name;
+        $id = Auth::user()->id;
+        $role = DB::table('role')->select('role_name')
+        ->join('users', 'users.role_id', 'role.id')
+        ->where('users.id', $id)
+        ->pluck('role_name')->first();
 
-    public function createChildVendor(Request $request, $vendor_id){
+        $vendorName = DB::table('vendor')->where('id', $parent_id)
+        ->select('*')->pluck('store_name')->first();
+
+        $parent = DB::table('multi_store')
+        ->where('vendor_id', $parent_id)
+        ->get('*')->pluck('id');
+
+        $stateID = DB::table('state')->select(['*'])
+        ->pluck('id');
+
+        $state = State::all();
+        $location = Area::all();
+        $countryID = DB::table('country')->select('*')
+        ->where('country', 'Nigeria')
+        ->pluck('id')->first();
+
+        $country = DB::table('country')->select('*')
+        ->where('country', 'Nigeria')
+        ->pluck('country')->first();
+
+        $selectBankName = BankList::all();
+        $selectFoodType = FoodType::all();
+        $selectRestaurantType = RestaurantType::all();
+        return view('multistore.add-new-child-vendor', compact('name','role', 'state', 
+        'country', 'selectBankName', 'selectFoodType', 'selectRestaurantType', 
+        'stateID', 'countryID', 'location', 'vendorName', 'parent_id'));  
+    }
+
+    public function storeChildVendor(Request $request){
             //child vendor
             $name = Auth::user()->name;
             $id = Auth::user()->id;
-            // generate a pin based on 2 * 5 digits + a random character
+
+            $parent = DB::table('multi_store')
+            ->where('vendor_id', $request_parent_id)
+            ->get('*')->pluck('id');
+
             $pin = mt_rand(100000, 999999);
             // shuffle pin
             $vendorRef = 'V'.str_shuffle($pin); 
@@ -3458,12 +3497,12 @@ class HomeController extends Controller
                 $addVendor->vendor_status               = $vendorStatus;
                 $addVendor->save();
         
-                $parentStore = new MultiStore();
-                $parentStore->vendor_id        = $addVendor->id;
-                $parentStore->user_id          = $addUser->id;
-                $parentStore->multi_store_name = $addVendor->store_name;
-                $parentStore->level            = 'child';
-                $parentStore->save();
+                $childStore = new SubStore();
+                $childStore->vendor_id        = $addVendor->id;
+                $childStore->user_id          = $addUser->id;
+                $childStore->multi_store_id   = $parent_id;
+                $childStore->level            = 'child';
+                $childStore->save();
                 //create vendor id in sales platform table
                 $platformStatus ='inactive';
                 $platforms = Platforms::all();
@@ -3504,9 +3543,8 @@ class HomeController extends Controller
                 $data = json_encode($error);
                 return redirect()->back()->with('add-vendor', 'Something went wrong');
             }
-            return view('multistore.add-new-child-vendor', compact('name','role', 'state', 
-            'country', 'selectBankName', 'selectFoodType', 'selectRestaurantType', 
-            'stateID', 'countryID', 'location', 'vendorName', 'parent_id'));  
+            return redirect()->back()->with('add-vendor', 'Something went wrong');
+        
 
     }
 
