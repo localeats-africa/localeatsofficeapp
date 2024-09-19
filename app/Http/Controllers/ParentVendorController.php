@@ -134,10 +134,10 @@ class ParentVendorController extends Controller
             ->where('sub_vendor_inventory.vendor_id', $vendor_id)
             ->where('vendor_inventory.multi_store_id', $parentStoreID)
             ->select(['sub_vendor_inventory.*'])
-            ->orderBy('food_menu.created_at', 'desc')
+            ->orderBy('sub_vendor_inventory.created_at', 'desc')
             ->where(function ($query) use ($search) {  // <<<
-            $query->where('food_menu.item', 'LIKE', '%'.$search.'%')
-                    ->orWhere('food_menu.price', 'LIKE', '%'.$search.'%');
+            $query->where('sub_vendor_inventory.parnet_item', 'LIKE', '%'.$search.'%')
+                    ->orWhere('sub_vendor_inventory.created_at', 'LIKE', '%'.$search.'%');
             })
             ->paginate($perPage,  $pageName = 'food')->appends(['per_page'   => $perPage]);
             $pagination = $foodMenu->appends ( array ('search' => $search) );
