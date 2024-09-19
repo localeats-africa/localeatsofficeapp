@@ -14,6 +14,14 @@
                   </li>
 
                   <li class="nav-item">
+                        <a class="nav-link" href="{{ url('') }}" target="">
+                              <span class="menu-title">Outlet (s)</span>
+                              <i class="fa fa-chain  menu-icon fs-24"></i>
+
+                        </a>
+                  </li>
+
+                  <li class="nav-item">
                         <a class="nav-link" data-bs-toggle="collapse" href="#food-menu" aria-expanded="false"
                               aria-controls="food-menu">
                               <span class="menu-title">Bookkeeping</span>
@@ -21,7 +29,7 @@
                               <i class="mdi mdi-menu menu-icon fs-24"></i>
 
                         </a>
-                        <div class="collapse" id="food-menu">
+                        <div  id="food-menu">
                               <ul class="nav flex-column sub-menu">
 
                                     <li class="nav-item">
