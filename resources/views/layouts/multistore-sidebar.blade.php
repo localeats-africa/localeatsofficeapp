@@ -14,7 +14,7 @@
                   </li>
 
                   <li class="nav-item">
-                        <a class="nav-link" href="{{ url('') }}" target="">
+                        <a class="nav-link" href="{{ url('outlets') }}" target="">
                               <span class="menu-title">Outlet (s)</span>
                               <i class="mdi mdi-account-multiple  menu-icon fs-24"></i>
 
