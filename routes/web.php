@@ -224,7 +224,7 @@ Route::controller(CashierController::class)->group(function () {
     Route::get('cashier',  'index')->name('cashier');
 });
 
-Route::controller(ParentVendorController::class)->group(function () {
+Route::controller(MultiVendorController::class)->group(function () {
     Route::get('parent_vendor',  'index')->name('parent_vendor');
     //custom user url with username
     Route::get('/{username}',  'username')->name('/');
