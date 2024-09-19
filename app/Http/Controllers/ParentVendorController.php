@@ -70,7 +70,6 @@ class ParentVendorController extends Controller
         ->where('sub_store.multi_store_id', $parent)
         ->get('sales_platform.vendor_id');
       
-
         $perPage = $request->perPage ?? 25;
         $search = $request->input('search');
 
