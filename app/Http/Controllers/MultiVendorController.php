@@ -46,10 +46,6 @@ class MultiVendorController extends Controller
         $this->middleware(['auth', 'verified']);
     }
 
-    public function index(Request $request){
-      
-    }
-
     public function username(Request $request){
         if ((Auth::user()->password_change_at == null)) {
             return redirect(route('show-change-password'));
