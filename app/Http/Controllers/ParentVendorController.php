@@ -128,8 +128,8 @@ class ParentVendorController extends Controller
             $perPage = $request->perPage ?? 25;
             $search = $request->input('search');
     
-            $foodMenu = DB::table('vendor_inventory')
-            ->join('multi_store', 'multi_store.id', 'vendor_inventory.multi_store_id')
+            $foodMenu = DB::table('sub_vendor_inventory')
+            ->join('vendor_inventory', 'vendor_inventory.id', 'sub_vendor_inventory.item_id')
             ->join('sub_store', 'sub_store.vendor_id', '=','food_menu.added_by')
        
             ->where('vendor_inventory.multi_store_id', $parentStoreID)
