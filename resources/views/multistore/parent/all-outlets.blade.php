@@ -201,19 +201,19 @@
                               </div>
                               <div class="d-flex">
                                    
-                                    <a href="vendor-dashboard/{{$data->id}}" class="card-btn "
+                                    <a href="outlet-dashboard/{{$data->id}}" class="card-btn "
                                           style="text-decoration:none;" title="Profile">
                                           <small>Dashboard </small> <small class="text-success"> &nbsp;<i
                                                       class="fa fa-dashboard"></i></small>
                                     </a>
 
-                                    <a href="vendor-dashboard/{{$data->id}}" class="card-btn "
+                                    <a href="outlet-supplies/{{$data->id}}" class="card-btn "
                                           style="text-decoration:none;" title="Profile">
                                           <small>Supplies </small> <small class="text-info"> &nbsp;<i
                                                       class="fa fa-list"></i></small>
                                     </a>
                                   
-                                    <a href="vendor-profile/{{$data->id}}" class="card-btn "
+                                    <a href="outlet-expenses/{{$data->id}}" class="card-btn "
                                           style="text-decoration:none;" title="Outlets">
                                           <small> Expenses </small> <small class="text-danger"> &nbsp;<i
                                                       class="fa fa-eye" aria-hidden="true"></i></small>
