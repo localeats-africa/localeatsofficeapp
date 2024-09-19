@@ -55,8 +55,7 @@ class MultiVendorController extends Controller
             return redirect(route('show-change-password'));
          }
        else{
-        $value = Auth::user()->username;
-                return redirect()->route('/', [$value]);
+        return view('multistore.parent.admin');
        }
     }
 }
