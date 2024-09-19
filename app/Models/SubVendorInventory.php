@@ -8,4 +8,5 @@ use Illuminate\Database\Eloquent\Model;
 class SubVendorInventory extends Model
 {
     use HasFactory;
+    protected $table = 'sub_vendor_inventory';
 }
