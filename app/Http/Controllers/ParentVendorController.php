@@ -121,7 +121,7 @@ class ParentVendorController extends Controller
             $perPage = $request->perPage ?? 25;
             $search = $request->input('search');
     
-            $foodMenu = DB::table('outlet_supplies')
+            $foodMenu = DB::table('vendor_inventory')
             ->join('vendor', 'vendor.id', 'food_menu.vendor_id')
             ->join('users', 'users.id', '=','food_menu.added_by')
             ->where('food_menu.deleted_at', null)
