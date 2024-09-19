@@ -17,8 +17,8 @@ return new class extends Migration
             $table->id();
             $table->timestamps();
             $table->string('multi_store_id');
-            $table->string('item');
-            $table->string('quantity');
+            $table->string('item')->nullable();
+            $table->string('quantity')->nullable();
         });
     }
 
