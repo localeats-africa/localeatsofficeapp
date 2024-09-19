@@ -48,6 +48,11 @@
                               <a class="text-danger" href="{{ url('/', [auth()->user()->username]) }}">Click {{ __('Dashboard') }}</a>
                               @endif
 
+                                <!-- child vendor sidebar menu-->
+                                @if(Auth::user()->role_id == '10')
+                              <a class="text-danger" href="{{ url('/', [auth()->user()->username]) }}">Click {{ __('Dashboard') }}</a>
+                              @endif
+
                               @endauth
                         </div>
                   </div>
