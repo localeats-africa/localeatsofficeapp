@@ -130,10 +130,10 @@ class ParentVendorController extends Controller
     
             $foodMenu = DB::table('sub_vendor_inventory')
             ->join('vendor_inventory', 'vendor_inventory.id', 'sub_vendor_inventory.item_id')
-            ->join('sub_store', 'sub_store.vendor_id', '=','food_menu.added_by')
-       
+            ->join('sub_store', 'sub_store.vendor_id', '=','sub_vendor_inventory.vendor_id')
+            ->where('sub_vendor_inventory.vendor_id', $vendor_id)
             ->where('vendor_inventory.multi_store_id', $parentStoreID)
-            ->select(['vendor.vendor_name', 'food_menu.*', 'users.fullname'])
+            ->select(['sub_vendor_inventory.*'])
             ->orderBy('food_menu.created_at', 'desc')
             ->where(function ($query) use ($search) {  // <<<
             $query->where('food_menu.item', 'LIKE', '%'.$search.'%')
