@@ -107,23 +107,52 @@ class HomeController extends Controller
             $user->password_change_at = Carbon::now();// set to empty.
             $user->save();
             if($user){
-                $vendormanager = DB::table('users')
-                ->select('role_id')
-                ->where('role_id', '6')
-                ->pluck('role_id')->first();
 
                 $admin = DB::table('users')
                 ->select('role_id')
                 ->where('role_id', '2')
                 ->pluck('role_id')->first();
-               
-                if(Auth::user()->role_id == $vendormanager){
-                    return redirect('vendormanager')->with('new-password', 'Your password was change successfully' );
-                }
+
+                $vendormanager = DB::table('users')
+                ->select('role_id')
+                ->where('role_id', '6')
+                ->pluck('role_id')->first();
+
+                $cashier  = DB::table('users')
+                ->select('role_id')
+                ->where('role_id', '7')
+                ->pluck('role_id')->first();
+
+                $accountmanager = DB::table('users')
+                ->select('role_id')
+                ->where('role_id', '8')
+                ->pluck('role_id')->first();
+
+                $parentVendor = DB::table('users')
+                ->select('role_id')
+                ->where('role_id', '9')
+                ->pluck('role_id')->first();
+
+                $childVendor = DB::table('users')
+                ->select('role_id')
+                ->where('role_id', '10')
+                ->pluck('role_id')->first();
 
                 if(Auth::user()->role_id == $admin){
                     return redirect('admin')->with('new-password', 'Your password was change successfully ');
                 }
+                if(Auth::user()->role_id == $vendormanager){
+                    return redirect('vendormanager')->with('new-password', 'Your password was change successfully' );
+                }
+                if(Auth::user()->role_id == $cashier){
+                    return redirect('cashier')->with('new-password', 'Your password was change successfully' );
+                }
+
+                if(Auth::user()->role_id == $accountmanager){
+                    return redirect('account_manager')->with('new-password', 'Your password was change successfully' );
+                }
+
+              
             
             }
      
