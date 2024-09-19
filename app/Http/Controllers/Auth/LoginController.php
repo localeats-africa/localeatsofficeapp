@@ -74,6 +74,9 @@ class LoginController extends Controller
             }else if (auth()->user()->role_id == '9') {
                 $value = Auth::user()->username;
                 return redirect()->route('/', [$value]);
+            }else if (auth()->user()->role_id == '10') {
+                $value = Auth::user()->username;
+                return redirect()->route('/', [$value]);
             }
             else{
                 return redirect()->route('home');
