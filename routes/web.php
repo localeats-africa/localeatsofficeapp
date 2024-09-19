@@ -13,6 +13,8 @@ use App\Http\Controllers\CashierController;
 use App\Http\Controllers\TwitterController;
 use App\Http\Controllers\AccountManagerController;
 use App\Http\Controllers\ParentVendorController;
+use App\Http\Controllers\MultiVendorController;
+
 
 
 /*
