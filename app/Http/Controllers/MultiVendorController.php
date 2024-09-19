@@ -64,7 +64,7 @@ class MultiVendorController extends Controller
             return redirect(route('show-change-password'));
          }
        else{
-        return view('multistore.admin');
+        return view('multistore.child.admin');
        }
     }
 
