@@ -200,7 +200,6 @@ Route::controller(AdminController::class)->group(function () {
     //export
     Route::get('export-offline-foodmenu-template', 'exportOfflineFoodMenuTemplate')->name('export-offline-foodmenu-template');
     
-    
 });
 
 Route::controller(ManagerController::class)->group(function () {
@@ -229,3 +228,9 @@ Route::controller(CashierController::class)->group(function () {
 Route::controller(MultiVendorController::class)->group(function () {
     Route::get('/{username}',  'username')->name('/');
 });
+
+Route::controller(ParentVendorController::class)->group(function () {
+    Route::get('outlets',  'allChildVendor')->name('outlets');
+});
+
+
