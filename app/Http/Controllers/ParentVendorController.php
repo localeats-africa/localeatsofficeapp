@@ -113,6 +113,10 @@ class ParentVendorController extends Controller
             ->where('users.id', $user_id)
             ->pluck('role_name')->first();
 
+            $parentStoreID = DB::table('multi_store')
+            ->where('user_id', $user_id)
+            ->get('*')->pluck('id')->first();
+
             $outletID = DB::table('sub_store')
             ->where('vendor_id', $vendor_id)
             ->get('*')->pluck('id')->first();
@@ -124,12 +128,10 @@ class ParentVendorController extends Controller
             $search = $request->input('search');
     
             $foodMenu = DB::table('vendor_inventory')
-            ->join('vendor', 'vendor.id', 'food_menu.vendor_id')
-            ->join('users', 'users.id', '=','food_menu.added_by')
-            ->where('food_menu.deleted_at', null)
-            ->where('food_menu.price', '!=', null)
-            ->where('food_menu.item', '!=', null)
-            ->where('food_menu.vendor_id', $vendor_id)
+            ->join('multi_store', 'multi_store.id', 'vendor_inventory.multi_store_id')
+            ->join('sub_store', 'sub_store.vendor_id', '=','food_menu.added_by')
+       
+            ->where('vendor_inventory.multi_store_id', $parentStoreID)
             ->select(['vendor.vendor_name', 'food_menu.*', 'users.fullname'])
             ->orderBy('food_menu.created_at', 'desc')
             ->where(function ($query) use ($search) {  // <<<
