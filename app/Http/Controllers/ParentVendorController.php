@@ -102,21 +102,26 @@ class ParentVendorController extends Controller
             'role', 'countChildVendor', 'countActiveChildVendor', 'username', 'childVendor'));
     }
 
-    public function outletSupplies(Request $request, $store_id){
+    public function outletSupplies(Request $request, $vendor_id){
         if(Auth::user()){
-            $name = Auth::user()->name;
+            $username = Auth::user()->username;
             $user_id = Auth::user()->id;
             $role = DB::table('role')->select('role_name')
             ->join('users', 'users.role_id', 'role.id')
             ->where('users.id', $user_id)
             ->pluck('role_name')->first();
-            $vendorName = DB::table('vendor')->where('id', $vendor_id)
-            ->select('*')->pluck('vendor_name')->first();
+
+            $outletID = DB::table('sub_store')
+            ->where('vendor_id', $vendor_id)
+            ->get('*')->pluck('id')->first();
+
+            $storeName = DB::table('vendor')->where('id', $vendor_id)
+            ->select('*')->pluck('store_name')->first();
 
             $perPage = $request->perPage ?? 25;
             $search = $request->input('search');
     
-            $foodMenu = DB::table('food_menu')
+            $foodMenu = DB::table('outlet_supplies')
             ->join('vendor', 'vendor.id', 'food_menu.vendor_id')
             ->join('users', 'users.id', '=','food_menu.added_by')
             ->where('food_menu.deleted_at', null)
