@@ -16,7 +16,7 @@
                   <div class="col-12">
                         <div class="row row-cards">
                               <div class="col-sm-4  col-12 stretch-card grid-margin">
-                                    <div class="card bg-gradient-dark card-img-holder text-white">
+                                    <div class="card bg-gradient-secondary card-img-holder text-dark">
                                           <div class="card-body">
                                                 <img src="/assets/images/dashboard/circle.svg" class="card-img-absolute"
                                                       alt="circle-image">
