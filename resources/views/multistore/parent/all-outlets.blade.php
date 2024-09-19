@@ -8,7 +8,7 @@
       <div class="content-wrapper">
             <div class="page-header">
                   <h3 class="page-title">
-                <span class="text-info"> Outlet (s)
+                <span class=""> Outlet (s)
                   </h3>
                 
             </div>
