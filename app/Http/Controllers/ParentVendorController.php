@@ -89,21 +89,16 @@ class ParentVendorController extends Controller
         ->paginate($perPage,  $pageName = 'outlets')->appends(['per_page'   => $perPage]);
         $pagination = $childVendor->appends ( array ('search' => $search) );
             if (count ( $pagination ) > 0){
-                return view('multistore.child-vendor',  compact(
-                'perPage', 'childVendor', 'role', 'vendorName', 
-                'countVendor', 'countActivevendor'))->withDetails($pagination);     
+                return view('multistore.parent.all-outlets',  compact(
+                'perPage', 'role', 'countChildVendor', 'countActiveChildVendor'))->withDetails($pagination);     
             } 
         else{ 
             // Session::flash('food-status', 'No record order found'); 
-            return view('multistore.child-vendor',  compact('perPage', 
-            'childVendor', 'role', 'vendorName', 'countVendor', 'countActivevendor'))->with('food-status', 'No record order found'); }
-        
-            return view('multistore.child-vendor',  compact('perPage', 
-            'childVendor', 'role', 'vendorName', 'countVendor', 'countActivevendor'));
-    
-      
-        return view('multistore.parent.admin');
-    
+            return view('multistore.parent.all-outlets',  compact('perPage', 
+            'role', 'countChildVendor', 'countActiveChildVendor'))->with('food-status', 'No record order found'); 
+            }
+            return view('multistore.parent.all-outlets',  compact('perPage', 
+            'role', 'countChildVendor', 'countActiveChildVendor'));
     }
 
   
