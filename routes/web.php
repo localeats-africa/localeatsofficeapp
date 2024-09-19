@@ -225,9 +225,9 @@ Route::controller(CashierController::class)->group(function () {
     Route::get('cashier',  'index')->name('cashier');
 });
 //both parent and child vendor dashboard
-Route::controller(MultiVendorController::class)->group(function () {
-    Route::get('/{username}',  'username')->name('/');
-});
+// Route::controller(MultiVendorController::class)->group(function () {
+//     Route::get('/{username}',  'username')->name('/');
+// });
 
 Route::controller(ParentVendorController::class)->group(function () {
     Route::get('outlets',  'allChildVendor')->name('outlets');
