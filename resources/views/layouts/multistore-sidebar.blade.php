@@ -21,34 +21,7 @@
                         </a>
                   </li>
 
-                  <li class="nav-item">
-                        <a class="nav-link" data-bs-toggle="collapse" href="#food-menu" aria-expanded="false"
-                              aria-controls="food-menu">
-                              <span class="menu-title">Bookkeeping</span>
-                              <i class="menu-arrow"></i>
-                              <i class="mdi mdi-menu menu-icon fs-24"></i>
-
-                        </a>
-                        <div  id="food-menu">
-                              <ul class="nav flex-column sub-menu">
-
-                                    <li class="nav-item">
-                                          <a class="nav-link" href="{{ url('') }}">
-                                                Expenses</a>
-                                    </li>
-
-                                    <li class="nav-item">
-                                          <a class="nav-link" href="{{ url('') }}">Sales</a>
-                                    </li>
-
-                                    <li class="nav-item">
-                                          <a class="nav-link" href="{{ url('') }}">Profit & Loss</a>
-                                    </li>
-
-                              </ul>
-                        </div>
-                  </li>
-
+                
 
                   <li class="nav-item">
                         <a class="nav-link" href="{{ url('') }}" target="">
