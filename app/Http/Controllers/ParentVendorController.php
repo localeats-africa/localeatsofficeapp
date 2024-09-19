@@ -45,21 +45,11 @@ class ParentVendorController extends Controller
         $this->middleware(['auth', 'user-access:9', 'verified']);
     }
 
-    public function index(Request $request){
-        if ((Auth::user()->password_change_at == null)) {
-            return redirect(route('show-change-password'));
-         }
-       else{
+    public function allChildVendor(Request $request){
+      
         return view('multistore.parent.admin');
-       }
+    
     }
 
-    public function username(Request $request){
-        if ((Auth::user()->password_change_at == null)) {
-            return redirect(route('show-change-password'));
-         }
-       else{
-        return view('multistore.parent.admin');
-       }
-    }
+  
 }
