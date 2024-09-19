@@ -122,13 +122,13 @@ class ParentVendorController extends Controller
             ->where('vendor_id', $vendor_id)
             ->get('*')->pluck('id')->first();
 
-            $storeName = DB::table('vendor')->where('id', $vendor_id)
+            $outletStoreName = DB::table('vendor')->where('id', $vendor_id)
             ->select('*')->pluck('store_name')->first();
 
             $perPage = $request->perPage ?? 25;
             $search = $request->input('search');
     
-            $foodMenu = DB::table('sub_vendor_inventory')
+            $supply = DB::table('sub_vendor_inventory')
             ->join('vendor_inventory', 'vendor_inventory.id', 'sub_vendor_inventory.item_id')
             ->join('sub_store', 'sub_store.vendor_id', '=','sub_vendor_inventory.vendor_id')
             ->where('sub_vendor_inventory.vendor_id', $vendor_id)
@@ -139,23 +139,22 @@ class ParentVendorController extends Controller
             $query->where('sub_vendor_inventory.supply', 'LIKE', '%'.$search.'%')
                     ->orWhere('sub_vendor_inventory.created_at', 'LIKE', '%'.$search.'%');
             })
-            ->paginate($perPage,  $pageName = 'food')->appends(['per_page'   => $perPage]);
-            $pagination = $foodMenu->appends ( array ('search' => $search) );
+            ->paginate($perPage,  $pageName = 'supply')->appends(['per_page'   => $perPage]);
+            $pagination = $supply->appends ( array ('search' => $search) );
                 if (count ( $pagination ) > 0){
-                    return view('vendormanager.vendor-food-menu',  compact(
-                    'perPage', 'name', 'role', 'foodMenu', 
-                    'vendorName'))->withDetails($pagination);     
+                    return view('multistore.parent.outlet-supply',  compact(
+                    'perPage', 'username', 'role', 'parentStoreID', 
+                    'outletID', 'outletStoreName', 'supply'))->withDetails($pagination);     
                 } 
             else{ 
                 // Session::flash('food-status', 'No record order found'); 
-                return view('vendormanager.vendor-food-menu',  compact(
-                'perPage', 'name', 'role', 'foodMenu', 
-                'vendorName'))->with('food-status', 'No record order found'); }
+                return view('multistore.parent.outlet-supply',  compact('perPage', 
+                'username', 'role', 'parentStoreID', 'outletID', 
+                'outletStoreName', 'supply'))->with('food-status', 'No record order found'); }
             
-            return view('vendormanager.vendor-food-menu', compact('perPage', 'role', 
-            'name','foodMenu', 'vendorName'));
-
-
+                return view('multistore.parent.outlet-supply',  compact('perPage', 
+                'username', 'role', 'parentStoreID',  'outletID', 
+                'outletStoreName', 'supply'));
         }
     }
   
