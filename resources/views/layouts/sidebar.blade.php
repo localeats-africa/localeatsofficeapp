@@ -154,7 +154,7 @@
 
                   <li class="nav-item">
                         <a class="nav-link" href="{{ url('all-staff')}}" target="">
-                              <span class="menu-title">Staff (s)</span>
+                              <span class="menu-title">User (s)</span>
                               <i class="mdi mdi-account-multiple fs-24 menu-icon"></i>
                         </a>
                   </li>
