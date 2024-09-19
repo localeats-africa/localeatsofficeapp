@@ -224,13 +224,13 @@ Route::controller(AccountManagerController::class)->group(function () {
 Route::controller(CashierController::class)->group(function () {
     Route::get('cashier',  'index')->name('cashier');
 });
-//both parent and child vendor dashboard
-Route::controller(MultiVendorController::class)->group(function () {
-   // Route::get('/{username}',  'username')->name('/');
 
-    Route::get('/{username}',  function () {
-        return view('multistore.admin');
-    });
+Route::controller(MultiVendorController::class)->group(function () {
+    //parent dashboard
+    Route::get('{username}/dashboard',  'parent')->name('dashboard');
+    //child dashboard
+   Route::get('v/{username}',  'child')->name('v');
+  
 });
 
 Route::controller(ParentVendorController::class)->group(function () {

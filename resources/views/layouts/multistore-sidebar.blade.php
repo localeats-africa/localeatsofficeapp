@@ -7,14 +7,14 @@
                   @if(Auth::user()->role_id == '9')
 
                   <li class="nav-item">
-                        <a class="nav-link" href="{{ url('/', [auth()->user()->username]) }}">
+                        <a class="nav-link" href="{{ url('/', [auth()->user()->username, 'dashboard'] ) }}">
                               <span class="menu-title">Dashboard</span>
                               <i class="mdi mdi-home menu-icon"></i>
                         </a>
                   </li>
 
                   <li class="nav-item">
-                        <a class="nav-link" href="{{ url('outlets') }}" target="">
+                        <a class="nav-link" href="{{ route('outlets') }}" target="">
                               <span class="menu-title">Outlet (s)</span>
                               <i class="mdi mdi-account-multiple  menu-icon fs-24"></i>
 

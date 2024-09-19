@@ -42,11 +42,24 @@ use Mail;
 class MultiVendorController extends Controller
 {
     //
+
     public function __construct(){
         $this->middleware(['auth', 'verified']);
+
     }
 
-    public function username(Request $request){
+
+    public function parent(Request $request, $username){
+        if ((Auth::user()->password_change_at == null)) {
+        $username = Auth::user()->username;
+        return view('multistore.parent.admin', compact('username'));
+    }
+    else{
+        return view('multistore.parent.admin');
+        }
+    }
+
+    public function child(Request $request){
         if ((Auth::user()->password_change_at == null)) {
             return redirect(route('show-change-password'));
          }
@@ -54,4 +67,6 @@ class MultiVendorController extends Controller
         return view('multistore.admin');
        }
     }
+
+ 
 }

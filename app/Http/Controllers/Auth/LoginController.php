@@ -73,10 +73,11 @@ class LoginController extends Controller
                 return redirect()->route('account_manager');
             }else if (auth()->user()->role_id == '9') {
                 $value = Auth::user()->username;
-                return redirect()->route('/', [$value]);
+                // redirect()->route('v', [$value]);
+                return redirect('/'.$value.'/dashboard');
             }else if (auth()->user()->role_id == '10') {
                 $value = Auth::user()->username;
-                return redirect()->route('/', [$value]);
+                return redirect()->route('v', [$value]);
             }
             else{
                 return redirect()->route('home');
