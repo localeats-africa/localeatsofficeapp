@@ -105,7 +105,7 @@ class ParentVendorController extends Controller
             'role', 'countChildVendor', 'countActiveChildVendor', 'username', 'childVendor'));
     }
 //vendor_id is the child vendor
-    public function outletSupplies(Request $request, $vendor_id){
+    public function outletSupplies(Request $request, $username, $vendor_id){
         if(Auth::user()){
             $username = Auth::user()->username;
             $user_id = Auth::user()->id;
@@ -184,6 +184,7 @@ class ParentVendorController extends Controller
         return view('multistore.parent.send-supply', compact('role', 'username', 
         'parentStoreID', 'outletStoreID', 'outletStoreName', 'supply', 'vendor_id'));
     }
+    
     //post //vendor_id is the child vendor
     public function sendSupplies(Request $request, $username, $vendor_id){
     }
