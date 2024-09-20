@@ -9,7 +9,8 @@
       <div class="content-wrapper">
             <div class="page-header">
                   <h3 class="page-title">
-                Send Supplies to   >>>> <a href="/{{$username}}/outlet-supplies/{{$vendor_id}}" class="text-info">{{$outletStoreName}}</a>
+                        Send Supplies to >>>> <a href="/{{$username}}/outlet-supplies/{{$vendor_id}}"
+                              class="text-info">{{$outletStoreName}}</a>
                   </h3>
             </div>
 
@@ -90,5 +91,75 @@
                   </div>
             </div>
             <!---end Alert --->
+            <form method="post" action="{{ route('add-vendor-offline-soup') }}" name="submit"
+                  enctype="multipart/form-data">
+                  @csrf
+                  {{csrf_field()}}
+                  <div class="row">
+                        <h6 class="text-danger">Check one or more item, enter each quantity</h6>
+                        <p></p>
+                        @foreach($supply as $data)
+                        <div class="col-md-6 col-12 list-wrapper">
+                              <ul class="d-flex flex-column-reverse ">
+
+                                    <li>
+                                          <div class="form-check">
+                                                <label class="form-check-label">
+                                                      <input class="checkbox" type="checkbox" name="item[]"
+                                                            value="{{$data->item}}" multiple="multiple">{{$data->item}}
+                                                      <i class="input-helper"></i>
+                                                </label>
+                                          </div>
+
+                                          <i class="remove"></i>
+                                          <input type="hidden" value="{{ $data->id }}" name="soup_id[]">
+
+                                          <div class="btn btn-sm" id="decreaseSupply-{{ $data->id }}"
+                                                onclick="decreaseSupply({{$data->id}})" value="Decrease Value">-
+                                          </div>
+
+                                          <input type="text" class="form-control" name="qty[]" value="1"
+                                                style="width:85px;" id="soup-{{ $data->id }}">
+
+                                          <div class="btn btn-sm" id="increaseSupply-{{ $data->id }}"
+                                                onclick="increaseSupply({{$data->id}})" value="Increase Value">+
+                                          </div>
+                                    </li>
+                              </ul>
+                        </div> <!---col-6--->
+                        @endforeach
+                        <div class="form-group">
+                              <div class="input-group date">
+                                    <input id="vendor" name="vendor" type="hidden" value="{{ $vendor_id }}" />
+                                    <button type="submit" name="submit"
+                                          class="btn bg-gradient-primary btn-sm  text-white">Send Supplies</button>
+                              </div>
+                        </div>
+                  </div>
+                  <!---row-6--->
+            </form>
+      </div>
+      <!--- content wrapper---->
+      <!-- partial -->
+      <footer class="footer">
+            <div class="d-sm-flex justify-content-center justify-content-sm-between">
+                  <span class="text-muted text-center text-sm-left d-block d-sm-inline-block">Copyright ©
+                        LocalEats Africa {{ date('Y')}} </a>. All rights
+                        reserved.</span>
+                  <span class="float-none float-sm-right d-block mt-1 mt-sm-0 text-center"><i
+                              class="mdi mdi-heart text-danger"></i></span>
+            </div>
+      </footer>
+</div>
+<!-- main-panel -->
+<link rel="stylesheet" href="https://code.jquery.com/ui/1.13.3/themes/base/jquery-ui.css">
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+<script src="https://code.jquery.com/ui/1.13.3/jquery-ui.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.6/js/bootstrap.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.1/js/select2.min.js"></script>
+
+<!-- End custom js for this page -->
+
 
 @endsection
