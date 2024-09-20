@@ -104,7 +104,7 @@ class ParentVendorController extends Controller
             return view('multistore.parent.all-outlets',  compact('perPage', 
             'role', 'countChildVendor', 'countActiveChildVendor', 'username', 'childVendor'));
     }
-
+//vendor_id is the child vendor
     public function outletSupplies(Request $request, $username, $vendor_id){
         if(Auth::user()){
             $username = Auth::user()->username;
@@ -118,7 +118,7 @@ class ParentVendorController extends Controller
             ->where('user_id', $user_id)
             ->get('*')->pluck('id')->first();
 
-            $outletID = DB::table('sub_store')
+            $outletStoreID = DB::table('sub_store')
             ->where('vendor_id', $vendor_id)
             ->get('*')->pluck('id')->first();
 
@@ -144,23 +144,47 @@ class ParentVendorController extends Controller
                 if (count ( $pagination ) > 0){
                     return view('multistore.parent.outlet-supply',  compact(
                     'perPage', 'username', 'role', 'parentStoreID', 
-                    'outletID', 'outletStoreName', 'supply'))->withDetails($pagination);     
+                    'outletStoreID', 'outletStoreName', 'supply'))->withDetails($pagination);     
                 } 
             else{ 
                 // Session::flash('food-status', 'No record order found'); 
                 return view('multistore.parent.outlet-supply',  compact('perPage', 
-                'username', 'role', 'parentStoreID', 'outletID', 
+                'username', 'role', 'parentStoreID', 'outletStoreID', 
                 'outletStoreName', 'supply'))->with('food-status', 'No record order found'); 
             }
                 return view('multistore.parent.outlet-supply',  compact('perPage', 
-                'username', 'role', 'parentStoreID',  'outletID', 
+                'username', 'role', 'parentStoreID',  'outletStoreID', 
                 'outletStoreName', 'supply'));
         } 
     }
-
+//vendor_id is the child vendor
     public function supplyToOutlet(Request $request, $username, $vendor_id){
+        $username = Auth::user()->username;
+        $user_id = Auth::user()->id;
+        $role = DB::table('role')->select('role_name')
+        ->join('users', 'users.role_id', 'role.id')
+        ->where('users.id', $user_id)
+        ->pluck('role_name')->first();
+
+        $parentStoreID = DB::table('multi_store')
+        ->where('user_id', $user_id)
+        ->get('*')->pluck('id')->first();
+
+        $outletStoreID = DB::table('sub_store')
+        ->where('vendor_id', $vendor_id)
+        ->get('*')->pluck('id')->first();
+
+        $outletStoreName = DB::table('vendor')->where('id', $vendor_id)
+        ->select('*')->pluck('store_name')->first();
+        
+        $supply= VendorInventory::join('multi_store', 'multi_store.id',  'vendor_inventory.multi_store_id')
+        ->where('multi_store.id',  $parentStoreID)
+        ->get('vendor_inventory.*');
+
+        return view('multistore.parent.send-supply', compact('role', 'username', 
+        'parentStoreID', 'outletStoreID', 'outletStoreName', 'supply'));
     }
-    //post
+    //post //vendor_id is the child vendor
     public function sendSupplies(Request $request, $username, $vendor_id){
     }
   
