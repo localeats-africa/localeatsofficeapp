@@ -186,10 +186,12 @@ class ParentVendorController extends Controller
     }
 
     //post //vendor_id is the child vendor
-    public function sendSupplies(Request $request, $username, $vendor_id){
-        $username = Auth::user()->username;
-        $item = $request->item;
-        $qty = $request->quantity;
+    public function sendSupplies(Request $request){
+        $username   = Auth::user()->username;
+        $vendor_id  = $request->vendor_id;
+        $parent_id  = $request->parent_id;
+        $item       = $request->item;
+        $qty        = $request->quantity;
         if($qty == '0'){
 
         }
@@ -197,7 +199,7 @@ class ParentVendorController extends Controller
             foreach($qty  as  $data){
                 $supply  = new SubVendorInventory();
                 $supply->vendor_id      = $vendor_id;
-                $supply->parent_id      = $request->parent_id;
+                $supply->parent_id      = $parent_id;
                 $supply->inventory_id   = $request->item_id;
                 $supply->supply         = $item;
                 $supply->supply_qty     = $data;
