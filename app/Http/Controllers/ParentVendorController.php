@@ -105,7 +105,7 @@ class ParentVendorController extends Controller
             'role', 'countChildVendor', 'countActiveChildVendor', 'username', 'childVendor'));
     }
 
-    public function outletSupplies(Request $request, $vendor_id){
+    public function outletSupplies(Request $request, $vendor_id,  $username){
         if(Auth::user()){
             $username = Auth::user()->username;
             $user_id = Auth::user()->id;
