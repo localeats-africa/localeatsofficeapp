@@ -132,7 +132,7 @@ class ParentVendorController extends Controller
             //->join('vendor_inventory', 'vendor_inventory.id', 'sub_vendor_inventory.inventory_id')
             ->join('sub_store', 'sub_store.vendor_id', '=','sub_vendor_inventory.vendor_id')
             ->where('sub_vendor_inventory.vendor_id', $vendor_id)
-            ->where('vendor_inventory.multi_store_id', $parentStoreID)
+            ->where('sub_vendor_inventory.parent_id', $parentStoreID)
             ->select(['sub_vendor_inventory.*'])
             ->orderBy('sub_vendor_inventory.created_at', 'desc')
             ->where(function ($query) use ($search) {  // <<<
