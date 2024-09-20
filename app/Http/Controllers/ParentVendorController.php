@@ -209,7 +209,10 @@ class ParentVendorController extends Controller
                 'status'    => 'success',
             ];
             $data = json_encode($response, true);
-            return redirect()->route('outlet-supplies', [$vendor_id])->with('');
+            return redirect()->route('outlet-supplies', [$vendor_id])->with('supply-status', 'Supply sent successfully');
+        }
+        else{
+            return redirect()->back()->with('supply-error', 'Opps! something went  wrong');
         }
 
       
