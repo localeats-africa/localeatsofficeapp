@@ -11,6 +11,13 @@
                   <h3 class="page-title">
                         <span class="text-info">{{$outletStoreName}}</span> >>>> Supplies
                   </h3>
+                  <nav aria-label="breadcrumb">
+                <ul class="breadcrumb">
+                  <li class="breadcrumb-item active" aria-current="page">
+                    <span></span><a href="{{ url('new-parent-vendor') }}" class="btn btn-outline-danger">Click Here To Send Supplies </a>
+                  </li>
+                </ul>
+              </nav>
             </div>
 
             <p></p>
