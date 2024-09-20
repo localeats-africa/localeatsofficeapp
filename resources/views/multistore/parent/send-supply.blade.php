@@ -18,7 +18,7 @@
             <!--Alert here--->
             <div class="row ">
                   <div class="col-12">
-                        @if(session('sales-status'))
+                        @if(session('supply-status'))
                         <div class="alert alert-important alert-success alert-dismissible" role="alert">
                               <div class="d-flex">
                                     <div>
@@ -33,14 +33,14 @@
                                                 <path d="M12 17h.01" />
                                           </svg>
                                     </div>
-                                    <div> {!! session('sales-status') !!}</div>
+                                    <div> {!! session('supply-status') !!}</div>
                               </div>
                               <a class="btn-close" data-bs-dismiss="alert" aria-label="close"></a>
                         </div>
                         @endif
 
 
-                        @if(session('sales-error'))
+                        @if(session('supply-error'))
                         <div class="alert  alert-danger alert-dismissible" role="alert">
                               <div class="d-flex">
                                     <div>
@@ -55,7 +55,7 @@
                                                 <path d="M12 17h.01" />
                                           </svg>
                                     </div>
-                                    <div> {!! session('sales-error') !!}</div>
+                                    <div> {!! session('supply-error') !!}</div>
                               </div>
                               <a class="btn-close" data-bs-dismiss="alert" aria-label="close"></a>
                         </div>
