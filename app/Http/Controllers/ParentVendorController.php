@@ -189,7 +189,7 @@ class ParentVendorController extends Controller
     public function sendSupplies(Request $request){
         $this->validate($request, [ 
             'quantity'        => 'required|max:255', 
-            'item'          => 'required|string|max:255'         
+            'item'          => 'required|max:255'         
         ]);
 
         $username   = Auth::user()->username;
@@ -203,14 +203,16 @@ class ParentVendorController extends Controller
         ->whereIn('id', $request->item)
         ->get();
 
+        //dd( $getItem);
+
         foreach( $getItem as $key => $value){
          
             $data[] = [
-                'inventor_id'   => $value->id[$key],
+                'inventory_id'   => $value->id,
                 'parent_id'     =>$request->parent_id,
                 'vendor_id'      =>$request->vendor_id,
-                'supply'         =>$value->item[$key],
-                'supply_qty'     => $request->quantity
+                'supply'         =>$value->item,
+                'supply_qty'     => $request->quantity[$key]
                 ];
         }
           \DB::table('sub_vendor_inventory')->insert($data);
@@ -224,7 +226,7 @@ class ParentVendorController extends Controller
             $data = json_encode($response, true);
           
             
-            return redirect()->route('outlet-supplies', [$vendor_id])->with('supply-status', 'Supply sent successfully');
+            return redirect($username.'/outlet-supplies/'.$vendor_id)->with('supply-status', 'Supply sent successfully');
         }
         else{
             return redirect()->back()->with('sales-error', 'Opps! something happend');
