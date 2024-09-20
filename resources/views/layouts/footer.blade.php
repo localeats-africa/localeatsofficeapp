@@ -37,15 +37,13 @@
 <!-- <script src="{{ asset('assets/js/dashboard.js"></script> -->
 <!-- End custom js for this page -->
 <script>
-// loan type minimum duration
-
+// sales
 function increaseSoup(data){
       soup = document.querySelector('#soup-' + data);
       var value = parseInt(soup.value, 10);
       value = isNaN(value) ? 0 : value;
       value++;
       soup.value = value;
-
 }
 
 function decreaseSoup(data){
@@ -55,19 +53,17 @@ function decreaseSoup(data){
       value < 1 ? value = 1 : '';
       value--;
       soup.value = value;
-
 }
 </script>
 
 <script>
-// loan type minimum duration
+// 
 function increaseSwallow(data) {
       swallow = document.querySelector('#swallow-' + data);
       var value = parseInt(swallow.value, 10);
       value = isNaN(value) ? 0 : value;
       value++;
       swallow.value = value;
-
 }
 
 function decreaseSwallow(data) {
@@ -81,14 +77,12 @@ function decreaseSwallow(data) {
 </script>
 
 <script>
-// loan type minimum duration
 function increaseProtein(data) {
       protein = document.querySelector('#protein-' + data);
       var value = parseInt(protein.value, 10);
       value = isNaN(value) ? 0 : value;
       value++;
       protein.value = value;
-
 }
 
 function decreaseProtein(data) {
@@ -98,19 +92,17 @@ function decreaseProtein(data) {
       value < 1 ? value = 1 : '';
       value--;
       protein.value = value;
-
 }
 </script>
 
 <script>
-// loan type minimum duration
+// 
 function increaseOthers(data) {
       others = document.querySelector('#others-' + data);
       var value = parseInt(others.value, 10);
       value = isNaN(value) ? 0 : value;
       value++;
       others.value = value;
-
 }
 
 function decreaseOthers(data) {
@@ -120,6 +112,29 @@ function decreaseOthers(data) {
       value < 1 ? value = 1 : '';
       value--;
       others.value = value;
+}
+</script>
+
+<script>
+// parent vendor send supplies to outlet
+function increaseSupply(data){
+      soup = document.querySelector('#supply-' + data);
+      var value = parseInt(soup.value, 10);
+      value = isNaN(value) ? 0 : value;
+      value++;
+      soup.value = value;
+
+}
+
+function decreaseSupply(data){
+      soup = document.querySelector('#supply-' + data);
+      var value = parseInt(soup.value, 10);
+      value = isNaN(value) ? 0 : value;
+      value < 1 ? value = 1 : '';
+      value--;
+      soup.value = value;
 
 }
 </script>
+
+
