@@ -196,23 +196,26 @@ class ParentVendorController extends Controller
         $vendor_id  = $request->vendor_id;
         $parent_id  = $request->parent_id;
         $item       = $request->item;
-        $qty        = $request->quantity;
+        $qty   =
+        [
+            'supply_qty'   => $request->quantity
+        ]; 
      
 
         $getItem = DB::table('vendor_inventory')->where('multi_store_id', $request->parent_id)
         ->whereIn('id', $request->item)
         ->get();
 
-        //dd( $getItem);
+        //dd($qty );
 
         foreach( $getItem as $key => $value){
-         
+         //dd($qty);
             $data[] = [
                 'inventory_id'   => $value->id,
-                'parent_id'     =>$request->parent_id,
-                'vendor_id'      =>$request->vendor_id,
-                'supply'         =>$value->item,
-                'supply_qty'     => $request->quantity
+                'parent_id'      => $request->parent_id,
+                'vendor_id'      => $request->vendor_id,
+                'supply'         => $value->item,
+                'supply_qty'     => $qty[$key]++
                 ];
         }
           \DB::table('sub_vendor_inventory')->insert($data);
