@@ -206,16 +206,19 @@ class ParentVendorController extends Controller
         ->whereIn('id', $request->item)
         ->get();
 
-        //dd($qty );
+      $array_request = $request->get('quantity');
+       // $array = array_map($array_request,1);
+
+        $quantity = array();
 
         foreach( $getItem as $key => $value){
-         //dd($qty);
+           //$quantity =$array_request;
             $data[] = [
                 'inventory_id'   => $value->id,
                 'parent_id'      => $request->parent_id,
                 'vendor_id'      => $request->vendor_id,
                 'supply'         => $value->item,
-                'supply_qty'     => $qty[$key]++
+                'supply_qty'     => $array_request[$key]
                 ];
         }
           \DB::table('sub_vendor_inventory')->insert($data);
