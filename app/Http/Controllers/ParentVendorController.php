@@ -212,7 +212,7 @@ class ParentVendorController extends Controller
                 'parent_id'     =>$request->parent_id,
                 'vendor_id'      =>$request->vendor_id,
                 'supply'         =>$value->item,
-                'supply_qty'     => $request->quantity[$key]
+                'supply_qty'     => $request->quantity
                 ];
         }
           \DB::table('sub_vendor_inventory')->insert($data);
