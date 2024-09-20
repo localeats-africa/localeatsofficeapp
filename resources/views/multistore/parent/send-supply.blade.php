@@ -112,13 +112,13 @@
                                           </div>
 
                                           <i class="remove"></i>
-                                          <input type="hidden" value="{{ $data->id }}" name="soup_id[]">
+                                          <span>QTY</span>
 
                                           <div class="btn btn-sm" id="decreaseSupply-{{ $data->id }}"
                                                 onclick="decreaseSupply({{$data->id}})" value="Decrease Value">-
                                           </div>
 
-                                          <input type="text" class="form-control" name="qty[]" value=""
+                                          <input type="text" class="form-control" name="qty[]" value="0"
                                                 style="width:85px;" id="supply-{{ $data->id }}">
 
                                           <div class="btn btn-sm" id="increaseSupply-{{ $data->id }}"
