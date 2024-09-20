@@ -9,7 +9,7 @@
       <div class="content-wrapper">
             <div class="page-header">
                   <h3 class="page-title">
-                Send Supplies to   >>>>  <span><a href="outlet-supplies/{{$vendor_id}}" class="text-info">{{$outletStoreName}}</a></span> 
+                Send Supplies to   >>>> <a href="outlet-supplies/{{$vendor_id}}" class="text-info">{{$outletStoreName}}</a>
                   </h3>
             </div>
 
