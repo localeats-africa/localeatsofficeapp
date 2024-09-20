@@ -91,7 +91,7 @@
                   </div>
             </div>
             <!---end Alert --->
-            <form method="post" action="{{ route('add-vendor-offline-soup') }}" name="submit"
+            <form method="post" action="{{ route('send-supplies') }}" name="submit"
                   enctype="multipart/form-data">
                   @csrf
                   {{csrf_field()}}
