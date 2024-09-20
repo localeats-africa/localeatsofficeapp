@@ -130,7 +130,8 @@
                         @endforeach
                         <div class="form-group">
                               <div class="input-group date">
-                                    <input id="vendor" name="vendor" type="hidden" value="{{ $vendor_id }}" />
+                                    <input id="vendor" name="vendor_id" type="hidden" value="{{ $vendor_id }}" />
+                                    <input id="vendor" name="parent_id" type="hidden" value="{{ $parentStoreID }}" />
                                     <button type="submit" name="submit"
                                           class="btn bg-gradient-primary btn-sm  text-white">Send Supplies</button>
                               </div>
