@@ -237,7 +237,7 @@ Route::controller(ParentVendorController::class)->group(function () {
     Route::get('{username}/outlets',  'allChildVendor')->name('outlets');
     Route::get('{username}/outlet-supplies/{id}',  'outletSupplies')->name('outlet-supplies');
     Route::get('{username}/supply-to-outlet/{id}',  'supplyToOutlet')->name('supply-to-outlet');
-    Route::post('{username}/send-supplies/{id}',  'sendSupplies')->name('send-supplies');
+    Route::post('send-supplies/{id}',  'sendSupplies')->name('send-supplies');
    
 });
 
