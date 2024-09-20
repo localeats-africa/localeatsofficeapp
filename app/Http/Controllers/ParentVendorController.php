@@ -144,17 +144,17 @@ class ParentVendorController extends Controller
                 if (count ( $pagination ) > 0){
                     return view('multistore.parent.outlet-supply',  compact(
                     'perPage', 'username', 'role', 'parentStoreID', 
-                    'outletStoreID', 'outletStoreName', 'supply'))->withDetails($pagination);     
+                    'outletStoreID', 'outletStoreName', 'supply','vendor_id'))->withDetails($pagination);     
                 } 
             else{ 
                 // Session::flash('food-status', 'No record order found'); 
                 return view('multistore.parent.outlet-supply',  compact('perPage', 
                 'username', 'role', 'parentStoreID', 'outletStoreID', 
-                'outletStoreName', 'supply'))->with('food-status', 'No record order found'); 
+                'outletStoreName', 'supply', 'vendor_id'))->with('food-status', 'No record order found'); 
             }
                 return view('multistore.parent.outlet-supply',  compact('perPage', 
                 'username', 'role', 'parentStoreID',  'outletStoreID', 
-                'outletStoreName', 'supply'));
+                'outletStoreName', 'supply', 'vendor_id'));
         } 
     }
 //vendor_id is the child vendor
