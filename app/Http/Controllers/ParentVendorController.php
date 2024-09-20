@@ -187,41 +187,50 @@ class ParentVendorController extends Controller
 
     //post //vendor_id is the child vendor
     public function sendSupplies(Request $request){
-
         $this->validate($request, [ 
-            'quantity'  => 'max:255',
-            'item'      => 'required|string|max:255',   
+            'quantity'        => 'required|max:255', 
+            'item'          => 'required|string|max:255'         
         ]);
+
         $username   = Auth::user()->username;
         $vendor_id  = $request->vendor_id;
         $parent_id  = $request->parent_id;
         $item       = $request->item;
         $qty        = $request->quantity;
-        if($qty == '0'){
+     
 
+        $getItem = DB::table('vendor_inventory')->where('multi_store_id', $request->parent_id)
+        ->whereIn('id', $request->item_id)
+        ->get();
+
+        foreach( $getItem as $key => $value){
+         
+            $data[] = [
+                'inventor_id'   => $value->id[$key],
+                'parent_id'     =>$request->parent_id,
+                'vendor_id'      =>$request->vendor_id,
+                'supply'         =>$value->item[$key],
+                'supply_qty'     => $request->quantity
+                ];
         }
-        if($qty >= 1){
-            foreach($qty  as  $data){
-                $supply  = new SubVendorInventory();
-                $supply->vendor_id      = $vendor_id;
-                $supply->parent_id      = $parent_id;
-                $supply->inventory_id   = $request->item_id;
-                $supply->supply         = $item;
-                $supply->supply_qty     = $data;
-                $supply->save();
-            }
+          \DB::table('sub_vendor_inventory')->insert($data);
+ 
+        if($data){
             $response = [
                 'code'      => '',
                 'message'   => 'Supply sent successfully',
                 'status'    => 'success',
             ];
             $data = json_encode($response, true);
+          
+            
             return redirect()->route('outlet-supplies', [$vendor_id])->with('supply-status', 'Supply sent successfully');
         }
         else{
-            return redirect()->back()->with('supply-error', 'Opps! something went  wrong');
+            return redirect()->back()->with('sales-error', 'Opps! something happend');
         }
-
+     
+        
       
 
     }
