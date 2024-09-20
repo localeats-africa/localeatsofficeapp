@@ -118,7 +118,7 @@
                                                 onclick="decreaseSupply({{$data->id}})" value="Decrease Value">-
                                           </div>
 
-                                          <input type="text" class="form-control" name="qty[]" value="0"
+                                          <input type="text" class="form-control" name="quantity[]" value="0"
                                                 style="width:85px;" id="supply-{{ $data->id }}">
 
                                           <div class="btn btn-sm" id="increaseSupply-{{ $data->id }}"
@@ -126,12 +126,14 @@
                                           </div>
                                     </li>
                               </ul>
+                              <input id="vendor" name="item_id" type="hidden" value="{{ $data->id  }}" />
                         </div> <!---col-6--->
                         @endforeach
                         <div class="form-group">
                               <div class="input-group date">
                                     <input id="vendor" name="vendor_id" type="hidden" value="{{ $vendor_id }}" />
                                     <input id="vendor" name="parent_id" type="hidden" value="{{ $parentStoreID }}" />
+
                                     <button type="submit" name="submit"
                                           class="btn bg-gradient-primary btn-sm  text-white">Send Supplies</button>
                               </div>
