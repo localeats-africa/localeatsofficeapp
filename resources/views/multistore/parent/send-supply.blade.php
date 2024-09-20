@@ -106,7 +106,7 @@
                                           <div class="form-check">
                                                 <label class="form-check-label">
                                                       <input class="checkbox" type="checkbox" name="item[]"
-                                                            value="{{$data->item}}" multiple="multiple">{{$data->item}}
+                                                            value="{{$data->id}}" multiple="multiple">{{$data->item}}
                                                       <i class="input-helper"></i>
                                                 </label>
                                           </div>
