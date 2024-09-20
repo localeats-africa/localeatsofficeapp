@@ -118,7 +118,7 @@
                                                 onclick="decreaseSupply({{$data->id}})" value="Decrease Value">-
                                           </div>
 
-                                          <input type="text" class="form-control" name="quantity[]" value="0"
+                                          <input type="text" class="form-control" name="quantity[]" value="{{ $data->quantity }}"
                                                 style="width:85px;" id="supply-{{ $data->id }}">
 
                                           <div class="btn btn-sm" id="increaseSupply-{{ $data->id }}"
