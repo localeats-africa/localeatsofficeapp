@@ -23407,7 +23407,7 @@ code {
   color: #ffffff;
 }
 .form-check .form-check-label input[type=checkbox]:checked + .input-helper:before {
-  background: linear-gradient(to right, #da8cff, #9a55ff);
+  background: linear-gradient(to right, #198be3, #198be3);
   border-width: 0;
 }
 .form-check .form-check-label input[type=checkbox]:checked + .input-helper:after {
