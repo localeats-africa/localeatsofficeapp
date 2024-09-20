@@ -234,8 +234,8 @@ Route::controller(MultiVendorController::class)->group(function () {
 });
 
 Route::controller(ParentVendorController::class)->group(function () {
-    Route::get('outlets',  'allChildVendor')->name('outlets');
-    Route::get(' outlet-supplies/{id}',  'vendorFoodMenu')->name(' outlet-supplies');
+    Route::get('{username}/outlets',  'allChildVendor')->name('outlets');
+    Route::get('outlet-supplies/{id}',  'vendorFoodMenu')->name(' outlet-supplies');
    
 });
 
