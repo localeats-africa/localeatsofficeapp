@@ -16,7 +16,9 @@ return new class extends Migration
         Schema::create('sub_vendor_inventory', function (Blueprint $table) {
             $table->id();
             $table->timestamps();
-            $table->string('item_id');
+            $table->string('vendor_id')->nullable();
+            $table->string('parent_id')->nullable();
+            $table->string('inventory_id');
             $table->string('supply')->nullable();
             $table->string('supply_qty')->nullable();
         });
