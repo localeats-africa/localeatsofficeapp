@@ -200,7 +200,7 @@ class ParentVendorController extends Controller
      
 
         $getItem = DB::table('vendor_inventory')->where('multi_store_id', $request->parent_id)
-        ->whereIn('id', $request->item_id)
+        ->whereIn('id', $request->item)
         ->get();
 
         foreach( $getItem as $key => $value){
