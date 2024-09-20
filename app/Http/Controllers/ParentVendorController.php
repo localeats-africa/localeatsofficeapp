@@ -182,7 +182,7 @@ class ParentVendorController extends Controller
         ->get('vendor_inventory.*');
 
         return view('multistore.parent.send-supply', compact('role', 'username', 
-        'parentStoreID', 'outletStoreID', 'outletStoreName', 'supply'));
+        'parentStoreID', 'outletStoreID', 'outletStoreName', 'supply', 'vendor_id'));
     }
     //post //vendor_id is the child vendor
     public function sendSupplies(Request $request, $username, $vendor_id){
