@@ -126,9 +126,10 @@
                                           <thead>
                                                 <tr>
                                                       
-                                                      <th>Date</th>
+                                                      <th>Sent Date</th>
                                                       <th>Item</th>
                                                       <th>Quantity</th>
+                                                      <th>Status</th>
                                                 </tr>
                                           </thead>
                                           <tbody>
