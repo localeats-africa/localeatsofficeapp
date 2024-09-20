@@ -4,9 +4,5 @@
 @extends('layouts.footer')
 @section('content')
 
-<!--- Parent ---Dashboard---> 
-<!--- End -- Parent ---Dashboard---> 
-hello
 
-<!--- Child ---Dashboard---> 
 @endsection
