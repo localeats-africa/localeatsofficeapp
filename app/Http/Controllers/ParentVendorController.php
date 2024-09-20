@@ -105,7 +105,7 @@ class ParentVendorController extends Controller
             'role', 'countChildVendor', 'countActiveChildVendor', 'username', 'childVendor'));
     }
 
-    public function outletSupplies(Request $request, $username, $vendor_id  ){
+    public function outletSupplies(Request $request, $username, $vendor_id){
         if(Auth::user()){
             $username = Auth::user()->username;
             $user_id = Auth::user()->id;
@@ -150,12 +150,19 @@ class ParentVendorController extends Controller
                 // Session::flash('food-status', 'No record order found'); 
                 return view('multistore.parent.outlet-supply',  compact('perPage', 
                 'username', 'role', 'parentStoreID', 'outletID', 
-                'outletStoreName', 'supply'))->with('food-status', 'No record order found'); }
-            
+                'outletStoreName', 'supply'))->with('food-status', 'No record order found'); 
+            }
                 return view('multistore.parent.outlet-supply',  compact('perPage', 
                 'username', 'role', 'parentStoreID',  'outletID', 
                 'outletStoreName', 'supply'));
-        }
+        } 
     }
+
+    public function supplyToOutlet(Request $request, $username, $vendor_id){
+    }
+
+    public function sendSuplies(Request $request, $username, $vendor_id){
+    }
+  
   
 }
