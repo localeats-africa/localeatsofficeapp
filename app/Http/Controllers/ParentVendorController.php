@@ -161,7 +161,7 @@ class ParentVendorController extends Controller
     public function supplyToOutlet(Request $request, $username, $vendor_id){
     }
 
-    public function sendSuplies(Request $request, $username, $vendor_id){
+    public function sendSupplies(Request $request, $username, $vendor_id){
     }
   
   
