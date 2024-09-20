@@ -187,6 +187,11 @@ class ParentVendorController extends Controller
 
     //post //vendor_id is the child vendor
     public function sendSupplies(Request $request){
+
+        $this->validate($request, [ 
+            'quantity'  => 'max:255',
+            'item'      => 'required|string|max:255',   
+        ]);
         $username   = Auth::user()->username;
         $vendor_id  = $request->vendor_id;
         $parent_id  = $request->parent_id;
