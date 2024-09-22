@@ -13,7 +13,7 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('sub_vendor_inventory', function (Blueprint $table) {
+        Schema::create('temp_vendor_inventory', function (Blueprint $table) {
             $table->id();
             $table->timestamps();
             $table->string('vendor_id')->nullable();
@@ -22,12 +22,6 @@ return new class extends Migration
             $table->string('supply')->nullable();
             $table->string('supply_qty')->nullable();
             $table->string('size')->nullable();
-            $table->string('status')->nullable();
-            $table->string('remark')->nullable();
-            $table->string('date')->nullable();
-            $table->string('supply_ref')->nullable();
-            $table->string('number_of_items')->nullable();
-            
         });
     }
 
@@ -38,6 +32,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('sub_vendor_inventory');
+        Schema::dropIfExists('temp_vendor_inventory');
     }
 };

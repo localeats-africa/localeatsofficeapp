@@ -20,204 +20,204 @@ class VendorInvendorySeeder extends Seeder
         DB::table('vendor_inventory')->insert([
             'multi_store_id'   => '1',
             'item'              => 'Bread',
-            'quantity'          => null,
+            'quantity'          => '0',
             
         ]);
 
         DB::table('vendor_inventory')->insert([
             'multi_store_id'   => '1',
             'item'              => 'Beef',
-            'quantity'          => null,
+            'quantity'          => '0',
             
         ]);
 
         DB::table('vendor_inventory')->insert([
             'multi_store_id'   => '1',
             'item'              => 'Chicken',
-            'quantity'          => null,
+            'quantity'          => '0',
             
         ]);
         DB::table('vendor_inventory')->insert([
             'multi_store_id'   => '1',
             'item'              => 'Hotdog',
-            'quantity'          => null,
+            'quantity'          => '0',
             
         ]);
 
         DB::table('vendor_inventory')->insert([
             'multi_store_id'   => '1',
             'item'              => 'Mayonnaise',
-            'quantity'          => null,
+            'quantity'          => '0',
             
         ]);
 
         DB::table('vendor_inventory')->insert([
             'multi_store_id'   => '1',
             'item'              => 'Ketchup',
-            'quantity'          => null,
+            'quantity'          => '0',
             
         ]);
 
         DB::table('vendor_inventory')->insert([
             'multi_store_id'   => '1',
             'item'              => 'Carrier bag',
-            'quantity'          => null,
+            'quantity'          => '0',
             
         ]);
 
         DB::table('vendor_inventory')->insert([
             'multi_store_id'   => '1',
             'item'              => 'Dustbin bags',
-            'quantity'          => null,
+            'quantity'          => '0',
             
         ]);
 
         DB::table('vendor_inventory')->insert([
             'multi_store_id'   => '1',
             'item'              => 'Mama lemon',
-            'quantity'          => null,
+            'quantity'          => '0',
             
         ]);
 
         DB::table('vendor_inventory')->insert([
             'multi_store_id'   => '1',
             'item'              => 'Foil paper',
-            'quantity'          => null,
+            'quantity'          => '0',
             
         ]);
 
         DB::table('vendor_inventory')->insert([
             'multi_store_id'   => '1',
             'item'              => 'Pepper',
-            'quantity'          => null,
+            'quantity'          => '0',
             
         ]);
 
         DB::table('vendor_inventory')->insert([
             'multi_store_id'   => '1',
             'item'              => 'Foam',
-            'quantity'          => null,
+            'quantity'          => '0',
             
         ]);
 
         DB::table('vendor_inventory')->insert([
             'multi_store_id'   => '1',
             'item'              => 'Iron sponge',
-            'quantity'          => null,
+            'quantity'          => '0',
             
         ]);
 
         DB::table('vendor_inventory')->insert([
             'multi_store_id'   => '1',
             'item'              => 'Hairnet',
-            'quantity'          => null,
+            'quantity'          => '0',
             
         ]);
 
         DB::table('vendor_inventory')->insert([
             'multi_store_id'   => '1',
             'item'              => 'Hand gloves',
-            'quantity'          => null,
+            'quantity'          => '0',
             
         ]);
 
         DB::table('vendor_inventory')->insert([
             'multi_store_id'   => '1',
             'item'              => 'Serviette',
-            'quantity'          => null,
+            'quantity'          => '0',
             
         ]);
 
         DB::table('vendor_inventory')->insert([
             'multi_store_id'   => '1',
             'item'              => 'Wrapper',
-            'quantity'          => null,
+            'quantity'          => '0',
             
         ]);
 
         DB::table('vendor_inventory')->insert([
             'multi_store_id'   => '1',
             'item'              => 'Flour for puff and mosa',
-            'quantity'          => null,
+            'quantity'          => '0',
             
         ]);
 
         DB::table('vendor_inventory')->insert([
             'multi_store_id'   => '1',
             'item'              => 'Spring roll big',
-            'quantity'          => null,
+            'quantity'          => '0',
             
         ]);
 
         DB::table('vendor_inventory')->insert([
             'multi_store_id'   => '1',
             'item'              => 'Spring rolls small',
-            'quantity'          => null,
+            'quantity'          => '0',
             
         ]);
 
         DB::table('vendor_inventory')->insert([
             'multi_store_id'   => '1',
             'item'              => 'Samosa big',
-            'quantity'          => null,
+            'quantity'          => '0',
             
         ]);
 
         DB::table('vendor_inventory')->insert([
             'multi_store_id'   => '1',
             'item'              => 'Samosa small',
-            'quantity'          => null,
+            'quantity'          => '0',
             
         ]);
 
         DB::table('vendor_inventory')->insert([
             'multi_store_id'   => '1',
             'item'              => 'BBQ',
-            'quantity'          => null,
+            'quantity'          => '0',
             
         ]);
 
         DB::table('vendor_inventory')->insert([
             'multi_store_id'   => '1',
             'item'              => 'BBQ',
-            'quantity'          => null,
+            'quantity'          => '0',
             
         ]);
 
         DB::table('vendor_inventory')->insert([
             'multi_store_id'   => '1',
             'item'              => 'Foil packs big and small',
-            'quantity'          => null,    
+            'quantity'          => '0',    
         ]);
 
         DB::table('vendor_inventory')->insert([
             'multi_store_id'   => '1',
             'item'              => 'Vegetable oil',
-            'quantity'          => null,    
+            'quantity'          => '0',    
         ]);
 
         DB::table('vendor_inventory')->insert([
             'multi_store_id'   => '1',
             'item'              => 'Yeast',
-            'quantity'          => null,    
+            'quantity'          => '0',    
         ]);
 
         DB::table('vendor_inventory')->insert([
             'multi_store_id'   => '1',
             'item'              => 'Baking powder',
-            'quantity'          => null,    
+            'quantity'          => '0',    
         ]);
 
         DB::table('vendor_inventory')->insert([
             'multi_store_id'   => '1',
             'item'              => 'Banana',
-            'quantity'          => null,    
+            'quantity'          => '0',    
         ]);
 
         DB::table('vendor_inventory')->insert([
             'multi_store_id'   => '1',
             'item'              => 'Gas',
-            'quantity'          => null,    
+            'quantity'          => '0',    
         ]);
 
     }

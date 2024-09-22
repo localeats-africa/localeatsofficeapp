@@ -238,7 +238,15 @@ Route::controller(ParentVendorController::class)->group(function () {
     Route::get('/{username}/outlet-supplies/{id}',  'outletSupplies')->name('outlet-supplies');
     Route::get('/{username}/supply-to-outlet/{id}',  'supplyToOutlet')->name('supply-to-outlet');
     Route::post('send-supplies',  'sendSupplies')->name('send-supplies');
+    Route::post('update-supply-quantity/{id}',  'updateSupplyQty')->name('update-supply-quantity');
+    Route::group(['middleware' => ['only.ajax']], function() {
+        Route::get('autocomplete', 'autocomplete')->name('autocomplete');
+    }); 
    
+    Route::post('push-supplies',  'pushSupplies')->name('push-supplies');
+    
+    
+
 });
 
 

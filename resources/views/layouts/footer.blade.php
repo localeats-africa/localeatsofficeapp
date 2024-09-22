@@ -117,8 +117,8 @@ function decreaseOthers(data) {
 
 <script>
 // parent vendor send supplies to outlet
-function increaseSupply(data){
-      soup = document.querySelector('#supply-' + data);
+function increaseSupply(){
+      soup = document.querySelector('#supply');
       var value = parseInt(soup.value, 10);
       value = isNaN(value) ? 0 : value;
       value++;
@@ -126,8 +126,8 @@ function increaseSupply(data){
 
 }
 
-function decreaseSupply(data){
-      soup = document.querySelector('#supply-' + data);
+function decreaseSupply(){
+      soup = document.querySelector('#supply');
       var value = parseInt(soup.value, 10);
       value = isNaN(value) ? 0 : value;
       value < 1 ? value = 1 : '';

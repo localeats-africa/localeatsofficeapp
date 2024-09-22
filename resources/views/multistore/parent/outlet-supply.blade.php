@@ -12,12 +12,13 @@
                         <span class="text-info">{{$outletStoreName}}</span> >>>> Supplies
                   </h3>
                   <nav aria-label="breadcrumb">
-                <ul class="breadcrumb">
-                  <li class="breadcrumb-item active" aria-current="page">
-                    <span></span><a href="/{{$username}}/supply-to-outlet/{{$vendor_id}}" class="btn btn-outline-danger">Click Here To Send Supplies </a>
-                  </li>
-                </ul>
-              </nav>
+                        <ul class="breadcrumb">
+                              <li class="breadcrumb-item active" aria-current="page">
+                                    <span></span><a href="/{{$username}}/supply-to-outlet/{{$vendor_id}}"
+                                          class="btn btn-outline-danger">Click Here To Send Supplies </a>
+                              </li>
+                        </ul>
+                  </nav>
             </div>
 
             <p></p>
@@ -121,24 +122,25 @@
                               </div>
 
                               <div class="table-responsive " id="card">
-                                    <table class="table table-striped card-table table-vcenter text-nowrap datatable"
+                                    <table class="table table-striped card-table table-center text-nowrap datatable"
                                           id="orders">
                                           <thead>
                                                 <tr>
-                                                      
+
                                                       <th>Sent Date</th>
-                                                      <th>Item</th>
-                                                      <th>Quantity</th>
+                                                      <th>Supply Reference</th>
                                                       <th>Status</th>
+                                                      <th>Remark</th>
                                                 </tr>
                                           </thead>
                                           <tbody>
                                                 @foreach($supply as $data)
                                                 <tr>
                                                       <td>{{ date('d/m/Y', strtotime($data->created_at))}}</td>
-                                                      <td class="text-capitalize">{{$data->supply}}</td>
-                                                      <td>{{$data->supply_qty}}</td>
-
+                                                      <td class="text-capitalize">{{$data->supply_ref}}</td>
+                                                      <td class="text-capitalize">{{$data->status}}</td>
+                                                 
+                                                      <td></td>
 
                                                 </tr>
                                                 @endforeach
@@ -161,9 +163,8 @@
                                           @if(isset($supply))
                                           @if($supply->currentPage() > 1)
                                           <li class="page-item ">
-                                                <a class="page-link text-danger"
-                                                      href="{{ $supply->previousPageUrl() }}" tabindex="-1"
-                                                      aria-disabled="true">
+                                                <a class="page-link text-danger" href="{{ $supply->previousPageUrl() }}"
+                                                      tabindex="-1" aria-disabled="true">
                                                       <!-- Download SVG icon from http://tabler-icons.io/i/chevron-left -->
                                                       <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24"
                                                             height="24" viewBox="0 0 24 24" stroke-width="2"
@@ -225,77 +226,41 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.1/js/select2.min.js"></script>
 
 <!-- End custom js for this page -->
+
 <script type="text/javascript">
-$(document).ready(function() {
-      $("#item").select2({
-            placeholder: "Search ",
-            closeOnSelect: true,
-            language: {
-                  noResults: function(term) {
-                        return $(
-                              "<div>Result not found!. <a href='#' onclick='return myClick()'>click here add new</a></div>"
-                        );
-                  }
+function updateQTY() {
+      document.getElementById('response').style.display = 'none';
+      var id = document.getElementById('id').value;
+      var quantity = document.getElementById('supply_qty').value;
+      var showRoute = "{{ route('update-supply-quantity', ':id') }}";
+      url = showRoute.replace(':id', id);
+
+      //window.location = url;
+      $.ajaxSetup({
+            headers: {
+                  'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+            }
+      });
+      $.ajax({
+            method: 'PATCH',
+            enctype: 'multipart/form-data',
+            url: url,
+            data: {
+                  //you can more data here
+                  'quantity': quantity,
+                  'id': id
             },
+            success: function(data) {
+                  console.log(data.message);
+                  document.getElementById('response').style.display = '';
+                  document.getElementById('response').style.color = 'green';
+                  document.getElementById('response').innerHTML = data.message;
+            },
+            error: function(data) {
+                  console.log(data);
+            }
       });
 
-      $('#btn-add-state').on("click", function() {
-            var newStateVal = $('#new-item').val();
-            // Set the value, creating a new option if necessary
-            // if ($('#item').find("option[value=" + newStateVal + "]").length) {
-            //       $('#item').val(newStateVal).trigger("change");
-            // } else {
-            // Create the DOM option that is pre-selected by default
-            var newState = new Option(newStateVal, newStateVal, true, true);
-            // Append it to the select
-            $('#item').append(newState).trigger('change').select2();
-            // }
-            var item = document.getElementById('item').value;
-            var vendor = document.getElementById('vendor').value;
-
-            var url = "{{ route('add-expenses-list') }}";
-            // url = showRoute;
-
-            //window.location = url;
-            $.ajaxSetup({
-                  headers: {
-                        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-                  }
-            });
-            $.ajax({
-                  method: 'POST',
-                  enctype: 'multipart/form-data',
-                  url: url,
-                  data: {
-                        //you can more data here
-                        'item': item,
-                        'vendor': vendor
-                  },
-                  success: function(data) {
-                        console.log(data.message);
-                        document.getElementById('response').style.display =
-                              '';
-                        document.getElementById('response').style.color =
-                              'green';
-                        document.getElementById('response').innerHTML = data
-                              .message;
-                        document.getElementById("show").style.display =
-                              'none';
-                  },
-                  error: function(data) {
-                        console.log(data);
-                  }
-            });
-      });
-});
-
-function myClick() {
-      var x = document.getElementById("show");
-      if (x.style.display === "none") {
-            x.style.display = "block";
-      } else {
-            x.style.display = "none";
-      }
 }
 </script>
 
@@ -305,7 +270,5 @@ function myClick() {
 $(function() {
       $("#date").datepicker();
 });
-
-
 </script>
 @endsection

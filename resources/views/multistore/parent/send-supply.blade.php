@@ -87,60 +87,118 @@
                         </div>
                         @endif
 
-
                   </div>
             </div>
             <!---end Alert --->
-            <form method="post" action="{{ route('send-supplies') }}" name="submit"
-                  enctype="multipart/form-data">
+
+            <p></p>
+            <p></p>
+            <form method="post" action="{{ route('send-supplies') }}" name="submit" enctype="multipart/form-data">
                   @csrf
                   {{csrf_field()}}
                   <div class="row">
-                        <h6 class="text-danger">Check one or more item, enter each quantity</h6>
-                        <p></p>
-                        @foreach($supply as $data)
-                        <div class="col-md-6 col-12 list-wrapper">
-                              <ul class="d-flex flex-column-reverse ">
+                        <div class="col-md-12 ">
+                              <input id="vendor" name="vendor_id" type="hidden" value="{{ $vendor_id }}" />
+                              <input id="vendor" name="parent_id" type="hidden" value="{{ $parentStoreID }}" />
+                              <div class="input-group">
+                                    <span class="input-group-append">
+                                          <span class="input-group-text text-dark d-block">
+                                                item
+                                          </span>
+                                    </span>
+                                    <input class="typeahead form-control" id="search" type="text" name="item"
+                                          placeholder="search here">
 
-                                    <li>
-                                          <div class="form-check">
-                                                <label class="form-check-label">
-                                                      <input class="checkbox" type="checkbox" name="item[]"
-                                                            value="{{$data->id}}" multiple="multiple">{{$data->item}}
-                                                      <i class="input-helper"></i>
-                                                </label>
-                                          </div>
 
-                                          <i class="remove"></i>
-                                          <span>QTY</span>
+                                    <div class="btn btn-sm" id="decreaseSupply" onclick="decreaseSupply()"
+                                          value="Decrease Value">-
+                                    </div>
+                                    <span class="input-group-append">
+                                          <span class="input-group-text text-dark d-block">
+                                                qty
+                                          </span>
+                                    </span>
+                                    <input type="text" name="quantity" value="0"
+                                          style="width:85px;  padding-left:20px;  padding-right:5px;" id="supply"
+                                          multiple="multiple">
+                                    <div class="btn btn-sm" id="increaseSupply" onclick="increaseSupply()"
+                                          value="Increase Value">+
+                                    </div>
 
-                                          <div class="btn btn-sm" id="decreaseSupply-{{ $data->id }}"
-                                                onclick="decreaseSupply({{$data->id}})" value="Decrease Value">-
-                                          </div>
-
-                                          <input type="text" class="form-control" name="quantity[]" value="{{ $data->quantity }}"
-                                                style="width:85px;" id="supply-{{ $data->id }}">
-
-                                          <div class="btn btn-sm" id="increaseSupply-{{ $data->id }}"
-                                                onclick="increaseSupply({{$data->id}})" value="Increase Value">+
-                                          </div>
-                                    </li>
-                              </ul>
-                              <input id="vendor" name="item_id" type="hidden" value="{{ $data->id  }}" />
-                        </div> <!---col-6--->
-                        @endforeach
-                        <div class="form-group">
-                              <div class="input-group date">
-                                    <input id="vendor" name="vendor_id" type="hidden" value="{{ $vendor_id }}" />
-                                    <input id="vendor" name="parent_id" type="hidden" value="{{ $parentStoreID }}" />
-
+                                    <span class="input-group-append">
+                                          <span class="input-group-text text-dark d-block">
+                                                weight/size
+                                          </span>
+                                    </span>
+                                    <select class="js-example-basic-single text-secondary" style="width:20%"
+                                          name="size">
+                                          <option value="">Choose</option>
+                                          @foreach($sizes as $data)
+                                          <option value="{{$data->size}}">
+                                                {{$data->size}}
+                                          </option>
+                                          @endforeach
+                                    </select>
                                     <button type="submit" name="submit"
-                                          class="btn bg-gradient-primary btn-sm  text-white">Send Supplies</button>
+                                          class="btn bg-gradient-primary btn-sm  text-white">Enter</button>
                               </div>
                         </div>
-                  </div>
-                  <!---row-6--->
             </form>
+
+            <p></p>
+            <div class="row ">
+                  <div class="col-12">
+                        <div class="card">
+                              <div class="card-header">
+                                    <h4 class="card-title"> </h4>
+                              </div>
+
+
+                              <div class="table-responsive " id="card">
+                                    <table class="table table-striped card-table table-center text-nowrap datatable"
+                                          id="orders">
+                                          <thead>
+                                                <tr>
+                                                      <th>SN</th>
+                                                      <th>Item</th>
+                                                      <th>Quantity</th>
+                                                </tr>
+                                          </thead>
+                                          <tbody>
+                                                @foreach($supply as $data)
+                                                <tr>
+                                                      <td>{{$loop->iteration}}</td>
+                                                      <td class="text-capitalize">{{$data->supply}}</td>
+                                                      <td>
+                                                            {{$data->supply_qty}} &nbsp; {{$data->size}}
+                                                      </td>
+
+                                                </tr>
+                                                @endforeach
+
+                                          </tbody>
+
+                                    </table>
+                              </div>
+
+                        </div>
+                        <!--- card-->
+                        <p></p>
+                      
+                        <form method="post" action="{{ route('push-supplies') }}" name="submit"
+                              enctype="multipart/form-data">
+                              @csrf
+                              {{csrf_field()}}
+                              <input type="hidden" name="parent_id" value="{{$parentStoreID}}">
+                              <input type="hidden" name="vendor_id" value="{{$vendor_id}}">
+                              
+                              <button type="submit" name="submit"
+                                    class="btn bg-gradient-primary btn-md  text-white">Push Supplies To
+                                    {{$outletStoreName}}</button>
+                        </form>
+                     
+                  </div>
+            </div>
       </div>
       <!--- content wrapper---->
       <!-- partial -->
@@ -155,14 +213,53 @@
       </footer>
 </div>
 <!-- main-panel -->
-<link rel="stylesheet" href="https://code.jquery.com/ui/1.13.3/themes/base/jquery-ui.css">
+<script src="{{ asset('assets/vendors/select2/select2.min.js')}}"></script>
+<script src="{{ asset('assets/vendors/typeahead.js/typeahead.bundle.min.js')}}"></script>
 
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
-<script src="https://code.jquery.com/ui/1.13.3/jquery-ui.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.6/js/bootstrap.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.1/js/select2.min.js"></script>
+<!-- endinject -->
+<!-- Custom js for this page -->
+<script src="{{ asset('assets/js/file-upload.js')}}"></script>
+<script src="{{ asset('assets/js/typeahead.js')}}"></script>
+<script src="{{ asset('assets/js/select2.js')}}"></script>
 
-<!-- End custom js for this page -->
+<!-- header search bar js -->
+<script type="text/javascript">
+var path = "{{ route('autocomplete') }}";
+$('input.search').typeahead({
+      source: function(str, process) {
+            return $.get(path, {
+                  str: str
+            }, function(data) {
+                  return process(data);
+            });
+      }
+});
+</script>
 
+
+<script type="text/javascript">
+var path = "{{ route('autocomplete') }}";
+
+$("#search").autocomplete({
+      source: function(request, response) {
+            $.ajax({
+                  url: path,
+                  type: 'GET',
+                  dataType: "json",
+                  data: {
+                        search: request.term
+                  },
+                  success: function(data) {
+                        response(data);
+                  }
+            });
+      },
+      select: function(event, ui) {
+            $('#search').val(ui.item.label);
+            console.log(ui.item);
+            return false;
+      }
+});
+</script>
 
 @endsection
