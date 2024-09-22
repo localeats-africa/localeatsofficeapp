@@ -145,8 +145,9 @@
                                                                         style="padding:0;">Action</button>
 
                                                                   <div class="dropdown-menu ">
-                                                                        <a class="dropdown-item text-danger" href="">
-                                                                              <i class="fa fa-eye"></i>
+                                                                        <br>
+                                                                        <a class="dropdown-item text-dark" href="" title="view">
+                                                                             <small> <i class="fa fa-eye"></i> view</small>
                                                                         </a>
                                                                         <br>
                                                                         @if($data->status == 'accepted')
@@ -155,9 +156,10 @@
                                                                         <input type="hidden" id="vendor_id"
                                                                               value="{{$data->vendor_id}}">
                                                                         <input type="hidden" id="invoice_ref" value="">
-                                                                        <a class="dropdown-item text-danger" href="">
-                                                                              <i class="fa fa-edit"></i>
+                                                                        <a class="dropdown-item text-dark" href="" title="edit">
+                                                                             <small> <i class="fa fa-edit"></i> edit</small>
                                                                         </a>
+                                                                        <br>
 
                                                                         @endif
 
