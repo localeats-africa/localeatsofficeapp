@@ -241,10 +241,9 @@ Route::controller(ParentVendorController::class)->group(function () {
     Route::post('update-supply-quantity/{id}',  'updateSupplyQty')->name('update-supply-quantity');
     Route::group(['middleware' => ['only.ajax']], function() {
         Route::get('autocomplete', 'autocomplete')->name('autocomplete');
-    }); 
-   
+    });    
     Route::post('push-supplies',  'pushSupplies')->name('push-supplies');
-    
+    Route::get('/{username}/{vendor}/{supply_ref}/supplies-receipt',  'supplyReceipt')->name('supplies-receipt');
     
 
 });
