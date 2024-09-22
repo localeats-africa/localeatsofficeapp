@@ -126,7 +126,7 @@
                                           id="orders">
                                           <thead>
                                                 <tr>
-                                                <th>Action</th>
+                                                      <th></th>
                                                       <th>Sent Date</th>
                                                       <th>Supply Reference</th>
                                                       <th>Status</th>
@@ -136,11 +136,38 @@
                                           <tbody>
                                                 @foreach($supply as $data)
                                                 <tr>
-                                                      <td></td>
+                                                      <td>
+                                                            <span class="dropdown">
+                                                                  <button
+                                                                        class="btn dropdown-toggle align-text-top text-danger"
+                                                                        data-bs-boundary="viewport"
+                                                                        data-bs-toggle="dropdown"
+                                                                        style="padding:0;">Action</button>
+
+                                                                  <div class="dropdown-menu ">
+                                                                        <a class="dropdown-item text-danger" href="">
+                                                                              <i class="fa fa-eye"></i>
+                                                                        </a>
+                                                                        <br>
+                                                                        @if($data->status == 'accepted')
+                                                                        @else
+
+                                                                        <input type="hidden" id="vendor_id"
+                                                                              value="{{$data->vendor_id}}">
+                                                                        <input type="hidden" id="invoice_ref" value="">
+                                                                        <a class="dropdown-item text-danger" href="">
+                                                                              <i class="fa fa-edit"></i>
+                                                                        </a>
+
+                                                                        @endif
+
+                                                                  </div>
+                                                            </span>
+                                                      </td>
                                                       <td>{{ date('d/m/Y', strtotime($data->created_at))}}</td>
                                                       <td class="text-capitalize">{{$data->supply_ref}}</td>
                                                       <td class="text-capitalize">{{$data->status}}</td>
-                                                 
+
                                                       <td></td>
 
                                                 </tr>
