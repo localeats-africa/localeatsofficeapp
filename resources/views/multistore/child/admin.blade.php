@@ -6,7 +6,7 @@
 
 <!--- Parent ---Dashboard---> 
 <!--- End -- Parent ---Dashboard---> 
-hello
+child
 
 <!--- Child ---Dashboard---> 
 @endsection

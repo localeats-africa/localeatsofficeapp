@@ -7,14 +7,14 @@
 <div class="main-panel">
       <div class="content-wrapper">
             <div class="page-header">
-                  <h3 class="page-title"> Add New Outlet >>> to >>> <span class="text-info">{{$vendorName}}</span></h3>
+                  <h3 class="page-title"> Add New Outlet >>> to >>> <a href="{{ url('child-vendor', [$parent_id]) }}" class="text-info">{{$vendorName}}</a></h3>
             </div>
             <!--Alert here--->
             <div class="row">
                   <div class="col-12">
 
                         @if(session('add-vendor'))
-                        <div class="alert  alert-danger alert-dismissible" role="alert">
+                        <div class="alert  alert-success alert-dismissible" role="alert">
                               <div class="d-flex">
                                     <div>
                                           <!-- Download SVG icon from http://tabler-icons.io/i/alert-triangle -->
@@ -68,7 +68,7 @@
             </div>
             <!---end row --->
          
-            <form method="post" action="{{ route('add-vendor') }}" name="submit" enctype="multipart/form-data">
+            <form method="post" action="{{ route('add-child-vendor') }}" name="submit" enctype="multipart/form-data">
                   @csrf
                   {{csrf_field()}}
                   <div class="row">
@@ -306,7 +306,7 @@
                                                 <select class="js-example-basic-single2 text-secondary" style="width:100%" name="area" >
                                                 <option value="">Choose</option>
                                                 @foreach($location as $data)
-                                                <option value="{{$data->id}}">
+                                                <option value="{{$data->area}}">
                                                       {{$data->area}}
                                                 </option>
                                                 @endforeach
@@ -557,7 +557,7 @@
                         <div class="col-md-6 col-12 grid-margin stretch-card">
                               <div class="card">
                                     <div class="card-body">
-                                          <div class="form-label required">Email
+                                          <div class="form-label required">Email <i class="text-danger">*</i>
                                           </div>
                                           <input type="email" class="form-control" name="email" placeholder="" value="">
                                           @error('email')
@@ -724,7 +724,7 @@
                   <div class="row">
                         <p></p>
                         <div class="col-md-6">
-                              <input type="hidden" value="{{$parent_id}}">
+                              <input type="hidden" name="parent_id" value="{{$parent_id}}">
                         </div>
                         <div class="col-md-6 col-12 grid-margin stretch-card justify-content-end">
 

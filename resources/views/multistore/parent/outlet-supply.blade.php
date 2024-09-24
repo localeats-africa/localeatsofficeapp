@@ -1,109 +1,31 @@
 @extends('layouts.head')
 @extends('layouts.header')
-@extends('layouts.sidebar')
+@extends('layouts.multistore-sidebar')
 @extends('layouts.footer')
 @section('content')
+
 <!-- main-panel -->
 <div class="main-panel">
       <div class="content-wrapper">
             <div class="page-header">
                   <h3 class="page-title">
-                        Overview
+                        <span class="text-info">{{$outletStoreName}}</span> >>>> Supplies
                   </h3>
+                  <nav aria-label="breadcrumb">
+                        <ul class="breadcrumb">
+                              <li class="breadcrumb-item active" aria-current="page">
+                                    <span></span><a href="/{{$username}}/supply-to-outlet/{{$vendor_id}}"
+                                          class="btn btn-outline-danger">Click Here To Send Supplies </a>
+                              </li>
+                        </ul>
+                  </nav>
             </div>
-            <div class="container ">
-                  <div class="row ">
-                        <div class="col-12">
-                              <div class="row row-cards">
-                                    <div class="col-md-4 stretch-card grid-margin">
-                                          <div class="card bg-gradient-danger card-img-holder text-white">
-                                                <div class="card-body">
-                                                      <img src="{{ asset('assets/images/dashboard/circle.svg') }}"
-                                                            class="card-img-absolute" alt="circle-image">
-                                                      <h4 class="font-weight-normal">Number Of Orders <i
-                                                                  class="mdi mdi-pot-steam  mdi-24px float-end"></i>
-                                                      </h4>
-                                                      <h2 class="mb-5">{{$countAllOrder}}</h2>
-                                                      <hr class="w-100">
-                                                      <h6 class="card-text">From  <span class="text-dark">( {{$countPlatformWhereOrderCame}} )</span>
-                                                            <span
-                                                                  style="float:right;">platform (s)</span> 
 
-                                                      </h6>
-                                                </div>
-
-                                          </div>
-                                    </div>
-
-                                    <div class="col-md-4 stretch-card grid-margin">
-                                          <div class="card bg-gradient-success card-img-holder text-white">
-                                                <div class="card-body">
-                                                      <img src="{{ asset('assets/images/dashboard/circle.svg') }}"
-                                                            class="card-img-absolute" alt="circle-image">
-                                                      <h4 class="font-weight-normal">Number Of Plates <i
-                                                                  class="mdi mdi-pot-steam  mdi-24px float-end"></i>
-                                                      </h4>
-                                                      <h2 class="mb-5">{{$countAllPlate}}</h2>
-                                                      <hr class="w-100">
-                                                      <h6 class="card-text">From  <span class="text-dark">( {{$countAllOrder}} )</span>
-                                                            <span
-                                                                  style="float:right;">order (s)</span> 
-
-                                                      </h6>
-                                                </div>
-
-                                          </div>
-                                    </div>
-
-                                    <div class="col-md-4 stretch-card grid-margin">
-                                          <div class="card bg-gradient-info card-img-holder text-white">
-                                                <div class="card-body">
-                                                      <img src="{{ asset('assets/images/dashboard/circle.svg')}}"
-                                                            class="card-img-absolute" alt="circle-image">
-                                                      <h4 class="font-weight-normal">Sales <i
-                                                                  class="mdi mdi-24px float-end">
-                                                                  <svg xmlns="http://www.w3.org/2000/svg" class="icon"
-                                                                        width="24" height="24" viewBox="0 0 24 24"
-                                                                        stroke-width="2" stroke="currentColor"
-                                                                        fill="none" stroke-linecap="round"
-                                                                        stroke-linejoin="round">
-                                                                        <path stroke="none" d="M0 0h24v24H0z"
-                                                                              fill="none"></path>
-                                                                        <path
-                                                                              d="M9 14c0 1.657 2.686 3 6 3s6 -1.343 6 -3s-2.686 -3 -6 -3s-6 1.343 -6 3z">
-                                                                        </path>
-                                                                        <path
-                                                                              d="M9 14v4c0 1.656 2.686 3 6 3s6 -1.344 6 -3v-4">
-                                                                        </path>
-                                                                        <path
-                                                                              d="M3 6c0 1.072 1.144 2.062 3 2.598s4.144 .536 6 0c1.856 -.536 3 -1.526 3 -2.598c0 -1.072 -1.144 -2.062 -3 -2.598s-4.144 -.536 -6 0c-1.856 .536 -3 1.526 -3 2.598z">
-                                                                        </path>
-                                                                        <path d="M3 6v10c0 .888 .772 1.45 2 2"></path>
-                                                                        <path d="M3 11c0 .888 .772 1.45 2 2"></path>
-                                                                  </svg>
-                                                            </i>
-                                                      </h4>
-                                                      <h2 class="mb-5">₦{{number_format($sumAllOrders)}}</h2>
-                                                      <hr class="w-100">
-                                                      <h6 class="card-text">weekly average <span style="float:right;">₦0
-                                                            </span></h6>
-                                                </div>
-                                          </div>
-                                    </div>
-
-         
-                              </div>
-                              <!--row--->
-                        </div>
-                  </div>
-                  <!--row-deck-->
-            </div>
-            <p></p>
             <p></p>
             <!--Alert here--->
             <div class="row ">
                   <div class="col-12">
-                        @if(session('add-platform'))
+                        @if(session('supply-status'))
                         <div class="alert alert-important alert-success alert-dismissible" role="alert">
                               <div class="d-flex">
                                     <div>
@@ -118,14 +40,14 @@
                                                 <path d="M12 17h.01" />
                                           </svg>
                                     </div>
-                                    <div> {!! session('add-platform') !!}</div>
+                                    <div> {!! session('supply-status') !!}</div>
                               </div>
                               <a class="btn-close" data-bs-dismiss="alert" aria-label="close"></a>
                         </div>
                         @endif
 
 
-                        @if(session('order-status'))
+                        @if(session('supply-error'))
                         <div class="alert  alert-danger alert-dismissible" role="alert">
                               <div class="d-flex">
                                     <div>
@@ -140,15 +62,17 @@
                                                 <path d="M12 17h.01" />
                                           </svg>
                                     </div>
-                                    <div> {!! session('order-status') !!}</div>
+                                    <div> {!! session('supply-error') !!}</div>
                               </div>
                               <a class="btn-close" data-bs-dismiss="alert" aria-label="close"></a>
                         </div>
                         @endif
 
+
                   </div>
             </div>
             <!---end Alert --->
+
             <p></p>
             <div class="row ">
                   <div class="col-12">
@@ -181,8 +105,8 @@
                                           <div class="ms-auto text-secondary">
                                                 Search:
                                                 <div class="ms-2 d-inline-block">
-
-                                                      <form action="{{ route('all-orders') }}" method="GET" role="search">
+                                                      <form action="/{{$username}}/outlet-supplies/{{$vendor_id}}" method="GET"
+                                                            role="search">
                                                             {{ csrf_field() }}
                                                             <div class="input-group mb-2">
                                                                   <input type="text" class="form-control"
@@ -197,37 +121,55 @@
                               </div>
 
                               <div class="table-responsive " id="card">
-                                    <table class="table table-striped card-table table-vcenter text-nowrap datatable"
+                                    <table class="table table-striped card-table table-center text-nowrap datatable"
                                           id="orders">
                                           <thead>
                                                 <tr>
-                                                      <th>Order Ref.</th>
-                                                      <th>Platform</th>
-                                                      <th>Vendors</th>
-                                                     
-                                                      <th>Item  (s)</th>
-                                                      <th>Amount</th>
-                                                      <th>Food Price</th>
-                                                      <th>Extra</th>
-                                                      <th>Delivery Date</th>
-                                                      <th>Posted By</th>
+                                                      <th></th>
+                                                      <th>Sent Date</th>
+                                                      <th>Supply Reference</th>
+                                                      <th>Status</th>
+                                                      <th>Remark</th>
                                                 </tr>
                                           </thead>
                                           <tbody>
-                                                @foreach($orders as $data)
+                                                @foreach($supply as $data)
                                                 <tr>
-                                                      <td>{{$data->order_ref}}</td>
-                                                      <td class="text-capitalize">{{$data->name}}</td>
-                                                      <td class="text-capitalize">{{$data->vendor_name}}</td>
-                                                  
-                                                      <td width="50%" style="white-space:wrap; line-height:1.6">   {!! nl2br($data->description) !!}</td>
-                                                      <td>{{$data->order_amount}}</td>
-                                                      <td>{{$data->food_price}}</td>
-                                                      <td>{{$data->extra}}</td>
-                                                      <td>{{ date('Y-m-d', strtotime($data->delivery_date))}}
-                                                          </td>
-                                                      <td class="text-capitalize">{{$data->fullname}}</td>
-                                                
+                                                      <td>
+                                                            <span class="dropdown">
+                                                                  <button
+                                                                        class="btn dropdown-toggle align-text-top text-danger"
+                                                                        data-bs-boundary="viewport"
+                                                                        data-bs-toggle="dropdown"
+                                                                        style="padding:0;">Action</button>
+
+                                                                  <div class="dropdown-menu ">
+                                                                        <br>
+                                                                        <a class="dropdown-item text-dark" href="/{{$username}}/supplies-receipt/{{$data->supply_ref}}" title="view">
+                                                                             <small> <i class="fa fa-eye"></i> view</small>
+                                                                        </a>
+                                                                        <br>
+                                                                        @if($data->status == 'accepted')
+                                                                        @else
+
+                                                                        <input type="hidden" id="vendor_id"
+                                                                              value="{{$data->vendor_id}}">
+                                                                        <input type="hidden" id="invoice_ref" value="">
+                                                                        <a class="dropdown-item text-dark" href="" title="edit">
+                                                                             <small> <i class="fa fa-edit"></i> edit</small>
+                                                                        </a>
+                                                                        <br>
+
+                                                                        @endif
+
+                                                                  </div>
+                                                            </span>
+                                                      </td>
+                                                      <td>{{ date('d/m/Y', strtotime($data->created_at))}}</td>
+                                                      <td class="text-capitalize">{{$data->supply_ref}}</td>
+                                                      <td class="text-capitalize">{{$data->status}}</td>
+
+                                                      <td></td>
 
                                                 </tr>
                                                 @endforeach
@@ -240,19 +182,18 @@
                                     <p class="m-0 text-secondary">
 
                                           Showing
-                                          {{ ($orders->currentPage() - 1) * $orders->perPage() + 1; }} to
-                                          {{ min($orders->currentPage()* $orders->perPage(), $orders->total()) }}
+                                          {{ ($supply->currentPage() - 1) * $supply->perPage() + 1; }} to
+                                          {{ min($supply->currentPage()* $supply->perPage(), $supply->total()) }}
                                           of
-                                          {{$orders->total()}} entries
+                                          {{$supply->total()}} entries
                                     </p>
 
                                     <ul class="pagination m-0 ms-auto">
-                                          @if(isset($orders))
-                                          @if($orders->currentPage() > 1)
+                                          @if(isset($supply))
+                                          @if($supply->currentPage() > 1)
                                           <li class="page-item ">
-                                                <a class="page-link text-danger"
-                                                      href="{{ $orders->previousPageUrl() }}" tabindex="-1"
-                                                      aria-disabled="true">
+                                                <a class="page-link text-danger" href="{{ $supply->previousPageUrl() }}"
+                                                      tabindex="-1" aria-disabled="true">
                                                       <!-- Download SVG icon from http://tabler-icons.io/i/chevron-left -->
                                                       <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24"
                                                             height="24" viewBox="0 0 24 24" stroke-width="2"
@@ -268,11 +209,11 @@
 
 
                                           <li class="page-item">
-                                                {{ $orders->appends(compact('perPage'))->links()  }}
+                                                {{ $supply->appends(compact('perPage'))->links()  }}
                                           </li>
-                                          @if($orders->hasMorePages())
+                                          @if($supply->hasMorePages())
                                           <li class="page-item">
-                                                <a class="page-link text-danger" href="{{ $orders->nextPageUrl() }}">
+                                                <a class="page-link text-danger" href="{{ $supply->nextPageUrl() }}">
                                                       next
                                                       <!-- Download SVG icon from http://tabler-icons.io/i/chevron-right -->
                                                       <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24"
@@ -292,9 +233,71 @@
                         <!--- card-->
                   </div>
             </div>
-
       </div>
       <!--- content wrapper---->
+      <!-- partial -->
+      <footer class="footer">
+            <div class="d-sm-flex justify-content-center justify-content-sm-between">
+                  <span class="text-muted text-center text-sm-left d-block d-sm-inline-block">Copyright ©
+                        LocalEats Africa {{ date('Y')}} </a>. All rights
+                        reserved.</span>
+                  <span class="float-none float-sm-right d-block mt-1 mt-sm-0 text-center"><i
+                              class="mdi mdi-heart text-danger"></i></span>
+            </div>
+      </footer>
 </div>
 <!-- main-panel -->
+<link rel="stylesheet" href="https://code.jquery.com/ui/1.13.3/themes/base/jquery-ui.css">
+
+<!-- <script src="https://code.jquery.com/jquery-3.7.1.js"></script> -->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+<script src="https://code.jquery.com/ui/1.13.3/jquery-ui.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.1/js/select2.min.js"></script>
+
+<!-- End custom js for this page -->
+
+<script type="text/javascript">
+function updateQTY() {
+      document.getElementById('response').style.display = 'none';
+      var id = document.getElementById('id').value;
+      var quantity = document.getElementById('supply_qty').value;
+      var showRoute = "{{ route('update-supply-quantity', ':id') }}";
+      url = showRoute.replace(':id', id);
+
+      //window.location = url;
+      $.ajaxSetup({
+            headers: {
+                  'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+            }
+      });
+      $.ajax({
+            method: 'PATCH',
+            enctype: 'multipart/form-data',
+            url: url,
+            data: {
+                  //you can more data here
+                  'quantity': quantity,
+                  'id': id
+            },
+            success: function(data) {
+                  console.log(data.message);
+                  document.getElementById('response').style.display = '';
+                  document.getElementById('response').style.color = 'green';
+                  document.getElementById('response').innerHTML = data.message;
+            },
+            error: function(data) {
+                  console.log(data);
+            }
+      });
+
+}
+</script>
+
+
+
+<script>
+$(function() {
+      $("#date").datepicker();
+});
+</script>
 @endsection

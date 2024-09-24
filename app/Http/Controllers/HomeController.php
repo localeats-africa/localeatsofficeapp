@@ -107,23 +107,59 @@ class HomeController extends Controller
             $user->password_change_at = Carbon::now();// set to empty.
             $user->save();
             if($user){
-                $vendormanager = DB::table('users')
-                ->select('role_id')
-                ->where('role_id', '6')
-                ->pluck('role_id')->first();
 
                 $admin = DB::table('users')
                 ->select('role_id')
                 ->where('role_id', '2')
                 ->pluck('role_id')->first();
-               
-                if(Auth::user()->role_id == $vendormanager){
-                    return redirect('vendormanager')->with('new-password', 'Your password was change successfully' );
-                }
+
+                $vendormanager = DB::table('users')
+                ->select('role_id')
+                ->where('role_id', '6')
+                ->pluck('role_id')->first();
+
+                $cashier  = DB::table('users')
+                ->select('role_id')
+                ->where('role_id', '7')
+                ->pluck('role_id')->first();
+
+                $accountmanager = DB::table('users')
+                ->select('role_id')
+                ->where('role_id', '8')
+                ->pluck('role_id')->first();
+
+                $parentVendor = DB::table('users')
+                ->select('role_id')
+                ->where('role_id', '9')
+                ->pluck('role_id')->first();
+
+                $childVendor = DB::table('users')
+                ->select('role_id')
+                ->where('role_id', '10')
+                ->pluck('role_id')->first();
 
                 if(Auth::user()->role_id == $admin){
                     return redirect('admin')->with('new-password', 'Your password was change successfully ');
                 }
+                if(Auth::user()->role_id == $vendormanager){
+                    return redirect('vendormanager')->with('new-password', 'Your password was change successfully' );
+                }
+                if(Auth::user()->role_id == $cashier){
+                    return redirect('cashier')->with('new-password', 'Your password was change successfully' );
+                }
+
+                if(Auth::user()->role_id == $accountmanager){
+                    return redirect('account_manager')->with('new-password', 'Your password was change successfully' );
+                }
+                if(Auth::user()->role_id == $parentVendor){
+                    $value = Auth::user()->username;
+                    return redirect()->route([$value], 'dashboard')->with('new-password', 'Your password was change successfully' );
+                }
+
+                if(Auth::user()->role_id == $childVendor){
+                    $value = Auth::user()->username;
+                    return redirect()->route('v', [$value])->with('new-password', 'Your password was change successfully' );
+                } 
             
             }
      
@@ -3192,7 +3228,7 @@ class HomeController extends Controller
             $addVendor->added_by                    = $id;
             $addVendor->store_name                  = $request->store_name;
             $addVendor->store_area                  = $request->area;
-            $addVendor->vendor_name                 = $vendorName;
+            $addVendor->vendor_name                 = $request->store_name;
             // $addVendor->restaurant_type             = $request->restaurant_type;
             // $addVendor->food_type                   = $foodType;
             $addVendor->number_of_store_locations   = $request->number_of_store_location;
@@ -3329,8 +3365,8 @@ class HomeController extends Controller
 
             $parent = DB::table('multi_store')
             ->where('vendor_id', $vendor_id)
-            ->get('*')->pluck('id');
-
+            ->get('*')->pluck('id')->first();
+  //dd( $parent);
             $countVendor =  DB::table('vendor')
             ->join('sub_store', 'sub_store.vendor_id', 'vendor.id')
             ->where('sub_store.multi_store_id', $parent)
@@ -3342,13 +3378,14 @@ class HomeController extends Controller
             ->where('sales_platform.vendor_status', 'active')
             ->where('sub_store.multi_store_id', $parent)
             ->get('sales_platform.vendor_id');
-            //dd( $parent);
+          
 
             $perPage = $request->perPage ?? 25;
             $search = $request->input('search');
     
             $childVendor = DB::table('vendor')
             ->join('sub_store', 'sub_store.vendor_id', 'vendor.id')
+            ->join('state', 'state.id', '=', 'vendor.state_id')
             ->where('sub_store.multi_store_id', $parent)
             ->select(['vendor.id', 'vendor.vendor_status', 'vendor.store_area',
             'vendor.store_name', 'state.state'])
@@ -3375,7 +3412,7 @@ class HomeController extends Controller
         }
     }
 
-    public function newChildVendor(Request $request, $parent_id){
+    public function newChildVendor(Request $request, $vendor_id){
         $name = Auth::user()->name;
         $id = Auth::user()->id;
         $role = DB::table('role')->select('role_name')
@@ -3383,12 +3420,12 @@ class HomeController extends Controller
         ->where('users.id', $id)
         ->pluck('role_name')->first();
 
-        $vendorName = DB::table('vendor')->where('id', $parent_id)
+        $vendorName = DB::table('vendor')->where('id', $vendor_id)
         ->select('*')->pluck('store_name')->first();
 
-        $parent = DB::table('multi_store')
-        ->where('vendor_id', $parent_id)
-        ->get('*')->pluck('id');
+        $parent_id = DB::table('multi_store')
+        ->where('vendor_id', $vendor_id)
+        ->get('*')->pluck('id')->first();
 
         $stateID = DB::table('state')->select(['*'])
         ->pluck('id');
@@ -3417,8 +3454,8 @@ class HomeController extends Controller
             $id = Auth::user()->id;
 
             $parent = DB::table('multi_store')
-            ->where('vendor_id', $request_parent_id)
-            ->get('*')->pluck('id');
+            ->where('vendor_id', $request->parent_id)
+            ->get('*')->pluck('id')->first();
 
             $pin = mt_rand(100000, 999999);
             // shuffle pin
@@ -3456,7 +3493,7 @@ class HomeController extends Controller
             }
             $role = Role::where('role_name', 'childvendor')
             ->get()->pluck('id')->first();
-            $username = substr($request->store_name, -10);
+            $username = substr($request->store_name, -30);
         
             $addUser = new User;
             $addUser->username          = $username;
@@ -3500,7 +3537,7 @@ class HomeController extends Controller
                 $childStore = new SubStore();
                 $childStore->vendor_id        = $addVendor->id;
                 $childStore->user_id          = $addUser->id;
-                $childStore->multi_store_id   = $parent_id;
+                $childStore->multi_store_id   = $request->parent_id;
                 $childStore->level            = 'child';
                 $childStore->save();
                 //create vendor id in sales platform table

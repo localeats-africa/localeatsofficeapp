@@ -70,5 +70,6 @@ class Kernel extends HttpKernel
         'manager' => \App\Http\Middleware\Manager::class,
         'vendormanager' => \App\Http\Middleware\VendorManager::class,
         'user-access' => \App\Http\Middleware\UserAccess::class,
+        'only.ajax' => \App\Http\Middleware\OnlyAjax::class,
     ];
 }
