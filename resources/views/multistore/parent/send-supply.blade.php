@@ -197,10 +197,10 @@ text-transform: lowercase;
                                                             @endif       
                                                     </td>
                                                     <td >
-                                                      <form action="{{ route('remove-supply-item') }}" method="post">
+                                                      <form action="{{ route('remove-supply-item', [$data->id]) }}" method="post">
                                                       @csrf
                                                       {{csrf_field()}}
-                                                            <input type="text" value="{{$data->id}}" name="id">
+                                                            <input type="hidden" value="" name="id">
                                                             <button type="submit"  name="submit" class=" btn btn-xs text-danger"><i class="fa fa-trash"></i></button>
                                                       </form>
                                                     </td>
