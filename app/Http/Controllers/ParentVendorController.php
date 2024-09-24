@@ -258,8 +258,8 @@ class ParentVendorController extends Controller
         }
     }
 
-    public function deleteTempSupply(Request $request){
-       $id =  $request->id;
+    public function deleteTempSupply(Request $request, $id){
+      // $id =  $request->id;
        $remove = TempVendorInventory::where('id', $id)->delete();
        if($remove){
         return redirect()->back()->with('supply-status', 'Item removed');  
