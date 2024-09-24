@@ -103,19 +103,28 @@
                               <div class="input-group">
                                     <span class="input-group-append">
                                           <span class="input-group-text text-dark d-block">
-                                                item
+                                                item <i class="text-danger">*</i>
                                           </span>
                                     </span>
                                     <input class="typeahead form-control" id="search" type="text" name="item"
                                           placeholder="search here">
+                                        
+                                    <span class="input-group-append">
+                                          <span class="input-group-text text-dark d-block">
+                                                size
+                                          </span>
+                                    </span>
+                                    <input type="text" name="size" value="0"
+                                          style="width:85px;  padding-left:20px;  padding-right:5px;" id="size">
+                                   
 
                                     <span class="input-group-append">
                                           <span class="input-group-text text-dark d-block">
-                                                weight/size
+                                                weight
                                           </span>
                                     </span>
                                     <select class="js-example-basic-single text-secondary" style="width:20%"
-                                          name="size">
+                                          name="weight">
                                           <option value="">Choose</option>
                                           @foreach($sizes as $data)
                                           <option value="{{$data->size}}">
@@ -129,10 +138,10 @@
                                     </div>
                                     <span class="input-group-append">
                                           <span class="input-group-text text-dark d-block">
-                                                qty
+                                                qty <i class="text-danger">*</i>
                                           </span>
                                     </span>
-                                    <input type="text" name="quantity" value="0"
+                                    <input type="text" name="quantity" value="1"
                                           style="width:85px;  padding-left:20px;  padding-right:5px;" id="supply"
                                           multiple="multiple">
                                     <div class="btn btn-sm" id="increaseSupply" onclick="increaseSupply()"
