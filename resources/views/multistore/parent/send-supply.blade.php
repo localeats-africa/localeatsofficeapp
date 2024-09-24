@@ -109,6 +109,20 @@
                                     <input class="typeahead form-control" id="search" type="text" name="item"
                                           placeholder="search here">
 
+                                    <span class="input-group-append">
+                                          <span class="input-group-text text-dark d-block">
+                                                weight/size
+                                          </span>
+                                    </span>
+                                    <select class="js-example-basic-single text-secondary" style="width:20%"
+                                          name="size">
+                                          <option value="">Choose</option>
+                                          @foreach($sizes as $data)
+                                          <option value="{{$data->size}}">
+                                                {{$data->size}}
+                                          </option>
+                                          @endforeach
+                                    </select>
 
                                     <div class="btn btn-sm" id="decreaseSupply" onclick="decreaseSupply()"
                                           value="Decrease Value">-
@@ -124,21 +138,6 @@
                                     <div class="btn btn-sm" id="increaseSupply" onclick="increaseSupply()"
                                           value="Increase Value">+
                                     </div>
-
-                                    <span class="input-group-append">
-                                          <span class="input-group-text text-dark d-block">
-                                                weight/size
-                                          </span>
-                                    </span>
-                                    <select class="js-example-basic-single text-secondary" style="width:20%"
-                                          name="size">
-                                          <option value="">Choose</option>
-                                          @foreach($sizes as $data)
-                                          <option value="{{$data->size}}">
-                                                {{$data->size}}
-                                          </option>
-                                          @endforeach
-                                    </select>
                                     <button type="submit" name="submit"
                                           class="btn bg-gradient-primary btn-sm  text-white">Enter</button>
                               </div>
