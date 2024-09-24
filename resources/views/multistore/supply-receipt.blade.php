@@ -187,8 +187,18 @@
                                                                                     {!! nl2br($data->supply) !!}
                                                                               </small>
                                                                         </td>
-                                                                        <td><small>{{$data->size}}</small>  </td>
-                                                                        <td><small>{{$data->supply_qty}}</small></td>
+                                                                        <td> @if($data->size == 0)
+                                                                        <small>{{$data->weight}} </small> 
+                                                                              @else
+                                                                              <small>{{$data->size}} &nbsp;{{$data->weight}} </small> 
+                                                                              @endif 
+                                                                            </td>
+                                                                        <td><small>
+                                                                              @if($data->supply_qty == 0)
+                                                                              @else
+                                                                              {{$data->supply_qty}}
+                                                                              @endif     
+                                                                        </small></td>
                                                                   
                                                                         <td><small></small>
                                                                         </td>
