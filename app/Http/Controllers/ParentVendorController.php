@@ -258,6 +258,17 @@ class ParentVendorController extends Controller
         }
     }
 
+    public function deleteTempSupply(Request $request){
+       $id =  $request->id;
+       $remove = TempVendorInventory::where('id', $id)->delete();
+       if($remove){
+        return redirect()->back()->with('supply-status', 'Item removed');  
+       }
+       else{
+        return redirect()->back()->with('sales-error', 'Opps! something happend');
+        }
+    }
+
  //post //vendor_id is the child vendor
     public function pushSupplies(Request $request){
         $username   = Auth::user()->username;
