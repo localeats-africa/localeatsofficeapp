@@ -178,7 +178,13 @@
                                                 <tr>
                                                       <td>{{$loop->iteration}}</td>
                                                       <td class="text-capitalize">{{$data->supply}}</td>
-                                                      <td>{{$data->size}} &nbsp; {{$data->weight}}</td>
+                                                      <td>
+                                                            @if($data->size == 0)
+                                                            {{$data->weight}}
+                                                            @else
+                                                            {{$data->size}} {{$data->weight}}
+                                                            @endif 
+                                                      </td>
                                                       <td>{{$data->supply_qty}} </td>
 
                                                 </tr>
