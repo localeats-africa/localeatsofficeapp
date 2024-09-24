@@ -172,8 +172,7 @@
                                                             <thead>
                                                                   <tr>
                                                                         <th>Item (s)</th>
-                                                                        <th>Quantity</th>
-                                                                        <th>Size/Weight</th>
+                                                                        <th>Quantity/Size/Weight</th>
                                                                         <th>Status</th>
                                                                         <th></th>
                                                                   </tr>
@@ -188,9 +187,8 @@
                                                                                     {!! nl2br($data->supply) !!}
                                                                               </small>
                                                                         </td>
-                                                                        <td><small>{{$data->supply_qty}}</small></td>
-                                                                        <td><small>{{$data->size}}</small>
-                                                                        </td>
+                                                                        <td><small>{{$data->supply_qty}} &nbsp;  {{$data->size}}</small></td>
+                                                                      
                                                                         <td><small></small>
                                                                         </td>
 
