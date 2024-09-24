@@ -223,7 +223,7 @@ class ParentVendorController extends Controller
     //save temporary child supply selected
     public function sendSupplies(Request $request){
         $this->validate($request, [ 
-            'quantity'      => 'max:255', 
+            'quantity'      => 'required|max:255', 
             'item'          => 'required|max:255'         
         ]);
 
@@ -239,6 +239,7 @@ class ParentVendorController extends Controller
             $supply->vendor_id          = $request->vendor_id;
             $supply->supply_qty         = $request->quantity;
             $supply->size               = $request->size;
+            $supply->weight             = $request->weight;
             $supply->supply             = $request->item;
             $supply->save();
  
@@ -275,6 +276,7 @@ class ParentVendorController extends Controller
                     $supply->vendor_id          = $data->vendor_id;
                     $supply->supply_qty         = $data->supply_qty;
                     $supply->size               = $data->size;
+                    $supply->weight             = $data->weight;
                     $supply->supply             = $data->supply;
                     $supply->supply_ref         = $supplyRef;
                     $supply->save();
