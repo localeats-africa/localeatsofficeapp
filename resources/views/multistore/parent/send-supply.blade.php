@@ -169,6 +169,7 @@
                                                 <tr>
                                                       <th>SN</th>
                                                       <th>Item</th>
+                                                      <th>Weight/Size</th>
                                                       <th>Quantity</th>
                                                 </tr>
                                           </thead>
@@ -177,9 +178,8 @@
                                                 <tr>
                                                       <td>{{$loop->iteration}}</td>
                                                       <td class="text-capitalize">{{$data->supply}}</td>
-                                                      <td>
-                                                            {{$data->supply_qty}} &nbsp; {{$data->size}}
-                                                      </td>
+                                                      <td>{{$data->size}} &nbsp; {{$data->weight}}</td>
+                                                      <td>{{$data->supply_qty}} </td>
 
                                                 </tr>
                                                 @endforeach
