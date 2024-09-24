@@ -146,7 +146,7 @@ text-transform: lowercase;
                                                 qty <i class="text-danger">*</i>
                                           </span>
                                     </span>
-                                    <input type="text" name="quantity" value="1"
+                                    <input type="text" name="quantity" value="0"
                                           style="width:85px;  padding-left:20px;  padding-right:5px;" id="supply"
                                           multiple="multiple">
                                     <div class="btn btn-sm" id="increaseSupply" onclick="increaseSupply()"
@@ -190,7 +190,12 @@ text-transform: lowercase;
                                                             {{$data->size}} {{$data->weight}}
                                                             @endif 
                                                       </td>
-                                                      <td>{{$data->supply_qty}} </td>
+                                                      <td>
+                                                      @if($data->supply_qty == 0)
+                                                            @else
+                                                            {{$data->supply_qty}}
+                                                            @endif       
+                                                    </td>
 
                                                 </tr>
                                                 @endforeach
