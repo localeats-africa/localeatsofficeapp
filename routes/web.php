@@ -14,8 +14,7 @@ use App\Http\Controllers\TwitterController;
 use App\Http\Controllers\AccountManagerController;
 use App\Http\Controllers\ParentVendorController;
 use App\Http\Controllers\MultiVendorController;
-
-
+use App\Http\Controllers\VendorsController;
 
 /*
 |--------------------------------------------------------------------------
@@ -248,3 +247,8 @@ Route::controller(ParentVendorController::class)->group(function () {
 });
 
 
+Route::controller(VendorsController::class)->group(function () {
+    Route::get('/{username}/supplies/',  'outletSupplies')->name('outlet-supplies');
+    Route::post('accept_supply/{id}',  'updateSupplyQty')->name('accept_supply');
+    Route::post('reject_supply/{id}',  'pushSupplies')->name('reject-supplies');
+});
