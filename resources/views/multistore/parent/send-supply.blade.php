@@ -3,7 +3,12 @@
 @extends('layouts.multistore-sidebar')
 @extends('layouts.footer')
 @section('content')
-
+<style>
+.select2-results__option[aria-selected] {
+cursor: pointer;
+text-transform: lowercase;
+}
+</style>
 <!-- main-panel -->
 <div class="main-panel">
       <div class="content-wrapper">
@@ -123,8 +128,8 @@
                                                 weight
                                           </span>
                                     </span>
-                                    <select class="js-example-basic-single text-secondary" style="width:20%"
-                                          name="weight">
+                                    <select class="js-example-basic-single2 text-secondary" style="width:20%"
+                                          name="weight" >
                                           <option value="">Choose</option>
                                           @foreach($sizes as $data)
                                           <option value="{{$data->size}}">
