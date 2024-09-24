@@ -196,6 +196,11 @@ text-transform: lowercase;
                                                             {{$data->supply_qty}}
                                                             @endif       
                                                     </td>
+                                                    <td >
+                                                      <form action="">
+                                                            <button type="submit"  name="submit" class=" btn btn-xs text-danger"><i class="fa fa-trash"></i></button>
+                                                      </form>
+                                                    </td>
 
                                                 </tr>
                                                 @endforeach
