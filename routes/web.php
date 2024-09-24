@@ -243,6 +243,7 @@ Route::controller(ParentVendorController::class)->group(function () {
     });    
     Route::post('push-supplies',  'pushSupplies')->name('push-supplies');
     Route::get('/{username}/supplies-receipt/{supply_ref}',  'supplyReceipt')->name('supplies-receipt');
+    Route::post('remove-supply-item',  'deleteTempSupply')->name('remove-supply-item');
     
 });
 
