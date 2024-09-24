@@ -40,22 +40,37 @@
             <div class="row">
                   <div class="col-sm-12">
                         <div class="page-header">
-                            
+                           <form action=""></form>
                               <nav style="--bs-breadcrumb-divider: '';" aria-label="breadcrumb">
                                     <p id="response"></p>
                                     <ol class="breadcrumb">
                                           <li class="breadcrumb-item">
-                                                <button class="btn btn-outline-dark  text-dark" onclick="printDiv()">
+                                                <button class="btn btn-outline-dark " onclick="printDiv()">
                                                       <i class="fa fa-print"></i></button>
                                           </li>
                                           <li class="breadcrumb-item">
-                                                <button class="btn btn-outline-dark  text-dark" onclick="getPDF()">
+                                                <button class="btn btn-outline-dark " onclick="getPDF()">
                                                       <i class="fa fa-download"></i></button>
                                           </li>
-                                         
+                                          @auth
+                                          <!---childvendor--->
+                                          @if(Auth::user()->role_id =='10')
+                                    
+                                          <li class="breadcrumb-item">
+                                                <button class="btn btn-success  text-dark"> Accept Supplies</button>
+                                           </li>
+                                          <li class="breadcrumb-item">
+                                                <button class="btn btn-danger  text-white" >
+                                                Reject</button>
+                                          </li>
+                              
+                                          @endif 
+                                          @endauth
 
                                     </ol>
                               </nav>
+
+                             
                         </div>
                   </div>
             </div>
