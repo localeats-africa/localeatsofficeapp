@@ -23,6 +23,9 @@ class InventoryItemSizeSeeder extends Seeder
             
         ]);
         DB::table('inventory_item_size')->insert([
+            'size'   => 'ml'
+        ]);
+        DB::table('inventory_item_size')->insert([
             'size'   => 'liter'
         ]);
 
