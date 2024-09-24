@@ -105,8 +105,7 @@
                                           <div class="ms-auto text-secondary">
                                                 Search:
                                                 <div class="ms-2 d-inline-block">
-
-                                                      <form action="{{ route('add-expenses') }}" method="GET"
+                                                      <form action="/{{$username}}/outlet-supplies/{{$vendor_id}}" method="GET"
                                                             role="search">
                                                             {{ csrf_field() }}
                                                             <div class="input-group mb-2">
@@ -146,7 +145,7 @@
 
                                                                   <div class="dropdown-menu ">
                                                                         <br>
-                                                                        <a class="dropdown-item text-dark" href="" title="view">
+                                                                        <a class="dropdown-item text-dark" href="/{{$username}}/supplies-receipt/{{$data->supply_ref}}" title="view">
                                                                              <small> <i class="fa fa-eye"></i> view</small>
                                                                         </a>
                                                                         <br>

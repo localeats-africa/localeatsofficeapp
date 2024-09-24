@@ -243,7 +243,7 @@ Route::controller(ParentVendorController::class)->group(function () {
         Route::get('autocomplete', 'autocomplete')->name('autocomplete');
     });    
     Route::post('push-supplies',  'pushSupplies')->name('push-supplies');
-    Route::get('/{username}/{vendor}/{supply_ref}/supplies-receipt',  'supplyReceipt')->name('supplies-receipt');
+    Route::get('/{username}/supplies-receipt/{supply_ref}',  'supplyReceipt')->name('supplies-receipt');
     
 
 });
