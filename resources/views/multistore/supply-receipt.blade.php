@@ -30,7 +30,7 @@
       <div class="content-wrapper">
 
             <div class="page-header">
-                  <h3 class="page-title">Invoice</h3>
+                  <h3 class="page-title">Supply Receipt</h3>
             </div>
             <!---Alert --->
 
