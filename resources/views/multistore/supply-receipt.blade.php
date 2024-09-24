@@ -18,8 +18,6 @@
       padding: 10px;
 }
 
-
-
 .hidetext:hover {
       overflow: visible;
       white-space: normal;
