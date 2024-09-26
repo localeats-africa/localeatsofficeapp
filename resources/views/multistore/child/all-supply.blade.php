@@ -118,43 +118,21 @@
                                           id="orders">
                                           <thead>
                                                 <tr>
-                                                      <th></th>
                                                       <th>Sent Date</th>
                                                       <th>Supply Reference</th>
-                                                      <th>Status</th>
-                                                      <th>Remark</th>
+                                                      <th></th>
                                                 </tr>
                                           </thead>
                                           <tbody>
                                                 @foreach($supply as $data)
                                                 <tr>
-                                                      <td>
-                                                            <span class="dropdown">
-                                                                  <button
-                                                                        class="btn dropdown-toggle align-text-top text-danger"
-                                                                        data-bs-boundary="viewport"
-                                                                        data-bs-toggle="dropdown"
-                                                                        style="padding:0;">Action</button>
-
-                                                                  <div class="dropdown-menu ">
-                                                                        <a class="dropdown-item text-dark" href="/{{$username}}/supplies-receipt/{{$data->supply_ref}}" title="view">
-                                                                             <small> <i class="fa fa-eye"></i> view</small>
-                                                                        </a>
-                                                                        <br>
-                                                                        @if($data->status == 'accepted')
-                                                                        @else
-
-
-                                                                        @endif
-
-                                                                  </div>
-                                                            </span>
-                                                      </td>
                                                       <td>{{ date('d/m/Y', strtotime($data->created_at))}}</td>
                                                       <td class="text-capitalize">{{$data->supply_ref}}</td>
-                                                      <td class="text-capitalize">{{$data->status}}</td>
-
-                                                      <td></td>
+                                                      <td>  
+                                                            <a class="text-danger" href="/{{$username}}/supplies-receipt/{{$data->supply_ref}}" title="view">
+                                                               <small> <i class="fa fa-eye"></i></small>
+                                                           </a>
+                                                      </td>
 
                                                 </tr>
                                                 @endforeach
