@@ -102,9 +102,16 @@ class VendorsController extends Controller
         $id = $request->id;
         $remark = $request->remark;
 
+        $update = DB::table('sub_vendor_inventory')
+        ->where('id', $id)
+        ->update([
+            'remark' => $remark,
+            'status' => 'rejected'
+        ]);
+
         $data = [
             'status' => true,
-            'message'=> 'Remark ' .$id. ' successfully.'
+            'message'=> 'Record sent successfully.'
         ];
         return response()->json($data);
     }
