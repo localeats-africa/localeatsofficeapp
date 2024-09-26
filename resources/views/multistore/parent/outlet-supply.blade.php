@@ -128,7 +128,6 @@
                                                       <th></th>
                                                       <th>Sent Date</th>
                                                       <th>Supply Reference</th>
-                                                      <th>Remark</th>
                                                 </tr>
                                           </thead>
                                           <tbody>
