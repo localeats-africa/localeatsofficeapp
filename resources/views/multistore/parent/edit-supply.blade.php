@@ -9,13 +9,13 @@
       <div class="content-wrapper">
             <div class="page-header">
                   <h3 class="page-title">
-                       Edit Supply for <span class="text-info">{{$outletStoreName}}</span> 
+                        Edit Supply for <span class="text-info">{{$outletStoreName}}</span>
                   </h3>
                   <nav aria-label="breadcrumb">
                         <ul class="breadcrumb">
                               <li class="breadcrumb-item active" aria-current="page">
                                     <span></span>
-                                    Receipt <sup>No:</sup> <span class="text-info">{{$supply_ref}}</span> 
+                                    Receipt <sup>No:</sup> <span class="text-info">{{$supply_ref}}</span>
                               </li>
                         </ul>
                   </nav>
@@ -109,75 +109,106 @@
                                     </div>
                                     <div class="card-body py-3">
 
-                                    <div class="row">
-                                                <p><h5>item: </h5></p>
-                                                <div class="col-md-6">
-                                                      <div class="form-group">
-                                                            <input type="text" value="{{$supply->supply}}" name="vendor_name"
-                                                                  class="form-control">
-                                                      </div>
-                                                </div>
-
-                                                <div class="col-md-6">
-                                                      <div class="form-group">
-                                                          
-                                                      </div>
-                                                </div>
-
-                                             
-                                          </div>
-                                          <!--- row-->
-
-
-                                          </div>
-                                          <!--- row-->
-
                                           <div class="row">
-                                                <p></p>
-                                                <div class="col-md-6">
-                                                </div>
-                                                <div
-                                                      class="col-md-6 col-12 grid-margin stretch-card justify-content-end">
+                                                <h5>item: </h5>
+                                                <div class="table-responsive">
+                                                      <table class="table table-bordered">
+                                                            <thead>
+                                                                  <tr>
+                                                                        <th>SN</th>
+                                                                        <th>Item</th>
+                                                                        <th class="table-info">Size</th>
+                                                                        <th class="table-danger">Weight</th>
+                                                                        <th>Quantity</th>
+                                                                  </tr>
+                                                            </thead>
+                                                            <tbody>
+                                                                  @foreach($supply as $data)
+                                                                <tr>
+                                                                  <td>{{$loop->iteration}}</td>
+                                                                <td><input type="text" value="{{$data->supply}}"
+                                                                              name="vendor_name" class="form-control">
+                                                                  </td>
+                                                                  <td>
+                                                                        <input type="text" value="{{$data->size}}"
+                                                                              name="vendor_name" class="form-control">
+                                                                  </td>
 
-                                                      <!-- send button here -->
-                                                      <div class="card-footer bg-transparent mt-auto">
-                                                            <div class="btn-list ">
-                                                                  <button type="submit" name="submit"
-                                                                        class="btn bg-gradient-primary  text-white">
-                                                                        <svg xmlns="http://www.w3.org/2000/svg"
-                                                                              class="icon icon-tabler icon-tabler-device-floppy"
-                                                                              width="24" height="24" viewBox="0 0 24 24"
-                                                                              stroke-width="1.5" stroke="currentColor"
-                                                                              fill="none" stroke-linecap="round"
-                                                                              stroke-linejoin="round">
-                                                                              <path stroke="none" d="M0 0h24v24H0z"
-                                                                                    fill="none" />
-                                                                              <path
-                                                                                    d="M6 4h10l4 4v10a2 2 0 0 1 -2 2h-12a2 2 0 0 1 -2 -2v-12a2 2 0 0 1 2 -2" />
-                                                                              <path
-                                                                                    d="M12 14m-2 0a2 2 0 1 0 4 0a2 2 0 1 0 -4 0" />
-                                                                              <path d="M14 4l0 4l-6 0l0 -4" />
-                                                                        </svg>
-                                                                        Save Changes
-                                                                  </button>
-                                                            </div>
-                                                      </div>
+                                                                  <td>
+                                                                        <input type="text" value="{{$data->weight}}"
+                                                                              name="vendor_name" class="form-control">
+                                                                  </td>
+                                                                  <td>
+                                                                        <input type="text" value="{{$data->supply_qty}}"
+                                                                              name="vendor_name" class="form-control">
+                                                                  </td>
+                                                                </tr>
+
+
+                                                                  @endforeach
+                                                            </tbody>
+                                                      </table>
+                                                </div>
+                                                <div class="col-md-12">
 
                                                 </div>
+
+
+
+
                                           </div>
                                           <!--- row-->
+
 
                                     </div>
+                                    <!--- row-->
+
+                                    <div class="row">
+                                          <p></p>
+                                          <div class="col-md-6">
+                                          </div>
+                                          <div class="col-md-6 col-12 grid-margin stretch-card justify-content-end">
+
+                                                <!-- send button here -->
+                                                <div class="card-footer bg-transparent mt-auto">
+                                                      <div class="btn-list ">
+                                                            <button type="submit" name="submit"
+                                                                  class="btn bg-gradient-primary  text-white">
+                                                                  <svg xmlns="http://www.w3.org/2000/svg"
+                                                                        class="icon icon-tabler icon-tabler-device-floppy"
+                                                                        width="24" height="24" viewBox="0 0 24 24"
+                                                                        stroke-width="1.5" stroke="currentColor"
+                                                                        fill="none" stroke-linecap="round"
+                                                                        stroke-linejoin="round">
+                                                                        <path stroke="none" d="M0 0h24v24H0z"
+                                                                              fill="none" />
+                                                                        <path
+                                                                              d="M6 4h10l4 4v10a2 2 0 0 1 -2 2h-12a2 2 0 0 1 -2 -2v-12a2 2 0 0 1 2 -2" />
+                                                                        <path
+                                                                              d="M12 14m-2 0a2 2 0 1 0 4 0a2 2 0 1 0 -4 0" />
+                                                                        <path d="M14 4l0 4l-6 0l0 -4" />
+                                                                  </svg>
+                                                                  Save Changes
+                                                            </button>
+                                                      </div>
+                                                </div>
+
+                                          </div>
+                                    </div>
+                                    <!--- row-->
+
                               </div>
                               <!--- card-->
                         </form>
                   </div>
-            </div>
 
+            </div>
       </div>
+
+
       <!--- content-wrapper-->
-   <!-- partial -->
-   <footer class="footer">
+      <!-- partial -->
+      <footer class="footer">
             <div class="d-sm-flex justify-content-center justify-content-sm-between">
                   <span class="text-muted text-center text-sm-left d-block d-sm-inline-block">Copyright ©
                         LocalEats Africa {{ date('Y')}} </a>. All rights
