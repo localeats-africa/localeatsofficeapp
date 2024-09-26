@@ -409,11 +409,6 @@ function mypdf() {
 
 
 <script>
-function reject(data) {
-      var show = document.querySelector('#remark-' + data);
-      show.style.display = "block";
-
-}
 
 function toggleClock(data) {
     // get the clock
