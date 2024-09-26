@@ -177,7 +177,7 @@
                                                                         <th>Remark</th>
                                                                         <!---parent--->
                                                                         <th>Status</th>
-                                                                    
+
                                                                   </tr>
                                                             </thead>
                                                             <tbody>
@@ -187,15 +187,17 @@
                                                                         @auth
                                                                         <!---childvendor--->
 
-                                                                        <td width="20%">
+                                                                        <td>
                                                                               @if(Auth::user()->role_id =='10')
                                                                               <button
                                                                                     class="btn btn-success btn-xs  text-dark">
                                                                                     Accept</button>
                                                                               <button
-                                                                                    class="btn btn-danger btn-xs  text-white">
+                                                                                    class="btn btn-danger btn-xs  text-white"
+                                                                                    id="reject-{{ $data->id }}"
+                                                                                    onclick="toggleClock({{$data->id}})">
                                                                                     Reject</button>
-                                                                              &nbsp;
+
                                                                               @endif
                                                                               @if(Auth::user()->role_id =='9')
                                                                               <a class="text-danger"
@@ -207,9 +209,11 @@
                                                                               @endif
                                                                         </td>
                                                                         @endauth
+                                                                        <td  width="30%"> 
+                                                                              <input type="text" class="form-control" placeholder="enter a remark" id="remark-{{$data->id}}" style="display:none;">
+                                                                        </td>
 
-
-                                                                        <td width="30%"
+                                                                        <td width="20%"
                                                                               style="white-space:wrap; line-height:1.6">
 
                                                                               <small>
@@ -235,14 +239,15 @@
                                                                               </small>
                                                                         </td>
 
-                                                                        <td width="30%" style="white-space:wrap; line-height:1.6">
+                                                                        <td width="30%"
+                                                                              style="white-space:wrap; line-height:1.6">
                                                                               <small>
                                                                                     <!--  remark--->
                                                                               </small>
                                                                         </td>
                                                                         <!--  parent--->
-                                                                      
-                                                                     <td></td>
+
+                                                                        <td></td>
                                                                   </tr>
 
                                                                   @endforeach
@@ -402,10 +407,38 @@ function mypdf() {
 }
 </script>
 
+
 <script>
-$("#reject").on("click", function(){
-      $("#remark").show();
-});
+function reject(data) {
+      var show = document.querySelector('#remark-' + data);
+      show.style.display = "block";
+
+}
+
+function toggleClock(data) {
+    // get the clock
+    var myClock = document.querySelector('#remark-' + data);
+
+    // get the current value of the clock's display property
+    var displaySetting = myClock.style.display;
+
+    // also get the clock button, so we can change what it says
+    var clockButton = document.querySelector('#reject-' + data);
+
+    // now toggle the clock and the button text, depending on current state
+    if (displaySetting == 'block') {
+      // clock is visible. hide it
+      myClock.style.display = 'none';
+      // change button text
+      clockButton.innerHTML = 'Reject';
+    }
+    else {
+      // clock is hidden. show it
+      myClock.style.display = 'block';
+      // change button text
+      clockButton.innerHTML = 'Reject';
+    }
+}
 </script>
 
 @endsection
