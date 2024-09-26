@@ -112,7 +112,7 @@ class VendorsController extends Controller
        if($update){
         $data = [
             'status' => true,
-            'message'=> 'Record sent successfully.'
+            'message'=> 'Remark sent successfully.'
         ];
         return response()->json($data);
        }
@@ -124,5 +124,32 @@ class VendorsController extends Controller
         return response()->json($data);
        }
      }
+
+     public function acceptSupply(Request $request){
+        $id = $request->id;
+        $remark = $request->remark;
+
+        $update = DB::table('sub_vendor_inventory')
+        ->where('id', $id)
+        ->update([
+            'status' => 'accepted'
+        ]);
+
+       if($update){
+        $data = [
+            'status' => true,
+            'message'=> 'Record save successfully.'
+        ];
+        return response()->json($data);
+       }
+       else{
+        $data = [
+            'status' => true,
+            'message'=> 'Opps!  something went wrong.'
+        ];
+        return response()->json($data);
+       }
+     }
+     
 
 }
