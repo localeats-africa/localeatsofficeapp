@@ -306,7 +306,6 @@ class ParentVendorController extends Controller
                 SubVendorInventory::where('id', $supply->id)
                 ->update([
                 'number_of_items' => $countRow,
-                'status' => 'pending',
                 ]);
                
                 TempVendorInventory::where('parent_id', $request->parent_id)->delete();
