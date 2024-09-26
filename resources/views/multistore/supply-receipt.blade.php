@@ -170,21 +170,14 @@
                                                       <table class="table table-striped">
                                                             <thead>
                                                                   <tr>
-                                                                        @auth
-                                                                        <!---childvendor--->
-                                                                        @if(Auth::user()->role_id =='10')
                                                                         <th>Action</th>
-                                                                        @endif
-                                                                   
                                                                         <th>Item (s)</th>
                                                                         <th>Size/Weight</th>
                                                                         <th>Quantity</th>
                                                                         <th>Remark</th>
                                                                         <!---parent--->
-                                                                        @if(Auth::user()->role_id =='9')
                                                                         <th>Status</th>
-                                                                        @endif
-                                                                        @endauth
+                                                                    
                                                                   </tr>
                                                             </thead>
                                                             <tbody>
@@ -193,8 +186,9 @@
                                                                   <tr>
                                                                         @auth
                                                                         <!---childvendor--->
-                                                                        @if(Auth::user()->role_id =='10')
+
                                                                         <td width="20%">
+                                                                              @if(Auth::user()->role_id =='10')
                                                                               <button
                                                                                     class="btn btn-success btn-xs  text-dark">
                                                                                     Accept</button>
@@ -202,9 +196,19 @@
                                                                                     class="btn btn-danger btn-xs  text-white">
                                                                                     Reject</button>
                                                                               &nbsp;
+                                                                              @endif
+                                                                              @if(Auth::user()->role_id =='9')
+                                                                              <a class="text-danger"
+                                                                                    href="/{{$username}}/edit-outlet-supply/{{$data->id}}"
+                                                                                    title="edit">
+                                                                                    <small> <i class="fa fa-edit"></i>
+                                                                                          edit</small>
+                                                                              </a>
+                                                                              @endif
                                                                         </td>
-                                                                        @endif
-                                                                          
+                                                                        @endauth
+
+
                                                                         <td width="30%"
                                                                               style="white-space:wrap; line-height:1.6">
 
@@ -231,21 +235,14 @@
                                                                               </small>
                                                                         </td>
 
-                                                                        <td width="30%"
-                                                                              style="white-space:wrap; line-height:1.6">
+                                                                        <td width="30%" style="white-space:wrap; line-height:1.6">
                                                                               <small>
                                                                                     <!--  remark--->
                                                                               </small>
                                                                         </td>
-                                                                         <!--  parent--->
-                                                                        @if(Auth::user()->role_id =='9')
-                                                                        <td  style="white-space:wrap; line-height:1.6">
-                                                                              <small>
-                                                                                    <!--  status--->
-                                                                              </small>
-                                                                        </td>
-                                                                        @endauth
-                                                                        @endauth
+                                                                        <!--  parent--->
+                                                                      
+                                                                     <td></td>
                                                                   </tr>
 
                                                                   @endforeach
@@ -259,7 +256,7 @@
                                                                   </tr>
                                                                   <tr>
 
-                                                                        <th colspan="2" class="text-end">
+                                                                        <th colspan="4" class="text-end">
                                                                               @if($status == 'rejected')
                                                                               <span
                                                                                     class="text-danger">{{$data->remark}}</span>

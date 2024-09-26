@@ -245,7 +245,8 @@ Route::controller(ParentVendorController::class)->group(function () {
     });    
     Route::post('push-supplies',  'pushSupplies')->name('push-supplies');
    Route::post('remove-supply-item/{id}',  'deleteTempSupply')->name('remove-supply-item');
-    
+   Route::get('/{username}/edit-outlet-supply/{ref}',  'editOutletSupply')->name('edit-outlet-supply');
+   Route::post('update-supplies/{ref}',  'updateSupply')->name('update-supplies');
 });
 
 

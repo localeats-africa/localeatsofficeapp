@@ -346,5 +346,66 @@ class ParentVendorController extends Controller
         }
     }
 
+    //vendor_id is the child vendor
+    public function editOutletSupply(Request $request, $username, $id){
+        $username = Auth::user()->username;
+        $user_id = Auth::user()->id;
+        $role = DB::table('role')->select('role_name')
+        ->join('users', 'users.role_id', 'role.id')
+        ->where('users.id', $user_id)
+        ->pluck('role_name')->first();
+
+        $parentStoreID = DB::table('multi_store')
+        ->where('user_id', $user_id)
+        ->get('*')->pluck('id')->first();
+
+        $vendor_id = SubVendorInventory::where('id',  $id)
+        ->get()->pluck('vendor_id')->first();
+
+        $outletStoreName = DB::table('vendor')->where('id', $vendor_id)
+        ->select('*')->pluck('store_name')->first();
+        $supply_ref =  SubVendorInventory::where('id',  $id)
+        ->get()->pluck('supply_ref')->first();
+
+        $sizes = InventoryItemSizes::all();
+        $item = VendorInventory::all();
+        $supply =  DB::table('sub_vendor_inventory')
+        ->where('id', $id)
+        ->get(['*']);
+
+        return view('multistore.parent.edit-supply',  compact('role', 'username', 
+        'parentStoreID', 'outletStoreName', 'supply', 'vendor_id',
+        'sizes', 'supply_ref', 'item', 'id'));
+        
+    }
+
+    public function updateSupply(Request $request, $id){
+
+        $supply = SubVendorInventory::find($id);
+        $supply->supply     =   $request->item;
+        $supply->size       =   $request->size;
+        $supply->weight     =   $request->weight;
+        $supply->supply_qty =   $request->quantity;
+        $supply->save();
+     
+        if($supply){
+            $data = [
+                'success' => true,
+                'message'=> 'Update successful' 
+              ] ;
+              
+              //return response()->json($data);
+            return  redirect()->back()->with('update-status', 'Update successful');
+        }
+        else{
+            $data = [
+                'success' => false,
+                'message'=> 'Opps! something happen'
+              ] ;
+              
+              return  redirect()->back()->with('update-status', 'Opps! something went wrong');
+             // return response()->json($data);
+        }
+    }
   
 }
