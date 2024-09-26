@@ -114,7 +114,7 @@ class VendorsController extends Controller
             'message'=> 'Record sent successfully.'
         ];
         //return response()->json($data);
-        return redirect()->back()->with('')
+        return redirect()->back()->with('update-status', 'Record save successfully');
     }
 
 }
