@@ -247,11 +247,13 @@
                                                                               style="white-space:wrap; line-height:1.6">
                                                                               <small>
                                                                                     <!--  remark--->
+                                                                                    {{$data->remark}}
                                                                               </small>
                                                                         </td>
-                                                                        <!--  parent--->
 
-                                                                        <td></td>
+                                                                        <td>
+                                                                              <small> {{$data->status}}</small>
+                                                                        </td>
                                                                   </tr>
 
                                                                   @endforeach
