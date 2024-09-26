@@ -250,7 +250,7 @@
                                                                               @elseif($data->status =='accepted')
                                                                               @else
                                                                               <button
-                                                                                    class="btn btn-success btn-xs  text-dark">
+                                                                                    class="btn btn-success btn-xs  text-dark" onclick="acceptSupply({{$data->id}})">
                                                                                     Accept</button>
                                                                               <button
                                                                                     class="btn btn-danger btn-xs  text-white"
