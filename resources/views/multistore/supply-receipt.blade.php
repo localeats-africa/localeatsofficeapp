@@ -206,7 +206,7 @@
                                                                               @endif
                                                                               @if(Auth::user()->role_id =='9')
                                                                               <a class="text-danger"
-                                                                                    href="/{{$username}}/edit-outlet-supply/{{$data->supply_ref}}"
+                                                                                    href="/{{$username}}/edit-outlet-supply/{{$data->id}}"
                                                                                     title="edit">
                                                                                     <small> <i class="fa fa-edit"></i>
                                                                                           edit</small>
