@@ -9,16 +9,9 @@
       <div class="content-wrapper">
             <div class="page-header">
                   <h3 class="page-title">
-                        <span class="text-info">{{$outletStoreName}}</span> >>>> Supplies
+                        Supplies from >>> <span class="text-info">{{$parentName}}</span> HQ
                   </h3>
-                  <nav aria-label="breadcrumb">
-                        <ul class="breadcrumb">
-                              <li class="breadcrumb-item active" aria-current="page">
-                                    <span></span><a href="/{{$username}}/supply-to-outlet/{{$vendor_id}}"
-                                          class="btn btn-outline-danger">Click Here To Send Supplies </a>
-                              </li>
-                        </ul>
-                  </nav>
+                
             </div>
 
             <p></p>
@@ -105,7 +98,7 @@
                                           <div class="ms-auto text-secondary">
                                                 Search:
                                                 <div class="ms-2 d-inline-block">
-                                                      <form action="/{{$username}}/outlet-supplies/{{$vendor_id}}" method="GET"
+                                                      <form action="/{{$username}}/all-supplies/" method="GET"
                                                             role="search">
                                                             {{ csrf_field() }}
                                                             <div class="input-group mb-2">
@@ -125,48 +118,21 @@
                                           id="orders">
                                           <thead>
                                                 <tr>
-                                                      <th></th>
                                                       <th>Sent Date</th>
                                                       <th>Supply Reference</th>
+                                                      <th></th>
                                                 </tr>
                                           </thead>
                                           <tbody>
                                                 @foreach($supply as $data)
                                                 <tr>
-                                                      <td>
-                                                            <span class="dropdown">
-                                                                  <button
-                                                                        class="btn dropdown-toggle align-text-top text-danger"
-                                                                        data-bs-boundary="viewport"
-                                                                        data-bs-toggle="dropdown"
-                                                                        style="padding:0;">Action</button>
-
-                                                                  <div class="dropdown-menu ">
-                                                                        <br>
-                                                                        <a class="dropdown-item text-dark" href="/{{$username}}/supplies-receipt/{{$data->supply_ref}}" title="view">
-                                                                             <small> <i class="fa fa-eye"></i> view</small>
-                                                                        </a>
-                                                                        <br>
-                                                                        @if($data->status == 'accepted')
-                                                                        @else
-
-                                                                        <input type="hidden" id="vendor_id"
-                                                                              value="{{$data->vendor_id}}">
-                                                                        <input type="hidden" id="invoice_ref" value="">
-                                                                        <a class="dropdown-item text-dark" href="" title="edit">
-                                                                             <small> <i class="fa fa-edit"></i> edit</small>
-                                                                        </a>
-                                                                        <br>
-
-                                                                        @endif
-
-                                                                  </div>
-                                                            </span>
-                                                      </td>
                                                       <td>{{ date('d/m/Y', strtotime($data->created_at))}}</td>
                                                       <td class="text-capitalize">{{$data->supply_ref}}</td>
-
-                                                      <td></td>
+                                                      <td>  
+                                                            <a class="text-danger" href="/{{$username}}/supplies-receipt/{{$data->supply_ref}}" title="view">
+                                                               <small> <i class="fa fa-eye"></i></small>
+                                                           </a>
+                                                      </td>
 
                                                 </tr>
                                                 @endforeach

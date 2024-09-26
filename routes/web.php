@@ -14,8 +14,7 @@ use App\Http\Controllers\TwitterController;
 use App\Http\Controllers\AccountManagerController;
 use App\Http\Controllers\ParentVendorController;
 use App\Http\Controllers\MultiVendorController;
-
-
+use App\Http\Controllers\VendorsController;
 
 /*
 |--------------------------------------------------------------------------
@@ -230,6 +229,8 @@ Route::controller(MultiVendorController::class)->group(function () {
     Route::get('{username}/dashboard',  'parent')->name('dashboard');
     //child dashboard
    Route::get('v/{username}',  'child')->name('v');
+   Route::get('/{username}/supplies-receipt/{supply_ref}',  'supplyReceipt')->name('supplies-receipt');
+    
   
 });
 
@@ -243,9 +244,13 @@ Route::controller(ParentVendorController::class)->group(function () {
         Route::get('autocomplete', 'autocomplete')->name('autocomplete');
     });    
     Route::post('push-supplies',  'pushSupplies')->name('push-supplies');
-    Route::get('/{username}/supplies-receipt/{supply_ref}',  'supplyReceipt')->name('supplies-receipt');
+   Route::post('remove-supply-item/{id}',  'deleteTempSupply')->name('remove-supply-item');
     
-
 });
 
 
+Route::controller(VendorsController::class)->group(function () {
+    Route::get('/{username}/all-supplies',  'outletAllSupplies')->name('all-supplies');
+    Route::post('accept-supply/{id}',  'acceptSupply')->name('accept-supply');
+    Route::post('reject-supply/{id}',  'rejectSupply')->name('reject-supplies');
+});

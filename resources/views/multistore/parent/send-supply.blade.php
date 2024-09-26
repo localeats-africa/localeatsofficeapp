@@ -3,7 +3,12 @@
 @extends('layouts.multistore-sidebar')
 @extends('layouts.footer')
 @section('content')
-
+<style>
+.select2-results__option[aria-selected] {
+cursor: pointer;
+text-transform: lowercase;
+}
+</style>
 <!-- main-panel -->
 <div class="main-panel">
       <div class="content-wrapper">
@@ -103,19 +108,42 @@
                               <div class="input-group">
                                     <span class="input-group-append">
                                           <span class="input-group-text text-dark d-block">
-                                                item
+                                                item <i class="text-danger">*</i>
                                           </span>
                                     </span>
                                     <input class="typeahead form-control" id="search" type="text" name="item"
                                           placeholder="search here">
+                                        
+                                    <span class="input-group-append">
+                                          <span class="input-group-text text-dark d-block">
+                                                size
+                                          </span>
+                                    </span>
+                                    <input type="text" name="size" value="0"
+                                          style="width:85px;  padding-left:20px;  padding-right:5px;" id="size">
+                                   
 
+                                    <span class="input-group-append">
+                                          <span class="input-group-text text-dark d-block">
+                                                weight
+                                          </span>
+                                    </span>
+                                    <select class="js-example-basic-single2 text-secondary" style="width:20%"
+                                          name="weight" >
+                                          <option value="">Choose</option>
+                                          @foreach($sizes as $data)
+                                          <option value="{{$data->size}}">
+                                                {{$data->size}}
+                                          </option>
+                                          @endforeach
+                                    </select>
 
                                     <div class="btn btn-sm" id="decreaseSupply" onclick="decreaseSupply()"
                                           value="Decrease Value">-
                                     </div>
                                     <span class="input-group-append">
                                           <span class="input-group-text text-dark d-block">
-                                                qty
+                                                qty <i class="text-danger">*</i>
                                           </span>
                                     </span>
                                     <input type="text" name="quantity" value="0"
@@ -124,21 +152,6 @@
                                     <div class="btn btn-sm" id="increaseSupply" onclick="increaseSupply()"
                                           value="Increase Value">+
                                     </div>
-
-                                    <span class="input-group-append">
-                                          <span class="input-group-text text-dark d-block">
-                                                weight/size
-                                          </span>
-                                    </span>
-                                    <select class="js-example-basic-single text-secondary" style="width:20%"
-                                          name="size">
-                                          <option value="">Choose</option>
-                                          @foreach($sizes as $data)
-                                          <option value="{{$data->size}}">
-                                                {{$data->size}}
-                                          </option>
-                                          @endforeach
-                                    </select>
                                     <button type="submit" name="submit"
                                           class="btn bg-gradient-primary btn-sm  text-white">Enter</button>
                               </div>
@@ -161,6 +174,7 @@
                                                 <tr>
                                                       <th>SN</th>
                                                       <th>Item</th>
+                                                      <th>Weight/Size</th>
                                                       <th>Quantity</th>
                                                 </tr>
                                           </thead>
@@ -170,8 +184,26 @@
                                                       <td>{{$loop->iteration}}</td>
                                                       <td class="text-capitalize">{{$data->supply}}</td>
                                                       <td>
-                                                            {{$data->supply_qty}} &nbsp; {{$data->size}}
+                                                            @if($data->size == 0)
+                                                            {{$data->weight}}
+                                                            @else
+                                                            {{$data->size}} {{$data->weight}}
+                                                            @endif 
                                                       </td>
+                                                      <td>
+                                                      @if($data->supply_qty == 0)
+                                                            @else
+                                                            {{$data->supply_qty}}
+                                                            @endif       
+                                                    </td>
+                                                    <td >
+                                                      <form action="{{ route('remove-supply-item', [$data->id]) }}" method="post">
+                                                      @csrf
+                                                      {{csrf_field()}}
+                                                            <input type="hidden" value="" name="id">
+                                                            <button type="submit"  name="submit" class=" btn btn-xs text-danger"><i class="fa fa-trash"></i></button>
+                                                      </form>
+                                                    </td>
 
                                                 </tr>
                                                 @endforeach

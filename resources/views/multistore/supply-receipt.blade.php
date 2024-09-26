@@ -1,6 +1,6 @@
 @extends('layouts.head')
 @extends('layouts.header')
-@extends('layouts.sidebar')
+@extends('layouts.multistore-sidebar')
 @extends('layouts.footer')
 @section('content')
 <!-- main-panel -->
@@ -18,8 +18,6 @@
       padding: 10px;
 }
 
-
-
 .hidetext:hover {
       overflow: visible;
       white-space: normal;
@@ -30,7 +28,7 @@
       <div class="content-wrapper">
 
             <div class="page-header">
-                  <h3 class="page-title">Invoice</h3>
+                  <h3 class="page-title">Supply Receipt</h3>
             </div>
             <!---Alert --->
 
@@ -42,22 +40,22 @@
             <div class="row">
                   <div class="col-sm-12">
                         <div class="page-header">
-                            
+                              <form action=""></form>
                               <nav style="--bs-breadcrumb-divider: '';" aria-label="breadcrumb">
                                     <p id="response"></p>
                                     <ol class="breadcrumb">
                                           <li class="breadcrumb-item">
-                                                <button class="btn btn-outline-dark  text-dark" onclick="printDiv()">
+                                                <button class="btn btn-outline-dark " onclick="printDiv()">
                                                       <i class="fa fa-print"></i></button>
                                           </li>
                                           <li class="breadcrumb-item">
-                                                <button class="btn btn-outline-dark  text-dark" onclick="getPDF()">
+                                                <button class="btn btn-outline-dark " onclick="getPDF()">
                                                       <i class="fa fa-download"></i></button>
                                           </li>
-                                         
-
                                     </ol>
                               </nav>
+
+
                         </div>
                   </div>
             </div>
@@ -101,7 +99,7 @@
                                                 <div class="d-flex flex-column">
                                                       <img src="{{ asset('assets/images/logo.png') }}" alt="Admin"
                                                             class="rounded-circle " width="110">
-                                                            <h4>{{$parentName}}</h4>
+                                                      <h4>{{$parentName}}</h4>
                                                       <h6>Head Office:</h6>
                                                       <div class="mt-1 text-secondary" style="line-height:1.7">
                                                             <small>{{$parentAddress}}</small>
@@ -116,12 +114,13 @@
                                                             <div class="col-sm-12">
                                                                   <p></p>
                                                                   <br>
-                                                            <div class="mt-1">
-                                                                <small><strong>Suuply Date:</strong>  {{$supply_date}}</small>
-                                                            </div>
+                                                                  <div class="mt-1">
+                                                                        <small><strong>Suuply Date:</strong>
+                                                                              {{$supply_date}}</small>
+                                                                  </div>
                                                             </div>
                                                       </div>
-                                                            <!---end row ---> 
+                                                      <!---end row --->
                                                 </div>
                                           </div>
 
@@ -136,11 +135,11 @@
                                                                         {{$vendorCountry}}</small>
 
                                                                   <p class="text-secondary mb-1">
-                                           
+
                                                                   </p>
 
                                                                   <p>
-                                                      
+
                                                                   </p>
                                                             </div>
                                                             <p></p>
@@ -151,10 +150,10 @@
                                                                   @if($status == 'accepted')
                                                                   <h3 class="text-success text-uppercase">
                                                                         {{$status}}</h3>
-                                                                      
-                                                                   @esle
+
+                                                                  @esle
                                                                   <h3 class="text-info text-uppercase">
-                                                                  {{$status}}</h3>
+                                                                        {{$status}}</h3>
                                                                   @endif
                                                             </div>
                                                       </div>
@@ -171,29 +170,82 @@
                                                       <table class="table table-striped">
                                                             <thead>
                                                                   <tr>
+                                                                        @auth
+                                                                        <!---childvendor--->
+                                                                        @if(Auth::user()->role_id =='10')
+                                                                        <th>Action</th>
+                                                                        @endif
+                                                                   
                                                                         <th>Item (s)</th>
-                                                                        <th>Quantity</th>
                                                                         <th>Size/Weight</th>
+                                                                        <th>Quantity</th>
+                                                                        <th>Remark</th>
+                                                                        <!---parent--->
+                                                                        @if(Auth::user()->role_id =='9')
                                                                         <th>Status</th>
-                                                                        <th></th>
+                                                                        @endif
+                                                                        @endauth
                                                                   </tr>
                                                             </thead>
                                                             <tbody>
                                                                   @foreach($supply as $data)
 
                                                                   <tr>
-                                                                        <td width="50%"
+                                                                        @auth
+                                                                        <!---childvendor--->
+                                                                        @if(Auth::user()->role_id =='10')
+                                                                        <td width="20%">
+                                                                              <button
+                                                                                    class="btn btn-success btn-xs  text-dark">
+                                                                                    Accept</button>
+                                                                              <button
+                                                                                    class="btn btn-danger btn-xs  text-white">
+                                                                                    Reject</button>
+                                                                              &nbsp;
+                                                                        </td>
+                                                                        @endif
+                                                                          
+                                                                        <td width="30%"
                                                                               style="white-space:wrap; line-height:1.6">
+
                                                                               <small>
                                                                                     {!! nl2br($data->supply) !!}
                                                                               </small>
                                                                         </td>
-                                                                        <td><small>{{$data->supply_qty}}</small></td>
-                                                                        <td><small>{{$data->size}}</small>
+                                                                        <td width="10%"
+                                                                              style="white-space:wrap; line-height:1.6">
+                                                                              @if($data->size == 0)
+                                                                              <small>{{$data->weight}} </small>
+                                                                              @else
+                                                                              <small>{{$data->size}}
+                                                                                    &nbsp;{{$data->weight}} </small>
+                                                                              @endif
                                                                         </td>
-                                                                        <td><small></small>
+                                                                        <td width="10%"
+                                                                              style="white-space:wrap; line-height:1.6">
+                                                                              <small>
+                                                                                    @if($data->supply_qty == 0)
+                                                                                    @else
+                                                                                    {{$data->supply_qty}}
+                                                                                    @endif
+                                                                              </small>
                                                                         </td>
 
+                                                                        <td width="30%"
+                                                                              style="white-space:wrap; line-height:1.6">
+                                                                              <small>
+                                                                                    <!--  remark--->
+                                                                              </small>
+                                                                        </td>
+                                                                         <!--  parent--->
+                                                                        @if(Auth::user()->role_id =='9')
+                                                                        <td  style="white-space:wrap; line-height:1.6">
+                                                                              <small>
+                                                                                    <!--  status--->
+                                                                              </small>
+                                                                        </td>
+                                                                        @endauth
+                                                                        @endauth
                                                                   </tr>
 
                                                                   @endforeach
@@ -206,11 +258,12 @@
 
                                                                   </tr>
                                                                   <tr>
-                                                                        
+
                                                                         <th colspan="2" class="text-end">
-                                                                        @if($status == 'rejected')
-                                                                      <span class="text-danger">{{$data->remark}}</span>
-                                                                      @endif
+                                                                              @if($status == 'rejected')
+                                                                              <span
+                                                                                    class="text-danger">{{$data->remark}}</span>
+                                                                              @endif
                                                                         </th>
 
                                                                         <th class="text-end">
@@ -221,7 +274,7 @@
                                                                   </tr>
 
 
-                              
+
                                                             </tbody>
                                                       </table>
                                                 </div>

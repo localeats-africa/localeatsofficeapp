@@ -1,4 +1,4 @@
-<footer class="footer">
+<!-- <footer class="footer">
       <div class="d-sm-flex justify-content-center justify-content-sm-between" style="display:none;">
             <span class="text-danger text-center text-sm-left d-block d-sm-inline-block">Copyright ©
                   LocalEats Africa {{ date('Y')}} </a>. All rights
@@ -6,7 +6,7 @@
             <span class="float-none float-sm-right d-block mt-1 mt-sm-0 text-center"><i
                         class="mdi mdi-heart text-danger"></i></span>
       </div>
-</footer>
+</footer> -->
 <!-- partial -->
 </div>
 <!-- main-panel ends -->

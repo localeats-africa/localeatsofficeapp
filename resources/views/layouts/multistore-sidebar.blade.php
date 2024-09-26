@@ -39,7 +39,7 @@
 
                 
                   <li class="nav-item">
-                        <a class="nav-link" href="{{ url('') }}" target="">
+                        <a class="nav-link" href="{{ url(auth()->user()->username,'all-supplies') }}" target="">
                               <span class="menu-title">Supplies</span>
                               <i class="fa fa-chain  menu-icon fs-24"></i>
                         </a>

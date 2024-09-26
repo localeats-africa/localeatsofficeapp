@@ -22,6 +22,7 @@ return new class extends Migration
             $table->string('supply')->nullable();
             $table->string('supply_qty')->nullable();
             $table->string('size')->nullable();
+            $table->string('weight')->nullable();
         });
     }
 

@@ -22,20 +22,30 @@ class InventoryItemSizeSeeder extends Seeder
             'size'   => 'peices'
             
         ]);
+        DB::table('inventory_item_size')->insert([
+            'size'   => 'ml'
+        ]);
+        DB::table('inventory_item_size')->insert([
+            'size'   => 'liter'
+        ]);
 
         DB::table('inventory_item_size')->insert([
             'size'   => 'dozen' 
         ]);
         DB::table('inventory_item_size')->insert([
-            'size'   => 'ton'
+            'size'   => 'kg'
         ]);
-
         DB::table('inventory_item_size')->insert([
             'size'   => 'g'
         ]);
         DB::table('inventory_item_size')->insert([
-            'size'   => 'kg'
+            'size'   => 'ton'
         ]);
+
+       
+      
+     
+        
 
        
     }

@@ -133,7 +133,7 @@ class ParentVendorController extends Controller
             $supply = DB::table('sub_vendor_inventory')->distinct()
             ->where('sub_vendor_inventory.vendor_id', $vendor_id)
             ->where('sub_vendor_inventory.parent_id', $parentStoreID)
-            ->whereNotNull('status')
+            ->whereNotNull('number_of_items')
             ->orderBy('sub_vendor_inventory.created_at', 'desc')
            // ->groupby('sub_vendor_inventory.supply_ref')
             ->select(['sub_vendor_inventory.*'])
@@ -223,7 +223,7 @@ class ParentVendorController extends Controller
     //save temporary child supply selected
     public function sendSupplies(Request $request){
         $this->validate($request, [ 
-            'quantity'      => 'max:255', 
+            'quantity'      => 'required|max:255', 
             'item'          => 'required|max:255'         
         ]);
 
@@ -239,6 +239,7 @@ class ParentVendorController extends Controller
             $supply->vendor_id          = $request->vendor_id;
             $supply->supply_qty         = $request->quantity;
             $supply->size               = $request->size;
+            $supply->weight             = $request->weight;
             $supply->supply             = $request->item;
             $supply->save();
  
@@ -254,6 +255,17 @@ class ParentVendorController extends Controller
         }
         else{
             return redirect()->back()->with('sales-error', 'Opps! something happend');
+        }
+    }
+
+    public function deleteTempSupply(Request $request, $id){
+      // $id =  $request->id;
+       $remove = TempVendorInventory::where('id', $id)->delete();
+       if($remove){
+        return redirect()->back()->with('supply-status', 'Item removed');  
+       }
+       else{
+        return redirect()->back()->with('sales-error', 'Opps! something happend');
         }
     }
 
@@ -275,6 +287,7 @@ class ParentVendorController extends Controller
                     $supply->vendor_id          = $data->vendor_id;
                     $supply->supply_qty         = $data->supply_qty;
                     $supply->size               = $data->size;
+                    $supply->weight             = $data->weight;
                     $supply->supply             = $data->supply;
                     $supply->supply_ref         = $supplyRef;
                     $supply->save();
@@ -307,79 +320,6 @@ class ParentVendorController extends Controller
         else{
             return redirect()->back()->with('supply-error', 'Opps! kindly enter supplies');    
         }     
-    }
-
-    public function supplyReceipt(Request $request, $username, $supply_ref){
-
-      $parentName =   DB::table('sub_vendor_inventory')
-        ->join('multi_store', 'multi_store.id', 'sub_vendor_inventory.parent_id')
-        ->where('sub_vendor_inventory.supply_ref', $supply_ref)
-        ->select('multi_store.multi_store_name')->pluck('multi_store_name')->first();
-
-      $parentAddress=  DB::table('sub_vendor_inventory')
-        ->join('multi_store', 'multi_store.id', 'sub_vendor_inventory.parent_id')
-        ->join('vendor', 'vendor.id', 'multi_store.vendor_id')
-        ->where('sub_vendor_inventory.supply_ref', $supply_ref)
-        ->select('vendor.address')->pluck('address')->first();
-
-        $parentEmail=  DB::table('sub_vendor_inventory')
-        ->join('multi_store', 'multi_store.id', 'sub_vendor_inventory.parent_id')
-        ->join('vendor', 'vendor.id', 'multi_store.vendor_id')
-        ->where('sub_vendor_inventory.supply_ref', $supply_ref)
-        ->select('vendor.email')->pluck('email')->first();
-
-         $status = DB::table('sub_vendor_inventory')
-          ->where('supply_ref', $supply_ref)
-         ->where('status', '!=', null)
-         ->pluck('status')->first();
-
-         $storeName = DB::table('sub_vendor_inventory')
-        ->join('vendor', 'vendor.id', 'sub_vendor_inventory.vendor_id')
-         ->where('sub_vendor_inventory.supply_ref', $supply_ref)
-        ->select('vendor.store_name')
-        ->pluck('store_name')->first();
-
-         $storeName =DB::table('sub_vendor_inventory')
-         ->join('vendor', 'vendor.id', 'sub_vendor_inventory.vendor_id')
-         ->where('sub_vendor_inventory.supply_ref', $supply_ref)
-         ->select('vendor.store_name')->pluck('store_name')->first();
-
-        $storeAddress = DB::table('sub_vendor_inventory')
-        ->join('vendor', 'vendor.id', 'sub_vendor_inventory.vendor_id')
-        ->where('sub_vendor_inventory.supply_ref', $supply_ref)
-        ->select('vendor.address')
-        ->pluck('address')->first();
-
-        $location = DB::table('sub_vendor_inventory')
-        ->join('vendor', 'vendor.id', 'sub_vendor_inventory.vendor_id')
-        ->where('sub_vendor_inventory.supply_ref', $supply_ref)
-        ->select('vendor.store_area')
-        ->pluck('store_area')->first();
-
-        $vendorState = DB::table('sub_vendor_inventory')
-        ->join('vendor', 'vendor.id', 'sub_vendor_inventory.vendor_id')
-        ->join('state', 'state.id', '=', 'vendor.state_id')
-        ->where('sub_vendor_inventory.supply_ref', $supply_ref)
-        ->select('state.state')->pluck('state')->first();
-        
-        $vendorCountry = DB::table('sub_vendor_inventory')
-        ->join('vendor', 'vendor.id', 'sub_vendor_inventory.vendor_id')
-        ->join('country', 'country.id', '=', 'vendor.country_id')
-        ->where('sub_vendor_inventory.supply_ref', $supply_ref)
-         ->select('country.country')->pluck('country')->first();
-
-        $supply_date = DB::table('sub_vendor_inventory')
-        ->where('supply_ref', $supply_ref)
-        ->where('status', '!=', null)
-        ->pluck('created_at')->first();
-  
-        $supply = DB::table('sub_vendor_inventory')
-        ->where('supply_ref', $supply_ref)
-        ->where('deleted_at', null)
-        ->get(['sub_vendor_inventory.*']);
-        return  view('multistore.supply-receipt', compact('supply_ref', 'status',
-        'storeName', 'storeAddress', 'location', 'vendorState', 'vendorCountry',
-        'supply_date', 'supply', 'parentName', 'parentAddress','parentEmail' ));
     }
 
     public function updateSupplyQty(Request $request, $id){

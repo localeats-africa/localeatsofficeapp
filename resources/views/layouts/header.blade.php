@@ -29,7 +29,13 @@
                                      <span class="availability-status online"></span>
                                </div>
                                <div class="nav-profile-text">
-                                     <p class="mb-1 text-black text-capitalize">{{Auth::user()->fullname}} </p>
+                                     <p class="mb-1 text-black text-capitalize">
+                                          @if(auth()->user()->username)
+                                          {{Auth::user()->username}} 
+                                          @else
+                                          {{Auth::user()->fullname}} 
+                                          @endif 
+                                    </p>
                                      <span class="text-secondary text-small"></span>
                                </div>
                          </a>
@@ -47,7 +53,13 @@
                    <li class="nav-item nav-profile dropdown d-sm-block d-lg-none">
                          <a class="nav-link dropdown-toggle" id="profileDropdown" href="#" data-bs-toggle="dropdown"
                                aria-expanded="false">
-                         <span class="text-capitalize text-dark">  {{Auth::user()->fullname}}</span>
+                         <span class="text-capitalize text-dark">  
+                         @if(auth()->user()->username)
+                        {{Auth::user()->username}} 
+                        @else
+                        {{Auth::user()->fullname}} 
+                        @endif 
+                        </span>
 
                          </a>
                          <div class="dropdown-menu navbar-dropdown" aria-labelledby="profileDropdown">
