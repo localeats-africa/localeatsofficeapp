@@ -98,7 +98,7 @@
                                           <div class="ms-auto text-secondary">
                                                 Search:
                                                 <div class="ms-2 d-inline-block">
-                                                      <form action="/{{$username}}/outlet-supplies/{{$vendor_id}}" method="GET"
+                                                      <form action="/{{$username}}/all-supplies/" method="GET"
                                                             role="search">
                                                             {{ csrf_field() }}
                                                             <div class="input-group mb-2">
