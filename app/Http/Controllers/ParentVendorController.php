@@ -358,6 +358,7 @@ class ParentVendorController extends Controller
         $parentStoreID = DB::table('multi_store')
         ->where('user_id', $user_id)
         ->get('*')->pluck('id')->first();
+        
         $vendor_id = SubVendorInventory::where('id',  $id)
         ->get()->pluck('vendor_id')->first();
 
