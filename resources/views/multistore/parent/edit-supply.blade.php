@@ -124,25 +124,42 @@
                                                             </thead>
                                                             <tbody>
                                                                   @foreach($supply as $data)
-                                                                <tr>
-                                                                  <td>{{$loop->iteration}}</td>
-                                                                <td><input type="text" value="{{$data->supply}}"
-                                                                              name="vendor_name" class="form-control">
-                                                                  </td>
-                                                                  <td>
-                                                                        <input type="text" value="{{$data->size}}"
-                                                                              name="vendor_name" class="form-control">
-                                                                  </td>
+                                                                  <tr>
+                                                                        <td>{{$loop->iteration}}</td>
+                                                                        <td><input type="text" value="{{$data->supply}}"
+                                                                                    name="vendor_name"
+                                                                                    class="form-control">
+                                                                        </td>
+                                                                        <td>
+                                                                              <input type="text" value="{{$data->size}}"
+                                                                                    name="vendor_name"
+                                                                                    class="form-control">
+                                                                        </td>
 
-                                                                  <td>
-                                                                        <input type="text" value="{{$data->weight}}"
-                                                                              name="vendor_name" class="form-control">
-                                                                  </td>
-                                                                  <td>
-                                                                        <input type="text" value="{{$data->supply_qty}}"
-                                                                              name="vendor_name" class="form-control">
-                                                                  </td>
-                                                                </tr>
+                                                                        <td>
+                                                                              <input type="text"
+                                                                                    value="{{$data->weight}}"
+                                                                                    name="vendor_name"
+                                                                                    class="form-control">
+                                                                        </td>
+                                                                        <td>
+                                                                              <div class="btn btn-sm"
+                                                                                    id="decreaseSupply"
+                                                                                    onclick="decreaseOthers({{$data->id}})"
+                                                                                    value="Decrease Value">-
+                                                                              </div>
+                                                                             
+                                                                              <input type="text" name="quantity"
+                                                                                     value="{{$data->supply_qty}}"
+                                                                                    style="width:85px;  padding-left:20px;  padding-right:5px;"
+                                                                                    id="others-{{$data->id}}" multiple="multiple">
+                                                                              <div class="btn btn-sm"
+                                                                                    id="increaseSupply"
+                                                                                    onclick="increaseOthers({{$data->id}})"
+                                                                                    value="Increase Value">+
+                                                                              </div>
+                                                                        </td>
+                                                                  </tr>
 
 
                                                                   @endforeach
@@ -219,4 +236,52 @@
       </footer>
 </div>
 <!--- main-panel-->
+<script src="{{ asset('assets/vendors/select2/select2.min.js')}}"></script>
+<script src="{{ asset('assets/vendors/typeahead.js/typeahead.bundle.min.js')}}"></script>
+
+<!-- endinject -->
+<!-- Custom js for this page -->
+<script src="{{ asset('assets/js/file-upload.js')}}"></script>
+<script src="{{ asset('assets/js/typeahead.js')}}"></script>
+<script src="{{ asset('assets/js/select2.js')}}"></script>
+
+<!-- header search bar js -->
+<script type="text/javascript">
+var path = "{{ route('autocomplete') }}";
+$('input.search').typeahead({
+      source: function(str, process) {
+            return $.get(path, {
+                  str: str
+            }, function(data) {
+                  return process(data);
+            });
+      }
+});
+</script>
+
+
+<script type="text/javascript">
+var path = "{{ route('autocomplete') }}";
+
+$("#search").autocomplete({
+      source: function(request, response) {
+            $.ajax({
+                  url: path,
+                  type: 'GET',
+                  dataType: "json",
+                  data: {
+                        search: request.term
+                  },
+                  success: function(data) {
+                        response(data);
+                  }
+            });
+      },
+      select: function(event, ui) {
+            $('#search').val(ui.item.label);
+            console.log(ui.item);
+            return false;
+      }
+});
+</script>
 @endsection
