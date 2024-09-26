@@ -108,7 +108,7 @@
                               <div class="card">
                                     <div class="card-header">
                                           <h3 class="card-title"> </h3>
-                                          <h5>All field with <i class="text-danger">*</i> are required</h5>
+                                         
                                     </div>
                                     <div class="card-body py-3">
 
@@ -118,20 +118,17 @@
                                                       <table class="table table-bordered">
                                                             <thead>
                                                                   <tr>
-                                                                        <th>SN</th>
                                                                         <th>Item</th>
-                                                                        <th class="table-info">Size</th>
-                                                                        <th class="table-danger">Weight</th>
+                                                                        <th>Size</th>
+                                                                        <th>Weight</th>
                                                                         <th>Quantity</th>
                                                                   </tr>
                                                             </thead>
                                                             <tbody>
                                                                   @foreach($supply as $data)
                                                                   <tr>
-                                                                        <td>{{$loop->iteration}}</td>
-                                                                        <td>
-                                                                        <!-- <input type="text" class="form-control" name="item" value="{{$data->supply}}"> -->
-                                                                        <select class="js-example-basic-single text-secondary"
+                                                                        <td  width="40%" style="white-space:wrap; line-height:1.6">
+                                                                              <select class="js-example-basic-single text-secondary"
                                                                                     style="width:100%" name="item">
                                                                                     <option value="{{$data->supply}}">{{$data->supply}}</option>
                                                                                     @foreach($item as $items)
@@ -147,7 +144,7 @@
                                                                                     class="form-control">
                                                                         </td>
 
-                                                                        <td>
+                                                                        <td  width="30%" style="white-space:wrap; line-height:1.6">
                                                                         <select class="js-example-basic-single2 text-secondary"
                                                                                     style="width:100%" name="weight">
                                                                                     <option value="{{$data->weight}}">{{$data->weight}}</option>
@@ -159,7 +156,7 @@
                                                                               </select>
                                                                             
                                                                         </td>
-                                                                        <td width="">
+                                                                        <td  width="20%" style="white-space:wrap; line-height:1.6">
                                                                         <div class="input-group">
                                                                         <div class="btn btn-sm"
                                                                               id="decreaseOthers-{{ $data->id }}"
