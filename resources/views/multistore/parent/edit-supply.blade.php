@@ -128,7 +128,7 @@
                                                                         <td>{{$loop->iteration}}</td>
                                                                         <td>
                                                                         <select class="js-example-basic-single text-secondary"
-                                                                                    style="width:100%" name="weight">
+                                                                                    style="width:100%" name="item">
                                                                                     <option value="">{{$data->supply}}</option>
                                                                                     @foreach($item as $items)
                                                                                     <option value="{{$items->item}}">
