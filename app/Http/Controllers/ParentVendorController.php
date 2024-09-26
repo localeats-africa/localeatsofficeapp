@@ -347,7 +347,7 @@ class ParentVendorController extends Controller
     }
 
     //vendor_id is the child vendor
-    public function editOutletSupply(Request $request, $username, $id, $supply_ref){
+    public function editOutletSupply(Request $request, $username, $supply_ref){
         $username = Auth::user()->username;
         $user_id = Auth::user()->id;
         $role = DB::table('role')->select('role_name')
@@ -359,19 +359,14 @@ class ParentVendorController extends Controller
         ->where('user_id', $user_id)
         ->get('*')->pluck('id')->first();
 
-        $vendor_id = SubVendorInventory::where('id',  $id)
+        $vendor_id = SubVendorInventory::where('supply_ref',  $supply_ref)
         ->get()->pluck('vendor_id')->first();
-
-        $outletStoreID = DB::table('sub_store')
-        ->where('vendor_id', $vendor_id)
-        ->get('*')->pluck('id')->first();
 
         $outletStoreName = DB::table('vendor')->where('id', $vendor_id)
         ->select('*')->pluck('store_name')->first();
 
         $sizes = InventoryItemSizes::all();
         $supply =  DB::table('sub_vendor_inventory')
-       // ->where('id', $id)
         ->where('supply_ref', $supply_ref)
         ->get();
 
