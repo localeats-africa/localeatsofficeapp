@@ -68,13 +68,33 @@ class VendorsController extends Controller
         ->where('sub_store.user_id', $user_id)
         ->get('multi_store.multi_store_name')->pluck('multi_store_name')->first();
         
+        $perPage = $request->perPage ?? 25;
+        $search = $request->input('search');
+
         $supply = DB::table('sub_vendor_inventory')
-       // ->join('vendor', 'vendor.id', 'sub_vendor_inventory.vendor_id')
-        ->join('users', 'users.vendor', 'sub_vendor_inventory.vendor_id')
-        //->join('sub_store', 'sub_store.user_id', 'users.id')
-        ->where('users.id', $user_id)
-        ->get(['sub_vendor_inventory.*', 'users.vendor']);
-        return  view('multistore.child.all-supply', compact('role', 'subStoreID',
-        'parentName', 'supply', 'username' ));
+        // ->join('vendor', 'vendor.id', 'sub_vendor_inventory.vendor_id')
+         ->join('users', 'users.vendor', 'sub_vendor_inventory.vendor_id')
+         //->join('sub_store', 'sub_store.user_id', 'users.id')
+         ->where('users.id', $user_id)
+        ->where(function ($query) use ($search) {  // <<<
+        $query->where('sub_vendor_inventory.supply_ref', 'LIKE', '%'.$search.'%')
+                ->orWhere('sub_vendor_inventory.status', 'LIKE', '%'.$search.'%')
+                ->orWhere('sub_vendor_inventory.created_at', 'LIKE', '%'.$search.'%');
+        })
+        ->paginate($perPage,  $pageName = 'supply')->appends(['per_page'   => $perPage]);
+        $pagination = $supply->appends ( array ('search' => $search) );
+            if (count ( $pagination ) > 0){
+                return  view('multistore.child.all-supply', compact('role', 'subStoreID',
+                'parentName', 'supply', 'username' ))->withDetails($pagination);     
+            } 
+        else{ 
+            // Session::flash('food-status', 'No record order found'); 
+            return  view('multistore.child.all-supply', compact('role', 'subStoreID',
+            'parentName', 'supply', 'username' ))->with('food-status', 'No record order found'); 
+        }
+        return view('multistore.parent.outlet-supply',  compact('perPage', 
+        'username', 'role', 'parentStoreID',  'outletStoreID', 
+        'outletStoreName', 'supply', 'vendor_id'));
     }
+
 }
