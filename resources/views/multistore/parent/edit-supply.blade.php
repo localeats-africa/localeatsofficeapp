@@ -100,8 +100,9 @@
 
             <div class="row ">
                   <div class="col-12">
-                        <form action="" method="post">
+                        <form action="{{ route('update-supplies') }}" method="post" name="submit">
                               @csrf
+                              {{csrf_field()}}
                               <div class="card">
                                     <div class="card-header">
                                           <h3 class="card-title"> </h3>
