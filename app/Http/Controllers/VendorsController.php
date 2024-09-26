@@ -75,6 +75,6 @@ class VendorsController extends Controller
         ->where('users.id', $user_id)
         ->get(['sub_vendor_inventory.*', 'user.vendor']);
         return  view('multistore.child.all-supply', compact('role', 'subStoreID',
-        'parentName', 'supply' ));
+        'parentName', 'supply', 'username' ));
     }
 }
