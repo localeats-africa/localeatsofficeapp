@@ -372,6 +372,8 @@ class ParentVendorController extends Controller
         $sizes = InventoryItemSizes::all();
         $supply = SubVendorInventory::find($id);
 
+        dd($supply);
+
         return view('multistore.parent.edit-supply',  compact('perPage', 'role', 'username', 
         'parentStoreID', 'outletStoreID', 'outletStoreName', 'supply', 'vendor_id',
         'sizes'));
