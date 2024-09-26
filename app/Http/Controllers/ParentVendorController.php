@@ -374,7 +374,7 @@ class ParentVendorController extends Controller
 
         return view('multistore.parent.edit-supply',  compact('perPage', 'role', 'username', 
         'parentStoreID', 'outletStoreID', 'outletStoreName', 'supply', 'vendor_id',
-        'sizes'));
+        'sizes', 'supply_ref'));
         
     }
   
