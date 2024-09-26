@@ -157,23 +157,24 @@
                                                                               </select>
                                                                             
                                                                         </td>
-                                                                        <td>
-                                                                              <div class="btn btn-sm"
+                                                                        <td width="">
+                                                                        <div class="input-group">
+                                                                        <div class="btn btn-sm"
                                                                               id="decreaseOthers-{{ $data->id }}"
                                                                                     onclick="decreaseOthers({{$data->id}})"
                                                                                     value="Decrease Value">-
                                                                               </div>
 
-                                                                              <input type="text" name="quantity"
+                                                                              <input type="text" name="quantity" class="form-control"
                                                                                     value="{{$data->supply_qty}}"
-                                                                                    style="width:85px;  padding-left:20px;  padding-right:5px;"
-                                                                                  id="others-{{ $data->id }}"
-                                                                                    multiple="multiple">
+                                                                                    style="width:100px; "
+                                                                                  id="others-{{ $data->id }}">
                                                                               <div class="btn btn-sm"
                                                                                   id="increaseOthers-{{ $data->id }}"
                                                                                     onclick="increaseOthers({{$data->id}})"
                                                                                     value="Increase Value">+
                                                                               </div>
+                                                                        </div>
                                                                         </td>
                                                                   </tr>
 
