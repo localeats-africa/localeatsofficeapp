@@ -442,7 +442,7 @@ function sendreject(){
         var remark = document.querySelector('#remark-' + data).value;
         var id = document.querySelector('#id-' + data).value;
 
-        var url = "{{ route('merge-invoice-commission-paid') }}";
+        var url = "{{ route('reject-supplies') }}";
       // url = showRoute;
 
       //window.location = url;
