@@ -127,7 +127,6 @@ class VendorsController extends Controller
 
      public function acceptSupply(Request $request){
         $id = $request->id;
-        $remark = $request->remark;
 
         $update = DB::table('sub_vendor_inventory')
         ->where('id', $id)
