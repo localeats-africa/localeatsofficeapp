@@ -167,7 +167,7 @@
                                           <div class="dropdown-menu dropdown-menu-end text-end ">
                                              
                                                 <a class="dropdown-item text-capitalize text-dark"
-                                                      href="vendor-profile/{{$data->id}}">
+                                                      href="/vendor-profile/{{$data->id}}">
                                                       <small>Profile</small>
                                                 </a>
                                                 <!-- <a class="dropdown-item text-capitalize text-dark"
