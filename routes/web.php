@@ -249,7 +249,7 @@ Route::controller(ParentVendorController::class)->group(function () {
 
 
 Route::controller(VendorsController::class)->group(function () {
-    Route::get('/{username}/supplies/',  'outletSupplies')->name('outlet-supplies');
-    Route::post('accept_supply/{id}',  'updateSupplyQty')->name('accept_supply');
-    Route::post('reject_supply/{id}',  'pushSupplies')->name('reject-supplies');
+    Route::get('/{username}/all-supplies',  'outletAllSupplies')->name('all-supplies');
+    Route::post('accept-supply/{id}',  'acceptSupply')->name('accept-supply');
+    Route::post('reject-supply/{id}',  'rejectSupply')->name('reject-supplies');
 });
