@@ -3509,7 +3509,6 @@ class HomeController extends Controller
             if($addUser){
                 $vendorStatus                           = 'pending';
                 $vendorName                             = $request->area. '-' .$foodType;
-                
                 $addVendor                              = new Vendor();
                 $addVendor->vendor_ref                  = $vendorRef;
                 $addVendor->added_by                    = $id;
@@ -3540,6 +3539,8 @@ class HomeController extends Controller
                 $childStore->multi_store_id   = $request->parent_id;
                 $childStore->level            = 'child';
                 $childStore->save();
+
+                User::where('id', $addUser->id)->update(['vendor' => $addVendor->id]);
                 //create vendor id in sales platform table
                 $platformStatus ='inactive';
                 $platforms = Platforms::all();
