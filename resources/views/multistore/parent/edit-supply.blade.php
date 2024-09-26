@@ -129,7 +129,7 @@
                                                                         <td>
                                                                         <select class="js-example-basic-single text-secondary"
                                                                                     style="width:100%" name="item">
-                                                                                    <option value="">{{$data->supply}}</option>
+                                                                                    <option value="{{$data->supply}}">{{$data->supply}}</option>
                                                                                     @foreach($item as $items)
                                                                                     <option value="{{$items->item}}">
                                                                                           {{$items->item}}
@@ -146,7 +146,7 @@
                                                                         <td>
                                                                         <select class="js-example-basic-single2 text-secondary"
                                                                                     style="width:100%" name="weight">
-                                                                                    <option value="">{{$data->weight}}</option>
+                                                                                    <option value="{{$data->weight}}">{{$data->weight}}</option>
                                                                                     @foreach($sizes as $size)
                                                                                     <option value="{{$size->size}}">
                                                                                           {{$size->size}}
