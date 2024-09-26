@@ -505,6 +505,39 @@ function sendReject(data) {
       });
 
 }
+
+function acceptSupply(data) {
+      var id = document.querySelector('#id-' + data).value;
+
+      var url = "{{ route('accept-supply') }}";
+      // url = showRoute;
+
+      //window.location = url;
+      $.ajaxSetup({
+            headers: {
+                  'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+            }
+      });
+      $.ajax({
+            method: 'POST',
+            enctype: 'multipart/form-data',
+            url: url,
+            data: {
+                  //you can more data here
+                  'id': id
+            },
+            success: function(data) {
+                  console.log(data.message);
+                    alert("Update Successful");
+                     location.reload();
+                  
+            },
+            error: function(data) {
+                  console.log(data);
+            }
+      });
+
+}
 </script>
 
 @endsection
