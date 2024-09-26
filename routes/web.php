@@ -252,6 +252,6 @@ Route::controller(ParentVendorController::class)->group(function () {
 
 Route::controller(VendorsController::class)->group(function () {
     Route::get('/{username}/all-supplies',  'outletAllSupplies')->name('all-supplies');
-    Route::post('accept-supply/{id}',  'acceptSupply')->name('accept-supply');
+    Route::post('accept-supply',  'acceptSupply')->name('accept-supply');
     Route::post('reject-supplies',  'rejectSupply')->name('reject-supplies');
 });
