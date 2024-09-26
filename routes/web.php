@@ -229,6 +229,8 @@ Route::controller(MultiVendorController::class)->group(function () {
     Route::get('{username}/dashboard',  'parent')->name('dashboard');
     //child dashboard
    Route::get('v/{username}',  'child')->name('v');
+   Route::get('/{username}/supplies-receipt/{supply_ref}',  'supplyReceipt')->name('supplies-receipt');
+    
   
 });
 
@@ -242,8 +244,7 @@ Route::controller(ParentVendorController::class)->group(function () {
         Route::get('autocomplete', 'autocomplete')->name('autocomplete');
     });    
     Route::post('push-supplies',  'pushSupplies')->name('push-supplies');
-    Route::get('/{username}/supplies-receipt/{supply_ref}',  'supplyReceipt')->name('supplies-receipt');
-    Route::post('remove-supply-item/{id}',  'deleteTempSupply')->name('remove-supply-item');
+   Route::post('remove-supply-item/{id}',  'deleteTempSupply')->name('remove-supply-item');
     
 });
 
