@@ -34,7 +34,7 @@
 
             <div class="row">
                   <div class="col-lg-12">
-                  @if(session('setup-vendor'))
+                  @if(session('update-status'))
                         <div class="alert  alert-success alert-dismissible" role="alert">
                               <div class="d-flex">
                                     <div>
@@ -49,7 +49,7 @@
                                                 <path d="M12 17h.01" />
                                           </svg>
                                     </div>
-                                    <div> {!! session('setup-vendor') !!}</div>
+                                    <div> {!! session('update-status') !!}</div>
                               </div>
                               <a class="btn-close" data-bs-dismiss="alert" aria-label="close"></a>
                         </div>
