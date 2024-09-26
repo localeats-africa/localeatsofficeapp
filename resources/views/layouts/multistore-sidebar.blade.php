@@ -19,12 +19,7 @@
 
                         </a>
                   </li>
-                  <li class="nav-item">
-                        <a class="nav-link" href="{{ url('') }}" target="">
-                              <span class="menu-title">Supplies</span>
-                              <i class="fa fa-chain  menu-icon fs-24"></i>
-                        </a>
-                  </li>
+                 
                   @endif
                   <!---end parent manager --->
 
