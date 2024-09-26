@@ -51,6 +51,18 @@ class VendorsController extends Controller
         $this->middleware(['auth', 'verified']);
     }
     public function outletAllSupplies(){
+        $username = Auth::user()->username;
+        $user_id = Auth::user()->id;
+
+        $role = DB::table('role')->select('role_name')
+        ->join('users', 'users.role_id', 'role.id')
+        ->where('users.id', $user_id)
+        ->pluck('role_name')->first();
+
+        $parent = DB::table('sub_store')
+        ->join('multi_store', 'multi_store.id', 'sub_store.multi_store_id')
+        ->where('sub_store.user_id', $user_id)
+        ->get('multi_store.store_name')->pluck('store_name')->first();
 
     }
 }
