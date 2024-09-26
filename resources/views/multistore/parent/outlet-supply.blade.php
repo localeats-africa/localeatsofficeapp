@@ -128,7 +128,6 @@
                                                       <th></th>
                                                       <th>Sent Date</th>
                                                       <th>Supply Reference</th>
-                                                      <th>Status</th>
                                                       <th>Remark</th>
                                                 </tr>
                                           </thead>
@@ -167,7 +166,6 @@
                                                       </td>
                                                       <td>{{ date('d/m/Y', strtotime($data->created_at))}}</td>
                                                       <td class="text-capitalize">{{$data->supply_ref}}</td>
-                                                      <td class="text-capitalize">{{$data->status}}</td>
 
                                                       <td></td>
 
