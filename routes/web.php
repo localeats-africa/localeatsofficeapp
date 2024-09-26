@@ -230,7 +230,7 @@ Route::controller(MultiVendorController::class)->group(function () {
     //child dashboard
    Route::get('v/{username}',  'child')->name('v');
    Route::get('/{username}/supplies-receipt/{supply_ref}',  'supplyReceipt')->name('supplies-receipt');
-   Route::get('vendor-add-expenses', 'addVendorExpenses')->name('vendor-add-expenses');
+   Route::get('/{username}/vendor-add-expenses', 'addVendorExpenses')->name('vendor-add-expenses');
    Route::post('vendor-add-expenses-list', 'addExpensesList')->name('vendor-add-expenses-list');
   
 });
