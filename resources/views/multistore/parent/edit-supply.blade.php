@@ -9,13 +9,13 @@
       <div class="content-wrapper">
             <div class="page-header">
                   <h3 class="page-title">
-                       Edit <span class="text-info">{{$outletStoreName}}</span> >>>> Supply >>>  <span class="text-info">{{$supply_ref}}</span> 
+                       Edit Supply for <span class="text-info">{{$outletStoreName}}</span> 
                   </h3>
                   <nav aria-label="breadcrumb">
                         <ul class="breadcrumb">
                               <li class="breadcrumb-item active" aria-current="page">
-                                    <span></span><a href="/{{$username}}/supply-to-outlet/{{$vendor_id}}"
-                                          class="btn btn-outline-danger">Click Here To Send Supplies </a>
+                                    <span></span>
+                                    Receipt <sup>No:</sup> <span class="text-info">{{$supply_ref}}</span> 
                               </li>
                         </ul>
                   </nav>
