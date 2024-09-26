@@ -71,10 +71,12 @@ class VendorsController extends Controller
         $perPage = $request->perPage ?? 25;
         $search = $request->input('search');
 
-        $supply = DB::table('sub_vendor_inventory')
+        $supply = DB::table('sub_vendor_inventory')->distinct()
         // ->join('vendor', 'vendor.id', 'sub_vendor_inventory.vendor_id')
          ->join('users', 'users.vendor', 'sub_vendor_inventory.vendor_id')
          //->join('sub_store', 'sub_store.user_id', 'users.id')
+         ->whereNotNull('sub_vendor_inventory.status')
+         ->select(['sub_vendor_inventory.*'])
          ->where('users.id', $user_id)
         ->where(function ($query) use ($search) {  // <<<
         $query->where('sub_vendor_inventory.supply_ref', 'LIKE', '%'.$search.'%')
