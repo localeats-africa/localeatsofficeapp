@@ -376,5 +376,33 @@ class ParentVendorController extends Controller
         'sizes', 'supply_ref', 'item'));
         
     }
+
+    public function updateSupply(Request $request, $supply_ref){
+        $supply = SubVendorInventory::find($supply_ref);
+        $supply->supply         = $request->item;
+        $supply->size           = $request->size;
+        $supply->weight         = $request->weight;
+        $supply->supply_qty     = $request->quantity;
+        $supply->update();
+     
+        if($supply){
+            $data = [
+                'success' => true,
+                'message'=> 'Update successful' 
+              ] ;
+              
+              //return response()->json($data);
+            return  redirect()->back()->with('update-status', 'Update successful');
+        }
+        else{
+            $data = [
+                'success' => false,
+                'message'=> 'Opps! something happen'
+              ] ;
+              
+              return  redirect()->back()->with('update-status', 'Opps! something went wrong');
+             // return response()->json($data);
+        }
+    }
   
 }
