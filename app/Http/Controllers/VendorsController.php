@@ -75,7 +75,7 @@ class VendorsController extends Controller
         // ->join('vendor', 'vendor.id', 'sub_vendor_inventory.vendor_id')
          ->join('users', 'users.vendor', 'sub_vendor_inventory.vendor_id')
          //->join('sub_store', 'sub_store.user_id', 'users.id')
-         ->whereNotNull('sub_vendor_inventory.status')
+         ->whereNotNull('sub_vendor_inventory.number_of_items')
          ->select(['sub_vendor_inventory.*'])
          ->where('users.id', $user_id)
         ->where(function ($query) use ($search) {  // <<<
