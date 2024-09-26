@@ -346,5 +346,36 @@ class ParentVendorController extends Controller
         }
     }
 
+    //vendor_id is the child vendor
+    public function editOutletSupply(Request $request, $username, $id){
+        $username = Auth::user()->username;
+        $user_id = Auth::user()->id;
+        $role = DB::table('role')->select('role_name')
+        ->join('users', 'users.role_id', 'role.id')
+        ->where('users.id', $user_id)
+        ->pluck('role_name')->first();
+
+        $parentStoreID = DB::table('multi_store')
+        ->where('user_id', $user_id)
+        ->get('*')->pluck('id')->first();
+        $vendor_id = SubVendorInventory::where('id',  $id)
+        ->get()->pluck('vendor_id')->first();
+
+        $outletStoreID = DB::table('sub_store')
+        ->where('vendor_id', $vendor_id)
+        ->get('*')->pluck('id')->first();
+
+        $outletStoreName = DB::table('vendor')->where('id', $vendor_id)
+        ->select('*')->pluck('store_name')->first();
+
+        $sizes = InventoryItemSizes::all();
+
+        $supply = SubVendorInventory::find($id);
+
+        return view('multistore.parent.edit-supply',  compact('perPage', 'role', 'username', 
+        'parentStoreID', 'outletStoreID', 'outletStoreName', 'supply', 'vendor_id',
+        'sizes'));
+        
+    }
   
 }
