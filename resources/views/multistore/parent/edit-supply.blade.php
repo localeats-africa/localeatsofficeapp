@@ -113,7 +113,7 @@
                                     <div class="card-body py-3">
 
                                           <div class="row">
-                                                <h5>item: </h5>
+                                                <h5>Supply: </h5>
                                                 <div class="table-responsive">
                                                       <table class="table table-bordered">
                                                             <thead>
