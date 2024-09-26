@@ -48,7 +48,7 @@ class VendorsController extends Controller
 {
     //
     public function __construct(){
-        $this->middleware(['auth', 'verified']);
+        $this->middleware(['auth', 'user-access:10', 'verified']);
     }
     public function outletAllSupplies(Request $request){
         $username = Auth::user()->username;
