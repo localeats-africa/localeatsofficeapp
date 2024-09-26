@@ -138,4 +138,106 @@ class MultiVendorController extends Controller
           'supply_date', 'supply', 'parentName', 'parentAddress','parentEmail', 'username' ));
       }
 
+
+          //Cashier
+    public function addVendorExpenses(Request $request){
+        $name = Auth::user()->fullname;
+        $id = Auth::user()->id;
+        $role = DB::table('role')->select('role_name')
+        ->join('users', 'users.role_id', 'role.id')
+        ->where('users.id', $id)
+        ->pluck('role_name')->first();
+
+        //a cashier should only see things for the vendor assigned to him
+        $vendorName = Vendor::join('users', 'users.vendor', 'vendor.id')
+        ->where('users.id', $id)
+        ->get('vendor.vendor_name')->pluck('vendor_name')->first();
+
+        $vendor_id = Vendor::join('users', 'users.vendor', 'vendor.id')
+        ->where('users.id', $id)
+        ->get('vendor.id')->pluck('id')->first();
+
+        $expensesList = ExpensesList::where('vendor_id', $vendor_id)
+        ->orderBy('created_at', 'desc')
+        ->get();
+
+        $perPage = $request->perPage ?? 10;
+        $search = $request->input('search');
+
+        $expenses = VendorExpenses::where('vendor_id', $vendor_id)
+        ->orderBy('expense_date', 'desc')
+        ->where(function ($query) use ($search) {  // <<<
+        $query->where('description', 'LIKE', '%'.$search.'%')
+        ->orWhere('cost', 'LIKE', '%'.$search.'%')
+        ->orWhere('created_at', 'LIKE', '%'.$search.'%');
+        })
+        ->paginate($perPage)->appends(['per_page'   => $perPage]);
+        $pagination = $expenses->appends ( array ('search' => $search) );
+            if (count ( $pagination ) > 0){
+                return view('cashier.expenses',  compact('name', 'role', 
+                'vendorName','expensesList', 'vendor_id', 'perPage', 'expenses'))->withDetails( $pagination );     
+            } 
+        //else{return redirect()->back()->with('expenses-status', 'No record order found'); }
+
+        return view('cashier.expenses',  compact('name', 'role', 
+         'vendorName','expensesList', 'vendor_id', 'perPage', 'expenses'));
+    }
+
+    public function addExpensesList(Request $request){
+        $this->validate($request, [ 
+            'vendor'  => 'required|max:255',
+            'item'   => 'required|string|max:255',   
+        ]);
+
+        $storeExpense = new ExpensesList();
+        $storeExpense->vendor_id    = $request->vendor;
+        $storeExpense->item         = $request->item;
+        $storeExpense->added_by     = Auth::user()->id;
+        $storeExpense->save();
+
+        if($storeExpense){
+            $data = [
+                'status' => true,
+                'message'=> 'New list added successfully.'
+            ];
+            return response()->json($data);
+        }
+        else{
+            $data = [
+                'status' => false,
+                'message'=> 'Something went wrong'
+            ];
+            return response()->json($data);
+        }
+    }
+
+    public function storeVendorDailyExpenses(Request $request){
+        $this->validate($request, [ 
+            'vendor'        => 'required|max:255',
+            'item'          => 'required|string|max:255',  
+            'price'         => 'required|string|max:255',  
+            'date'          => 'required|string|max:255'       
+        ]);
+        $storeExpense = new ExpensesList();
+        $storeExpense->vendor_id    = $request->vendor;
+        $storeExpense->item         = $request->item;
+        $storeExpense->added_by     = Auth::user()->id;
+        $storeExpense->save();
+
+        $expenses = new VendorExpenses();
+        $expenses->vendor_id        = $request->vendor;
+        $expenses->description      = $request->item;
+        $expenses->cost             = $request->price;
+        $expenses->added_by         = Auth::user()->id;
+        $expenses->expense_date     = date("Y-m-d", strtotime($request->date));
+        $expenses->save();
+
+        if($expenses){
+            return redirect()->back()->with('expense-status', 'You have successfully added an Expenses');
+        }
+        else{
+            return redirect()->back()->with('expense-error', 'Opps! something happend');
+        
+        }
+    }
 }
