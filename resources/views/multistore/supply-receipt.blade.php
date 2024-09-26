@@ -204,9 +204,13 @@
                                                                               </small></td>
 
                                                                         <td width="30%"
-                                                                        style="white-space:wrap; line-height:1.6"><small></small>
+                                                                        style="white-space:wrap; line-height:1.6">
+                                                                        <small>
+                                                                              <!--  remark--->
+                                                                        </small>
                                                                         </td>
-                                                                        <td width="20%"
+
+                                                                        <td class="text-end" width="20%"
                                                                         style="white-space:wrap; line-height:1.6">
                                                                               @auth
                                                                               <!---childvendor--->
