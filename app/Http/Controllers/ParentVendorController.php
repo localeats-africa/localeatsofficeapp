@@ -379,7 +379,7 @@ class ParentVendorController extends Controller
         
     }
 
-    public function updateSupply(Request $request, $supply_ref){
+    public function updateSupply(Request $request, $id){
 
         // ->update([
         //     'supply'        => $request->item,
@@ -387,10 +387,12 @@ class ParentVendorController extends Controller
         //     'weight'        => $request->weight,
         //     'supply_qty'    => $request->quantity,
         // ])
-        $supply = SubVendorInventory::where('supply_ref', $supply_ref)->get();
-      foreach($supply as $data){
-
-      }
+        $supply = SubVendorInventory::find($id);
+        $supply->supply     =   $request->item;
+        $supply->size       =   $request->size;
+        $supply->weight     =   $request->weight;
+        $supply->supply_qty =   $request->quantity;
+        $supply->save();
      
         if($supply){
             $data = [
