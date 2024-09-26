@@ -170,20 +170,14 @@
                                                       <table class="table table-striped">
                                                             <thead>
                                                                   <tr>
-                                                                        @auth
-                                                                       
                                                                         <th>Action</th>
-                                                                     
-
                                                                         <th>Item (s)</th>
                                                                         <th>Size/Weight</th>
                                                                         <th>Quantity</th>
                                                                         <th>Remark</th>
                                                                         <!---parent--->
-                                                                        @if(Auth::user()->role_id =='9')
                                                                         <th>Status</th>
-                                                                        @endif
-                                                                        @endauth
+                                                                    
                                                                   </tr>
                                                             </thead>
                                                             <tbody>
@@ -212,6 +206,7 @@
                                                                               </a>
                                                                               @endif
                                                                         </td>
+                                                                        @endauth
 
 
                                                                         <td width="30%"
@@ -240,21 +235,14 @@
                                                                               </small>
                                                                         </td>
 
-                                                                        <td width="30%"
-                                                                              style="white-space:wrap; line-height:1.6">
+                                                                        <td width="30%" style="white-space:wrap; line-height:1.6">
                                                                               <small>
                                                                                     <!--  remark--->
                                                                               </small>
                                                                         </td>
                                                                         <!--  parent--->
-                                                                        @if(Auth::user()->role_id =='9')
-                                                                        <td style="white-space:wrap; line-height:1.6">
-                                                                              <small>
-                                                                                    <!--  status--->
-                                                                              </small>
-                                                                        </td>
-                                                                        @endauth
-                                                                        @endauth
+                                                                      
+                                                                     <td></td>
                                                                   </tr>
 
                                                                   @endforeach
@@ -268,7 +256,7 @@
                                                                   </tr>
                                                                   <tr>
 
-                                                                        <th colspan="2" class="text-end">
+                                                                        <th colspan="4" class="text-end">
                                                                               @if($status == 'rejected')
                                                                               <span
                                                                                     class="text-danger">{{$data->remark}}</span>
