@@ -195,7 +195,7 @@
                                                                               <button
                                                                                     class="btn btn-danger btn-xs  text-white"
                                                                                     id="reject-{{ $data->id }}"
-                                                                                    onclick="toggleClock({{$data->id}})">
+                                                                                    onclick="toggleReject({{$data->id}})">
                                                                                     Reject</button>
 
                                                                               @endif
@@ -210,7 +210,8 @@
                                                                         </td>
                                                                         @endauth
                                                                         <td  width="30%"> 
-                                                                              <input type="text" class="form-control" placeholder="enter a remark" id="remark-{{$data->id}}" style="display:none;">
+                                                                              <input type="hidden" value="id-{{$data->id}}" id ="id-{{$data->id}}">
+                                                                              <input type="text" value="" class="form-control" placeholder="enter a remark" id="remark-{{$data->id}}" style="display:none;">
                                                                         </td>
 
                                                                         <td width="20%"
@@ -410,7 +411,7 @@ function mypdf() {
 
 <script>
 
-function toggleClock(data) {
+function toggleReject(data) {
     // get the clock
     var myClock = document.querySelector('#remark-' + data);
 
@@ -433,6 +434,41 @@ function toggleClock(data) {
       // change button text
       clockButton.innerHTML = 'Reject';
     }
+}
+</script>
+
+<script>
+function sendreject(){
+        var remark = document.querySelector('#remark-' + data).value;
+        var id = document.querySelector('#id-' + data).value;
+
+        var url = "{{ route('merge-invoice-commission-paid') }}";
+      // url = showRoute;
+
+      //window.location = url;
+      $.ajaxSetup({
+            headers: {
+                  'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+            }
+      });
+      $.ajax({
+            method: 'POST',
+            enctype: 'multipart/form-data',
+            url: url,
+            data: {
+                  //you can more data here
+                  'id': id,
+                  'remark': remark
+            },
+            success: function(data) {
+                  console.log(data.message);
+              
+            },
+            error: function(data) {
+                  console.log(data);
+            }
+      });
+
 }
 </script>
 
