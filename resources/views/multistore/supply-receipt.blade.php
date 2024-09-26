@@ -402,4 +402,10 @@ function mypdf() {
 }
 </script>
 
+<script>
+$("#reject").on("click", function(){
+      $("#remark").show();
+});
+</script>
+
 @endsection
