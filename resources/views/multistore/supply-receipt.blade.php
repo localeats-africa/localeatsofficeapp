@@ -171,10 +171,9 @@
                                                             <thead>
                                                                   <tr>
                                                                         @auth
-                                                                        <!---childvendor--->
-                                                                        @if(Auth::user()->role_id =='10')
+                                                                       
                                                                         <th>Action</th>
-                                                                        @endif
+                                                                     
 
                                                                         <th>Item (s)</th>
                                                                         <th>Size/Weight</th>
