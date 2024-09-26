@@ -9,7 +9,7 @@
       <div class="content-wrapper">
             <div class="page-header">
                   <h3 class="page-title">
-                        Supplies from >>> <span class="text-info">{{$parentName}}</span> >>>> HQ
+                        Supplies from >>> <span class="text-info">{{$parentName}}</span> HQ
                   </h3>
                 
             </div>
