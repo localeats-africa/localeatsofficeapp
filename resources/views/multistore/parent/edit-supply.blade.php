@@ -128,7 +128,7 @@
                                                                   <tr>
                                                                         <td>{{$loop->iteration}}</td>
                                                                         <td>
-                                                                            
+                                                                        <!-- <input type="text" class="form-control" name="item" value="{{$data->supply}}"> -->
                                                                         <select class="js-example-basic-single text-secondary"
                                                                                     style="width:100%" name="item">
                                                                                     <option value="{{$data->supply}}">{{$data->supply}}</option>
