@@ -170,25 +170,51 @@
                                                       <table class="table table-striped">
                                                             <thead>
                                                                   <tr>
+                                                                        @auth
+                                                                        <!---childvendor--->
+                                                                        @if(Auth::user()->role_id =='10')
+                                                                        <th>Action</th>
+                                                                        @endif
+                                                                   
                                                                         <th>Item (s)</th>
                                                                         <th>Size/Weight</th>
                                                                         <th>Quantity</th>
                                                                         <th>Remark</th>
+                                                                        <!---parent--->
+                                                                        @if(Auth::user()->role_id =='9')
                                                                         <th>Status</th>
+                                                                        @endif
+                                                                        @endauth
                                                                   </tr>
                                                             </thead>
                                                             <tbody>
                                                                   @foreach($supply as $data)
 
                                                                   <tr>
+                                                                        @auth
+                                                                        <!---childvendor--->
+                                                                        @if(Auth::user()->role_id =='10')
+                                                                        <td width="20%">
+                                                                              <button
+                                                                                    class="btn btn-success btn-xs  text-dark">
+                                                                                    Accept</button>
+                                                                              <button
+                                                                                    class="btn btn-danger btn-xs  text-white">
+                                                                                    Reject</button>
+                                                                              &nbsp;
+                                                                        </td>
+                                                                        @endif
+                                                                          
                                                                         <td width="30%"
                                                                               style="white-space:wrap; line-height:1.6">
+
                                                                               <small>
                                                                                     {!! nl2br($data->supply) !!}
                                                                               </small>
                                                                         </td>
                                                                         <td width="10%"
-                                                                        style="white-space:wrap; line-height:1.6"> @if($data->size == 0)
+                                                                              style="white-space:wrap; line-height:1.6">
+                                                                              @if($data->size == 0)
                                                                               <small>{{$data->weight}} </small>
                                                                               @else
                                                                               <small>{{$data->size}}
@@ -196,39 +222,30 @@
                                                                               @endif
                                                                         </td>
                                                                         <td width="10%"
-                                                                        style="white-space:wrap; line-height:1.6"><small>
+                                                                              style="white-space:wrap; line-height:1.6">
+                                                                              <small>
                                                                                     @if($data->supply_qty == 0)
                                                                                     @else
                                                                                     {{$data->supply_qty}}
                                                                                     @endif
-                                                                              </small></td>
+                                                                              </small>
+                                                                        </td>
 
                                                                         <td width="30%"
-                                                                        style="white-space:wrap; line-height:1.6">
-                                                                        <small>
-                                                                              <!--  remark--->
-                                                                        </small>
+                                                                              style="white-space:wrap; line-height:1.6">
+                                                                              <small>
+                                                                                    <!--  remark--->
+                                                                              </small>
                                                                         </td>
-
-                                                                        <td class="text-end" width="20%"
-                                                                        style="white-space:wrap; line-height:1.6">
-                                                                              @auth
-                                                                              <!---childvendor--->
-                                                                              @if(Auth::user()->role_id =='10')
-
-                                                                              <button
-                                                                                    class="btn btn-success btn-xs  text-dark">
-                                                                                    Accept</button>
-
-                                                                              <button
-                                                                                    class="btn btn-danger btn-xs  text-white">
-                                                                                    Reject</button>
-
-
-                                                                              @endif
-                                                                              @endauth
+                                                                         <!--  parent--->
+                                                                        @if(Auth::user()->role_id =='9')
+                                                                        <td  style="white-space:wrap; line-height:1.6">
+                                                                              <small>
+                                                                                    <!--  status--->
+                                                                              </small>
                                                                         </td>
-
+                                                                        @endauth
+                                                                        @endauth
                                                                   </tr>
 
                                                                   @endforeach
