@@ -45,9 +45,7 @@ class MultiVendorController extends Controller
 
     public function __construct(){
         $this->middleware(['auth', 'verified']);
-
     }
-
 
     public function parent(Request $request, $username){
         if ((Auth::user()->password_change_at == null)) {
@@ -68,5 +66,76 @@ class MultiVendorController extends Controller
        }
     }
 
- 
+    public function supplyReceipt(Request $request, $username, $supply_ref){
+        $parentName =   DB::table('sub_vendor_inventory')
+          ->join('multi_store', 'multi_store.id', 'sub_vendor_inventory.parent_id')
+          ->where('sub_vendor_inventory.supply_ref', $supply_ref)
+          ->select('multi_store.multi_store_name')->pluck('multi_store_name')->first();
+  
+        $parentAddress=  DB::table('sub_vendor_inventory')
+          ->join('multi_store', 'multi_store.id', 'sub_vendor_inventory.parent_id')
+          ->join('vendor', 'vendor.id', 'multi_store.vendor_id')
+          ->where('sub_vendor_inventory.supply_ref', $supply_ref)
+          ->select('vendor.address')->pluck('address')->first();
+  
+          $parentEmail=  DB::table('sub_vendor_inventory')
+          ->join('multi_store', 'multi_store.id', 'sub_vendor_inventory.parent_id')
+          ->join('vendor', 'vendor.id', 'multi_store.vendor_id')
+          ->where('sub_vendor_inventory.supply_ref', $supply_ref)
+          ->select('vendor.email')->pluck('email')->first();
+  
+           $status = DB::table('sub_vendor_inventory')
+            ->where('supply_ref', $supply_ref)
+           ->where('status', '!=', null)
+           ->pluck('status')->first();
+  
+           $storeName = DB::table('sub_vendor_inventory')
+          ->join('vendor', 'vendor.id', 'sub_vendor_inventory.vendor_id')
+           ->where('sub_vendor_inventory.supply_ref', $supply_ref)
+          ->select('vendor.store_name')
+          ->pluck('store_name')->first();
+  
+           $storeName =DB::table('sub_vendor_inventory')
+           ->join('vendor', 'vendor.id', 'sub_vendor_inventory.vendor_id')
+           ->where('sub_vendor_inventory.supply_ref', $supply_ref)
+           ->select('vendor.store_name')->pluck('store_name')->first();
+  
+          $storeAddress = DB::table('sub_vendor_inventory')
+          ->join('vendor', 'vendor.id', 'sub_vendor_inventory.vendor_id')
+          ->where('sub_vendor_inventory.supply_ref', $supply_ref)
+          ->select('vendor.address')
+          ->pluck('address')->first();
+  
+          $location = DB::table('sub_vendor_inventory')
+          ->join('vendor', 'vendor.id', 'sub_vendor_inventory.vendor_id')
+          ->where('sub_vendor_inventory.supply_ref', $supply_ref)
+          ->select('vendor.store_area')
+          ->pluck('store_area')->first();
+  
+          $vendorState = DB::table('sub_vendor_inventory')
+          ->join('vendor', 'vendor.id', 'sub_vendor_inventory.vendor_id')
+          ->join('state', 'state.id', '=', 'vendor.state_id')
+          ->where('sub_vendor_inventory.supply_ref', $supply_ref)
+          ->select('state.state')->pluck('state')->first();
+          
+          $vendorCountry = DB::table('sub_vendor_inventory')
+          ->join('vendor', 'vendor.id', 'sub_vendor_inventory.vendor_id')
+          ->join('country', 'country.id', '=', 'vendor.country_id')
+          ->where('sub_vendor_inventory.supply_ref', $supply_ref)
+           ->select('country.country')->pluck('country')->first();
+  
+          $supply_date = DB::table('sub_vendor_inventory')
+          ->where('supply_ref', $supply_ref)
+          ->where('status', '!=', null)
+          ->pluck('created_at')->first();
+    
+          $supply = DB::table('sub_vendor_inventory')
+          ->where('supply_ref', $supply_ref)
+          ->where('deleted_at', null)
+          ->get(['sub_vendor_inventory.*']);
+          return  view('multistore.supply-receipt', compact('supply_ref', 'status',
+          'storeName', 'storeAddress', 'location', 'vendorState', 'vendorCountry',
+          'supply_date', 'supply', 'parentName', 'parentAddress','parentEmail' ));
+      }
+
 }
