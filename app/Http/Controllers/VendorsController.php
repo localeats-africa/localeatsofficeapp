@@ -109,12 +109,20 @@ class VendorsController extends Controller
             'status' => 'rejected'
         ]);
 
+       if($update){
         $data = [
             'status' => true,
             'message'=> 'Record sent successfully.'
         ];
-        //return response()->json($data);
-        return redirect()->back()->with('update-status', 'Record save successfully');
-    }
+        return response()->json($data);
+       }
+       else{
+        $data = [
+            'status' => true,
+            'message'=> 'Opps!  something went wrong.'
+        ];
+        return response()->json($data);
+       }
+     }
 
 }
