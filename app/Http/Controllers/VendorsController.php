@@ -50,7 +50,7 @@ class VendorsController extends Controller
     public function __construct(){
         $this->middleware(['auth', 'verified']);
     }
-    public function outletAllSupplies(){
+    public function outletAllSupplies(Request $request){
         $username = Auth::user()->username;
         $user_id = Auth::user()->id;
 
@@ -61,7 +61,7 @@ class VendorsController extends Controller
 
         $subStoreID = DB::table('sub_store')
         ->where('user_id', $user_id)
-        ->get('*')->pluck('vendor_id')->first();
+        ->get('*')->pluck('id')->first();
 
         $parentName = DB::table('sub_store')
         ->join('multi_store', 'multi_store.id', 'sub_store.multi_store_id')
@@ -70,13 +70,11 @@ class VendorsController extends Controller
         
         $supply = DB::table('sub_vendor_inventory')
        // ->join('vendor', 'vendor.id', 'sub_vendor_inventory.vendor_id')
-        ->join('user', 'user.vendor', 'sub_vendor_inventory.vendor_id')
-        ->where('user.id', $user_id)
-        ->get(['sub_vendor_inventory.*']);
-        return  view('multistore.supply-receipt', compact('supply_ref', 'status',
-        'storeName', 'storeAddress', 'location', 'vendorState', 'vendorCountry',
-        'supply_date', 'supply', 'parentName', 'parentAddress','parentEmail' ));
-    
-
+        ->join('users', 'users.vendor', 'sub_vendor_inventory.vendor_id')
+        ->join('sub_store', 'sub_store.user_id', 'users.id')
+        ->where('users.id', $user_id)
+        ->get(['sub_vendor_inventory.*', 'user.vendor']);
+        return  view('multistore.child.all-supply', compact('role', 'subStoreID',
+        'parentName', 'supply' ));
     }
 }
