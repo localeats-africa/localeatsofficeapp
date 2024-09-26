@@ -232,6 +232,22 @@
                                                                         <td width="25%"
                                                                               style="white-space:wrap; line-height:1.6">
                                                                               <small> {{$data->remark}}</small>
+                                                                              @if(Auth::user()->role_id =='10')
+                                                                              <input type="hidden" value="{{$data->id}}"
+                                                                                    id="id-{{$data->id}}">
+                                                                              <div class="input-group">
+                                                                                    <input type="text" value=""
+                                                                                          class="form-control"
+                                                                                          placeholder="Remark here"
+                                                                                          id="remark-{{$data->id}}"
+                                                                                          style="display:none;">
+                                                                                    <button
+                                                                                          class="btn  btn-danger btn-xs"
+                                                                                          id="send-{{$data->id}}"
+                                                                                          onclick="sendReject({{$data->id}})"
+                                                                                          style="display:none;">confirm!</button>
+                                                                                          @endif
+                                                                              </div>
                                                                               <!--  remark--->
 
                                                                               </small>
@@ -250,17 +266,20 @@
                                                                               @elseif($data->status =='accepted')
                                                                               @else
                                                                               <button
-                                                                                    class="btn btn-success btn-xs  text-dark" onclick="acceptSupply({{$data->id}})">
-                                                                                    Accept</button>
-                                                                              <button
                                                                                     class="btn btn-danger btn-xs  text-white"
                                                                                     id="reject-{{ $data->id }}"
                                                                                     onclick="toggleReject({{$data->id}})">
                                                                                     Reject</button>
+                                                                              <button
+                                                                                    class="btn btn-success btn-xs  text-dark" onclick="acceptSupply({{$data->id}})">
+                                                                                    Accept</button>
+                                                                              @endif
+                                                                              @endif
 
-                                                                              @endif
-                                                                              @endif
                                                                               @if(Auth::user()->role_id =='9')
+                                                                              @if($data->status =='accepted')
+                                                                              @else 
+                                                                              &nbsp;
                                                                               <a class="text-danger"
                                                                                     href="/{{$username}}/edit-outlet-supply/{{$data->id}}"
                                                                                     title="edit">
@@ -268,46 +287,20 @@
                                                                                           edit</small>
                                                                               </a>
                                                                               @endif
+                                                                              @endif
                                                                         </td>
-
-                                                                        @if(Auth::user()->role_id =='10')
-                                                                        <td width="25%">
-                                                                              <input type="hidden" value="{{$data->id}}"
-                                                                                    id="id-{{$data->id}}">
-                                                                              <div class="input-group">
-                                                                                    <input type="text" value=""
-                                                                                          class="form-control"
-                                                                                          placeholder="enter a remark"
-                                                                                          id="remark-{{$data->id}}"
-                                                                                          style="display:none;">
-                                                                                    <button
-                                                                                          class="btn  btn-danger btn-xs"
-                                                                                          id="send-{{$data->id}}"
-                                                                                          onclick="sendReject({{$data->id}})"
-                                                                                          style="display:none;">confirm!</button>
-                                                                              </div>
-
-                                                                        </td>
-                                                                        @endif
-
-
 
                                                                         @endauth
                                                                   </tr>
 
                                                                   @endforeach
-
                                                                   <tr>
-
-
                                                                         <th colspan="4" class="text-end">
                                                                               <h6>Total Items</h6>
                                                                         </th>
                                                                         <th>{{$supply->count()}} </th>
 
                                                                   </tr>
-
-
 
                                                             </tbody>
                                                       </table>
@@ -474,6 +467,10 @@ function toggleReject(data) {
 function sendReject(data) {
       var remark = document.querySelector('#remark-' + data).value;
       var id = document.querySelector('#id-' + data).value;
+      if(remark == null || remark == ""){
+            alert("Remark field can not be empty");
+            return false;
+      }
 
       var url = "{{ route('reject-supplies') }}";
       // url = showRoute;
