@@ -152,7 +152,7 @@
                                                                         <input type="hidden" id="vendor_id"
                                                                               value="{{$data->vendor_id}}">
                                                                         <input type="hidden" id="invoice_ref" value="">
-                                                                        <a class="dropdown-item text-dark" href="" title="edit">
+                                                                        <a class="dropdown-item text-dark" href="/{{$username}}/edit-outlet-supply/{{$data->supply_ref}}" title="edit">
                                                                              <small> <i class="fa fa-edit"></i> edit</small>
                                                                         </a>
                                                                         <br>
