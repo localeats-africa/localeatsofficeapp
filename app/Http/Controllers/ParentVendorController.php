@@ -370,7 +370,7 @@ class ParentVendorController extends Controller
         ->select('*')->pluck('store_name')->first();
 
         $sizes = InventoryItemSizes::all();
-        $supply = SubVendorInventory::find($id);
+        $supply = SubVendorInventory::where('supply_ref', $id);
 
         dd($supply);
 
