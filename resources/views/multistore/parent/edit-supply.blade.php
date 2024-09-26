@@ -15,7 +15,9 @@
                         <ul class="breadcrumb">
                               <li class="breadcrumb-item active" aria-current="page">
                                     <span></span>
-                                    Receipt <sup>No:</sup> <span class="text-info">{{$supply_ref}}</span>
+                                    Receipt <sup>No:</sup>
+                                    <a class="text-info" href="/{{$username}}/supplies-receipt/{{$supply_ref}}">  {{$supply_ref}}</a>      
+
                               </li>
                         </ul>
                   </nav>
