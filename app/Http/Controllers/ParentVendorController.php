@@ -385,6 +385,7 @@ class ParentVendorController extends Controller
         $supply->size       =   $request->size;
         $supply->weight     =   $request->weight;
         $supply->supply_qty =   $request->quantity;
+        $supply->satus      =   'pending';
         $supply->save();
      
         if($supply){
