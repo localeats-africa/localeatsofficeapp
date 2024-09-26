@@ -71,7 +71,7 @@ class VendorsController extends Controller
         $supply = DB::table('sub_vendor_inventory')
        // ->join('vendor', 'vendor.id', 'sub_vendor_inventory.vendor_id')
         ->join('users', 'users.vendor', 'sub_vendor_inventory.vendor_id')
-        ->join('sub_store', 'sub_store.user_id', 'users.id')
+        //->join('sub_store', 'sub_store.user_id', 'users.id')
         ->where('users.id', $user_id)
         ->get(['sub_vendor_inventory.*', 'user.vendor']);
         return  view('multistore.child.all-supply', compact('role', 'subStoreID',
