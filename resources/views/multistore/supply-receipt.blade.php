@@ -495,7 +495,9 @@ function sendReject(data) {
             },
             success: function(data) {
                   console.log(data.message);
-
+                    alert("Update Successful");
+                     location.reload();
+                  
             },
             error: function(data) {
                   console.log(data);
