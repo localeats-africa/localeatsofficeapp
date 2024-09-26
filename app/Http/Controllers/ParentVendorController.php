@@ -358,7 +358,7 @@ class ParentVendorController extends Controller
         $parentStoreID = DB::table('multi_store')
         ->where('user_id', $user_id)
         ->get('*')->pluck('id')->first();
-        
+
         $vendor_id = SubVendorInventory::where('id',  $id)
         ->get()->pluck('vendor_id')->first();
 
@@ -370,7 +370,6 @@ class ParentVendorController extends Controller
         ->select('*')->pluck('store_name')->first();
 
         $sizes = InventoryItemSizes::all();
-
         $supply = SubVendorInventory::find($id);
 
         return view('multistore.parent.edit-supply',  compact('perPage', 'role', 'username', 
