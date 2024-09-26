@@ -98,13 +98,13 @@ class VendorsController extends Controller
             'parentName', 'supply', 'username' ));
     }
 
-    public function rejectSupply(){
+    public function rejectSupply(Request $request){
         $id = $request->id;
         $remark = $request->remark;
 
         $data = [
             'status' => true,
-            'message'=> 'Remark' .$remark.' successfully.'
+            'message'=> 'Remark ' .$id. ' successfully.'
         ];
         return response()->json($data);
     }
