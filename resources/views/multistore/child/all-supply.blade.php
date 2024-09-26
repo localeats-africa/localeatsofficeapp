@@ -137,7 +137,6 @@
                                                                         style="padding:0;">Action</button>
 
                                                                   <div class="dropdown-menu ">
-                                                                        <br>
                                                                         <a class="dropdown-item text-dark" href="/{{$username}}/supplies-receipt/{{$data->supply_ref}}" title="view">
                                                                              <small> <i class="fa fa-eye"></i> view</small>
                                                                         </a>
