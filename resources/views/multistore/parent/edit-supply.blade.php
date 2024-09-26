@@ -127,9 +127,15 @@
                                                                   <tr>
                                                                         <td>{{$loop->iteration}}</td>
                                                                         <td>
-                                                                              <input type="text" value="{{$data->supply}}"
-                                                                                    name="item"
-                                                                                    class="typeahead form-control" id="search">
+                                                                        <select class="js-example-basic-single text-secondary"
+                                                                                    style="width:100%" name="weight">
+                                                                                    <option value="">{{$data->supply}}</option>
+                                                                                    @foreach($item as $items)
+                                                                                    <option value="{{$items->item}}">
+                                                                                          {{$items->item}}
+                                                                                    </option>
+                                                                                    @endforeach
+
                                                                         </td>
                                                                         <td>
                                                                               <input type="text" value="{{$data->size}}"
