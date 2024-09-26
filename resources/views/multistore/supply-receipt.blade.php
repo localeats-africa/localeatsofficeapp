@@ -175,7 +175,7 @@
                                                                         @if(Auth::user()->role_id =='10')
                                                                         <th>Action</th>
                                                                         @endif
-                                                                   
+
                                                                         <th>Item (s)</th>
                                                                         <th>Size/Weight</th>
                                                                         <th>Quantity</th>
@@ -193,8 +193,9 @@
                                                                   <tr>
                                                                         @auth
                                                                         <!---childvendor--->
-                                                                        @if(Auth::user()->role_id =='10')
+
                                                                         <td width="20%">
+                                                                              @if(Auth::user()->role_id =='10')
                                                                               <button
                                                                                     class="btn btn-success btn-xs  text-dark">
                                                                                     Accept</button>
@@ -202,9 +203,18 @@
                                                                                     class="btn btn-danger btn-xs  text-white">
                                                                                     Reject</button>
                                                                               &nbsp;
+                                                                              @endif
+                                                                              @if(Auth::user()->role_id =='9')
+                                                                              <a class="text-danger"
+                                                                                    href="/{{$username}}/edit-outlet-supply/{{$data->supply_ref}}"
+                                                                                    title="edit">
+                                                                                    <small> <i class="fa fa-edit"></i>
+                                                                                          edit</small>
+                                                                              </a>
+                                                                              @endif
                                                                         </td>
-                                                                        @endif
-                                                                          
+
+
                                                                         <td width="30%"
                                                                               style="white-space:wrap; line-height:1.6">
 
@@ -237,9 +247,9 @@
                                                                                     <!--  remark--->
                                                                               </small>
                                                                         </td>
-                                                                         <!--  parent--->
+                                                                        <!--  parent--->
                                                                         @if(Auth::user()->role_id =='9')
-                                                                        <td  style="white-space:wrap; line-height:1.6">
+                                                                        <td style="white-space:wrap; line-height:1.6">
                                                                               <small>
                                                                                     <!--  status--->
                                                                               </small>
