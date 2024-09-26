@@ -126,35 +126,43 @@
                                                                   @foreach($supply as $data)
                                                                   <tr>
                                                                         <td>{{$loop->iteration}}</td>
-                                                                        <td><input type="text" value="{{$data->supply}}"
-                                                                                    name="vendor_name"
-                                                                                    class="form-control">
+                                                                        <td>
+                                                                              <input type="text" value="{{$data->supply}}"
+                                                                                    name="item"
+                                                                                    class="typeahead form-control" id="search">
                                                                         </td>
                                                                         <td>
                                                                               <input type="text" value="{{$data->size}}"
-                                                                                    name="vendor_name"
+                                                                                    name="size"
                                                                                     class="form-control">
                                                                         </td>
 
                                                                         <td>
-                                                                              <input type="text"
-                                                                                    value="{{$data->weight}}"
-                                                                                    name="vendor_name"
-                                                                                    class="form-control">
+                                                                        <select class="js-example-basic-single2 text-secondary"
+                                                                                    style="width:100%" name="weight">
+                                                                                    <option value="">{{$data->weight}}</option>
+                                                                                    @foreach($sizes as $size)
+                                                                                    <option value="{{$size->size}}">
+                                                                                          {{$size->size}}
+                                                                                    </option>
+                                                                                    @endforeach
+                                                                              </select>
+                                                                            
                                                                         </td>
                                                                         <td>
                                                                               <div class="btn btn-sm"
-                                                                                    id="decreaseSupply"
+                                                                              id="decreaseOthers-{{ $data->id }}"
                                                                                     onclick="decreaseOthers({{$data->id}})"
                                                                                     value="Decrease Value">-
                                                                               </div>
-                                                                             
+
                                                                               <input type="text" name="quantity"
-                                                                                     value="{{$data->supply_qty}}"
+                                                                                    value="{{$data->supply_qty}}"
                                                                                     style="width:85px;  padding-left:20px;  padding-right:5px;"
-                                                                                    id="others-{{$data->id}}" multiple="multiple">
+                                                                                  id="others-{{ $data->id }}"
+                                                                                    multiple="multiple">
                                                                               <div class="btn btn-sm"
-                                                                                    id="increaseSupply"
+                                                                                  id="increaseOthers-{{ $data->id }}"
                                                                                     onclick="increaseOthers({{$data->id}})"
                                                                                     value="Increase Value">+
                                                                               </div>
