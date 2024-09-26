@@ -9,7 +9,7 @@
       <div class="content-wrapper">
             <div class="page-header">
                   <h3 class="page-title">
-                       Edit <span class="text-info">{{$outletStoreName}}</span> >>>> Supply >>>  <span class="text-info">{{$outletStoreName}}</span> 
+                       Edit <span class="text-info">{{$outletStoreName}}</span> >>>> Supply >>>  <span class="text-info">{{$supply_ref}}</span> 
                   </h3>
                   <nav aria-label="breadcrumb">
                         <ul class="breadcrumb">
