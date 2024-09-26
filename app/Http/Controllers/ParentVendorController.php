@@ -370,8 +370,6 @@ class ParentVendorController extends Controller
         ->where('supply_ref', $supply_ref)
         ->get();
 
-        dd($supply);
-
         return view('multistore.parent.edit-supply',  compact('perPage', 'role', 'username', 
         'parentStoreID', 'outletStoreID', 'outletStoreName', 'supply', 'vendor_id',
         'sizes', 'supply_ref'));
