@@ -40,7 +40,6 @@
             <div class="row">
                   <div class="col-sm-12">
                         <div class="page-header">
-                              <form action=""></form>
                               <nav style="--bs-breadcrumb-divider: '';" aria-label="breadcrumb">
                                     <p id="response"></p>
                                     <ol class="breadcrumb">
@@ -210,8 +209,12 @@
                                                                         </td>
                                                                         @endauth
                                                                         <td  width="30%"> 
-                                                                              <input type="hidden" value="id-{{$data->id}}" id ="id-{{$data->id}}">
+                                                                              <input type="hidden" value="{{$data->id}}" id ="id-{{$data->id}}">
+                                                                              <div class="input-group">
                                                                               <input type="text" value="" class="form-control" placeholder="enter a remark" id="remark-{{$data->id}}" style="display:none;">
+                                                                              <button id="send-{{$data->id}}"   onclick="sendReject({{$data->id}})" style="display:none;">Go!</button>
+                                                                              </div>
+                                                                              
                                                                         </td>
 
                                                                         <td width="20%"
@@ -414,9 +417,11 @@ function mypdf() {
 function toggleReject(data) {
     // get the clock
     var myClock = document.querySelector('#remark-' + data);
+    var go = document.querySelector('#send-' + data);
 
     // get the current value of the clock's display property
     var displaySetting = myClock.style.display;
+    var displaySetting2 = go.style.display;
 
     // also get the clock button, so we can change what it says
     var clockButton = document.querySelector('#reject-' + data);
@@ -425,12 +430,14 @@ function toggleReject(data) {
     if (displaySetting == 'block') {
       // clock is visible. hide it
       myClock.style.display = 'none';
+      go.style.display = 'none';
       // change button text
       clockButton.innerHTML = 'Reject';
     }
     else {
       // clock is hidden. show it
       myClock.style.display = 'block';
+      go.style.display = 'block';
       // change button text
       clockButton.innerHTML = 'Reject';
     }
@@ -438,7 +445,7 @@ function toggleReject(data) {
 </script>
 
 <script>
-function sendreject(){
+function sendReject(data){
         var remark = document.querySelector('#remark-' + data).value;
         var id = document.querySelector('#id-' + data).value;
 
