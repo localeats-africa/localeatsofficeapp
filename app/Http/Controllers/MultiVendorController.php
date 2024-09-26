@@ -86,7 +86,7 @@ class MultiVendorController extends Controller
   
            $status = DB::table('sub_vendor_inventory')
             ->where('supply_ref', $supply_ref)
-           ->where('status', '!=', null)
+           ->where('number_of_items', '!=', null)
            ->pluck('status')->first();
   
            $storeName = DB::table('sub_vendor_inventory')
@@ -126,7 +126,7 @@ class MultiVendorController extends Controller
   
           $supply_date = DB::table('sub_vendor_inventory')
           ->where('supply_ref', $supply_ref)
-          ->where('status', '!=', null)
+          ->where('number_of_items', '!=', null)
           ->pluck('created_at')->first();
     
           $supply = DB::table('sub_vendor_inventory')
