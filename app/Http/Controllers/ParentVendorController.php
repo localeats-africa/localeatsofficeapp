@@ -347,7 +347,7 @@ class ParentVendorController extends Controller
     }
 
     //vendor_id is the child vendor
-    public function editOutletSupply(Request $request, $username, $id){
+    public function editOutletSupply(Request $request, $username, $id, $supply_ref){
         $username = Auth::user()->username;
         $user_id = Auth::user()->id;
         $role = DB::table('role')->select('role_name')
