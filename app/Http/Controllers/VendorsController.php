@@ -69,9 +69,9 @@ class VendorsController extends Controller
         ->get('multi_store.store_name')->pluck('store_name')->first();
         
         $supply = DB::table('sub_vendor_inventory')
-        ->join('vendor', 'vendor.id', 'sub_vendor_inventory.vendor_id')
-        ->where('supply_ref', $supply_ref)
-        ->where('deleted_at', null)
+       // ->join('vendor', 'vendor.id', 'sub_vendor_inventory.vendor_id')
+        ->join('user', 'user.vendor', 'sub_vendor_inventory.vendor_id')
+        ->where('user.id', $user_id)
         ->get(['sub_vendor_inventory.*']);
         return  view('multistore.supply-receipt', compact('supply_ref', 'status',
         'storeName', 'storeAddress', 'location', 'vendorState', 'vendorCountry',
