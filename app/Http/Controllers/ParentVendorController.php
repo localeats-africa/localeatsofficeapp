@@ -133,7 +133,7 @@ class ParentVendorController extends Controller
             $supply = DB::table('sub_vendor_inventory')->distinct()
             ->where('sub_vendor_inventory.vendor_id', $vendor_id)
             ->where('sub_vendor_inventory.parent_id', $parentStoreID)
-            ->whereNotNull('status')
+            ->whereNotNull('number_of_items')
             ->orderBy('sub_vendor_inventory.created_at', 'desc')
            // ->groupby('sub_vendor_inventory.supply_ref')
             ->select(['sub_vendor_inventory.*'])
