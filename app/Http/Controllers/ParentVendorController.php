@@ -381,12 +381,6 @@ class ParentVendorController extends Controller
 
     public function updateSupply(Request $request, $id){
 
-        // ->update([
-        //     'supply'        => $request->item,
-        //     'size'          => $request->size,
-        //     'weight'        => $request->weight,
-        //     'supply_qty'    => $request->quantity,
-        // ])
         $supply = SubVendorInventory::find($id);
         $supply->supply     =   $request->item;
         $supply->size       =   $request->size;
