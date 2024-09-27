@@ -9,7 +9,7 @@
       <div class="content-wrapper">
             <div class="page-header">
                   <h3 class="page-title">
-                      <span class="text-info"> {{$vendorName}}</span> Expenses
+                      <span class="text-info"> {{$vendorName}}</span> >>> Expenses
                   </h3>
                   <!-- <nav aria-label="breadcrumb">
                         <ul class="breadcrumb">
