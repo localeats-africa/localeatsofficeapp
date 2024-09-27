@@ -237,7 +237,7 @@
                                                             {{$loop->iteration}}
                                                       </td>
 
-                                                      <td class="text-capitalize">{{$data->food_category}}</td>
+                                                      <td class="text-capitalize">{{$data->category}}</td>
 
 
                                                       <td class="text-end">
