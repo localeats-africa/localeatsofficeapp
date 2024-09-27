@@ -450,5 +450,50 @@ class ParentVendorController extends Controller
         'vendorExpense', 'vendorTotalExpense', 'vendorName', 'startDate', 'endDate',
         'username', 'vendor_id'));
     }
+
+    public function foodCategory(Request $request, $username){
+        $username = Auth::user()->username;
+        $id = Auth::user()->id;
+        $role = DB::table('role')->select('role_name')
+        ->join('users', 'users.role_id', 'role.id')
+        ->where('users.id', $id)
+        ->pluck('role_name')->first();
+
+        $perPage = $request->perPage ?? 10;
+        $search = $request->input('search');
+        
+        $foodCategory=  DB::table('food_category')
+        ->where('food_category.deleted_at', null)
+        ->select(['food_type.*' ])
+        ->orderBy('created_at', 'desc')
+        ->where(function ($query) use ($search) {  // <<<
+        $query->where('food_type.food_type', 'LIKE', '%'.$search.'%');
+        })
+        ->paginate($perPage,  $pageName = 'foodtype')->appends(['per_page'   => $perPage]);
+        $pagination = $foodType->appends ( array ('search' => $search) );
+            if (count ( $pagination ) > 0){
+                return view('admin.food-type',  compact(
+                'perPage', 'name', 'role', 'foodType'))->withDetails( $pagination );     
+            } 
+        else{return redirect()->back()->with('error', 'No record order found'); }
+
+        return view('admin.food-type', compact('perPage', 'role', 'name', 'foodType'));
+    }
+
+    public function addFoodType(Request $request){
+        $this->validate($request, [ 
+            'food_type'   => 'required|string|max:255',
+        ]);
+
+        $addFoodType = new FoodType;
+        $addFoodType->food_type = $request->food_type;
+        $addFoodType->save();
+        
+        if($addFoodType){
+           return redirect()->back()->with('add-food-type', 'Food Type Added!');
+        }
+        else{return redirect()->back()->with('error', 'Opps! something went wrong.'); }
+    }
+
   
 }
