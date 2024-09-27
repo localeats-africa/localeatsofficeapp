@@ -496,7 +496,8 @@ class ParentVendorController extends Controller
         ]);
 
         $addFoodCategory = new FoodCategory;
-        $addFoodCategory->food_category = $request->food_category;
+        $addFoodCategory->food_category     = $request->food_category;
+        $addFoodCategory->store_id          = $request->food_category;
         $addFoodCategory->save();
         
         if($addFoodCategory){
