@@ -10,7 +10,7 @@ use Illuminate\Mail\Mailables\Envelope;
 use Illuminate\Mail\Mailables\Address;
 use Illuminate\Queue\SerializesModels;
 
-class NewUserEmail extends Mailable
+class NewVendorEmail extends Mailable
 {
     use Queueable, SerializesModels;
     public $data;
