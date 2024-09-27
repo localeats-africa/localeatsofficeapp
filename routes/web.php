@@ -256,7 +256,8 @@ Route::controller(ParentVendorController::class)->group(function () {
    Route::post('update-supplies/{ref}',  'updateSupply')->name('update-supplies');
    Route::get('/{username}/outlet-expenses/{id}', 'expensesList')->name('outlet-expenses');
    Route::get('/{username}/food-category', 'foodCategory')->name('food-category');
-
+   Route::post('add-food-category',  'storeFoodCategory')->name('add-food-category');
+   
 });
 
 
