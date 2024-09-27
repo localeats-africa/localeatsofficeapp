@@ -72,7 +72,7 @@ class MultiVendorController extends Controller
           ->where('sub_vendor_inventory.supply_ref', $supply_ref)
           ->select('multi_store.multi_store_name')->pluck('multi_store_name')->first();
   
-          $parentLogos=  DB::table('sub_vendor_inventory')
+          $parentLogo=  DB::table('sub_vendor_inventory')
           ->join('multi_store', 'multi_store.id', 'sub_vendor_inventory.parent_id')
           ->join('vendor', 'vendor.id', 'multi_store.vendor_id')
           ->where('sub_vendor_inventory.supply_ref', $supply_ref)
