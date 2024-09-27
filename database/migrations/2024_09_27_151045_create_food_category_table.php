@@ -16,6 +16,7 @@ return new class extends Migration
         Schema::create('food_category', function (Blueprint $table) {
             $table->id();
             $table->timestamps();
+            $table->string('deleted_at')->nullable();
             $table->string('category')->nullable();
             $table->string('store_id')->nullable();
             $table->string('vendor_id')->nullable();
