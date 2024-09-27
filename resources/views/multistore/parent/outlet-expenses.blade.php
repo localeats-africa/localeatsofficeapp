@@ -79,22 +79,7 @@
                         @csrf
                         {{csrf_field()}}
                         <div class="row">
-                              <div class="col-md-4 col-12">
-                                    <div class="form-group">
-                                          <label for="">Vendor</label>
-                                          <select class="js-example-basic-single text-secondary" style="width:100%"
-                                                name="vendor_id" id="vendor">
-                                                <option>Choose</option>
-                                                @foreach($vendor as $data)
-                                                <option value="{{$data->id}}">
-                                                      {{$data->store_name}}
-                                                </option>
-                                                @endforeach
-                                          </select>
-                                    </div>
-                              </div>
-
-                              <div class="col-md-4 col-12">
+                              <div class="col-md-6 col-12">
                                     <div class="form-group">
                                           <label for="">From</label>
                                           <div class="input-group date">
@@ -109,7 +94,7 @@
                                     </div>
                               </div>
 
-                              <div class="col-md-4 col-12">
+                              <div class="col-md-6 col-12">
                                     <div class="form-group">
 
                                           <label for="">To</label>
@@ -121,8 +106,9 @@
                                                             <i class="fa fa-calendar"></i>
                                                       </span>
                                                 </span>
+                                                <input type="hidden"   name="vendor_id"  value="{{$vendor_id}}">
                                                 <button type="submit" name="submit"
-                                                      class="btn bg-gradient-dark btn-sm  text-white">GO!</button>
+                                                      class="btn bg-gradient-dark btn-sm  text-white">Filter!</button>
                                           </div>
                                     </div>
                               </div>
