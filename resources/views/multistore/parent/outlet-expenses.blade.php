@@ -74,7 +74,7 @@
 
             <div class="row ">
 
-                  <form method="GET" action="{{ url(auth()->user()->username,'outlet-expenses, [$vendor_id]') }}" name="submit"
+                  <form method="GET" action="outlet-expenses, [$vendor_id]" name="submit"
                         enctype="multipart/form-data">
                         @csrf
                         {{csrf_field()}}
