@@ -141,7 +141,8 @@ class MultiVendorController extends Controller
           ->get(['sub_vendor_inventory.*']);
           return  view('multistore.supply-receipt', compact('supply_ref', 'status',
           'storeName', 'storeAddress', 'location', 'vendorState', 'vendorCountry',
-          'supply_date', 'supply', 'parentName', 'parentAddress','parentEmail', 'username' ));
+          'supply_date', 'supply', 'parentName', 'parentAddress','parentEmail', 
+          'username', 'parentLogo' ));
       }
 
     //Cashier
