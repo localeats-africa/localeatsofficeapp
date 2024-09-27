@@ -507,6 +507,42 @@ class ParentVendorController extends Controller
         else{return redirect()->back()->with('error', 'Opps! something went wrong.'); }
     }
 
+    public function allFoodMenu(Request $request){
+        if(Auth::user()){
+            $name = Auth::user()->name;
+            $user_id = Auth::user()->id;
+            $role = DB::table('role')->select('role_name')
+            ->join('users', 'users.role_id', 'role.id')
+            ->where('users.id', $user_id)
+            ->pluck('role_name')->first();
+
+            $perPage = $request->perPage ?? 25;
+            $search = $request->input('search');
+    
+            $foodMenu = DB::table('food_menu')
+            ->join('vendor', 'vendor.id', '=','food_menu.vendor_id')
+            ->join('users', 'users.id', '=','food_menu.added_by')
+            ->where('food_menu.deleted_at', null)
+            ->where('food_menu.price', '!=', null)
+            ->where('food_menu.item', '!=', null)
+            ->select(['vendor.vendor_name', 'food_menu.*', 'users.fullname'])
+            ->orderBy('food_menu.created_at', 'desc')
+            ->where(function ($query) use ($search) {  // <<<
+            $query->where('vendor.vendor_name', 'LIKE', '%'.$search.'%')
+                ->orWhere('food_menu.item', 'LIKE', '%'.$search.'%')
+                    ->orWhere('food_menu.price', 'LIKE', '%'.$search.'%');
+            })
+            ->paginate($perPage,  $pageName = 'food')->appends(['per_page'   => $perPage]);
+            $pagination = $foodMenu->appends ( array ('search' => $search) );
+                if (count ( $pagination ) > 0){
+                    return view('vendormanager.all-food-menu',  compact(
+                    'perPage', 'name', 'role', 'foodMenu'))->withDetails($pagination);     
+                } 
+            else{return redirect()->back()->with('food-status', 'No record order found'); }
+            
+            return view('vendormanager.all-food-menu', compact('perPage', 'role', 'name','foodMenu', 'vendor'));
+        }
+    }
     public function addFoodMenu(Request $request){
         if(Auth::user()){
             $name = Auth::user()->name;
@@ -543,43 +579,6 @@ class ParentVendorController extends Controller
             }
 
           
-        }
-    }
-
-    public function allFoodMenu(Request $request){
-        if(Auth::user()){
-            $name = Auth::user()->name;
-            $user_id = Auth::user()->id;
-            $role = DB::table('role')->select('role_name')
-            ->join('users', 'users.role_id', 'role.id')
-            ->where('users.id', $user_id)
-            ->pluck('role_name')->first();
-
-            $perPage = $request->perPage ?? 25;
-            $search = $request->input('search');
-    
-            $foodMenu = DB::table('food_menu')
-            ->join('vendor', 'vendor.id', '=','food_menu.vendor_id')
-            ->join('users', 'users.id', '=','food_menu.added_by')
-            ->where('food_menu.deleted_at', null)
-            ->where('food_menu.price', '!=', null)
-            ->where('food_menu.item', '!=', null)
-            ->select(['vendor.vendor_name', 'food_menu.*', 'users.fullname'])
-            ->orderBy('food_menu.created_at', 'desc')
-            ->where(function ($query) use ($search) {  // <<<
-            $query->where('vendor.vendor_name', 'LIKE', '%'.$search.'%')
-                ->orWhere('food_menu.item', 'LIKE', '%'.$search.'%')
-                    ->orWhere('food_menu.price', 'LIKE', '%'.$search.'%');
-            })
-            ->paginate($perPage,  $pageName = 'food')->appends(['per_page'   => $perPage]);
-            $pagination = $foodMenu->appends ( array ('search' => $search) );
-                if (count ( $pagination ) > 0){
-                    return view('vendormanager.all-food-menu',  compact(
-                    'perPage', 'name', 'role', 'foodMenu'))->withDetails($pagination);     
-                } 
-            else{return redirect()->back()->with('food-status', 'No record order found'); }
-            
-            return view('vendormanager.all-food-menu', compact('perPage', 'role', 'name','foodMenu', 'vendor'));
         }
     }
 
