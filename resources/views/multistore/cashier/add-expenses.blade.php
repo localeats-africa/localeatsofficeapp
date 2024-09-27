@@ -91,7 +91,7 @@
 
             <div class="row ">
 
-                  <form method="post" action="{{ route('add-vendor-expenses') }}" name="submit"
+                  <form method="post" action="{{ route('add-outlet-expenses') }}" name="submit"
                         enctype="multipart/form-data">
                         @csrf
                         {{csrf_field()}}
