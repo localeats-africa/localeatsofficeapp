@@ -480,9 +480,14 @@ class ParentVendorController extends Controller
                 return view('multistore.parent.food-category',  compact(
                 'perPage', 'username', 'role', 'foodCategory'))->withDetails( $pagination );     
             } 
-        else{return redirect()->back()->with('error', 'No record order found'); }
+        else{
+            //return redirect()->back()->with('error', 'No record order found')
+            return view('multistore.parent.food-category',  compact('perPage', 
+            'username', 'role', 'foodCategory')); 
+        }
 
-        return view('admin.food-type', compact('perPage', 'role', 'name', 'foodType'));
+        return view('multistore.parent.food-category',  compact('perPage', 
+        'username', 'role', 'foodCategory'));
     }
 
     public function addFoodType(Request $request){
