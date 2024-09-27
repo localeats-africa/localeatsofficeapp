@@ -2172,7 +2172,6 @@ class HomeController extends Controller
 
     public function storeVendorDailyExpenses(Request $request){
         $this->validate($request, [ 
-            'vendor'        => 'required|max:255',
             'item'          => 'required|string|max:255',  
             'price'         => 'required|string|max:255'     
         ]);
