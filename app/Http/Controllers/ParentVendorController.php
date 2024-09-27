@@ -410,7 +410,7 @@ class ParentVendorController extends Controller
     }
 
      //view expeses list per outlet
-     public function expensesList(Request $request){
+     public function expensesList(Request $request, $id){
         $username = Auth::user()->username;
         $user_id = Auth::user()->id;
         $role = DB::table('role')->select('role_name')
