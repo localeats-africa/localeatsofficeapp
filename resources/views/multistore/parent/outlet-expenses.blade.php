@@ -1,6 +1,6 @@
 @extends('layouts.head')
 @extends('layouts.header')
-@extends('layouts.sidebar')
+@extends('layouts.multistore-sidebar')
 @extends('layouts.footer')
 @section('content')
 </style>
@@ -9,16 +9,16 @@
       <div class="content-wrapper">
             <div class="page-header">
                   <h3 class="page-title">
-                        Vendor (s) Expenses
+                      <span class="text-info"> {{$vendorName}}</span> Expenses
                   </h3>
-                  <nav aria-label="breadcrumb">
+                  <!-- <nav aria-label="breadcrumb">
                         <ul class="breadcrumb">
                               <li class="breadcrumb-item active" aria-current="page">
                                     <span></span><a href="{{ url('new-expenses') }}" class="btn btn-block btn-danger"><i
                                                 class="fa fa-plus-square"></i> &nbsp;Create New Expense Item </a>
                               </li>
                         </ul>
-                  </nav>
+                  </nav> -->
             </div>
 
   <!--Alert here--->
@@ -74,7 +74,7 @@
 
             <div class="row ">
 
-                  <form method="GET" action="{{ route('expenses-list') }}" name="submit"
+                  <form method="GET" action="{{ url(auth()->user()->username,'outlet-expenses, [$vendor_id]') }}" name="submit"
                         enctype="multipart/form-data">
                         @csrf
                         {{csrf_field()}}
@@ -87,7 +87,7 @@
                                                 <option>Choose</option>
                                                 @foreach($vendor as $data)
                                                 <option value="{{$data->id}}">
-                                                      {{$data->vendor_name}}
+                                                      {{$data->store_name}}
                                                 </option>
                                                 @endforeach
                                           </select>
