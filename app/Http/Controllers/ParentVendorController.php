@@ -35,6 +35,7 @@ use App\Models\VendorInventory;
 use App\Models\SubVendorInventory;
 use App\Models\TempVendorInventory;
 use App\Models\InventoryItemSizes;
+use App\Models\FoodCategory;
 
 use Excel;
 use Auth;
