@@ -79,7 +79,7 @@
                                     <div class="card-body">
                                           <div class="form-group">
 
-                                                <label>Logo </label>
+                                                <label>Business Logo </label>
                                                 <input type="file" name="logo" class="file-upload-default" id="logo">
                                                 <div class="input-group col-xs-12">
                                                       <input type="text" class="form-control file-upload-info"
