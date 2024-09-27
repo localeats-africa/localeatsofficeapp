@@ -121,7 +121,7 @@
                                                       class="rounded-circle " width="110">
                                                       @else
                                                       <img src="{{ asset($parentLogo) }}" alt="Admin"
-                                                      class=" " width="110">
+                                                      class=" " width="80">
                                                       @endif
 
                                                       <h4></h4>
