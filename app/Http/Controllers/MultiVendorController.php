@@ -138,8 +138,16 @@ class MultiVendorController extends Controller
           'supply_date', 'supply', 'parentName', 'parentAddress','parentEmail', 'username' ));
       }
 
+    //Cashier
 
-          //Cashier
+    //search supplies
+    public function autocompleteExpenses(Request $request)
+    {
+        $data = ExpensesList::select("item as value", "id")
+                    ->where('item', 'LIKE', '%'. $request->get('search'). '%')
+                    ->get();
+        return response()->json($data);     
+    }
     public function addVendorExpenses(Request $request, $username){
         $username = Auth::user()->username;
         $id = Auth::user()->id;
