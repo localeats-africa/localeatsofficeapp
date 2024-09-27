@@ -8,7 +8,7 @@
       <div class="content-wrapper">
             <div class="page-header">
                   <h3 class="page-title">
-                        Food Type
+                        Food Category
                   </h3>
             </div>
             <!--Alert here--->
@@ -100,12 +100,12 @@
                         <div class="col-md-4 grid-margin stretch-card">
                               <div class="card">
                                     <div class="card-body">
-                                          <div class="form-label required">Type Of Food <i
+                                          <div class="form-label required">Enter Category <i
                                                       class="text-danger">*</i>
                                           </div>
-                                          <input type="text" class="form-control" name="food_type">
+                                          <input type="text" class="form-control" name="food_category">
 
-                                          @error('food_type')
+                                          @error('food_category')
                                           <div class="alert alert-danger alert-dismissible" role="alert">
                                                 <div class="d-flex">
                                                       <div>
@@ -223,12 +223,12 @@
                                                                   type="checkbox" aria-label="Select all product">
                                                       </th>
                                                       <th>SN</th>
-                                                      <th>Food Type</th>
+                                                      <th>Food Category</th>
                                                       <th></th>
                                                 </tr>
                                           </thead>
                                           <tbody>
-                                                @foreach($foodType as $data)
+                                                @foreach($foodCategory as $data)
                                                 <tr>
                                                       <td><input class="form-check-input m-0 align-middle"
                                                                   type="checkbox" aria-label="Select"></td>
