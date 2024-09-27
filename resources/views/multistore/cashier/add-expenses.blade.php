@@ -88,43 +88,37 @@
                                           <span id="response"></span>
                                     </div>
 
-                                    <div class="form-group" id="show" style="display:none;">
-                                          <p><br></p>
-                                          <div class="input-group">
-                                                <input id="new-item" class="form-control" type="text"
-                                                      placeholder=" enter new expenses" />
-                                                <input id="vendor" name="vendor" type="hidden"
-                                                      value="{{ $vendor_id }}" />
-                                                <button type="button" class="btn btn-dark btn-sm" id="btn-add-state"><i
-                                                            class="fa fa-check"></i></button>
+                                    
+                              </div>
+                              <div class="col-md-4 col-12" id="show" style="display:none;">
+                                          <div class="form-group" >
+                                          <label for=""> Enter new expenses</label>
+                                          <br>
+                                                <div class="input-group">
+                                                      <input id="new-item" class="form-control" type="text"
+                                                            placeholder=" enter new expenses" />
+                                                      <input id="vendor" name="vendor" type="hidden"
+                                                            value="{{ $vendor_id }}" />
+                                                      <button type="button" class="btn btn-dark btn-sm"
+                                                            id="btn-add-state"><i class="fa fa-check"></i></button>
+                                                </div>
                                           </div>
                                     </div>
-                              </div>
+
                               <div class="col-md-4 col-12">
                                     <div class="form-group">
                                           <label for="">Price</label>
                                           <br>
-                                          <div class="input-group date">
+                                          <div class="input-group ">
                                                 <input type="text" class="form-control" id="price" name="price"
-                                                      placeholder="Enter expenses" />
-                                          </div>
-                                    </div>
-                              </div>
-                              <div class="col-md-4 col-12">
-                                    <div class="form-group">
-                                          <label for="">Date</label>
-                                          <br>
-                                          <div class="input-group date">
-                                                
-                                                <input type="text" class="form-control"  value="{{ date('Y-m-d')}}" id="date" name="date"
                                                       placeholder="Enter expenses" />
                                                 <button type="submit" name="submit"
                                                       class="btn bg-gradient-primary btn-sm  text-white"
                                                       onclick="addVendorExpenses()">Submit</button>
                                           </div>
                                     </div>
-
                               </div>
+                            
 
                         </div>
                         <!---end row--->
@@ -365,8 +359,6 @@ function myClick() {
 $(function() {
       $("#date").datepicker();
 });
-
-
 </script>
 
 @endsection
