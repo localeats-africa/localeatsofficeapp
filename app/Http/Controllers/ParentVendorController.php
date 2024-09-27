@@ -442,8 +442,9 @@ class ParentVendorController extends Controller
         ->whereDate('vendor_expenses.expense_date', '<=', $endDate) 
         ->sum('cost');
 
-        return view('admin.expenses-list', compact('role', 'vendor',
-        'vendorExpense', 'vendorTotalExpense', 'vendorName', 'startDate', 'endDate'));
+        return view('multistore.parent.outlet-expenses', compact('role', 'vendor',
+        'vendorExpense', 'vendorTotalExpense', 'vendorName', 'startDate', 'endDate',
+        'username', 'vendor_id'));
     }
   
 }
