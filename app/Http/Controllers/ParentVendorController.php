@@ -464,10 +464,10 @@ class ParentVendorController extends Controller
         
         $foodCategory=  DB::table('food_category')
         ->where('food_category.deleted_at', null)
-        ->select(['food_type.*' ])
+        ->select(['food_category.*' ])
         ->orderBy('created_at', 'desc')
         ->where(function ($query) use ($search) {  // <<<
-        $query->where('food_type.food_type', 'LIKE', '%'.$search.'%');
+        $query->where('food_category.category', 'LIKE', '%'.$search.'%');
         })
         ->paginate($perPage,  $pageName = 'foodtype')->appends(['per_page'   => $perPage]);
         $pagination = $foodType->appends ( array ('search' => $search) );
