@@ -195,4 +195,32 @@ class MultiVendorController extends Controller
         return response()->json($data);     
     }
 
+    public function storeVendorDailyExpenses(Request $request){
+        $this->validate($request, [ 
+            'item'          => 'required|string|max:255',  
+            'price'         => 'required|string|max:255'     
+        ]);
+        $storeExpense = new ExpensesList();
+        $storeExpense->vendor_id    = $request->vendor;
+        $storeExpense->item         = $request->item;
+        $storeExpense->added_by     = Auth::user()->id;
+        $storeExpense->save();
+
+        $expenses = new VendorExpenses();
+        $expenses->vendor_id        = $request->vendor;
+        $expenses->description      = $request->item;
+        $expenses->cost             = $request->price;
+        $expenses->added_by         = Auth::user()->id;
+        $expenses->expense_date     = Carbon::now();
+        $expenses->save();
+
+        if($expenses){
+            return redirect()->back()->with('expense-status', 'You have successfully added an Expenses');
+        }
+        else{
+            return redirect()->back()->with('expense-error', 'Opps! something happend');
+        
+        }
+    }
+
 }
