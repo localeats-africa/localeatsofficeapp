@@ -3220,8 +3220,8 @@ class HomeController extends Controller
             $logo= $request->file('logo');
             if(isset($logo)){
                  $logoName =  rand(1000000000, 9999999999).'.jpeg';
-                 $logo->move(public_path('assets/images/vendor'),$logoName);
-                 $logoPath = "/assets/images/vendor/".$logoName; 
+                 $logo->move(public_path('assets/images/store'),$logoName);
+                 $logoPath = "/assets/images/store/".$logoName; 
              }
             else {
              $logoPath = "";
