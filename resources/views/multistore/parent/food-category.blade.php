@@ -100,8 +100,7 @@
                         <div class="col-md-4 grid-margin stretch-card">
                               <div class="card">
                                     <div class="card-body">
-                                          <div class="form-label required">Enter Category <i
-                                                      class="text-danger">*</i>
+                                          <div class="form-label required">Enter Category <i class="text-danger">*</i>
                                           </div>
                                           <input type="text" class="form-control" name="food_category">
 
@@ -133,8 +132,9 @@
                         </div>
 
                         <div class="col-md-4 grid-margin stretch-card">
-    <!-- send button here -->
-    <div class="card-footer bg-transparent mt-auto">
+                              <!-- send button here -->
+                              <div class="card-footer bg-transparent mt-auto">
+                                    <input type="hidden" value="{{$parentID}}">
                                     <div class="btn-list ">
                                           <button type="submit" name="submit"
                                                 class="btn bg-gradient-primary btn-sm  text-white">
@@ -170,7 +170,7 @@
             <!-- row -->
             <div class="row">
                   <div class="col-md-12">
-                  <div class="card">
+                        <div class="card">
                               <div class="card-header">
                                     <h4 class="card-title">List </h4>
                               </div>
@@ -200,7 +200,8 @@
                                                 Search:
                                                 <div class="ms-2 d-inline-block">
 
-                                                      <form action="{{ route('food-type') }}" method="GET" role="search">
+                                                      <form action="{{ route('food-type') }}" method="GET"
+                                                            role="search">
                                                             {{ csrf_field() }}
                                                             <div class="input-group mb-2">
                                                                   <input type="text" class="form-control"
@@ -233,12 +234,12 @@
                                                       <td><input class="form-check-input m-0 align-middle"
                                                                   type="checkbox" aria-label="Select"></td>
                                                       <td class="py-1">
-                                                           {{$loop->iteration}}
+                                                            {{$loop->iteration}}
                                                       </td>
 
                                                       <td class="text-capitalize">{{$data->food_category}}</td>
 
-                                                      
+
                                                       <td class="text-end">
                                                             <span class="dropdown">
                                                                   <button
@@ -298,7 +299,8 @@
                                           </li>
                                           @if($foodCategory->hasMorePages())
                                           <li class="page-item">
-                                                <a class="page-link text-danger" href="{{ $foodCategory->nextPageUrl() }}">
+                                                <a class="page-link text-danger"
+                                                      href="{{ $foodCategory->nextPageUrl() }}">
                                                       next
                                                       <!-- Download SVG icon from http://tabler-icons.io/i/chevron-right -->
                                                       <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24"
@@ -317,7 +319,7 @@
                         </div>
                         <!--- card-->
                   </div>
-        
+
             </div>
             <!-- row -->
       </div>
