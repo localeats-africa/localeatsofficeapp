@@ -459,21 +459,26 @@ class ParentVendorController extends Controller
         ->where('users.id', $id)
         ->pluck('role_name')->first();
 
+        $parentID = DB::table('multi_store')
+        ->where('user_id',  $id)
+        ->get()->pluck('id')->first();
+
         $perPage = $request->perPage ?? 10;
         $search = $request->input('search');
         
         $foodCategory=  DB::table('food_category')
-        ->where('food_category.deleted_at', null)
-        ->select(['food_category.*' ])
+        ->where('deleted_at', null)
+        ->where('store_id', $parentID)
+        ->select(['*' ])
         ->orderBy('created_at', 'desc')
         ->where(function ($query) use ($search) {  // <<<
         $query->where('food_category.category', 'LIKE', '%'.$search.'%');
         })
-        ->paginate($perPage,  $pageName = 'foodtype')->appends(['per_page'   => $perPage]);
-        $pagination = $foodType->appends ( array ('search' => $search) );
+        ->paginate($perPage,  $pageName = 'foodCategory')->appends(['per_page'   => $perPage]);
+        $pagination = $foodCategory->appends ( array ('search' => $search) );
             if (count ( $pagination ) > 0){
-                return view('admin.food-type',  compact(
-                'perPage', 'name', 'role', 'foodType'))->withDetails( $pagination );     
+                return view('multistore.parent.food-category',  compact(
+                'perPage', 'username', 'role', 'foodCategory'))->withDetails( $pagination );     
             } 
         else{return redirect()->back()->with('error', 'No record order found'); }
 
