@@ -257,6 +257,13 @@ Route::controller(ParentVendorController::class)->group(function () {
    Route::get('/{username}/outlet-expenses/{id}', 'expensesList')->name('outlet-expenses');
    Route::get('/{username}/food-category', 'foodCategory')->name('food-category');
    Route::post('add-food-category',  'storeFoodCategory')->name('add-food-category');
+   Route::get('/{username}/meal-menu',  'vendorfoodMenu')->name('meal-menu');
+   Route::post('add-meal-menu',  'addFoodMenu')->name('add-meal-menu');
+   Route::get('/{username}/all-meal-menu',  'allFoodMenu')->name('all-meal-menu');
+   Route::get('edit-meal-menu/{id}', 'editFoodMenu')->name('edit-meal-menu');
+   Route::post('update-meal-menu/{id}',  'updateFoodMenu')->name('update-meal-menu');
+   Route::post('delete-meal-menu/{id}', 'deleteFoodMenu')->name('delete-meal-menu');
+   
    
 });
 
