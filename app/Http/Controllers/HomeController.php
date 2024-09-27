@@ -2176,11 +2176,11 @@ class HomeController extends Controller
             'item'          => 'required|string|max:255',  
             'price'         => 'required|string|max:255'     
         ]);
-        // $storeExpense = new ExpensesList();
-        // $storeExpense->vendor_id    = $request->vendor;
-        // $storeExpense->item         = $request->item;
-        // $storeExpense->added_by     = Auth::user()->id;
-        // $storeExpense->save();
+        $storeExpense = new ExpensesList();
+        $storeExpense->vendor_id    = $request->vendor;
+        $storeExpense->item         = $request->item;
+        $storeExpense->added_by     = Auth::user()->id;
+        $storeExpense->save();
 
         $expenses = new VendorExpenses();
         $expenses->vendor_id        = $request->vendor;
