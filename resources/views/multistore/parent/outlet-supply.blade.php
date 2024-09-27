@@ -137,7 +137,7 @@
                                                       <td> <a class="text-danger"
                                                                   href="/{{$username}}/supplies-receipt/{{$data->supply_ref}}"
                                                                   title="view">
-                                                                  <small> <i class="fa fa-eye"></i> view</small>
+                                                                 <i class="fa fa-eye"></i> view
                                                             </a></td>
                                                       <td>{{ date('d/m/Y', strtotime($data->created_at))}}</td>
                                                       <td class="text-capitalize">{{$data->supply_ref}}</td>
