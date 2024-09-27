@@ -72,36 +72,18 @@
                         @csrf
                         {{csrf_field()}}
                         <div class="row">
-                              <div class="col-md-4 col-12">
+                              <div class="col-md-6 col-12">
                                     <div class="form-group">
                                           <label for="">Expenses List</label>
                                           <br>
+                                          <input type="hidden" id="vendor_id" value="{{$vendor_id}}">
                                           <input class="typeahead form-control" id="search" type="text" name="item"
                                           placeholder="search here">
-
-                                         
-                                          <br>
-                                          <span id="response"></span>
                                     </div>
-
-                                    
                               </div>
-                              <div class="col-md-4 col-12" id="show" style="display:none;">
-                                          <div class="form-group" >
-                                          <label for=""> Enter new expenses</label>
-                                          <br>
-                                                <div class="input-group">
-                                                      <input id="new-item" class="form-control" type="text"
-                                                            placeholder=" enter new expenses" />
-                                                      <input id="vendor" name="vendor" type="hidden"
-                                                            value="{{ $vendor_id }}" />
-                                                      <button type="button" class="btn btn-dark btn-sm"
-                                                            id="btn-add-state"><i class="fa fa-check"></i></button>
-                                                </div>
-                                          </div>
-                                    </div>
+                             
 
-                              <div class="col-md-4 col-12">
+                              <div class="col-md-6 col-12">
                                     <div class="form-group">
                                           <label for="">Price</label>
                                           <br>
@@ -110,7 +92,7 @@
                                                       placeholder="Enter expenses" />
                                                 <button type="submit" name="submit"
                                                       class="btn bg-gradient-primary btn-sm  text-white"
-                                                      onclick="addVendorExpenses()">Submit</button>
+                                                   >Submit</button>
                                           </div>
                                     </div>
                               </div>
@@ -275,7 +257,9 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.1/js/select2.min.js"></script>
 
 <script type="text/javascript">
-var path = "{{ route('autocomplete-expenses') }}";
+var id = document.getElementById('vendor_id').value;
+var showRoute = "{{ route('autocomplete-expenses', ':id') }}";
+path = showRoute.replace(':id', id);  
 
 $("#search").autocomplete({
       source: function(request, response) {
