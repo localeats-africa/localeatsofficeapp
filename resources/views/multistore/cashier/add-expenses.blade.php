@@ -161,7 +161,7 @@
                                                 Search:
                                                 <div class="ms-2 d-inline-block">
 
-                                                      <form action="{{ route('add-expenses') }}" method="GET"
+                                                      <form action="{{ url(auth()->user()->username,'vendor-add-expenses'  ) }}" method="GET"
                                                             role="search">
                                                             {{ csrf_field() }}
                                                             <div class="input-group mb-2">
