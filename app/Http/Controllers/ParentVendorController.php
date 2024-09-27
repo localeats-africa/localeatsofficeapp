@@ -410,30 +410,36 @@ class ParentVendorController extends Controller
     }
 
      //view expeses list per outlet
-     public function expensesList(Request $request, $id){
+     public function expensesList(Request $request, $vendor_id){
         $username = Auth::user()->username;
         $user_id = Auth::user()->id;
         $role = DB::table('role')->select('role_name')
         ->join('users', 'users.role_id', 'role.id')
         ->where('users.id', $user_id)
         ->pluck('role_name')->first();
-        $vendor = Vendor::all();
-
-        $vendor_id      =  $request->vendor_id;
+        //$vendor_id      =  $request->vendor_id;
         $startDate      =   date("Y-m-d", strtotime($request->from)) ;
         $endDate        =  date("Y-m-d", strtotime($request->to));
         
         $vendorName = Vendor::where('id', $vendor_id)
-        ->get()->pluck('vendor_name')->first();
-        
-        $vendorExpense = VendorExpenses::where('vendor_id',  $vendor_id)
+        ->get()->pluck('store_name')->first();
+
+        $vendor = Vendor::where('id', $vendor_id)->get();
+        $vendorExpense = VendorExpenses::join('sub_store', 'sub_store.vendor_id', 'vendor_expenses.vendor_id')
+        ->join('multi_store', 'multi_store.id', 'sub_store.multi_store_id')
+        ->where('multi_store.user_id',  $user_id)
+        ->where('vendor_expenses.vendor_id',  $vendor_id)
         ->whereDate('vendor_expenses.expense_date', '>=', $startDate)                                 
         ->whereDate('vendor_expenses.expense_date', '<=', $endDate) 
         ->get(['vendor_expenses.*']);
 
-        $vendorTotalExpense = VendorExpenses::where('vendor_id',  $vendor_id)
-        ->whereDate('expense_date', '>=', $startDate)                                 
-        ->whereDate('expense_date', '<=', $endDate) 
+        $vendorTotalExpense = VendorExpenses::join('sub_store', 'sub_store.vendor_id', 'vendor_expenses.vendor_id')
+        ->join('multi_store', 'multi_store.id', 'sub_store.multi_store_id')
+        ->where('multi_store.user_id',  $user_id)
+        ->where('vendor_expenses.vendor_id',  $vendor_id)
+        ->whereDate('vendor_expenses.expense_date', '>=', $startDate)                                 
+        ->whereDate('vendor_expenses.expense_date', '>=', $startDate)                                 
+        ->whereDate('vendor_expenses.expense_date', '<=', $endDate) 
         ->sum('cost');
 
         return view('admin.expenses-list', compact('role', 'vendor',
