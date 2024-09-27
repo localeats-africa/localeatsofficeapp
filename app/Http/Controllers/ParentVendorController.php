@@ -410,7 +410,7 @@ class ParentVendorController extends Controller
     }
 
      //view expeses list per outlet
-     public function expensesList(Request $request, $vendor_id){
+     public function expensesList(Request $request,  $username, $vendor_id){
         $username = Auth::user()->username;
         $user_id = Auth::user()->id;
         $role = DB::table('role')->select('role_name')
@@ -422,14 +422,13 @@ class ParentVendorController extends Controller
         $endDate        =  date("Y-m-d", strtotime($request->to));
         
         $vendorName = Vendor::join('sub_store', 'sub_store.vendor_id', 'vendor.id')
-       // ->join('multi_store', 'multi_store.id', 'sub_store.multi_store_id')
-        //->where('multi_store.user_id',  $user_id)
+        ->join('multi_store', 'multi_store.id', 'sub_store.multi_store_id')
+        ->where('multi_store.user_id',  $user_id)
         ->where('vendor.id', $vendor_id)
-        ->get('vendor.*')->pluck('vendor.store_name')->first();
-     
-
+        ->get('vendor.*')->pluck('store_name')->first();
+        //dd($vendorName);
         $vendor = Vendor::where('id', $vendor_id)->get();
-        dd($vendor_id);
+      
         $vendorExpense = VendorExpenses::join('sub_store', 'sub_store.vendor_id', 'vendor_expenses.vendor_id')
         ->join('multi_store', 'multi_store.id', 'sub_store.multi_store_id')
         ->where('multi_store.user_id',  $user_id)
