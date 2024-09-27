@@ -101,8 +101,7 @@
                                                 <input type="text" class="form-control"  value="{{ date('Y-m-d')}}" id="date" name="date"
                                                       placeholder="Enter expenses" />
                                                 <button type="submit" name="submit"
-                                                      class="btn bg-gradient-primary btn-sm  text-white"
-                                                      onclick="addVendorExpenses()">Submit</button>
+                                                      class="btn bg-gradient-primary btn-sm  text-white">Submit</button>
                                           </div>
                                     </div>
 
