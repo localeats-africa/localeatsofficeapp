@@ -93,7 +93,7 @@
             </div>
             <p></p>
 
-            <form method="post" action="{{ route('add-food-type') }}" name="submit" enctype="multipart/form-data">
+            <form method="post" action="{{ route('add-food-category') }}" name="submit" enctype="multipart/form-data">
                   @csrf
                   {{csrf_field()}}
                   <div class="row">
