@@ -232,11 +232,12 @@ Route::controller(MultiVendorController::class)->group(function () {
    Route::get('/{username}/supplies-receipt/{supply_ref}',  'supplyReceipt')->name('supplies-receipt');
    Route::get('/{username}/vendor-add-expenses', 'addVendorExpenses')->name('vendor-add-expenses');
    Route::post('vendor-add-expenses-list', 'addExpensesList')->name('vendor-add-expenses-list');
+   //autocomplete
    Route::group(['middleware' => ['only.ajax']], function() {
-    Route::get('autocomplete-expenses/{vendor_id}', 'autocompleteExpenses')->name('autocomplete-expenses');
-    Route::post('add-outlet-expenses', 'storeVendorDailyExpenses')->name('add-outlet-expenses');
+        Route::get('autocomplete-expenses/{vendor_id}', 'autocompleteExpenses')->name('autocomplete-expenses');
+    }); 
+Route::post('add-outlet-expenses', 'storeVendorDailyExpenses')->name('add-outlet-expenses');
     
-}); 
    
 });
 
