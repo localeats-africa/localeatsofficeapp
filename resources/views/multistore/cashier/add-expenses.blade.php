@@ -100,7 +100,7 @@
                                     <div class="form-group">
                                           <label for="">Expenses List</label>
                                           <br>
-                                          <input type="hidden" id="vendor_id" value="{{$vendor_id}}">
+                                          <input type="hidden" id="vendor_id" value="{{$vendor_id}}" name="vendor">
                                           <input class="typeahead form-control" id="search" type="text" name="item"
                                           placeholder="search here">
                                     </div>
