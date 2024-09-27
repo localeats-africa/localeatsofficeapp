@@ -33,6 +33,7 @@ use App\Models\Invoice;
 use App\Models\Payout;
 use App\Mail\NewUserEmail;
 use App\Mail\EmailVendorInvoice;
+use App\Mail\NewVendorEmail;
 use Barryvdh\DomPDF\Facade\Pdf;
 use App\Models\ExpensesList;
 use App\Models\OfflineSales;
@@ -3273,7 +3274,7 @@ class HomeController extends Controller
                 Mail::to($request->email)
                 ->cc('admin@localeats.africa')
                 //->bcc('admin@localeats.africa')
-                ->send(new NewUserEmail($data));
+                ->send(new NewVendorEmail($data));
 
                 $response = [
                     'code'      => '',
