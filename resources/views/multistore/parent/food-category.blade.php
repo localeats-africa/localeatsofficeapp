@@ -248,7 +248,7 @@
                                                                         data-bs-toggle="dropdown">Actions</button>
                                                                   <div class="dropdown-menu ">
                                                                         <a class="dropdown-item text-capitalize text-dark"
-                                                                              href="delete-platform/{{$data->id}}">
+                                                                              href="">
                                                                               <small>Delete</small>
                                                                         </a>
 
