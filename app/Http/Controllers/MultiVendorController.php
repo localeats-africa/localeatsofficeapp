@@ -139,16 +139,6 @@ class MultiVendorController extends Controller
       }
 
     //Cashier
-
-    //search supplies
-    public function autocompleteExpenses(Request $request)
-    {
-        $data = ExpensesList::where('vendor_id', $request->vendor_id)
-        ->select("item as value", "id")
-                    ->where('item', 'LIKE', '%'. $request->get('search'). '%')
-                    ->get();
-        return response()->json($data);     
-    }
     public function addVendorExpenses(Request $request, $username){
         $username = Auth::user()->username;
         $id = Auth::user()->id;
@@ -194,6 +184,15 @@ class MultiVendorController extends Controller
 
         return view('multistore.cashier.add-expenses',   compact('username', 'role', 
          'vendorName','expensesList', 'vendor_id', 'perPage', 'expenses'));
+    }
+
+    public function autocompleteExpenses(Request $request, $vendor_id)
+    {
+        $data = ExpensesList::where('vendor_id', $vendor_id)
+        ->select("item as value", "id")
+                    ->where('item', 'LIKE', '%'. $request->get('search'). '%')
+                    ->get();
+        return response()->json($data);     
     }
 
 }
