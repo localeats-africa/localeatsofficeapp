@@ -421,10 +421,15 @@ class ParentVendorController extends Controller
         $startDate      =   date("Y-m-d", strtotime($request->from)) ;
         $endDate        =  date("Y-m-d", strtotime($request->to));
         
-        $vendorName = Vendor::where('id', $vendor_id)
-        ->get()->pluck('store_name')->first();
+        $vendorName = Vendor::join('sub_store', 'sub_store.vendor_id', 'vendor.id')
+       // ->join('multi_store', 'multi_store.id', 'sub_store.multi_store_id')
+        //->where('multi_store.user_id',  $user_id)
+        ->where('vendor.id', $vendor_id)
+        ->get('vendor.*')->pluck('vendor.store_name')->first();
+     
 
         $vendor = Vendor::where('id', $vendor_id)->get();
+        dd($vendor_id);
         $vendorExpense = VendorExpenses::join('sub_store', 'sub_store.vendor_id', 'vendor_expenses.vendor_id')
         ->join('multi_store', 'multi_store.id', 'sub_store.multi_store_id')
         ->where('multi_store.user_id',  $user_id)
