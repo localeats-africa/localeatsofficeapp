@@ -507,5 +507,199 @@ class ParentVendorController extends Controller
         else{return redirect()->back()->with('error', 'Opps! something went wrong.'); }
     }
 
-  
+    public function addFoodMenu(Request $request){
+        if(Auth::user()){
+            $name = Auth::user()->name;
+            $user_id = Auth::user()->id;
+            $role = DB::table('role')->select('role_name')
+            ->join('users', 'users.role_id', 'role.id')
+            ->where('users.id', $user_id)
+            ->pluck('role_name')->first();
+
+            $this->validate($request, [ 
+                'item'      => 'required|string|max:255',
+                'price'     => 'required|string|max:255',
+                'vendor'    => 'required|max:255',
+            ]);
+
+            $addMenu = new FoodMenu();
+            $addMenu->added_by      = $user_id;
+            $addMenu->item          = $request->item;
+            $addMenu->price         = $request->price;
+            $addMenu->vendor_id     = $request->vendor;
+            $addMenu->save();
+            if($addMenu){
+
+                return redirect('food-menu')->with('add-menu', 'Menu  successfully added');
+            }
+            else{
+                $error = [
+                    'code'      => '',
+                    'message'   => 'Something went wrong',
+                    'status'    => 'error'
+                ]; 
+                $data = json_encode($error);
+                return redirect()->back()->with('add-menu', 'Something went wrong');
+            }
+
+          
+        }
+    }
+
+    public function allFoodMenu(Request $request){
+        if(Auth::user()){
+            $name = Auth::user()->name;
+            $user_id = Auth::user()->id;
+            $role = DB::table('role')->select('role_name')
+            ->join('users', 'users.role_id', 'role.id')
+            ->where('users.id', $user_id)
+            ->pluck('role_name')->first();
+
+            $perPage = $request->perPage ?? 25;
+            $search = $request->input('search');
+    
+            $foodMenu = DB::table('food_menu')
+            ->join('vendor', 'vendor.id', '=','food_menu.vendor_id')
+            ->join('users', 'users.id', '=','food_menu.added_by')
+            ->where('food_menu.deleted_at', null)
+            ->where('food_menu.price', '!=', null)
+            ->where('food_menu.item', '!=', null)
+            ->select(['vendor.vendor_name', 'food_menu.*', 'users.fullname'])
+            ->orderBy('food_menu.created_at', 'desc')
+            ->where(function ($query) use ($search) {  // <<<
+            $query->where('vendor.vendor_name', 'LIKE', '%'.$search.'%')
+                ->orWhere('food_menu.item', 'LIKE', '%'.$search.'%')
+                    ->orWhere('food_menu.price', 'LIKE', '%'.$search.'%');
+            })
+            ->paginate($perPage,  $pageName = 'food')->appends(['per_page'   => $perPage]);
+            $pagination = $foodMenu->appends ( array ('search' => $search) );
+                if (count ( $pagination ) > 0){
+                    return view('vendormanager.all-food-menu',  compact(
+                    'perPage', 'name', 'role', 'foodMenu'))->withDetails($pagination);     
+                } 
+            else{return redirect()->back()->with('food-status', 'No record order found'); }
+            
+            return view('vendormanager.all-food-menu', compact('perPage', 'role', 'name','foodMenu', 'vendor'));
+        }
+    }
+
+    public function vendorFoodMenu(Request $request, $vendor_id){
+        if(Auth::user()){
+            $name = Auth::user()->name;
+            $user_id = Auth::user()->id;
+            $role = DB::table('role')->select('role_name')
+            ->join('users', 'users.role_id', 'role.id')
+            ->where('users.id', $user_id)
+            ->pluck('role_name')->first();
+            $vendorName = DB::table('vendor')->where('id', $vendor_id)
+            ->select('*')->pluck('vendor_name')->first();
+
+            $perPage = $request->perPage ?? 25;
+            $search = $request->input('search');
+    
+            $foodMenu = DB::table('food_menu')
+            ->join('vendor', 'vendor.id', 'food_menu.vendor_id')
+            ->join('users', 'users.id', '=','food_menu.added_by')
+            ->where('food_menu.deleted_at', null)
+            ->where('food_menu.price', '!=', null)
+            ->where('food_menu.item', '!=', null)
+            ->where('food_menu.vendor_id', $vendor_id)
+            ->select(['vendor.vendor_name', 'food_menu.*', 'users.fullname'])
+            ->orderBy('food_menu.created_at', 'desc')
+            ->where(function ($query) use ($search) {  // <<<
+            $query->where('food_menu.item', 'LIKE', '%'.$search.'%')
+                    ->orWhere('food_menu.price', 'LIKE', '%'.$search.'%');
+            })
+            ->paginate($perPage,  $pageName = 'food')->appends(['per_page'   => $perPage]);
+            $pagination = $foodMenu->appends ( array ('search' => $search) );
+                if (count ( $pagination ) > 0){
+                    return view('vendormanager.vendor-food-menu',  compact(
+                    'perPage', 'name', 'role', 'foodMenu', 
+                    'vendorName'))->withDetails($pagination);     
+                } 
+            else{ 
+                // Session::flash('food-status', 'No record order found'); 
+                return view('vendormanager.vendor-food-menu',  compact(
+                'perPage', 'name', 'role', 'foodMenu', 
+                'vendorName'))->with('food-status', 'No record order found'); }
+            
+            return view('vendormanager.vendor-food-menu', compact('perPage', 'role', 
+            'name','foodMenu', 'vendorName'));
+
+
+        }
+    }
+
+    public function importFoodMenu(Request $request)
+    {
+        // Validate the uploaded file
+        $request->validate([
+            'file' => 'required|mimes:xlsx,xls',
+            'vendor_name'=>'required|string|max:255',
+        ]);
+        // Get the uploaded file
+        $file = $request->file('file');
+        $vendor_id = $request->vendor_name;
+     
+        // Process the Excel file
+      $import =  Excel::import(new FoodMenuImportClass($vendor_id), $file);
+
+      if($import){
+        return redirect()->back()->with('food-status', 'File imported successfully!');
+      }
+      else{
+        return redirect()->back()->with('food-status', 'Opps!');
+      }
+ 
+    }
+
+    public function editFoodMenu(Request $request, $id){
+        if( Auth::user()){
+            $name = Auth::user()->name;
+            $user_id = Auth::user()->id;
+            $role = DB::table('role')->select('role_name')
+            ->join('users', 'users.role_id', 'role.id')
+            ->where('users.id', $user_id)
+            ->pluck('role_name')->first();
+
+            $menu = FoodMenu::find($id);
+            $vendor = Vendor::Join('food_menu', 'vendor.id', '=', 'food_menu.vendor_id')
+            ->where('food_menu.id', $id)
+            ->select('vendor.vendor_name')->pluck('vendor_name')->first();
+            return view('vendormanager.edit-food-menu', compact('menu', 'role', 'vendor')); 
+        }
+          else { return Redirect::to('/login');
+        }
+  }
+
+    public function updateFoodMenu(Request $request, $id)
+    {
+        $this->validate($request, [
+            'item'  => 'max:255',
+            'price'  => 'max:255',
+            ]);
+            $menu = FoodMenu::find($id);
+            $menu->item         = $request->item;
+            $menu->price        = $request->price;
+            $menu->update();
+
+            if($menu){
+                return redirect()->back()->with('menu-status', 'Record Updated');
+            }
+            else{
+                return redirect()->back()->with('menu-error', 'Opps! something went wrong'); 
+            }
+
+    }
+
+    public function deleteFoodMenu(Request $request, $id){
+        $today = Carbon::now();
+        $food = FoodMenu::find($id);
+        $food->deleted_at  = $today ;
+        $food->update();
+        if($food){
+            return redirect('all-food-menu')->with('food-status', 'Record Deleted Successfully');
+        }
+        
+    }
 }
