@@ -76,14 +76,10 @@
                                     <div class="form-group">
                                           <label for="">Expenses List</label>
                                           <br>
-                                          <select id="item" class="" name="item" type="text" style="width:90%">
-                                                <option value=""></option>
-                                                @foreach($expensesList as $data)
-                                                <option value="{{$data->item}}">
-                                                      {{$data->item}}
-                                                </option>
-                                                @endforeach
-                                          </select>
+                                          <input class="typeahead form-control" id="search" type="text" name="item"
+                                          placeholder="search here">
+
+                                         
                                           <br>
                                           <span id="response"></span>
                                     </div>
@@ -278,6 +274,30 @@
 <script src="https://code.jquery.com/ui/1.13.3/jquery-ui.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.1/js/select2.min.js"></script>
 
+<script type="text/javascript">
+var path = "{{ route('autocomplete-expenses') }}";
+
+$("#search").autocomplete({
+      source: function(request, response) {
+            $.ajax({
+                  url: path,
+                  type: 'GET',
+                  dataType: "json",
+                  data: {
+                        search: request.term
+                  },
+                  success: function(data) {
+                        response(data);
+                  }
+            });
+      },
+      select: function(event, ui) {
+            $('#search').val(ui.item.label);
+            console.log(ui.item);
+            return false;
+      }
+});
+</script>
 <!-- End custom js for this page -->
 <script type="text/javascript">
 $(document).ready(function() {
