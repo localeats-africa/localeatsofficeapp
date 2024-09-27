@@ -116,8 +116,14 @@
                                           <div class="col-md-6 col-6">
 
                                                 <div class="d-flex flex-column">
+                                                      @if(empty($parentLogo) )
                                                       <img src="{{ asset('assets/images/logo.png') }}" alt="Admin"
-                                                            class="rounded-circle " width="110">
+                                                      class="rounded-circle " width="110">
+                                                      @else
+                                                      <img src="{{ asset($parentLogo) }}" alt="Admin"
+                                                      class="rounded-circle " width="110">
+                                                      @endif
+
                                                       <h4>{{$parentName}}</h4>
                                                       <h6>Head Office:</h6>
                                                       <div class="mt-1 text-secondary" style="line-height:1.7">
