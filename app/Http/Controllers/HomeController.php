@@ -3267,7 +3267,7 @@ class HomeController extends Controller
                 'name'     => $request->name,
                 'email'    => $request->email,
                 'password' => $tempoaryPassword, 
-                'url'      =>'https://pos.localeats.africa'
+                'url'      =>'https://pos.localeats.africa',
                 );
                 //dd($data);
                 Mail::to($request->email)
