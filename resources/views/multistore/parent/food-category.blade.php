@@ -266,18 +266,18 @@
                                     <p class="m-0 text-secondary">
 
                                           Showing
-                                          {{ ($foodType->currentPage() - 1) * $foodType->perPage() + 1; }} to
-                                          {{ min($foodType->currentPage()* $foodType->perPage(), $foodType->total()) }}
+                                          {{ ($foodCategory->currentPage() - 1) * $foodCategory->perPage() + 1; }} to
+                                          {{ min($foodCategory->currentPage()* $foodCategory->perPage(), $foodCategory->total()) }}
                                           of
-                                          {{$foodType->total()}} entries
+                                          {{$foodCategory->total()}} entries
                                     </p>
 
                                     <ul class="pagination m-0 ms-auto">
-                                          @if(isset($foodType))
-                                          @if($foodType->currentPage() > 1)
+                                          @if(isset($foodCategory))
+                                          @if($foodCategory->currentPage() > 1)
                                           <li class="page-item ">
                                                 <a class="page-link text-danger"
-                                                      href="{{ $foodType->previousPageUrl() }}" tabindex="-1"
+                                                      href="{{ $foodCategory->previousPageUrl() }}" tabindex="-1"
                                                       aria-disabled="true">
                                                       <!-- Download SVG icon from http://tabler-icons.io/i/chevron-left -->
                                                       <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24"
@@ -294,11 +294,11 @@
 
 
                                           <li class="page-item">
-                                                {{ $foodType->appends(compact('perPage'))->links()  }}
+                                                {{ $foodCategory->appends(compact('perPage'))->links()  }}
                                           </li>
-                                          @if($foodType->hasMorePages())
+                                          @if($foodCategory->hasMorePages())
                                           <li class="page-item">
-                                                <a class="page-link text-danger" href="{{ $foodType->nextPageUrl() }}">
+                                                <a class="page-link text-danger" href="{{ $foodCategory->nextPageUrl() }}">
                                                       next
                                                       <!-- Download SVG icon from http://tabler-icons.io/i/chevron-right -->
                                                       <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24"
