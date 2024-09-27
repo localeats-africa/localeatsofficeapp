@@ -250,10 +250,11 @@ Route::controller(ParentVendorController::class)->group(function () {
     Route::group(['middleware' => ['only.ajax']], function() {
         Route::get('autocomplete', 'autocomplete')->name('autocomplete');
     });    
-    Route::post('push-supplies',  'pushSupplies')->name('push-supplies');
+   Route::post('push-supplies',  'pushSupplies')->name('push-supplies');
    Route::post('remove-supply-item/{id}',  'deleteTempSupply')->name('remove-supply-item');
    Route::get('/{username}/edit-outlet-supply/{ref}',  'editOutletSupply')->name('edit-outlet-supply');
    Route::post('update-supplies/{ref}',  'updateSupply')->name('update-supplies');
+   Route::get('/{username}/outlet-expenses', 'expensesList')->name('outlet-expenses');
 });
 
 
