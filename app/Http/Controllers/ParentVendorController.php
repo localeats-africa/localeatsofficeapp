@@ -490,17 +490,17 @@ class ParentVendorController extends Controller
         'username', 'role', 'foodCategory'));
     }
 
-    public function addFoodType(Request $request){
+    public function storeFoodCategory(Request $request){
         $this->validate($request, [ 
-            'food_type'   => 'required|string|max:255',
+            'food_category'   => 'required|string|max:255',
         ]);
 
-        $addFoodType = new FoodType;
-        $addFoodType->food_type = $request->food_type;
-        $addFoodType->save();
+        $addFoodCategory = new FoodCategory;
+        $addFoodCategory->food_category = $request->food_category;
+        $addFoodCategory->save();
         
-        if($addFoodType){
-           return redirect()->back()->with('add-food-type', 'Food Type Added!');
+        if($addFoodCategory){
+           return redirect()->back()->with('add-food-type', 'Food Category Added!');
         }
         else{return redirect()->back()->with('error', 'Opps! something went wrong.'); }
     }
