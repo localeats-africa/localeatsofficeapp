@@ -124,7 +124,7 @@
                                                       class=" " width="110">
                                                       @endif
 
-                                                      <h4>{{$parentName}}</h4>
+                                                      <h4></h4>
                                                       <h6>Head Office:</h6>
                                                       <div class="mt-1 text-secondary" style="line-height:1.7">
                                                             <small>{{$parentAddress}}</small>
