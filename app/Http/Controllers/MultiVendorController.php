@@ -140,8 +140,8 @@ class MultiVendorController extends Controller
 
 
           //Cashier
-    public function addVendorExpenses(Request $request){
-        $name = Auth::user()->fullname;
+    public function addVendorExpenses(Request $request, $username){
+        $username = Auth::user()->username;
         $id = Auth::user()->id;
         $role = DB::table('role')->select('role_name')
         ->join('users', 'users.role_id', 'role.id')
@@ -151,7 +151,7 @@ class MultiVendorController extends Controller
         //a cashier should only see things for the vendor assigned to him
         $vendorName = Vendor::join('users', 'users.vendor', 'vendor.id')
         ->where('users.id', $id)
-        ->get('vendor.vendor_name')->pluck('vendor_name')->first();
+        ->get('vendor.store_name')->pluck('store_name')->first();
 
         $vendor_id = Vendor::join('users', 'users.vendor', 'vendor.id')
         ->where('users.id', $id)
@@ -174,12 +174,16 @@ class MultiVendorController extends Controller
         ->paginate($perPage)->appends(['per_page'   => $perPage]);
         $pagination = $expenses->appends ( array ('search' => $search) );
             if (count ( $pagination ) > 0){
-                return view('cashier.expenses',  compact('name', 'role', 
+                return view('multistore.cashier.add-expenses',  compact('username', 'role', 
                 'vendorName','expensesList', 'vendor_id', 'perPage', 'expenses'))->withDetails( $pagination );     
             } 
-        //else{return redirect()->back()->with('expenses-status', 'No record order found'); }
+        else{
+            //return redirect()->back()->with('expenses-status', 'No record order found');
+            return view('multistore.cashier.add-expenses',   compact('username', 'role', 
+            'vendorName','expensesList', 'vendor_id', 'perPage', 'expenses')); 
+            }
 
-        return view('cashier.expenses',  compact('name', 'role', 
+        return view('multistore.cashier.add-expenses',   compact('username', 'role', 
          'vendorName','expensesList', 'vendor_id', 'perPage', 'expenses'));
     }
 
