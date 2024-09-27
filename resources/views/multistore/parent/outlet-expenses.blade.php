@@ -11,14 +11,6 @@
                   <h3 class="page-title">
                       <span class="text-info"> {{$vendorName}}</span> >>> Expenses
                   </h3>
-                  <!-- <nav aria-label="breadcrumb">
-                        <ul class="breadcrumb">
-                              <li class="breadcrumb-item active" aria-current="page">
-                                    <span></span><a href="{{ url('new-expenses') }}" class="btn btn-block btn-danger"><i
-                                                class="fa fa-plus-square"></i> &nbsp;Create New Expense Item </a>
-                              </li>
-                        </ul>
-                  </nav> -->
             </div>
 
   <!--Alert here--->
@@ -133,7 +125,7 @@
                                                 <h4 class="font-weight-normal">Total Expenses <i
                                                             class="fa fa-money mdi-24px float-end"></i>
                                                 </h4>
-                                                <h2 class="mb-5"> {{$vendorTotalExpense}}</h2>
+                                                <h2 class="mb-5"> ₦{{number_format($vendorTotalExpense)}}</h2>
                                                 <hr class="w-100">
                                                 <h6 class="card-text"> </h6>
                                           </div>
@@ -153,7 +145,7 @@
                               <th>SN</th>
                               <th>Date</th>
                               <th>Expenses</th>
-                              <th>Cost</th>
+                              <th>Cost (₦)</th>
                         </thead>
                         <tbody>
                               @foreach($vendorExpense as $data)
@@ -161,7 +153,7 @@
                                     <td>{{$loop->iteration}}</td>
                                     <td>{{ date('Y-m-d', strtotime($data->expense_date)) }} Time: <span class="text-info"> {{\Carbon\Carbon::parse($data->created_at)->format('H:i:s')}}</span></td>
                                     <td>{{$data->description}}</td>
-                                    <td>{{$data->cost}}</td>
+                                    <td>{{number_format($data->cost)}}</td>
                               </tr>
                               @endforeach
                         </tbody>
