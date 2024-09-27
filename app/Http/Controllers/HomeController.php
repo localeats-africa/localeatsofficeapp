@@ -2186,8 +2186,7 @@ class HomeController extends Controller
         $expenses->description      = $request->item;
         $expenses->cost             = $request->price;
         $expenses->added_by         = Auth::user()->id;
-        $expenses->expense_date     = Carbon::now();
-       // $expenses->expense_date     = date("Y-m-d", strtotime($request->date));
+        $expenses->expense_date     = date("Y-m-d", strtotime($request->date));
         $expenses->save();
 
         if($expenses){
