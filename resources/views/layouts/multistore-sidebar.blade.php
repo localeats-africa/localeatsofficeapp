@@ -41,13 +41,6 @@
                   </li>
 
                   <li class="nav-item">
-                        <a class="nav-link" href="{{ url('cashier')}}">
-                              <span class="menu-title">Dashboard</span>
-                              <i class="mdi mdi-home menu-icon"></i>
-                        </a>
-                  </li>
-
-                  <li class="nav-item">
                         <a class="nav-link" data-bs-toggle="collapse" href="#food-menu" aria-expanded="false"
                               aria-controls="food-menu">
                               <span class="menu-title">Bookkeeping</span>
