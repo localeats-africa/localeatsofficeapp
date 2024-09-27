@@ -143,7 +143,8 @@ class MultiVendorController extends Controller
     //search supplies
     public function autocompleteExpenses(Request $request)
     {
-        $data = ExpensesList::select("item as value", "id")
+        $data = ExpensesList::where('vendor_id', $request->vendor_id)
+        ->select("expenses as value", "id")
                     ->where('item', 'LIKE', '%'. $request->get('search'). '%')
                     ->get();
         return response()->json($data);     
