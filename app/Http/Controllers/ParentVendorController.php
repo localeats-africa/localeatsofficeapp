@@ -478,16 +478,16 @@ class ParentVendorController extends Controller
         $pagination = $foodCategory->appends ( array ('search' => $search) );
             if (count ( $pagination ) > 0){
                 return view('multistore.parent.food-category',  compact(
-                'perPage', 'username', 'role', 'foodCategory'))->withDetails( $pagination );     
+                'perPage', 'username', 'role', 'foodCategory', 'parentID'))->withDetails( $pagination );     
             } 
         else{
             //return redirect()->back()->with('error', 'No record order found')
             return view('multistore.parent.food-category',  compact('perPage', 
-            'username', 'role', 'foodCategory')); 
+            'username', 'role', 'foodCategory', 'parentID')); 
         }
 
         return view('multistore.parent.food-category',  compact('perPage', 
-        'username', 'role', 'foodCategory'));
+        'username', 'role', 'foodCategory', 'parentID'));
     }
 
     public function storeFoodCategory(Request $request){
@@ -497,7 +497,7 @@ class ParentVendorController extends Controller
 
         $addFoodCategory = new FoodCategory;
         $addFoodCategory->food_category     = $request->food_category;
-        $addFoodCategory->store_id          = $request->food_category;
+        $addFoodCategory->store_id          = $request->parent;
         $addFoodCategory->save();
         
         if($addFoodCategory){
