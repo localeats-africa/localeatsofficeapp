@@ -157,45 +157,6 @@
                         </div>
 
 
-                        <div class="col-md-4 grid-margin stretch-card">
-                              <div class="card">
-                                    <div class="card-body ">
-                                          <div class="form-label ">Assign to a vendor
-                                          </div>
-                                          <select class="js-example-basic-single2" style="width:100%" name="vendor"
-                                                id="vendor2">
-                                                <option> search </option>
-                                                @foreach($vendor as $data)
-                                                <option value="{{$data->id}}">
-                                                      {{$data->vendor_name}}</option>
-                                                @endforeach
-                                          </select>
-
-                                    </div>
-                                    @error('vendor')
-                                    <div class="alert alert-danger alert-dismissible" role="alert">
-                                          <div class="d-flex">
-                                                <div>
-                                                      <!-- Download SVG icon from http://tabler-icons.io/i/alert-circle -->
-                                                      <svg xmlns="http://www.w3.org/2000/svg" class="icon alert-icon"
-                                                            width="24" height="24" viewBox="0 0 24 24" stroke-width="2"
-                                                            stroke="currentColor" fill="none" stroke-linecap="round"
-                                                            stroke-linejoin="round">
-                                                            <path stroke="none" d="M0 0h24v24H0z" fill="none" />
-                                                            <path d="M3 12a9 9 0 1 0 18 0a9 9 0 0 0 -18 0" />
-                                                            <path d="M12 8v4" />
-                                                            <path d="M12 16h.01" />
-                                                      </svg>
-                                                </div>
-                                                <div>
-                                                      {{ $message }}
-                                                </div>
-                                          </div>
-                                          <a class="btn-close" data-bs-dismiss="alert" aria-label="close"></a>
-                                    </div>
-                                    @enderror
-                              </div>
-                        </div>
 
 
                   </div>
@@ -248,45 +209,7 @@
             <form method="post" action="{{ route('import-food-menu') }}" name="submit" enctype="multipart/form-data">
                   @csrf
                   <div class="row ">
-                        <div class="col-md-6 grid-margin stretch-card">
-                              <div class="card">
-                                    <div class="card-body ">
-                                          <div class="form-label ">Choose a vendor <i class="text-danger">*</i>
-                                          </div>
-                                          <select class="js-example-basic-single" style="width:100%" name="vendor_name"
-                                                id="vendor">
-                                                <option> search </option>
-                                                @foreach($vendor as $data)
-                                                <option value="{{$data->id}}">
-                                                      {{$data->vendor_name}}</option>
-                                                @endforeach
-                                          </select>
-
-                                    </div>
-                                    @error('vendor_name')
-                                    <div class="alert alert-danger alert-dismissible" role="alert">
-                                          <div class="d-flex">
-                                                <div>
-                                                      <!-- Download SVG icon from http://tabler-icons.io/i/alert-circle -->
-                                                      <svg xmlns="http://www.w3.org/2000/svg" class="icon alert-icon"
-                                                            width="24" height="24" viewBox="0 0 24 24" stroke-width="2"
-                                                            stroke="currentColor" fill="none" stroke-linecap="round"
-                                                            stroke-linejoin="round">
-                                                            <path stroke="none" d="M0 0h24v24H0z" fill="none" />
-                                                            <path d="M3 12a9 9 0 1 0 18 0a9 9 0 0 0 -18 0" />
-                                                            <path d="M12 8v4" />
-                                                            <path d="M12 16h.01" />
-                                                      </svg>
-                                                </div>
-                                                <div>
-                                                      {{ $message }}
-                                                </div>
-                                          </div>
-                                          <a class="btn-close" data-bs-dismiss="alert" aria-label="close"></a>
-                                    </div>
-                                    @enderror
-                              </div>
-                        </div>
+                     
                         <div class="col-md-6 grid-margin stretch-card">
 
                               <div class="card">
