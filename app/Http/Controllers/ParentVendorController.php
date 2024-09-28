@@ -36,6 +36,8 @@ use App\Models\SubVendorInventory;
 use App\Models\TempVendorInventory;
 use App\Models\InventoryItemSizes;
 use App\Models\FoodCategory;
+use App\Models\VendorFoodMenu;
+
 
 use Excel;
 use Auth;
@@ -604,7 +606,7 @@ class ParentVendorController extends Controller
             $addMenu->food_item     = $request->item;
             $addMenu->price         = $request->price;
             $addMenu->category      = $request->category;
-            $addMenu->parent_id     = $parentID;
+            $addMenu->store_id     = $parentID;
             $addMenu->save();
             if($addMenu){
 
