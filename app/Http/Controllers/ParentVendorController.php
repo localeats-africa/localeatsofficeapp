@@ -594,12 +594,17 @@ class ParentVendorController extends Controller
                 'category'  => 'max:255',
             ]);
 
+            $parentID = DB::table('multi_store')
+            ->join('users', 'users.parent_store', 'multi_store.id')
+            ->where('users.id',  $user_id)
+            ->get('users.*')->pluck('parent_store')->first();
+
             $addMenu = new VendorFoodMenu();
             $addMenu->added_by      = $user_id;
             $addMenu->food_item     = $request->item;
             $addMenu->price         = $request->price;
             $addMenu->category      = $request->category;
-            $addMenu->parent_id     = $request->parent;
+            $addMenu->parent_id     = $parentID;
             $addMenu->save();
             if($addMenu){
 
