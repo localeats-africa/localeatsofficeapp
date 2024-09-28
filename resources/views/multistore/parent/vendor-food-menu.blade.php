@@ -124,11 +124,11 @@
                                                 </div>
                                                 records
                                                 &nbsp; &nbsp;
-                                    <span class="card-title">
+                                    <!-- <span class="card-title">
                                           <button class="btn btn-outline-danger btn-sm delete_all"
                                                 data-url="{{ url('bulk-delete-foodmenu') }}">Delete All
                                                 Selected</button>
-                                    </span>
+                                    </span> -->
                                           </div>
                                           <div class="ms-auto text-secondary">
                                                 Search:
@@ -179,10 +179,10 @@
 
 
                                                       <td class="text-sm"><small>{{$data->fullname}}</small></td>
-                                                      <td><small>{{$data->item}}</small></td>
+                                                      <td><small>{{$data->food_item}}</small></td>
                                                       <td class="text-capitalize"><small>{{$data->price}}</small> </td>
 
-                                                      <td><small>{{$data->vendor_name}}</small></td>
+                                                      <td><small>{{$data->category}}</small></td>
 
                                                       <!--- admin approve/edit --->
                                                       <td class="text-end">
