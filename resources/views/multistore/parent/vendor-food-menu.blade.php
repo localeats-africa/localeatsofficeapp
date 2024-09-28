@@ -13,7 +13,7 @@
                   <nav aria-label="breadcrumb">
                         <ul class="breadcrumb">
                               <li class="breadcrumb-item active" aria-current="page">
-                                    <span></span><a href="{{ url('food-menu') }}" class="btn btn-block btn-danger"><i
+                                    <span></span><a href="{{ url(auth()->user()->username, 'new-meal-menu') }}" class="btn btn-block btn-danger"><i
                                                 class="fa fa-plus-square"></i> &nbsp;Create New Food Menu </a>
                               </li>
                         </ul>
@@ -134,7 +134,7 @@
                                                 Search:
                                                 <div class="ms-2 d-inline-block">
 
-                                                      <form action="/all-food-menu" method="GET" role="search">
+                                                      <form action="{{ url(auth()->user()->username, 'meal-menu') }}" method="GET" role="search">
                                                             {{ csrf_field() }}
                                                             <div class="input-group mb-2">
                                                                   <input type="text" class="form-control"
