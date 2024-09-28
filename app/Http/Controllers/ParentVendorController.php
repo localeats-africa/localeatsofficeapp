@@ -582,6 +582,7 @@ class ParentVendorController extends Controller
     }
 
     public function addFoodMenu(Request $request){
+        $username = Auth::user()->username;
         if(Auth::user()){
             $name = Auth::user()->name;
             $user_id = Auth::user()->id;
@@ -610,7 +611,7 @@ class ParentVendorController extends Controller
             $addMenu->save();
             if($addMenu){
 
-                return redirect('food-menu')->with('add-menu', 'Menu  successfully added');
+                return redirect($username. '/meal-menu')->with('add-menu', 'Menu  successfully added');
             }
             else{
                 $error = [
