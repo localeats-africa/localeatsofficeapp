@@ -524,17 +524,17 @@ class ParentVendorController extends Controller
             $search = $request->input('search');
     
             $foodMenu = DB::table('vendor_food_menu')
-            ->where('deleted_at', null)
-            ->where('store_id', $parentID)
-            ->where('deleted_at', null)
-            ->where('price', '!=', null)
-            ->where('food_item', '!=', null)
-            ->select(['*'])
-            ->orderBy('created_at', 'desc')
+            ->join('users', 'users.id', 'vendor_food_menu.added_by')
+            ->where('vendor_food_menu.deleted_at', null)
+            ->where('vendor_food_menu.store_id', $parentID)
+            ->where('vendor_food_menu.price', '!=', null)
+            ->where('vendor_food_menu.food_item', '!=', null)
+            ->select(['vendor_food_menu.*', 'users.fullname'])
+            ->orderBy('vendor_food_menu.created_at', 'desc')
             ->where(function ($query) use ($search) {  // <<<
-            $query->where('food_item', 'LIKE', '%'.$search.'%')
-                ->orWhere('category', 'LIKE', '%'.$search.'%')
-                    ->orWhere('price', 'LIKE', '%'.$search.'%');
+            $query->where('vendor_food_menu.food_item', 'LIKE', '%'.$search.'%')
+                ->orWhere('vendor_food_menu.category', 'LIKE', '%'.$search.'%')
+                    ->orWhere('vendor_food_menu.price', 'LIKE', '%'.$search.'%');
             })
             ->paginate($perPage,  $pageName = 'food')->appends(['per_page'   => $perPage]);
             $pagination = $foodMenu->appends ( array ('search' => $search) );
