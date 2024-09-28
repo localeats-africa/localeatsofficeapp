@@ -587,11 +587,12 @@ class ParentVendorController extends Controller
                 'category'  => 'max:255',
             ]);
 
-            $addMenu = new FoodMenu();
+            $addMenu = new VendorFoodMenu();
             $addMenu->added_by      = $user_id;
-            $addMenu->item          = $request->item;
+            $addMenu->food_item     = $request->item;
             $addMenu->price         = $request->price;
-            $addMenu->vendor_id     = $request->vendor;
+            $addMenu->category      = $request->category;
+            $addMenu->parent_id     = $request->parent;
             $addMenu->save();
             if($addMenu){
 
