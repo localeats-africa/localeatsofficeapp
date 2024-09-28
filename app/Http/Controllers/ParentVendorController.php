@@ -460,10 +460,10 @@ class ParentVendorController extends Controller
 
     public function foodCategory(Request $request, $username){
         $username = Auth::user()->username;
-        $id = Auth::user()->id;
+        $user_id = Auth::user()->id;
         $role = DB::table('role')->select('role_name')
         ->join('users', 'users.role_id', 'role.id')
-        ->where('users.id', $id)
+        ->where('users.id', $user_id)
         ->pluck('role_name')->first();
 
         $parentID = DB::table('multi_store')
