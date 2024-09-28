@@ -21,7 +21,7 @@
                   </li>
 
                   <li class="nav-item">
-                        <a class="nav-link" href="{{ url(auth()->user()->username, 'outlets') }}" target="">
+                        <a class="nav-link" href="{{ url(auth()->user()->username, 'meal-menu') }}" target="">
                               <span class="menu-title">Food  Menu (s)</span>
                               <i class="mdi mdi-food  menu-icon fs-24"></i>
 
