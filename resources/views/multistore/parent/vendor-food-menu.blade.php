@@ -161,7 +161,7 @@
                                                       <th>Posted by</th>
                                                       <th>Item</th>
                                                       <th>Price </th>
-                                                      <th>Vendor</th>
+                                                      <th>Category</th>
                                                       <th></th>
                                                 </tr>
                                           </thead>
