@@ -99,7 +99,7 @@
                   <div class="col-12">
                         <div class="card">
                               <div class="card-header">
-                                    <h3 class="card-title">Menu </h3>
+                                    <h3 class="card-title"> </h3>
                               </div>
 
                               <div class="card-body border-bottom py-3">
@@ -155,9 +155,6 @@
                                           id="orders">
                                           <thead>
                                                 <tr>
-                                                      <th class="w-1"><input id="master" class="form-check-input "
-                                                                  type="checkbox" aria-label="Select all item">
-                                                      </th>
                                                       <th>Posted by</th>
                                                       <th>Item</th>
                                                       <th>Price </th>
@@ -168,14 +165,6 @@
                                           <tbody>
                                                 @foreach($foodMenu as $data)
                                                 <tr id="tr_{{$data->id}}">
-                                                      <td class="text-end">
-                                                            <div class="input-group">
-                                                                  <input class="form-check-input form-check-info"
-                                                                        type="checkbox" 
-                                                                        data-id="{{$data->id}}"
-                                                                        style="border-color:#444;">
-                                                            </div>
-                                                      </td>
 
 
                                                       <td class="text-sm"><small>{{$data->fullname}}</small></td>
