@@ -60,9 +60,10 @@ class ParentVendorController extends Controller
         ->where('users.id', $user_id)
         ->pluck('role_name')->first();
 
-        $parent = DB::table('multi_store')
-        ->where('user_id', $user_id)
-        ->get('*')->pluck('id')->first();
+        $parent =  DB::table('multi_store')
+        ->join('users', 'users.parent_store', 'multi_store.id')
+        ->where('users.id',  $user_id)
+        ->get('users.*')->pluck('parent_store')->first();
 
         $countChildVendor =  DB::table('vendor')
         ->join('sub_store', 'sub_store.vendor_id', 'vendor.id')
@@ -118,8 +119,9 @@ class ParentVendorController extends Controller
             ->pluck('role_name')->first();
 
             $parentStoreID = DB::table('multi_store')
-            ->where('user_id', $user_id)
-            ->get('*')->pluck('id')->first();
+            ->join('users', 'users.parent_store', 'multi_store.id')
+            ->where('users.id',  $user_id)
+            ->get('users.*')->pluck('parent_store')->first();
 
             $outletStoreID = DB::table('sub_store')
             ->where('vendor_id', $vendor_id)
@@ -171,9 +173,10 @@ class ParentVendorController extends Controller
         ->where('users.id', $user_id)
         ->pluck('role_name')->first();
 
-        $parentStoreID = DB::table('multi_store')
-        ->where('user_id', $user_id)
-        ->get('*')->pluck('id')->first();
+        $parentStoreID =  DB::table('multi_store')
+        ->join('users', 'users.parent_store', 'multi_store.id')
+        ->where('users.id',  $user_id)
+        ->get('users.*')->pluck('parent_store')->first();
 
         $outletStoreID = DB::table('sub_store')
         ->where('vendor_id', $vendor_id)
@@ -356,8 +359,9 @@ class ParentVendorController extends Controller
         ->pluck('role_name')->first();
 
         $parentStoreID = DB::table('multi_store')
-        ->where('user_id', $user_id)
-        ->get('*')->pluck('id')->first();
+        ->join('users', 'users.parent_store', 'multi_store.id')
+        ->where('users.id',  $user_id)
+        ->get('users.*')->pluck('parent_store')->first();
 
         $vendor_id = SubVendorInventory::where('id',  $id)
         ->get()->pluck('vendor_id')->first();
@@ -461,8 +465,9 @@ class ParentVendorController extends Controller
         ->pluck('role_name')->first();
 
         $parentID = DB::table('multi_store')
-        ->where('user_id',  $id)
-        ->get()->pluck('id')->first();
+        ->join('users', 'users.parent_store', 'multi_store.id')
+        ->where('users.id',  $user_id)
+        ->get('users.*')->pluck('parent_store')->first();
 
         $perPage = $request->perPage ?? 10;
         $search = $request->input('search');
@@ -517,8 +522,9 @@ class ParentVendorController extends Controller
             ->pluck('role_name')->first();
 
             $parentID = DB::table('multi_store')
-            ->where('user_id',  $user_id)
-            ->get()->pluck('id')->first();
+            ->join('users', 'users.parent_store', 'multi_store.id')
+            ->where('users.id',  $user_id)
+            ->get('users.*')->pluck('parent_store')->first();
 
             $perPage = $request->perPage ?? 15;
             $search = $request->input('search');
@@ -562,8 +568,9 @@ class ParentVendorController extends Controller
             ->pluck('role_name')->first();
 
             $parentID = DB::table('multi_store')
-            ->where('user_id',  $user_id)
-            ->get()->pluck('id')->first();
+            ->join('users', 'users.parent_store', 'multi_store.id')
+            ->where('users.id',  $user_id)
+            ->get('users.*')->pluck('parent_store')->first();
 
             $category = FoodCategory::where('store_id', $parentID)->get();
 
