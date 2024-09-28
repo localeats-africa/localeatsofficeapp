@@ -517,7 +517,7 @@ class ParentVendorController extends Controller
             ->pluck('role_name')->first();
 
             $parentID = DB::table('multi_store')
-            ->where('user_id',  $id)
+            ->where('user_id',  $user_id)
             ->get()->pluck('id')->first();
 
             $perPage = $request->perPage ?? 15;
