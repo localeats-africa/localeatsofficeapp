@@ -8,7 +8,7 @@
       <div class="content-wrapper">
             <div class="page-header">
                   <h3 class="page-title">
-                        Food Menu
+                       New Food Menu
                   </h3>
             </div>
             <!--Alert here--->
@@ -89,13 +89,12 @@
             <form method="post" action="{{ route('add-food-menu') }}" name="submit" enctype="multipart/form-data">
                   @csrf
                   <div class="row">
-                  <div class="col-md-3 grid-margin stretch-card">
+                        <div class="col-md-3 grid-margin stretch-card">
                               <div class="card">
                                     <div class="card-body">
-                                          <div class="form-label required"> Food Item <i
-                                                      class="text-danger">*</i>
+                                          <div class="form-label required"> Food Item <i class="text-danger">*</i>
                                           </div>
-                                          <input type="text" class="form-control" name="item" placeholder="" value="">
+                                          <input type="text" class="form-control" name="item" placeholder="Enter food" value="">
                                           @error('item')
                                           <div class="alert alert-danger alert-dismissible" role="alert">
                                                 <div class="d-flex">
@@ -122,15 +121,22 @@
                                     </div>
                               </div>
                         </div>
-                        
+
                         <div class="col-md-3 grid-margin stretch-card">
                               <div class="card">
                                     <div class="card-body">
-                                          <div class="form-label required">Category<i
-                                                      class="text-danger">*</i>
+                                          <div class="form-label required">Category
                                           </div>
-                                          <input type="text" class="form-control" name="item" placeholder="" value="">
-                                          @error('item')
+                                          <select class="js-example-basic-single2 text-secondary" style="width:100%"
+                                                name="category">
+                                                <option>Choose</option>
+                                                @foreach($category as $data)
+                                                <option value="{{$data->category}}">
+                                                      {{$data->category}}
+                                                </option>
+                                                @endforeach
+                                          </select>
+                                          @error('category')
                                           <div class="alert alert-danger alert-dismissible" role="alert">
                                                 <div class="d-flex">
                                                       <div>
@@ -160,27 +166,28 @@
                         <div class="col-md-6 grid-margin stretch-card">
                               <div class="card">
                                     <div class="card-body">
-                                    <div class="form-label required">Price <i class="text-danger">*</i>
-                                    </div>
+                                          <div class="form-label required">Price <i class="text-danger">*</i>
+                                          </div>
                                           <div class="input-group">
-                                       
-                                          <input type="text" class="form-control" name="price" placeholder="" value="">
-                                          
-                                          <button type="submit" name="submit"
-                                                class="btn bg-gradient-primary  text-white">
-                                                <svg xmlns="http://www.w3.org/2000/svg"
-                                                      class="icon icon-tabler icon-tabler-device-floppy" width="24"
-                                                      height="24" viewBox="0 0 24 24" stroke-width="1.5"
-                                                      stroke="currentColor" fill="none" stroke-linecap="round"
-                                                      stroke-linejoin="round">
-                                                      <path stroke="none" d="M0 0h24v24H0z" fill="none" />
-                                                      <path
-                                                            d="M6 4h10l4 4v10a2 2 0 0 1 -2 2h-12a2 2 0 0 1 -2 -2v-12a2 2 0 0 1 2 -2" />
-                                                      <path d="M12 14m-2 0a2 2 0 1 0 4 0a2 2 0 1 0 -4 0" />
-                                                      <path d="M14 4l0 4l-6 0l0 -4" />
-                                                </svg>
-                                               Save
-                                          </button>
+
+                                                <input type="text" class="form-control" name="price" placeholder=""
+                                                      value="">
+
+                                                <button type="submit" name="submit"
+                                                      class="btn bg-gradient-primary  text-white">
+                                                      <svg xmlns="http://www.w3.org/2000/svg"
+                                                            class="icon icon-tabler icon-tabler-device-floppy"
+                                                            width="24" height="24" viewBox="0 0 24 24"
+                                                            stroke-width="1.5" stroke="currentColor" fill="none"
+                                                            stroke-linecap="round" stroke-linejoin="round">
+                                                            <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                                                            <path
+                                                                  d="M6 4h10l4 4v10a2 2 0 0 1 -2 2h-12a2 2 0 0 1 -2 -2v-12a2 2 0 0 1 2 -2" />
+                                                            <path d="M12 14m-2 0a2 2 0 1 0 4 0a2 2 0 1 0 -4 0" />
+                                                            <path d="M14 4l0 4l-6 0l0 -4" />
+                                                      </svg>
+                                                      Save
+                                                </button>
                                           </div>
                                           @error('price')
                                           <div class="alert alert-danger alert-dismissible" role="alert">
@@ -205,7 +212,8 @@
                                                 <a class="btn-close" data-bs-dismiss="alert" aria-label="close"></a>
                                           </div>
                                           @enderror
-                                    </div><!---card-body--->
+                                    </div>
+                                    <!---card-body--->
                               </div>
                         </div>
 
@@ -224,7 +232,7 @@
                               <!-- send button here -->
                               <div class="card-footer bg-transparent mt-auto">
                                     <div class="btn-list ">
-                                         
+
                                     </div>
                               </div>
 
@@ -248,7 +256,7 @@
             <form method="post" action="{{ route('import-food-menu') }}" name="submit" enctype="multipart/form-data">
                   @csrf
                   <div class="row ">
-                     
+
                         <div class="col-md-6 grid-margin stretch-card">
 
                               <div class="card">
