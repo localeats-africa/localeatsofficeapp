@@ -169,7 +169,7 @@
                                           <div class="form-label required">Price <i class="text-danger">*</i>
                                           </div>
                                           <div class="input-group">
-
+                                          <input type="hidden" value="{{$parentID}}" name="parent">
                                                 <input type="text" class="form-control" name="price" placeholder=""
                                                       value="">
 
