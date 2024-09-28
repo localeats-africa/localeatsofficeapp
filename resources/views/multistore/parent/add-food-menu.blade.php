@@ -86,7 +86,7 @@
                   </div>
             </div>
             <!---end Alert --->
-            <form method="post" action="{{ route('add-food-menu') }}" name="submit" enctype="multipart/form-data">
+            <form method="post" action="{{ route('add-meal-menu') }}" name="submit" enctype="multipart/form-data">
                   @csrf
                   <div class="row">
                         <div class="col-md-3 grid-margin stretch-card">
