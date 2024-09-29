@@ -283,14 +283,14 @@ class MultiVendorController extends Controller
         ->paginate($perPage,  $pageName = 'sales')->appends(['per_page'   => $perPage]);
         $pagination = $sales->appends ( array ('search' => $search) );
             if (count ( $pagination ) > 0){
-                return view('multistore.cashier.sales', compact('username',
+                return view('multistore.cashier.sales', compact('perPage', 'username',
                 'storeName','parentID', 'vendor_id',  'sales'))->withDetails($pagination);     
             } 
         else{ 
-            return view('multistore.cashier.sales',  compact('username',
+            return view('multistore.cashier.sales', compact('perPage', 'username',
             'storeName','parentID', 'vendor_id',  'sales')); 
         }
-        return view('multistore.cashier.sales',  compact('username',
+        return view('multistore.cashier.sales', compact('perPage', 'username',
         'storeName','parentID', 'vendor_id',  'sales'));
 
     }
