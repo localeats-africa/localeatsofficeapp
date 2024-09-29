@@ -268,10 +268,28 @@ class MultiVendorController extends Controller
         ->where('sub_store.user_id', $user_id)
         ->get('vendor.id')->pluck('id')->first();
 
+        $perPage = $request->perPage ?? 25;
+        $search = $request->input('search');
+
         $sales = VendorInstoreSales::where('vendor_id', $vendor_id)
         ->where('food_item', '!=', null)
         ->orderBy('created_at', 'desc')
-        ->get('*');
+        ->where(function ($query) use ($search) {  // <<<
+        $query->where('food_item', 'LIKE', '%'.$search.'%')
+                ->orWhere('category', 'LIKE', '%'.$search.'%')
+                ->orWhere('price', 'LIKE', '%'.$search.'%')
+                ->orWhere('created_at', 'LIKE', '%'.$search.'%');
+        })
+        ->paginate($perPage,  $pageName = 'sales')->appends(['per_page'   => $perPage]);
+        $pagination = $sales->appends ( array ('search' => $search) );
+            if (count ( $pagination ) > 0){
+                return view('multistore.cashier.sales', compact('username',
+                'storeName','parentID', 'vendor_id',  'sales'))->withDetails($pagination);     
+            } 
+        else{ 
+            return view('multistore.cashier.sales',  compact('username',
+            'storeName','parentID', 'vendor_id',  'sales')); 
+        }
         return view('multistore.cashier.sales',  compact('username',
         'storeName','parentID', 'vendor_id',  'sales'));
 
