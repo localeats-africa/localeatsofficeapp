@@ -125,7 +125,6 @@
                                           id="orders">
                                           <thead>
                                                 <tr>
-                                                      <th></th>
                                                       <th>Date</th>
                                                       <th>Category</th>
                                                       <th>Item</th>
@@ -137,12 +136,6 @@
                                           <tbody>
                                                 @foreach($sales as $data)
                                                 <tr>
-
-                                                      <td> <a class="text-danger"
-                                                                  href="/{{$username}}/supplies-receipt/{{$data->supply_ref}}"
-                                                                  title="view">
-                                                                 <i class="fa fa-eye"></i> view
-                                                            </a></td>
                                                       <td>{{ date('d/m/Y', strtotime($data->created_at))}}</td>
                                                       <td class="text-capitalize">{{$data->category}}</td>
                                                       <td class="text-capitalize">{{$data->food_item}}</td>
