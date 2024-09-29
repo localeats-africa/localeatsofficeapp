@@ -168,7 +168,7 @@
                                                       <td>{{$data->quantity}}</td>
                                                       <td>{{$data->amount}}</td>
                                                       <td>
-                                                            <form action="{{ route('remove-supply-item', [$data->id]) }}"
+                                                            <form action="{{ route('remove-sales-item', [$data->id]) }}"
                                                                   method="post">
                                                                   @csrf
                                                                   {{csrf_field()}}
