@@ -318,7 +318,7 @@ class MultiVendorController extends Controller
         ->where('sub_store.user_id', $user_id)
         ->get('vendor.id')->pluck('id')->first();
 
-        $foodMenu = VendorFoodMenu::where('store_id', $parentID)
+        $foodMenu = TempInStoreSales::where('vendor_id', $vendor_id)
         ->where('food_item', '!=', null)
         ->orderBy('created_at', 'desc')
         ->get('*');
@@ -373,7 +373,7 @@ class MultiVendorController extends Controller
      
    
        // SubVendorInventory
-           $supply = new TempVendorInventory();
+           $supply = new TempInStoreSales();
            $supply->parent_id          = $request->parent_id;
            $supply->vendor_id          = $request->vendor_id;
            $supply->supply_qty         = $request->quantity;
