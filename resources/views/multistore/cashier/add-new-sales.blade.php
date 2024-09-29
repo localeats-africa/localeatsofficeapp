@@ -152,6 +152,7 @@ text-transform: lowercase;
                                                       <th>Item</th>
                                                       <th>Price</th>
                                                       <th>Quantity</th>
+                                                      <th>Amount</th>
                                                 </tr>
                                           </thead>
                                           <tbody>
@@ -161,8 +162,8 @@ text-transform: lowercase;
                                                       <td class="text-capitalize">{{$data->category}}</td>
                                                       <td class="text-capitalize">{{$data->food_item}}</td>
                                                       <td>{{$data->price}}</td>
-                                                      <td>{{$data->quantity}}     
-                                                    </td>
+                                                      <td>{{$data->quantity}}</td>
+                                                      <td>{{$data->amount}}</td>
                                                     <td >
                                                       <form action="{{ route('remove-supply-item', [$data->id]) }}" method="post">
                                                       @csrf
