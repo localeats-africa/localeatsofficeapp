@@ -381,6 +381,7 @@ class MultiVendorController extends Controller
    
        // SubVendorInventory
            $sales = new TempInStoreSales();
+           $sales->added_by            = $user_id;
            $sales->parent              = $parentID;
            $sales->vendor_id           = $vendor_id;
            $sales->category            = $foodCategory;
@@ -446,14 +447,15 @@ class MultiVendorController extends Controller
        if($getSales->count() >= 1){
            foreach($getSales as $key  =>  $data){
                    $sales = new VendorInstoreSales();
-                   $sales->parent              = $parentID;
-                   $sales->vendor_id           = $vendor_id;
-                    $sales->category            = $foodCategory;
-                    $sales->food_item           = $food; 
-                    $sales->price               = $foodPrice;
-                    $sales->quantity            = $quantity;
-                    $sales->amount              = $amount;
-                    $sales->date                = $today;
+                   $sales->added_by            = $data->added_by;
+                   $sales->parent              = $data->parent;
+                   $sales->vendor_id           = $data->vendor_id;
+                    $sales->category           = $data->category;
+                    $sales->food_item          = $data->food_item;
+                    $sales->price              = $data->price;
+                    $sales->quantity           = $data->quantity;
+                    $sales->amount             = $data->amount;
+                    $sales->date               = $data->date;
                    $sales->save();
            }
            if($sales){
