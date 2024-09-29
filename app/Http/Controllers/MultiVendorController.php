@@ -220,6 +220,7 @@ class MultiVendorController extends Controller
     public function storeVendorDailyExpenses(Request $request){
         $this->validate($request, [ 
             'item'          => 'required|string|max:255',  
+            'category'      => 'required|string|max:255',  
             'price'         => 'required|string|max:255'     
         ]);
         $storeExpense = new ExpensesList();
