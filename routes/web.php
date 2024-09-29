@@ -242,7 +242,9 @@ Route::controller(MultiVendorController::class)->group(function () {
     Route::post('add-instore-sales',  'addInstoreSales')->name('add-instore-sales');
     Route::get('/{username}/instore-sales',  'InStoreSales')->name('instore-sales');
     Route::get('/{username}/new-sales',  'newInStoreSales')->name('new-sales');
-
+    Route::post('save-food-item',  'saveTempSales')->name('save-food-item');
+    Route::post('remove-supply-item/{id}',  'deleteTempInStoreSales')->name('remove-supply-item');
+    Route::post('send-instore-sales',  'saveTempSales')->name('send-instore-sales');
 });
 
 Route::controller(ParentVendorController::class)->group(function () {
