@@ -100,6 +100,11 @@ class MultiVendorController extends Controller
        ->where('parent', $parent)
        ->count('vendor_id');
 
+       $outletsExpenses = DB::table('vendor_expenses')
+       ->join('sub_store', 'sub_store.vendor_id', '=', 'vendor_expenses.vendor_id')
+       ->where('vendor_expenses.parent', $parent)
+       ->get();
+
         $countAllOrder = Orders::join('sub_store', 'sub_store.vendor_id', '=', 'orders.vendor_id')
         ->where('orders.deleted_at', null)
         ->where('sub_store.multi_store_id', $parent)
@@ -137,7 +142,7 @@ class MultiVendorController extends Controller
 
         return view('multistore.parent.admin', compact('username','parent', 'outlets',
         'offlineSales', 'salesChannel', 'countAllOrder', 'countPlatformWhereOrderCame', 'sumAllOrders', 
-         'chowdeckOrderCount', 'countOutletsFromWhereOfflineSales'));
+         'chowdeckOrderCount', 'countOutletsFromWhereOfflineSales','outletsExpenses'));
         }
     }
 
