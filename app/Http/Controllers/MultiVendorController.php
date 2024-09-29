@@ -35,7 +35,7 @@ use App\Models\VendorInstoreSales;
 use App\Models\FoodCategory;
 use App\Models\VendorFoodMenu;
 use App\Models\VendorExpensesCategory;
-
+use App\Models\TempInStoreSales;
 
 use Excel;
 use Auth;
@@ -277,8 +277,142 @@ class MultiVendorController extends Controller
 
     }
 
-    public function addInstoreSales(){
+   //search foodmenu
+   public function autocompleteFoodMenu(Request $request)
+   {
+    $parentID = DB::table('multi_store')
+    ->join('users', 'users.parent_store', 'multi_store.id')
+    ->where('users.id',  $user_id)
+    ->get('users.*')->pluck('parent_store')->first();
+    
+       $data = VendorFoodMenu::select("item as value", "id")
+                   ->where('food_item', 'LIKE', '%'. $request->get('search'). '%')
+                   ->where('store_id',  $parentID)
+                   ->get();
+       return response()->json($data);     
+   }
 
-    }
+   //save vendor InStore sales
+   public function saveTempSales(Request $request){
+    $username = Auth::user()->username;
+    $user_id = Auth::user()->id;
+    $role = DB::table('role')->select('role_name')
+    ->join('users', 'users.role_id', 'role.id')
+    ->where('users.id', $user_id)
+    ->pluck('role_name')->first();
+
+       $this->validate($request, [ 
+           'quantity'      => 'required|max:255', 
+           'item'          => 'required|max:255'         
+       ]);
+
+       $parentID = DB::table('multi_store')
+       ->join('users', 'users.parent_store', 'multi_store.id')
+       ->where('users.id',  $user_id)
+       ->get('users.*')->pluck('parent_store')->first();
+
+       $vendor_id = Vendor::join('sub_store', 'sub_store.vendor_id', 'vendor.id')
+       ->where('sub_store.multi_store_id', $parentID)
+       ->get('vendor.id')->pluck('id')->first();
+
+       $food       = $request->item;
+       $qty        =  $request->input('quantity');
+
+       $foodCategory = VendorFoodMenu::where('food_item', $item)
+       ->where('store_id',  $parentID)
+       ->get()->pluck('category')->first();
+
+       $foodPrice = VendorFoodMenu::where('food_item', $item)
+       ->where('store_id',  $parentID)
+       ->get()->pluck('price')->first();
+     
+   
+       // SubVendorInventory
+           $supply = new TempVendorInventory();
+           $supply->parent_id          = $request->parent_id;
+           $supply->vendor_id          = $request->vendor_id;
+           $supply->supply_qty         = $request->quantity;
+           $supply->size               = $request->size;
+           $supply->weight             = $request->weight;
+           $supply->supply             = $request->item;
+           $supply->save();
+
+       if($supply){
+           $response = [
+               'code'      => '',
+               'message'   => 'Supply sent successfully',
+               'status'    => 'success',
+           ];
+           $data = json_encode($response, true);
+            
+           return redirect()->back()->with('supply-status', 'Item saved');
+       }
+       else{
+           return redirect()->back()->with('sales-error', 'Opps! something happend');
+       }
+   }
+
+   public function deleteTempSupply(Request $request, $id){
+     // $id =  $request->id;
+      $remove = TempVendorInventory::where('id', $id)->delete();
+      if($remove){
+       return redirect()->back()->with('supply-status', 'Item removed');  
+      }
+      else{
+       return redirect()->back()->with('sales-error', 'Opps! something happend');
+       }
+   }
+
+//post //vendor_id is the child vendor
+   public function pushSupplies(Request $request){
+       $username   = Auth::user()->username;
+       $today = Carbon::today();
+       $characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
+       $pin = mt_rand(1000000, 9999999);
+       $supplyRef ='S'.str_shuffle($pin);
+
+       $getSupply = TempVendorInventory::where('parent_id', $request->parent_id)
+       ->get();
+      
+       if($getSupply->count() >= 1){
+           foreach($getSupply as $key  =>  $data){
+                   $supply = new SubVendorInventory();
+                   $supply->parent_id          = $data->parent_id;
+                   $supply->vendor_id          = $data->vendor_id;
+                   $supply->supply_qty         = $data->supply_qty;
+                   $supply->size               = $data->size;
+                   $supply->weight             = $data->weight;
+                   $supply->supply             = $data->supply;
+                   $supply->supply_ref         = $supplyRef;
+                   $supply->save();
+           }
+           if($supply){
+               $response = [
+                   'code'      => '',
+                   'message'   => 'Supply sent successfully',
+                   'status'    => 'success',
+               ];
+               $data = json_encode($response, true);
+
+               $countRow =TempVendorInventory::where('parent_id', $request->parent_id)
+               ->count();
+             
+               SubVendorInventory::where('id', $supply->id)
+               ->update([
+               'number_of_items' => $countRow,
+               ]);
+              
+               TempVendorInventory::where('parent_id', $request->parent_id)->delete();
+
+               return redirect($username.'/outlet-supplies/'.$request->vendor_id )->with('supply-status', 'Supply sent successfully');
+           }
+           else{
+               return redirect()->back()->with('sales-error', 'Opps! something happend');
+           } 
+       }
+       else{
+           return redirect()->back()->with('supply-error', 'Opps! kindly enter supplies');    
+       }     
+   }
 
 }
