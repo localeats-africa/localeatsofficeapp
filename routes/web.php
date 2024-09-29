@@ -235,7 +235,7 @@ Route::controller(MultiVendorController::class)->group(function () {
    //autocomplete
    Route::group(['middleware' => ['only.ajax']], function() {
         Route::get('autocomplete-expenses/{vendor_id}', 'autocompleteExpenses')->name('autocomplete-expenses');
-        Route::get('autocomplete-vendor-food-menu/{vendor_id}', 'autocompleteFoodMenu')->name('autocomplete-vendor-food-menu');
+        Route::get('autocomplete-vendor-food-menu', 'autocompleteFoodMenu')->name('autocomplete-vendor-food-menu');
         
     }); 
     Route::post('add-outlet-expenses', 'storeVendorDailyExpenses')->name('add-outlet-expenses');
