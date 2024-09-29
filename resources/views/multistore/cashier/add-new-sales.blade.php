@@ -5,8 +5,8 @@
 @section('content')
 <style>
 .select2-results__option[aria-selected] {
-cursor: pointer;
-text-transform: lowercase;
+      cursor: pointer;
+      text-transform: capitalize;
 }
 </style>
 <!-- main-panel -->
@@ -14,7 +14,7 @@ text-transform: lowercase;
       <div class="content-wrapper">
             <div class="page-header">
                   <h3 class="page-title">
-                 <span class="text-info"> {{$storeName}}</span> >> In-Store Sales
+                        <span class="text-info"> {{$storeName}}</span> >> In-Store Sales
                   </h3>
             </div>
 
@@ -101,35 +101,39 @@ text-transform: lowercase;
                   @csrf
                   {{csrf_field()}}
                   <div class="row">
-                        <div class="col-md-12 ">
-                              <input type="hidden" id="parent" value="{{ $parentID }}" />
+                        <div class="col-md-6 ">
+                              <div class="form-label required"> Food item <i class="text-danger">*</i>
+                              </div>
+
+                              <select class="js-example-basic-single2 text-secondary " style="width:100%;" name="item">
+                                    <option value="">Choose</option>
+                                    @foreach($foodMenu as $data)
+                                    <option  value="{{$data->food_item}}" >
+                                    {{$data->food_item}}
+                                    </option>
+                                    @endforeach
+                              </select>
+                        </div>
+
+                        <div class="col-md-6">
+                              <div class="form-label required">Quantity <i class="text-danger">*</i>
+                              </div>
                               <div class="input-group">
-                                    <span class="input-group-append">
-                                          <span class="input-group-text text-dark d-block">
-                                                Food item <i class="text-danger">*</i>
-                                          </span>
-                                    </span>
-                                    <input class="typeahead form-control" id="search" type="text" name="item"
-                                          placeholder="search here">
-                                        
                                     <div class="btn btn-sm" id="decreaseSupply" onclick="decreaseSupply()"
                                           value="Decrease Value">-
                                     </div>
-                                    <span class="input-group-append">
-                                          <span class="input-group-text text-dark d-block">
-                                                QTY <i class="text-danger">*</i>
-                                          </span>
-                                    </span>
-                                    <input type="text" name="quantity" value="0"
-                                          style="width:85px;  padding-left:20px;  padding-right:5px;" id="supply"
+                                    <input type="text" class="form-control" name="quantity" value="1" style="width:85px;" id="supply"
                                           multiple="multiple">
                                     <div class="btn btn-sm" id="increaseSupply" onclick="increaseSupply()"
                                           value="Increase Value">+
                                     </div>
+                                    <input type="hidden" id="parent" value="{{ $parentID }}" />
                                     <button type="submit" name="submit"
                                           class="btn bg-gradient-primary btn-sm  text-white">Enter</button>
                               </div>
+
                         </div>
+                  </div>
             </form>
 
             <p></p>
@@ -155,7 +159,7 @@ text-transform: lowercase;
                                                 </tr>
                                           </thead>
                                           <tbody>
-                                                @foreach($foodMenu as $data)
+                                                @foreach($sales as $data)
                                                 <tr>
                                                       <td>{{$loop->iteration}}</td>
                                                       <td class="text-capitalize">{{$data->category}}</td>
@@ -163,14 +167,17 @@ text-transform: lowercase;
                                                       <td>{{$data->price}}</td>
                                                       <td>{{$data->quantity}}</td>
                                                       <td>{{$data->amount}}</td>
-                                                    <td >
-                                                      <form action="{{ route('remove-supply-item', [$data->id]) }}" method="post">
-                                                      @csrf
-                                                      {{csrf_field()}}
-                                                            <input type="hidden" value="" name="id">
-                                                            <button type="submit"  name="submit" class=" btn btn-xs text-danger"><i class="fa fa-trash"></i></button>
-                                                      </form>
-                                                    </td>
+                                                      <td>
+                                                            <form action="{{ route('remove-supply-item', [$data->id]) }}"
+                                                                  method="post">
+                                                                  @csrf
+                                                                  {{csrf_field()}}
+                                                                  <input type="hidden" value="" name="id">
+                                                                  <button type="submit" name="submit"
+                                                                        class=" btn btn-xs text-danger"><i
+                                                                              class="fa fa-trash"></i></button>
+                                                            </form>
+                                                      </td>
 
                                                 </tr>
                                                 @endforeach
@@ -183,18 +190,19 @@ text-transform: lowercase;
                         </div>
                         <!--- card-->
                         <p></p>
-                      
+
                         <form method="post" action="{{ route('push-supplies') }}" name="submit"
                               enctype="multipart/form-data">
                               @csrf
                               {{csrf_field()}}
                               <input type="hidden" name="parent" value="{{$parentID}}" id="parent">
                               <input type="hidden" name="vendor_id" value="{{$vendor_id}}">
-                              
+
                               <button type="submit" name="submit"
-                                    class="btn bg-gradient-primary btn-md  text-white">Save Sales </button>
+                                    class="btn bg-gradient-primary btn-md  text-white">Save
+                                    Sales </button>
                         </form>
-                     
+
                   </div>
             </div>
       </div>
