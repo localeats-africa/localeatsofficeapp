@@ -192,7 +192,7 @@ text-transform: lowercase;
                               <input type="hidden" name="vendor_id" value="{{$vendor_id}}">
                               
                               <button type="submit" name="submit"
-                                    class="btn bg-gradient-primary btn-md  text-white">Submit </button>
+                                    class="btn bg-gradient-primary btn-md  text-white">Save Sales </button>
                         </form>
                      
                   </div>
