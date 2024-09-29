@@ -295,6 +295,15 @@ class MultiVendorController extends Controller
         'storeName','parentID', 'vendor_id',  'sales'));
 
     }
+      //search foodmenu
+   public function autocompleteFoodMenu(Request $request)
+   {
+       $data = VendorFoodMenu::select("food_item as value", "id")
+       ->where('food_item', 'LIKE', '%'. $request->get('search'). '%')
+       ->where('store_id',   $request->get('parent'))
+        ->get();
+       return response()->json($data);     
+   }
 
     public function newInStoreSales(Request $request){
         $username = Auth::user()->username;
@@ -327,15 +336,7 @@ class MultiVendorController extends Controller
 
     }
 
-   //search foodmenu
-   public function autocompleteFoodMenu(Request $request)
-   {
-       $data = VendorFoodMenu::select("item as value", "id")
-       ->where('food_item', 'LIKE', '%'. $request->get('search'). '%')
-       ->where('store_id',   $request->get('parent'))
-        ->get();
-       return response()->json($data);     
-   }
+ 
 
    //save vendor InStore sales
    public function saveTempSales(Request $request){
