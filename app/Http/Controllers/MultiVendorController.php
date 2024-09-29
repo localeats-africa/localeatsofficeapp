@@ -301,6 +301,12 @@ class MultiVendorController extends Controller
     }
 
     public function storeVendorDailyExpenses(Request $request){
+        $id = Auth::user()->id;
+        $parentID = DB::table('multi_store')
+        ->join('users', 'users.parent_store', 'multi_store.id')
+        ->where('users.id',  $id)
+        ->get('users.*')->pluck('parent_store')->first();
+        
         $this->validate($request, [ 
             'item'          => 'required|string|max:255',  
             'category'      => 'required|string|max:255',  
@@ -314,6 +320,7 @@ class MultiVendorController extends Controller
 
         $expenses = new VendorExpenses();
         $expenses->vendor_id        = $request->vendor;
+        $expenses->parent           = $request->vendor;
         $expenses->description      = $request->item;
         $expenses->category         = $request->category;
         $expenses->cost             = $request->price;
