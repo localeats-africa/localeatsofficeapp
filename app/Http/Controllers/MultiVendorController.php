@@ -56,6 +56,7 @@ class MultiVendorController extends Controller
     public function parent(Request $request, $username){
         if ((Auth::user()->password_change_at == null)) {
         $username = Auth::user()->username;
+        
         return view('multistore.parent.admin', compact('username'));
     }
     else{
