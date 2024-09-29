@@ -438,39 +438,42 @@ class MultiVendorController extends Controller
        ->where('sub_store.multi_store_id', $parentID)
        ->get('vendor.id')->pluck('id')->first();
 
-       $getSupply = TempInStoreSales::where('parent', $parentID)
+       $getSales = TempInStoreSales::where('parent', $parentID)
        ->where('vendor_id', $vendor_id )
        ->get();
       
-       if($getSupply->count() >= 1){
-           foreach($getSupply as $key  =>  $data){
-                   $supply = new SubVendorInventory();
-                   $supply->parent_id          = $data->parent_id;
-                   $supply->vendor_id          = $data->vendor_id;
-                   $supply->supply_qty         = $data->supply_qty;
-                   $supply->size               = $data->size;
-                   $supply->weight             = $data->weight;
-                   $supply->supply             = $data->supply;
-                   $supply->supply_ref         = $supplyRef;
-                   $supply->save();
+       if($getSales->count() >= 1){
+           foreach($getSales as $key  =>  $data){
+                   $sales = new VendorInstoreSales();
+                   $sales->parent              = $parentID;
+                   $sales->vendor_id           = $vendor_id;
+                    $sales->category            = $foodCategory;
+                    $sales->food_item           = $food; 
+                    $sales->price               = $foodPrice;
+                    $sales->quantity            = $quantity;
+                    $sales->amount              = $amount;
+                    $sales->date                = $today;
+                   $sales->save();
            }
-           if($supply){
+           if($sales){
                $response = [
                    'code'      => '',
-                   'message'   => 'Supply sent successfully',
+                   'message'   => 'Sales sent successfully',
                    'status'    => 'success',
                ];
                $data = json_encode($response, true);
 
-               $countRow =TempVendorInventory::where('parent_id', $request->parent_id)
-               ->count();
+            //    $countRow =TempInStoreSales::where('parent', $parentID)
+            //     ->where('vendor_id', $vendor_id )
+            //    ->count();
              
-               SubVendorInventory::where('id', $supply->id)
-               ->update([
-               'number_of_items' => $countRow,
-               ]);
+            //    VendorInstoreSales::where('id', $sales->id)
+            //    ->update([
+            //    'number_of_items' => $countRow,
+            //    ]);
               
-               TempVendorInventory::where('parent_id', $request->parent_id)->delete();
+                TempInStoreSales::where('parent', $parentID)
+                ->where('vendor_id', $vendor_id )->delete();
 
                return redirect($username.'/outlet-supplies/'.$request->vendor_id )->with('supply-status', 'Supply sent successfully');
            }
