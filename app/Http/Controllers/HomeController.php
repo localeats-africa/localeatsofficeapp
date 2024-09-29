@@ -3545,7 +3545,7 @@ class HomeController extends Controller
                 User::where('id', $addUser->id)
                 ->update([
                     'vendor' => $addVendor->id,
-                    'parent_store' => $parent
+                    'parent_store' => $request->parent_id
                 ]);
                 //create vendor id in sales platform table
                 $platformStatus ='inactive';
