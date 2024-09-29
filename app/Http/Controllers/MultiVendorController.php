@@ -96,9 +96,9 @@ class MultiVendorController extends Controller
        ->get();
 
        $countOutletsFromWhereOfflineSales = DB::table('vendor_instore_sales')
-       ->join('sub_store', 'sub_store.multi_store_id', 'vendor_instore_sales.parent')->distinct()
-       ->where('vendor_instore_sales.parent', $parent)
-       ->count();
+       ->distinct('vendor_id')
+       ->where('parent', $parent)
+       ->count('vendor_id');
 
         $countAllOrder = Orders::join('sub_store', 'sub_store.vendor_id', '=', 'orders.vendor_id')
         ->where('orders.deleted_at', null)
