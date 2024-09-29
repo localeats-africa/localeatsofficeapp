@@ -162,17 +162,17 @@
                                     <p class="m-0 text-secondary">
 
                                           Showing
-                                          {{ ($supply->currentPage() - 1) * $supply->perPage() + 1; }} to
-                                          {{ min($supply->currentPage()* $supply->perPage(), $supply->total()) }}
+                                          {{ ($sales->currentPage() - 1) * $sales->perPage() + 1; }} to
+                                          {{ min($sales->currentPage()* $sales->perPage(), $sales->total()) }}
                                           of
-                                          {{$supply->total()}} entries
+                                          {{$sales->total()}} entries
                                     </p>
 
                                     <ul class="pagination m-0 ms-auto">
-                                          @if(isset($supply))
-                                          @if($supply->currentPage() > 1)
+                                          @if(isset($sales))
+                                          @if($sales->currentPage() > 1)
                                           <li class="page-item ">
-                                                <a class="page-link text-danger" href="{{ $supply->previousPageUrl() }}"
+                                                <a class="page-link text-danger" href="{{ $sales->previousPageUrl() }}"
                                                       tabindex="-1" aria-disabled="true">
                                                       <!-- Download SVG icon from http://tabler-icons.io/i/chevron-left -->
                                                       <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24"
@@ -189,11 +189,11 @@
 
 
                                           <li class="page-item">
-                                                {{ $supply->appends(compact('perPage'))->links()  }}
+                                                {{ $sales->appends(compact('perPage'))->links()  }}
                                           </li>
-                                          @if($supply->hasMorePages())
+                                          @if($sales->hasMorePages())
                                           <li class="page-item">
-                                                <a class="page-link text-danger" href="{{ $supply->nextPageUrl() }}">
+                                                <a class="page-link text-danger" href="{{ $sales->nextPageUrl() }}">
                                                       next
                                                       <!-- Download SVG icon from http://tabler-icons.io/i/chevron-right -->
                                                       <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24"
