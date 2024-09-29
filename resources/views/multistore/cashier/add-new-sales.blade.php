@@ -237,10 +237,11 @@ $('input.search').typeahead({
 
 
 <script type="text/javascript">
-var path = "{{ route('autocomplete') }}";
+var path = "{{ route('autocomplete-vendor-food-menu') }}";
 
 $("#search").autocomplete({
       source: function(request, response) {
+            var parent = document.getElementById('parent').value;
             $.ajax({
                   url: path,
                   type: 'GET',
