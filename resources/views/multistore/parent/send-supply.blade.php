@@ -104,7 +104,7 @@ text-transform: lowercase;
                   <div class="row">
                         <div class="col-md-12 ">
                               <input id="vendor" name="vendor_id" type="hidden" value="{{ $vendor_id }}" />
-                              <input id="vendor" name="parent_id" type="hidden" value="{{ $parentStoreID }}" />
+                              <input id="parent" name="parent_id" type="hidden" value="{{ $parentStoreID }}" />
                               <div class="input-group">
                                     <span class="input-group-append">
                                           <span class="input-group-text text-dark d-block">
@@ -274,12 +274,14 @@ var path = "{{ route('autocomplete') }}";
 
 $("#search").autocomplete({
       source: function(request, response) {
+            var parent = document.getElementById('parent').value;
             $.ajax({
                   url: path,
                   type: 'GET',
                   dataType: "json",
                   data: {
-                        search: request.term
+                        search: request.term,
+                        parent: parent
                   },
                   success: function(data) {
                         response(data);

@@ -221,15 +221,10 @@ class ParentVendorController extends Controller
 //search supplies
     public function autocomplete(Request $request)
     {
-        $parentID = DB::table('multi_store')
-        ->join('users', 'users.parent_store', 'multi_store.id')
-        ->where('users.id',  $user_id)
-        ->get('users.*')->pluck('parent_store')->first();
-
         $data = VendorInventory::select("item as value", "id")
-                    ->where('item', 'LIKE', '%'. $request->get('search'). '%')
-                   
-                    ->get();
+        ->where('item', 'LIKE', '%'. $request->get('search'). '%')
+        ->where('multi_store_id',   $request->get('parent'))
+        ->get();
         return response()->json($data);     
     }
 
