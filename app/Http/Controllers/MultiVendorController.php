@@ -272,7 +272,7 @@ class MultiVendorController extends Controller
         ->where('food_item', '!=', null)
         ->orderBy('created_at', 'desc')
         ->get('*');
-        return view('multistore.child.cashier.sales',  compact('username',
+        return view('multistore.cashier.sales',  compact('username',
         'storeName','parentID', 'vendor_id',  'sales'));
 
     }
@@ -302,7 +302,7 @@ class MultiVendorController extends Controller
         ->where('food_item', '!=', null)
         ->orderBy('created_at', 'desc')
         ->get('*');
-        return view('multistore.child.cashier.add-new-sales',  compact('username',
+        return view('multistore.cashier.add-new-sales',  compact('username',
         'storeName','parentID', 'vendor_id',  'foodMenu'));
 
     }
