@@ -169,7 +169,12 @@ class MultiVendorController extends Controller
         ->where('users.id', $id)
         ->get('vendor.id')->pluck('id')->first();
 
-        $expensesCategory = VendorExpensesCategory::where('vendor_id', $vendor_id)
+        $parentID = DB::table('multi_store')
+        ->join('users', 'users.parent_store', 'multi_store.id')
+        ->where('users.id',  $id)
+        ->get('users.*')->pluck('parent_store')->first();
+
+        $expensesCategory = VendorExpensesCategory::where('parent', $parentID)
         ->orderBy('created_at', 'desc')
         ->get();
 
