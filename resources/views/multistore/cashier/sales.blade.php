@@ -14,7 +14,7 @@
                   <nav aria-label="breadcrumb">
                         <ul class="breadcrumb">
                               <li class="breadcrumb-item active" aria-current="page">
-                                    <span></span><a href="/{{$username}}/supply-to-outlet/{{$vendor_id}}"
+                                    <span></span><a href="/{{$username}}/new-sales"
                                           class="btn btn-outline-danger">Add New Sales </a>
                               </li>
                         </ul>
