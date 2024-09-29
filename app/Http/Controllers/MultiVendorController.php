@@ -91,6 +91,10 @@ class MultiVendorController extends Controller
         ->get('sales_platform.vendor_id');
        // dd($consumers);
 
+       $offlineSales = DB::table('vendor_instore_sales')
+       ->where('parent', $parent)
+       ->get();
+
         $countAllOrder = Orders::join('sub_store', 'sub_store.vendor_id', '=', 'orders.vendor_id')
         ->where('orders.deleted_at', null)
         ->where('sub_store.multi_store_id', $parent)
@@ -127,7 +131,7 @@ class MultiVendorController extends Controller
         ->get('orders.platform_id')->count();
 
         return view('multistore.parent.admin', compact('username','parent', 'outlets',
-         'salesChannel', 'countAllOrder', 'countPlatformWhereOrderCame', 'sumAllOrders', 
+        'offlineSales', 'salesChannel', 'countAllOrder', 'countPlatformWhereOrderCame', 'sumAllOrders', 
          'chowdeckOrderCount'));
         }
     }
