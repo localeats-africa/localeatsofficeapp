@@ -167,7 +167,7 @@
                                           <div class="dropdown-menu dropdown-menu-end text-end ">
                                              
                                                 <a class="dropdown-item text-capitalize text-dark"
-                                                      href="vendor-profile/{{$data->id}}">
+                                                      href="/vendor-profile/{{$data->id}}">
                                                       <small>Profile</small>
                                                 </a>
                                                 <!-- <a class="dropdown-item text-capitalize text-dark"
@@ -210,13 +210,13 @@
                                     <a href="outlet-supplies/{{$data->id}}" class="card-btn "
                                           style="text-decoration:none;" title="Outlet Supplies">
                                           <small>Supplies </small> <small class="text-info"> &nbsp;<i
-                                                      class="fa fa-list"></i></small>
+                                                      class="fa fa-history"></i></small>
                                     </a>
                                   
                                     <a href="outlet-expenses/{{$data->id}}" class="card-btn "
                                           style="text-decoration:none;" title="Outlets Expenses">
                                           <small> Expenses </small> <small class="text-danger"> &nbsp;<i
-                                                      class="fa fa-eye" aria-hidden="true"></i></small>
+                                                      class="fa fa-list" aria-hidden="true"></i></small>
                                     </a>
 
 

@@ -34,13 +34,32 @@
 
             <div class="row">
                   <div class="col-lg-12">
+                  @if(session('update-status'))
+                        <div class="alert  alert-success alert-dismissible" role="alert">
+                              <div class="d-flex">
+                                    <div>
+                                          <!-- Download SVG icon from http://tabler-icons.io/i/alert-triangle -->
+                                          <svg xmlns="http://www.w3.org/2000/svg" class="icon alert-icon" width="24"
+                                                height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"
+                                                fill="none" stroke-linecap="round" stroke-linejoin="round">
+                                                <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                                                <path
+                                                      d="M10.24 3.957l-8.422 14.06a1.989 1.989 0 0 0 1.7 2.983h16.845a1.989 1.989 0 0 0 1.7 -2.983l-8.423 -14.06a1.989 1.989 0 0 0 -3.4 0z" />
+                                                <path d="M12 9v4" />
+                                                <path d="M12 17h.01" />
+                                          </svg>
+                                    </div>
+                                    <div> {!! session('update-status') !!}</div>
+                              </div>
+                              <a class="btn-close" data-bs-dismiss="alert" aria-label="close"></a>
+                        </div>
+                        @endif
                   </div>
             </div>
             <!---end---alert--->
             <div class="row">
                   <div class="col-sm-12">
                         <div class="page-header">
-                              <form action=""></form>
                               <nav style="--bs-breadcrumb-divider: '';" aria-label="breadcrumb">
                                     <p id="response"></p>
                                     <ol class="breadcrumb">
@@ -97,9 +116,15 @@
                                           <div class="col-md-6 col-6">
 
                                                 <div class="d-flex flex-column">
+                                                      @if(empty($parentLogo) )
                                                       <img src="{{ asset('assets/images/logo.png') }}" alt="Admin"
-                                                            class="rounded-circle " width="110">
-                                                      <h4>{{$parentName}}</h4>
+                                                      class="rounded-circle " width="110">
+                                                      @else
+                                                      <img src="{{ asset($parentLogo) }}" alt="Admin"
+                                                      class=" " width="80">
+                                                      @endif
+
+                                                      <h4></h4>
                                                       <h6>Head Office:</h6>
                                                       <div class="mt-1 text-secondary" style="line-height:1.7">
                                                             <small>{{$parentAddress}}</small>
@@ -170,14 +195,12 @@
                                                       <table class="table table-striped">
                                                             <thead>
                                                                   <tr>
-                                                                        <th>Action</th>
+
                                                                         <th>Item (s)</th>
                                                                         <th>Size/Weight</th>
                                                                         <th>Quantity</th>
                                                                         <th>Remark</th>
-                                                                        <!---parent--->
-                                                                        <th>Status</th>
-                                                                    
+                                                                        <th>Action</th>
                                                                   </tr>
                                                             </thead>
                                                             <tbody>
@@ -186,29 +209,6 @@
                                                                   <tr>
                                                                         @auth
                                                                         <!---childvendor--->
-
-                                                                        <td width="20%">
-                                                                              @if(Auth::user()->role_id =='10')
-                                                                              <button
-                                                                                    class="btn btn-success btn-xs  text-dark">
-                                                                                    Accept</button>
-                                                                              <button
-                                                                                    class="btn btn-danger btn-xs  text-white">
-                                                                                    Reject</button>
-                                                                              &nbsp;
-                                                                              @endif
-                                                                              @if(Auth::user()->role_id =='9')
-                                                                              <a class="text-danger"
-                                                                                    href="/{{$username}}/edit-outlet-supply/{{$data->id}}"
-                                                                                    title="edit">
-                                                                                    <small> <i class="fa fa-edit"></i>
-                                                                                          edit</small>
-                                                                              </a>
-                                                                              @endif
-                                                                        </td>
-                                                                        @endauth
-
-
                                                                         <td width="30%"
                                                                               style="white-space:wrap; line-height:1.6">
 
@@ -235,42 +235,78 @@
                                                                               </small>
                                                                         </td>
 
-                                                                        <td width="30%" style="white-space:wrap; line-height:1.6">
-                                                                              <small>
-                                                                                    <!--  remark--->
+                                                                        <td width="25%"
+                                                                              style="white-space:wrap; line-height:1.6">
+                                                                              <small> {{$data->remark}}</small>
+                                                                              @if(Auth::user()->role_id =='10')
+                                                                              <input type="hidden" value="{{$data->id}}"
+                                                                                    id="id-{{$data->id}}">
+                                                                              <div class="input-group">
+                                                                                    <input type="text" value=""
+                                                                                          class="form-control"
+                                                                                          placeholder="Remark here"
+                                                                                          id="remark-{{$data->id}}"
+                                                                                          style="display:none;">
+                                                                                    <button
+                                                                                          class="btn  btn-danger btn-xs"
+                                                                                          id="send-{{$data->id}}"
+                                                                                          onclick="sendReject({{$data->id}})"
+                                                                                          style="display:none;">confirm!</button>
+                                                                                          @endif
+                                                                              </div>
+                                                                              <!--  remark--->
+
                                                                               </small>
                                                                         </td>
-                                                                        <!--  parent--->
-                                                                      
-                                                                     <td></td>
+                                                                        <td>
+                                                                              @if($data->status =='rejected')
+                                                                              <small class="badge badge-round bg-danger ">
+                                                                              {{$data->status}}</small>
+                                                                              @endif
+                                                                              @if($data->status =='accepted')
+                                                                              <small class="badge badge-round bg-success ">
+                                                                                    {{$data->status}}</small>
+                                                                              @endif
+                                                                              @if(Auth::user()->role_id =='10')
+                                                                              @if($data->status =='rejected')
+                                                                              @elseif($data->status =='accepted')
+                                                                              @else
+                                                                              <button
+                                                                                    class="btn btn-danger btn-xs  text-white"
+                                                                                    id="reject-{{ $data->id }}"
+                                                                                    onclick="toggleReject({{$data->id}})">
+                                                                                    Reject</button>
+                                                                              <button
+                                                                                    class="btn btn-success btn-xs  text-dark" onclick="acceptSupply({{$data->id}})">
+                                                                                    Accept</button>
+                                                                              @endif
+                                                                              @endif
+
+                                                                              @if(Auth::user()->role_id =='9')
+                                                                              @if($data->status =='accepted')
+                                                                              @else 
+                                                                              &nbsp;
+                                                                              <a class="text-danger"
+                                                                                    href="/{{$username}}/edit-outlet-supply/{{$data->id}}"
+                                                                                    title="edit">
+                                                                                    <small> <i class="fa fa-edit"></i>
+                                                                                          edit</small>
+                                                                              </a>
+                                                                              @endif
+                                                                              @endif
+                                                                        </td>
+
+                                                                        @endauth
                                                                   </tr>
 
                                                                   @endforeach
                                                                   <tr>
-
-                                                                        <th colspan="3" class="text-end">
-                                                                        </th>
-                                                                        <th></th>
-                                                                        <th></th>
-
-                                                                  </tr>
-                                                                  <tr>
-
                                                                         <th colspan="4" class="text-end">
-                                                                              @if($status == 'rejected')
-                                                                              <span
-                                                                                    class="text-danger">{{$data->remark}}</span>
-                                                                              @endif
-                                                                        </th>
-
-                                                                        <th class="text-end">
                                                                               <h6>Total Items</h6>
                                                                         </th>
                                                                         <th>{{$supply->count()}} </th>
 
                                                                   </tr>
-
-
 
                                                             </tbody>
                                                       </table>
@@ -399,6 +435,111 @@ function mypdf() {
             });
 
       });
+}
+</script>
+
+
+<script>
+function toggleReject(data) {
+      // get the clock
+      var myClock = document.querySelector('#remark-' + data);
+      var go = document.querySelector('#send-' + data);
+
+      // get the current value of the clock's display property
+      var displaySetting = myClock.style.display;
+      var displaySetting2 = go.style.display;
+
+      // also get the clock button, so we can change what it says
+      var clockButton = document.querySelector('#reject-' + data);
+
+      // now toggle the clock and the button text, depending on current state
+      if (displaySetting == 'block') {
+            // clock is visible. hide it
+            myClock.style.display = 'none';
+            go.style.display = 'none';
+            // change button text
+            clockButton.innerHTML = 'Reject';
+      } else {
+            // clock is hidden. show it
+            myClock.style.display = 'block';
+            go.style.display = 'block';
+            // change button text
+            clockButton.innerHTML = 'Reject';
+      }
+}
+</script>
+
+<script>
+function sendReject(data) {
+      var remark = document.querySelector('#remark-' + data).value;
+      var id = document.querySelector('#id-' + data).value;
+      if(remark == null || remark == ""){
+            alert("Remark field can not be empty");
+            return false;
+      }
+
+      var url = "{{ route('reject-supplies') }}";
+      // url = showRoute;
+
+      //window.location = url;
+      $.ajaxSetup({
+            headers: {
+                  'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+            }
+      });
+      $.ajax({
+            method: 'POST',
+            enctype: 'multipart/form-data',
+            url: url,
+            data: {
+                  //you can more data here
+                  'id': id,
+                  'remark': remark
+            },
+            success: function(data) {
+                  console.log(data.message);
+                    alert("Update Successful");
+                     location.reload();
+                  
+            },
+            error: function(data) {
+                  console.log(data);
+            }
+      });
+
+}
+
+function acceptSupply(data) {
+      var id = document.querySelector('#id-' + data).value;
+
+      var url = "{{ route('accept-supply') }}";
+      // url = showRoute;
+
+      //window.location = url;
+      $.ajaxSetup({
+            headers: {
+                  'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+            }
+      });
+      $.ajax({
+            method: 'POST',
+            enctype: 'multipart/form-data',
+            url: url,
+            data: {
+                  //you can more data here
+                  'id': id
+            },
+            success: function(data) {
+                  console.log(data.message);
+                    alert("Update Successful");
+                     location.reload();
+                  
+            },
+            error: function(data) {
+                  console.log(data);
+            }
+      });
+
 }
 </script>
 

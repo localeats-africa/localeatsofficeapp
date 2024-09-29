@@ -1,6 +1,6 @@
 @extends('layouts.head')
 @extends('layouts.header')
-@extends('layouts.sidebar')
+@extends('layouts.multistore-sidebar')
 @extends('layouts.footer')
 @section('content')
 </style>
@@ -59,7 +59,6 @@
                               <a class="btn-close" data-bs-dismiss="alert" aria-label="close"></a>
                         </div>
                         @endif
-
                         @if ($errors->any())
                         <div class="alert alert-danger alert-dismissible" role="alert">
                               <div class="d-flex">
@@ -85,18 +84,19 @@
                               <a class="btn-close" data-bs-dismiss="alert" aria-label="close"></a>
                         </div>
                         @endif
+
                   </div>
             </div>
             <!---end Alert --->
 
             <div class="row ">
 
-                  <form method="post" action="{{ route('add-vendor-expenses') }}" name="submit"
+                  <form method="post" action="{{ route('add-outlet-expenses') }}" name="submit"
                         enctype="multipart/form-data">
                         @csrf
                         {{csrf_field()}}
                         <div class="row">
-                        <div class="col-md-4 col-12">
+                              <div class="col-md-6 col-12">
                                     <div class="form-group">
                                           <label for="">Expenses List</label>
                                           <br>
@@ -106,30 +106,21 @@
                                     </div>
                               </div>
                              
-                              <div class="col-md-4 col-12">
+
+                              <div class="col-md-6 col-12">
                                     <div class="form-group">
                                           <label for="">Price</label>
                                           <br>
-                                          <div class="input-group date">
+                                          <div class="input-group ">
                                                 <input type="text" class="form-control" id="price" name="price"
                                                       placeholder="Enter expenses" />
-                                          </div>
-                                    </div>
-                              </div>
-                              <div class="col-md-4 col-12">
-                                    <div class="form-group">
-                                          <label for="">Date</label>
-                                          <br>
-                                          <div class="input-group date">
-                                                
-                                                <input type="text" class="form-control"  value="{{ date('Y-m-d')}}" id="date" name="date"
-                                                      placeholder="Enter expenses" />
                                                 <button type="submit" name="submit"
-                                                      class="btn bg-gradient-primary btn-sm  text-white">Submit</button>
+                                                      class="btn bg-gradient-primary btn-sm  text-white"
+                                                   >Submit</button>
                                           </div>
                                     </div>
-
                               </div>
+                            
 
                         </div>
                         <!---end row--->
@@ -170,7 +161,7 @@
                                                 Search:
                                                 <div class="ms-2 d-inline-block">
 
-                                                      <form action="{{ route('add-expenses') }}" method="GET"
+                                                      <form action="{{ url(auth()->user()->username,'vendor-add-expenses'  ) }}" method="GET"
                                                             role="search">
                                                             {{ csrf_field() }}
                                                             <div class="input-group mb-2">
@@ -193,7 +184,7 @@
                                                       <th class="w-1">SN</th>
                                                       <th>Date</th>
                                                       <th>Item</th>
-                                                      <th>Cost</th>
+                                                      <th>Cost (₦)</th>
                                                 </tr>
                                           </thead>
                                           <tbody>
@@ -202,7 +193,7 @@
                                                       <td>{{$loop->iteration}}</td>
                                                       <td>{{ date('d/m/Y', strtotime($data->expense_date))}}</td>
                                                       <td class="text-capitalize">{{$data->description}}</td>
-                                                      <td>{{$data->cost}}</td>
+                                                      <td>{{number_format($data->cost)}}</td>
 
 
                                                 </tr>
@@ -288,6 +279,7 @@
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
 <script src="https://code.jquery.com/ui/1.13.3/jquery-ui.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.1/js/select2.min.js"></script>
+
 <script type="text/javascript">
 var id = document.getElementById('vendor_id').value;
 var showRoute = "{{ route('autocomplete-expenses', ':id') }}";
@@ -314,7 +306,6 @@ $("#search").autocomplete({
       }
 });
 </script>
-
 <!-- End custom js for this page -->
 <script type="text/javascript">
 $(document).ready(function() {
@@ -396,8 +387,6 @@ function myClick() {
 $(function() {
       $("#date").datepicker();
 });
-
-
 </script>
 
 @endsection

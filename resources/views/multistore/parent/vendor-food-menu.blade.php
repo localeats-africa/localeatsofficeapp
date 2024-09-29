@@ -1,24 +1,30 @@
 @extends('layouts.head')
 @extends('layouts.header')
-@extends('layouts.sidebar')
+@extends('layouts.multistore-sidebar')
 @extends('layouts.footer')
 @section('content')
-</style>
 <!-- main-panel -->
 <div class="main-panel">
       <div class="content-wrapper">
             <div class="page-header">
                   <h3 class="page-title">
-                        <span class="text-info">{{$vendorName}}</span> >>>> Add New Expenses
+                        All Food Menu
                   </h3>
+                  <nav aria-label="breadcrumb">
+                        <ul class="breadcrumb">
+                              <li class="breadcrumb-item active" aria-current="page">
+                                    <span></span><a href="{{ url(auth()->user()->username, 'new-meal-menu') }}" class="btn btn-block btn-danger"><i
+                                                class="fa fa-plus-square"></i> &nbsp;Create New Food Menu </a>
+                              </li>
+                        </ul>
+                  </nav>
             </div>
-
-            <p></p>
             <!--Alert here--->
-            <div class="row ">
+            <div class="row">
                   <div class="col-12">
-                        @if(session('expense-status'))
-                        <div class="alert alert-important alert-success alert-dismissible" role="alert">
+
+                        @if(session('add-menu'))
+                        <div class="alert  alert-success alert-dismissible" role="alert">
                               <div class="d-flex">
                                     <div>
                                           <!-- Download SVG icon from http://tabler-icons.io/i/alert-triangle -->
@@ -32,15 +38,14 @@
                                                 <path d="M12 17h.01" />
                                           </svg>
                                     </div>
-                                    <div> {!! session('expense-status') !!}</div>
+                                    <div> {!! session('add-menu') !!}</div>
                               </div>
                               <a class="btn-close" data-bs-dismiss="alert" aria-label="close"></a>
                         </div>
                         @endif
 
-
-                        @if(session('expense-error'))
-                        <div class="alert  alert-danger alert-dismissible" role="alert">
+                        @if(session('food-status'))
+                        <div class="alert  alert-success alert-dismissible" role="alert">
                               <div class="d-flex">
                                     <div>
                                           <!-- Download SVG icon from http://tabler-icons.io/i/alert-triangle -->
@@ -54,7 +59,7 @@
                                                 <path d="M12 17h.01" />
                                           </svg>
                                     </div>
-                                    <div> {!! session('expense-error') !!}</div>
+                                    <div> {!! session('food-status') !!}</div>
                               </div>
                               <a class="btn-close" data-bs-dismiss="alert" aria-label="close"></a>
                         </div>
@@ -85,65 +90,18 @@
                               <a class="btn-close" data-bs-dismiss="alert" aria-label="close"></a>
                         </div>
                         @endif
+
                   </div>
             </div>
-            <!---end Alert --->
+            <!--end row here--->
 
-            <div class="row ">
-
-                  <form method="post" action="{{ route('add-vendor-expenses') }}" name="submit"
-                        enctype="multipart/form-data">
-                        @csrf
-                        {{csrf_field()}}
-                        <div class="row">
-                        <div class="col-md-4 col-12">
-                                    <div class="form-group">
-                                          <label for="">Expenses List</label>
-                                          <br>
-                                          <input type="hidden" id="vendor_id" value="{{$vendor_id}}" name="vendor">
-                                          <input class="typeahead form-control" id="search" type="text" name="item"
-                                          placeholder="search here">
-                                    </div>
-                              </div>
-                             
-                              <div class="col-md-4 col-12">
-                                    <div class="form-group">
-                                          <label for="">Price</label>
-                                          <br>
-                                          <div class="input-group date">
-                                                <input type="text" class="form-control" id="price" name="price"
-                                                      placeholder="Enter expenses" />
-                                          </div>
-                                    </div>
-                              </div>
-                              <div class="col-md-4 col-12">
-                                    <div class="form-group">
-                                          <label for="">Date</label>
-                                          <br>
-                                          <div class="input-group date">
-                                                
-                                                <input type="text" class="form-control"  value="{{ date('Y-m-d')}}" id="date" name="date"
-                                                      placeholder="Enter expenses" />
-                                                <button type="submit" name="submit"
-                                                      class="btn bg-gradient-primary btn-sm  text-white">Submit</button>
-                                          </div>
-                                    </div>
-
-                              </div>
-
-                        </div>
-                        <!---end row--->
-                  </form>
-            </div>
-            <!---end row --->
-
-            <p></p>
             <div class="row ">
                   <div class="col-12">
                         <div class="card">
                               <div class="card-header">
-                                    <h4 class="card-title"> </h4>
+                                    <h3 class="card-title"> </h3>
                               </div>
+
                               <div class="card-body border-bottom py-3">
                                     <div class="d-flex">
                                           <div class="text-secondary">
@@ -165,13 +123,18 @@
                                                       </select>
                                                 </div>
                                                 records
+                                                &nbsp; &nbsp;
+                                    <!-- <span class="card-title">
+                                          <button class="btn btn-outline-danger btn-sm delete_all"
+                                                data-url="{{ url('bulk-delete-foodmenu') }}">Delete All
+                                                Selected</button>
+                                    </span> -->
                                           </div>
                                           <div class="ms-auto text-secondary">
                                                 Search:
                                                 <div class="ms-2 d-inline-block">
 
-                                                      <form action="{{ route('add-expenses') }}" method="GET"
-                                                            role="search">
+                                                      <form action="{{ url(auth()->user()->username, 'meal-menu') }}" method="GET" role="search">
                                                             {{ csrf_field() }}
                                                             <div class="input-group mb-2">
                                                                   <input type="text" class="form-control"
@@ -185,24 +148,61 @@
                                     </div>
                               </div>
 
+                            
                               <div class="table-responsive " id="card">
+                                  
                                     <table class="table table-striped card-table table-vcenter text-nowrap datatable"
                                           id="orders">
                                           <thead>
                                                 <tr>
-                                                      <th class="w-1">SN</th>
-                                                      <th>Date</th>
+                                                      <th>Posted by</th>
                                                       <th>Item</th>
-                                                      <th>Cost</th>
+                                                      <th>Price </th>
+                                                      <th>Category</th>
+                                                      <th></th>
                                                 </tr>
                                           </thead>
                                           <tbody>
-                                                @foreach($expenses as $data)
-                                                <tr>
-                                                      <td>{{$loop->iteration}}</td>
-                                                      <td>{{ date('d/m/Y', strtotime($data->expense_date))}}</td>
-                                                      <td class="text-capitalize">{{$data->description}}</td>
-                                                      <td>{{$data->cost}}</td>
+                                                @foreach($foodMenu as $data)
+                                                <tr id="tr_{{$data->id}}">
+
+
+                                                      <td class="text-sm"><small>{{$data->fullname}}</small></td>
+                                                      <td><small>{{$data->food_item}}</small></td>
+                                                      <td class="text-capitalize"><small>{{$data->price}}</small> </td>
+
+                                                      <td><small>{{$data->category}}</small></td>
+
+                                                      <!--- admin approve/edit --->
+                                                      <td class="text-end">
+                                                            <span class="dropdown">
+                                                                  <button
+                                                                        class="btn dropdown-toggle align-text-top text-danger"
+                                                                        data-bs-boundary="viewport"
+                                                                        data-bs-toggle="dropdown">Actions</button>
+                                                                  <div class="dropdown-menu text-center ">
+
+                                                                        <form action="{{ route('delete-food-menu', [$data->id]) }}"
+                                                                              method="post" name="submit"
+                                                                              enctype="multipart/form-data">
+                                                                              @csrf
+
+                                                                                    <input type="hidden"
+                                                                                          value="{{$data->id}}">
+                                                                                    <button type="submit"
+                                                                                          class="text-dark btn btn-block">Delete</button>
+                                                                             
+                                                                        </form>
+                                                                      
+                                                                        <a class="dropdown-item btn btn-sm text-capitalize text-dark"
+                                                                              href="edit-food-menu/{{$data->id}}">
+                                                                              Edit
+                                                                        </a>
+
+                                                                  </div>
+                                                            </span>
+                                                      </td>
+
 
 
                                                 </tr>
@@ -216,18 +216,18 @@
                                     <p class="m-0 text-secondary">
 
                                           Showing
-                                          {{ ($expenses->currentPage() - 1) * $expenses->perPage() + 1; }} to
-                                          {{ min($expenses->currentPage()* $expenses->perPage(), $expenses->total()) }}
+                                          {{ ($foodMenu->currentPage() - 1) * $foodMenu->perPage() + 1; }} to
+                                          {{ min($foodMenu->currentPage()* $foodMenu->perPage(), $foodMenu->total()) }}
                                           of
-                                          {{$expenses->total()}} entries
+                                          {{$foodMenu->total()}} entries
                                     </p>
 
                                     <ul class="pagination m-0 ms-auto">
-                                          @if(isset($expenses))
-                                          @if($expenses->currentPage() > 1)
+                                          @if(isset($foodMenu))
+                                          @if($foodMenu->currentPage() > 1)
                                           <li class="page-item ">
                                                 <a class="page-link text-danger"
-                                                      href="{{ $expenses->previousPageUrl() }}" tabindex="-1"
+                                                      href="{{ $foodMenu->previousPageUrl() }}" tabindex="-1"
                                                       aria-disabled="true">
                                                       <!-- Download SVG icon from http://tabler-icons.io/i/chevron-left -->
                                                       <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24"
@@ -244,11 +244,11 @@
 
 
                                           <li class="page-item">
-                                                {{ $expenses->appends(compact('perPage'))->links()  }}
+                                                {{ $foodMenu->appends(compact('perPage'))->links()  }}
                                           </li>
-                                          @if($expenses->hasMorePages())
+                                          @if($foodMenu->hasMorePages())
                                           <li class="page-item">
-                                                <a class="page-link text-danger" href="{{ $expenses->nextPageUrl() }}">
+                                                <a class="page-link text-danger" href="{{ $foodMenu->nextPageUrl() }}">
                                                       next
                                                       <!-- Download SVG icon from http://tabler-icons.io/i/chevron-right -->
                                                       <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24"
@@ -269,135 +269,75 @@
                   </div>
             </div>
       </div>
-      <!--- content wrapper---->
-      <!-- partial -->
-      <footer class="footer">
-            <div class="d-sm-flex justify-content-center justify-content-sm-between">
-                  <span class="text-muted text-center text-sm-left d-block d-sm-inline-block">Copyright ©
-                        LocalEats Africa {{ date('Y')}} </a>. All rights
-                        reserved.</span>
-                  <span class="float-none float-sm-right d-block mt-1 mt-sm-0 text-center"><i
-                              class="mdi mdi-heart text-danger"></i></span>
-            </div>
-      </footer>
 </div>
-<!-- main-panel -->
-<link rel="stylesheet" href="https://code.jquery.com/ui/1.13.3/themes/base/jquery-ui.css">
 
-<!-- <script src="https://code.jquery.com/jquery-3.7.1.js"></script> -->
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
-<script src="https://code.jquery.com/ui/1.13.3/jquery-ui.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.1/js/select2.min.js"></script>
-<script type="text/javascript">
-var id = document.getElementById('vendor_id').value;
-var showRoute = "{{ route('autocomplete-expenses', ':id') }}";
-path = showRoute.replace(':id', id);  
 
-$("#search").autocomplete({
-      source: function(request, response) {
-            $.ajax({
-                  url: path,
-                  type: 'GET',
-                  dataType: "json",
-                  data: {
-                        search: request.term
-                  },
-                  success: function(data) {
-                        response(data);
-                  }
-            });
-      },
-      select: function(event, ui) {
-            $('#search').val(ui.item.label);
-            console.log(ui.item);
-            return false;
-      }
-});
-</script>
-
-<!-- End custom js for this page -->
 <script type="text/javascript">
 $(document).ready(function() {
-      $("#item").select2({
-            placeholder: "Search ",
-            closeOnSelect: true,
-            language: {
-                  noResults: function(term) {
-                        return $(
-                              "<div>Result not found!. <a href='#' onclick='return myClick()'>click here add new</a></div>"
-                        );
-                  }
-            },
+
+      $('#master').on('click', function(e) {
+            if ($(this).is(':checked', true)) {
+                  $(".form-check-input").prop('checked', true);
+            } else {
+                  $(".form-check-input").prop('checked', false);
+            }
       });
 
-      $('#btn-add-state').on("click", function() {
-            var newStateVal = $('#new-item').val();
-            // Set the value, creating a new option if necessary
-            // if ($('#item').find("option[value=" + newStateVal + "]").length) {
-            //       $('#item').val(newStateVal).trigger("change");
-            // } else {
-            // Create the DOM option that is pre-selected by default
-            var newState = new Option(newStateVal, newStateVal, true, true);
-            // Append it to the select
-            $('#item').append(newState).trigger('change').select2();
-            // }
-            var item = document.getElementById('item').value;
-            var vendor = document.getElementById('vendor').value;
+      $('.delete_all').on('click', function(e) {
 
-            var url = "{{ route('add-expenses-list') }}";
-            // url = showRoute;
+            var allVals = [];
+            $(".form-check-input:checked").each(function() {
+                  allVals.push($(this).attr('data-id'));
+            });
 
-            //window.location = url;
-            $.ajaxSetup({
-                  headers: {
-                        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+            if (allVals.length <= 0) {
+                  alert("Please select row.");
+            } else {
+
+                  var check = confirm("Are you sure you want to delete this row?");
+                  if (check == true) {
+
+                        var join_selected_values = allVals.join(",");
+
+
+                        $.ajax({
+                              url: $(this).data('url'),
+                              method: 'POST',
+                              enctype: 'multipart/form-data',
+                              headers: {
+                                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]')
+                                          .attr('content')
+                              },
+                              data: 'ids=' + join_selected_values,
+                              success: function(data) {
+                                    if (data['success']) {
+                                          $(".form-check-input:checked").each(
+                                                function() {
+                                                      $(this).parents(
+                                                                  "tr")
+                                                            .remove();
+                                                });
+                                          alert(data['success']);
+                                    } else if (data['error']) {
+                                          alert(data['error']);
+                                    } else {
+                                          alert(
+                                                'Whoops Something went wrong!!'
+                                          );
+                                    }
+                              },
+                              error: function(data) {
+                                    alert(data.responseText);
+                              }
+                        });
+
+                        $.each(allVals, function(index, value) {
+                              $('table tr').filter("[data-row-id='" + value + "']")
+                                    .remove();
+                        });
                   }
-            });
-            $.ajax({
-                  method: 'POST',
-                  enctype: 'multipart/form-data',
-                  url: url,
-                  data: {
-                        //you can more data here
-                        'item': item,
-                        'vendor': vendor
-                  },
-                  success: function(data) {
-                        console.log(data.message);
-                        document.getElementById('response').style.display =
-                              '';
-                        document.getElementById('response').style.color =
-                              'green';
-                        document.getElementById('response').innerHTML = data
-                              .message;
-                        document.getElementById("show").style.display =
-                              'none';
-                  },
-                  error: function(data) {
-                        console.log(data);
-                  }
-            });
+            }
       });
 });
-
-function myClick() {
-      var x = document.getElementById("show");
-      if (x.style.display === "none") {
-            x.style.display = "block";
-      } else {
-            x.style.display = "none";
-      }
-}
 </script>
-
-
-
-<script>
-$(function() {
-      $("#date").datepicker();
-});
-
-
-</script>
-
 @endsection

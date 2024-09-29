@@ -72,6 +72,12 @@ class MultiVendorController extends Controller
           ->where('sub_vendor_inventory.supply_ref', $supply_ref)
           ->select('multi_store.multi_store_name')->pluck('multi_store_name')->first();
   
+          $parentLogo=  DB::table('sub_vendor_inventory')
+          ->join('multi_store', 'multi_store.id', 'sub_vendor_inventory.parent_id')
+          ->join('vendor', 'vendor.id', 'multi_store.vendor_id')
+          ->where('sub_vendor_inventory.supply_ref', $supply_ref)
+          ->select('vendor.vendor_logo')->pluck('vendor_logo')->first();
+
         $parentAddress=  DB::table('sub_vendor_inventory')
           ->join('multi_store', 'multi_store.id', 'sub_vendor_inventory.parent_id')
           ->join('vendor', 'vendor.id', 'multi_store.vendor_id')
@@ -135,7 +141,93 @@ class MultiVendorController extends Controller
           ->get(['sub_vendor_inventory.*']);
           return  view('multistore.supply-receipt', compact('supply_ref', 'status',
           'storeName', 'storeAddress', 'location', 'vendorState', 'vendorCountry',
-          'supply_date', 'supply', 'parentName', 'parentAddress','parentEmail', 'username' ));
+          'supply_date', 'supply', 'parentName', 'parentAddress','parentEmail', 
+          'username', 'parentLogo' ));
       }
+
+    //Cashier
+    public function addVendorExpenses(Request $request, $username){
+        $username = Auth::user()->username;
+        $id = Auth::user()->id;
+        $role = DB::table('role')->select('role_name')
+        ->join('users', 'users.role_id', 'role.id')
+        ->where('users.id', $id)
+        ->pluck('role_name')->first();
+
+        //a cashier should only see things for the vendor assigned to him
+        $vendorName = Vendor::join('users', 'users.vendor', 'vendor.id')
+        ->where('users.id', $id)
+        ->get('vendor.store_name')->pluck('store_name')->first();
+
+        $vendor_id = Vendor::join('users', 'users.vendor', 'vendor.id')
+        ->where('users.id', $id)
+        ->get('vendor.id')->pluck('id')->first();
+
+        $expensesList = ExpensesList::where('vendor_id', $vendor_id)
+        ->orderBy('created_at', 'desc')
+        ->get();
+
+        $perPage = $request->perPage ?? 10;
+        $search = $request->input('search');
+
+        $expenses = VendorExpenses::where('vendor_id', $vendor_id)
+        ->orderBy('expense_date', 'desc')
+        ->where(function ($query) use ($search) {  // <<<
+        $query->where('description', 'LIKE', '%'.$search.'%')
+        ->orWhere('cost', 'LIKE', '%'.$search.'%')
+        ->orWhere('created_at', 'LIKE', '%'.$search.'%');
+        })
+        ->paginate($perPage)->appends(['per_page'   => $perPage]);
+        $pagination = $expenses->appends ( array ('search' => $search) );
+            if (count ( $pagination ) > 0){
+                return view('multistore.cashier.add-expenses',  compact('username', 'role', 
+                'vendorName','expensesList', 'vendor_id', 'perPage', 'expenses'))->withDetails( $pagination );     
+            } 
+        else{
+            //return redirect()->back()->with('expenses-status', 'No record order found');
+            return view('multistore.cashier.add-expenses',   compact('username', 'role', 
+            'vendorName','expensesList', 'vendor_id', 'perPage', 'expenses')); 
+            }
+
+        return view('multistore.cashier.add-expenses',   compact('username', 'role', 
+         'vendorName','expensesList', 'vendor_id', 'perPage', 'expenses'));
+    }
+
+    public function autocompleteExpenses(Request $request, $vendor_id)
+    {
+        $data = ExpensesList::where('vendor_id', $vendor_id)
+        ->select("item as value", "id")
+                    ->where('item', 'LIKE', '%'. $request->get('search'). '%')
+                    ->get();
+        return response()->json($data);     
+    }
+
+    public function storeVendorDailyExpenses(Request $request){
+        $this->validate($request, [ 
+            'item'          => 'required|string|max:255',  
+            'price'         => 'required|string|max:255'     
+        ]);
+        $storeExpense = new ExpensesList();
+        $storeExpense->vendor_id    = $request->vendor;
+        $storeExpense->item         = $request->item;
+        $storeExpense->added_by     = Auth::user()->id;
+        $storeExpense->save();
+
+        $expenses = new VendorExpenses();
+        $expenses->vendor_id        = $request->vendor;
+        $expenses->description      = $request->item;
+        $expenses->cost             = $request->price;
+        $expenses->added_by         = Auth::user()->id;
+        $expenses->expense_date     = Carbon::now();
+        $expenses->save();
+
+        if($expenses){
+            return redirect()->back()->with('expense-status', 'You have successfully added an Expenses');
+        }
+        else{
+            return redirect()->back()->with('expense-error', 'Opps! something happend');
+        
+        }
+    }
 
 }

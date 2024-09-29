@@ -1,24 +1,22 @@
 @extends('layouts.head')
 @extends('layouts.header')
-@extends('layouts.sidebar')
+@extends('layouts.multistore-sidebar')
 @extends('layouts.footer')
 @section('content')
-</style>
 <!-- main-panel -->
 <div class="main-panel">
       <div class="content-wrapper">
             <div class="page-header">
                   <h3 class="page-title">
-                        <span class="text-info">{{$vendorName}}</span> >>>> Add New Expenses
+                        Food Category
                   </h3>
             </div>
-
-            <p></p>
             <!--Alert here--->
-            <div class="row ">
+            <div class="row">
                   <div class="col-12">
-                        @if(session('expense-status'))
-                        <div class="alert alert-important alert-success alert-dismissible" role="alert">
+
+                        @if(session('add-food-type'))
+                        <div class="alert  alert-success alert-dismissible" role="alert">
                               <div class="d-flex">
                                     <div>
                                           <!-- Download SVG icon from http://tabler-icons.io/i/alert-triangle -->
@@ -32,14 +30,13 @@
                                                 <path d="M12 17h.01" />
                                           </svg>
                                     </div>
-                                    <div> {!! session('expense-status') !!}</div>
+                                    <div> {!! session('add-food-type') !!}</div>
                               </div>
                               <a class="btn-close" data-bs-dismiss="alert" aria-label="close"></a>
                         </div>
                         @endif
 
-
-                        @if(session('expense-error'))
+                        @if(session('error'))
                         <div class="alert  alert-danger alert-dismissible" role="alert">
                               <div class="d-flex">
                                     <div>
@@ -54,7 +51,7 @@
                                                 <path d="M12 17h.01" />
                                           </svg>
                                     </div>
-                                    <div> {!! session('expense-error') !!}</div>
+                                    <div> {!! session('error') !!}</div>
                               </div>
                               <a class="btn-close" data-bs-dismiss="alert" aria-label="close"></a>
                         </div>
@@ -85,64 +82,97 @@
                               <a class="btn-close" data-bs-dismiss="alert" aria-label="close"></a>
                         </div>
                         @endif
+
                   </div>
             </div>
             <!---end Alert --->
 
-            <div class="row ">
+            <div class="row">
+                  <div class="col-12">
+                  </div>
+            </div>
+            <p></p>
 
-                  <form method="post" action="{{ route('add-vendor-expenses') }}" name="submit"
-                        enctype="multipart/form-data">
-                        @csrf
-                        {{csrf_field()}}
-                        <div class="row">
-                        <div class="col-md-4 col-12">
-                                    <div class="form-group">
-                                          <label for="">Expenses List</label>
-                                          <br>
-                                          <input type="hidden" id="vendor_id" value="{{$vendor_id}}" name="vendor">
-                                          <input class="typeahead form-control" id="search" type="text" name="item"
-                                          placeholder="search here">
-                                    </div>
-                              </div>
-                             
-                              <div class="col-md-4 col-12">
-                                    <div class="form-group">
-                                          <label for="">Price</label>
-                                          <br>
-                                          <div class="input-group date">
-                                                <input type="text" class="form-control" id="price" name="price"
-                                                      placeholder="Enter expenses" />
+            <form method="post" action="{{ route('add-food-category') }}" name="submit" enctype="multipart/form-data">
+                  @csrf
+                  {{csrf_field()}}
+                  <div class="row">
+                        <div class="col-md-4 grid-margin stretch-card">
+                              <div class="card">
+                                    <div class="card-body">
+                                          <div class="form-label required">Enter Category <i class="text-danger">*</i>
                                           </div>
-                                    </div>
-                              </div>
-                              <div class="col-md-4 col-12">
-                                    <div class="form-group">
-                                          <label for="">Date</label>
-                                          <br>
-                                          <div class="input-group date">
-                                                
-                                                <input type="text" class="form-control"  value="{{ date('Y-m-d')}}" id="date" name="date"
-                                                      placeholder="Enter expenses" />
-                                                <button type="submit" name="submit"
-                                                      class="btn bg-gradient-primary btn-sm  text-white">Submit</button>
-                                          </div>
-                                    </div>
+                                          <input type="text" class="form-control" name="food_category">
 
+                                          @error('food_category')
+                                          <div class="alert alert-danger alert-dismissible" role="alert">
+                                                <div class="d-flex">
+                                                      <div>
+                                                            <!-- Download SVG icon from http://tabler-icons.io/i/alert-circle -->
+                                                            <svg xmlns="http://www.w3.org/2000/svg"
+                                                                  class="icon alert-icon" width="24" height="24"
+                                                                  viewBox="0 0 24 24" stroke-width="2"
+                                                                  stroke="currentColor" fill="none"
+                                                                  stroke-linecap="round" stroke-linejoin="round">
+                                                                  <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                                                                  <path d="M3 12a9 9 0 1 0 18 0a9 9 0 0 0 -18 0" />
+                                                                  <path d="M12 8v4" />
+                                                                  <path d="M12 16h.01" />
+                                                            </svg>
+                                                      </div>
+                                                      <div>
+                                                            {{ $message }}
+                                                      </div>
+                                                </div>
+                                                <a class="btn-close" data-bs-dismiss="alert" aria-label="close"></a>
+                                          </div>
+                                          @enderror
+                                    </div>
                               </div>
+                        </div>
+
+                        <div class="col-md-4 grid-margin stretch-card">
+                              <!-- send button here -->
+                              <div class="card-footer bg-transparent mt-auto">
+                                    <input type="hidden" name="parent" value="{{$parentID}}">
+                                    <div class="btn-list ">
+                                          <button type="submit" name="submit"
+                                                class="btn bg-gradient-primary btn-sm  text-white">
+                                                <svg xmlns="http://www.w3.org/2000/svg"
+                                                      class="icon icon-tabler icon-tabler-device-floppy" width="24"
+                                                      height="24" viewBox="0 0 24 24" stroke-width="1.5"
+                                                      stroke="currentColor" fill="none" stroke-linecap="round"
+                                                      stroke-linejoin="round">
+                                                      <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                                                      <path
+                                                            d="M6 4h10l4 4v10a2 2 0 0 1 -2 2h-12a2 2 0 0 1 -2 -2v-12a2 2 0 0 1 2 -2" />
+                                                      <path d="M12 14m-2 0a2 2 0 1 0 4 0a2 2 0 1 0 -4 0" />
+                                                      <path d="M14 4l0 4l-6 0l0 -4" />
+                                                </svg>
+                                                Add New
+                                          </button>
+                                    </div>
+                              </div>
+                        </div>
+
+
+                        <div class="col-md-4 grid-margin stretch-card">
 
                         </div>
-                        <!---end row--->
-                  </form>
-            </div>
-            <!---end row --->
 
-            <p></p>
-            <div class="row ">
-                  <div class="col-12">
+
+                  </div>
+                  <!--- row---->
+
+            </form>
+
+
+            <!-- row -->
+            <div class="row">
+                  <div class="col-md-12">
                         <div class="card">
                               <div class="card-header">
-                                    <h4 class="card-title"> </h4>
+                                    <h4 class="card-title">List </h4>
                               </div>
                               <div class="card-body border-bottom py-3">
                                     <div class="d-flex">
@@ -170,7 +200,7 @@
                                                 Search:
                                                 <div class="ms-2 d-inline-block">
 
-                                                      <form action="{{ route('add-expenses') }}" method="GET"
+                                                      <form action="{{ route('food-type') }}" method="GET"
                                                             role="search">
                                                             {{ csrf_field() }}
                                                             <div class="input-group mb-2">
@@ -190,20 +220,41 @@
                                           id="orders">
                                           <thead>
                                                 <tr>
-                                                      <th class="w-1">SN</th>
-                                                      <th>Date</th>
-                                                      <th>Item</th>
-                                                      <th>Cost</th>
+                                                      <th class="w-1"><input class="form-check-input m-0 align-middle"
+                                                                  type="checkbox" aria-label="Select all product">
+                                                      </th>
+                                                      <th>SN</th>
+                                                      <th>Food Category</th>
+                                                      <th></th>
                                                 </tr>
                                           </thead>
                                           <tbody>
-                                                @foreach($expenses as $data)
+                                                @foreach($foodCategory as $data)
                                                 <tr>
-                                                      <td>{{$loop->iteration}}</td>
-                                                      <td>{{ date('d/m/Y', strtotime($data->expense_date))}}</td>
-                                                      <td class="text-capitalize">{{$data->description}}</td>
-                                                      <td>{{$data->cost}}</td>
+                                                      <td><input class="form-check-input m-0 align-middle"
+                                                                  type="checkbox" aria-label="Select"></td>
+                                                      <td class="py-1">
+                                                            {{$loop->iteration}}
+                                                      </td>
 
+                                                      <td class="text-capitalize">{{$data->category}}</td>
+
+
+                                                      <td class="text-end">
+                                                            <span class="dropdown">
+                                                                  <button
+                                                                        class="btn dropdown-toggle align-text-top text-danger"
+                                                                        data-bs-boundary="viewport"
+                                                                        data-bs-toggle="dropdown">Actions</button>
+                                                                  <div class="dropdown-menu ">
+                                                                        <a class="dropdown-item text-capitalize text-dark"
+                                                                              href="">
+                                                                              <small>Delete</small>
+                                                                        </a>
+
+                                                                  </div>
+                                                            </span>
+                                                      </td>
 
                                                 </tr>
                                                 @endforeach
@@ -216,18 +267,18 @@
                                     <p class="m-0 text-secondary">
 
                                           Showing
-                                          {{ ($expenses->currentPage() - 1) * $expenses->perPage() + 1; }} to
-                                          {{ min($expenses->currentPage()* $expenses->perPage(), $expenses->total()) }}
+                                          {{ ($foodCategory->currentPage() - 1) * $foodCategory->perPage() + 1; }} to
+                                          {{ min($foodCategory->currentPage()* $foodCategory->perPage(), $foodCategory->total()) }}
                                           of
-                                          {{$expenses->total()}} entries
+                                          {{$foodCategory->total()}} entries
                                     </p>
 
                                     <ul class="pagination m-0 ms-auto">
-                                          @if(isset($expenses))
-                                          @if($expenses->currentPage() > 1)
+                                          @if(isset($foodCategory))
+                                          @if($foodCategory->currentPage() > 1)
                                           <li class="page-item ">
                                                 <a class="page-link text-danger"
-                                                      href="{{ $expenses->previousPageUrl() }}" tabindex="-1"
+                                                      href="{{ $foodCategory->previousPageUrl() }}" tabindex="-1"
                                                       aria-disabled="true">
                                                       <!-- Download SVG icon from http://tabler-icons.io/i/chevron-left -->
                                                       <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24"
@@ -244,11 +295,12 @@
 
 
                                           <li class="page-item">
-                                                {{ $expenses->appends(compact('perPage'))->links()  }}
+                                                {{ $foodCategory->appends(compact('perPage'))->links()  }}
                                           </li>
-                                          @if($expenses->hasMorePages())
+                                          @if($foodCategory->hasMorePages())
                                           <li class="page-item">
-                                                <a class="page-link text-danger" href="{{ $expenses->nextPageUrl() }}">
+                                                <a class="page-link text-danger"
+                                                      href="{{ $foodCategory->nextPageUrl() }}">
                                                       next
                                                       <!-- Download SVG icon from http://tabler-icons.io/i/chevron-right -->
                                                       <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24"
@@ -267,7 +319,9 @@
                         </div>
                         <!--- card-->
                   </div>
+
             </div>
+            <!-- row -->
       </div>
       <!--- content wrapper---->
       <!-- partial -->
@@ -282,122 +336,14 @@
       </footer>
 </div>
 <!-- main-panel -->
-<link rel="stylesheet" href="https://code.jquery.com/ui/1.13.3/themes/base/jquery-ui.css">
 
-<!-- <script src="https://code.jquery.com/jquery-3.7.1.js"></script> -->
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
-<script src="https://code.jquery.com/ui/1.13.3/jquery-ui.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.1/js/select2.min.js"></script>
-<script type="text/javascript">
-var id = document.getElementById('vendor_id').value;
-var showRoute = "{{ route('autocomplete-expenses', ':id') }}";
-path = showRoute.replace(':id', id);  
+<script src="{{ asset('assets/vendors/select2/select2.min.js')}}"></script>
+<script src="{{ asset('assets/vendors/typeahead.js/typeahead.bundle.min.js')}}"></script>
 
-$("#search").autocomplete({
-      source: function(request, response) {
-            $.ajax({
-                  url: path,
-                  type: 'GET',
-                  dataType: "json",
-                  data: {
-                        search: request.term
-                  },
-                  success: function(data) {
-                        response(data);
-                  }
-            });
-      },
-      select: function(event, ui) {
-            $('#search').val(ui.item.label);
-            console.log(ui.item);
-            return false;
-      }
-});
-</script>
-
+<!-- endinject -->
+<!-- Custom js for this page -->
+<script src="{{ asset('assets/js/file-upload.js')}}"></script>
+<script src="{{ asset('assets/js/typeahead.js')}}"></script>
+<script src="{{ asset('assets/js/select2.js')}}"></script>
 <!-- End custom js for this page -->
-<script type="text/javascript">
-$(document).ready(function() {
-      $("#item").select2({
-            placeholder: "Search ",
-            closeOnSelect: true,
-            language: {
-                  noResults: function(term) {
-                        return $(
-                              "<div>Result not found!. <a href='#' onclick='return myClick()'>click here add new</a></div>"
-                        );
-                  }
-            },
-      });
-
-      $('#btn-add-state').on("click", function() {
-            var newStateVal = $('#new-item').val();
-            // Set the value, creating a new option if necessary
-            // if ($('#item').find("option[value=" + newStateVal + "]").length) {
-            //       $('#item').val(newStateVal).trigger("change");
-            // } else {
-            // Create the DOM option that is pre-selected by default
-            var newState = new Option(newStateVal, newStateVal, true, true);
-            // Append it to the select
-            $('#item').append(newState).trigger('change').select2();
-            // }
-            var item = document.getElementById('item').value;
-            var vendor = document.getElementById('vendor').value;
-
-            var url = "{{ route('add-expenses-list') }}";
-            // url = showRoute;
-
-            //window.location = url;
-            $.ajaxSetup({
-                  headers: {
-                        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-                  }
-            });
-            $.ajax({
-                  method: 'POST',
-                  enctype: 'multipart/form-data',
-                  url: url,
-                  data: {
-                        //you can more data here
-                        'item': item,
-                        'vendor': vendor
-                  },
-                  success: function(data) {
-                        console.log(data.message);
-                        document.getElementById('response').style.display =
-                              '';
-                        document.getElementById('response').style.color =
-                              'green';
-                        document.getElementById('response').innerHTML = data
-                              .message;
-                        document.getElementById("show").style.display =
-                              'none';
-                  },
-                  error: function(data) {
-                        console.log(data);
-                  }
-            });
-      });
-});
-
-function myClick() {
-      var x = document.getElementById("show");
-      if (x.style.display === "none") {
-            x.style.display = "block";
-      } else {
-            x.style.display = "none";
-      }
-}
-</script>
-
-
-
-<script>
-$(function() {
-      $("#date").datepicker();
-});
-
-
-</script>
-
 @endsection

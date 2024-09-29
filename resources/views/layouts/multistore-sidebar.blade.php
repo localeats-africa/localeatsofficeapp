@@ -19,12 +19,23 @@
 
                         </a>
                   </li>
+
                   <li class="nav-item">
-                        <a class="nav-link" href="{{ url('') }}" target="">
-                              <span class="menu-title">Supplies</span>
-                              <i class="fa fa-chain  menu-icon fs-24"></i>
+                        <a class="nav-link" href="{{ url(auth()->user()->username, 'meal-menu') }}" target="">
+                              <span class="menu-title">Food  Menu (s)</span>
+                              <i class="mdi mdi-food  menu-icon fs-24"></i>
+
                         </a>
                   </li>
+
+                  <li class="nav-item">
+                        <a class="nav-link" href="{{ url(auth()->user()->username, 'food-category') }}" target="">
+                              <span class="menu-title">Food  Category (s)</span>
+                              <i class="mdi mdi-food-fork-drink  menu-icon fs-24"></i>
+
+                        </a>
+                  </li>
+                 
                   @endif
                   <!---end parent manager --->
 
@@ -57,14 +68,12 @@
                               <ul class="nav flex-column sub-menu">
 
                                     <li class="nav-item">
-                                          <a class="nav-link" href="{{ url('expenses-list') }}">
-                                                Expenses</a>
+                                          <a class="nav-link" href="{{ url(auth()->user()->username, 'vendor-add-expenses') }}">Expenses</a>
                                     </li>
 
                                     <li class="nav-item">
-                                          <a class="nav-link" href="{{ url('vendor-sales-list') }}">Sales</a>
+                                          <a class="nav-link" href="{{ url(auth()->user()->username, 'instore-sales') }}">Sales</a>
                                     </li>
-
 
                               </ul>
                         </div>

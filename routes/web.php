@@ -230,8 +230,15 @@ Route::controller(MultiVendorController::class)->group(function () {
     //child dashboard
    Route::get('v/{username}',  'child')->name('v');
    Route::get('/{username}/supplies-receipt/{supply_ref}',  'supplyReceipt')->name('supplies-receipt');
+   Route::get('/{username}/vendor-add-expenses', 'addVendorExpenses')->name('vendor-add-expenses');
+   Route::post('vendor-add-expenses-list', 'addExpensesList')->name('vendor-add-expenses-list');
+   //autocomplete
+   Route::group(['middleware' => ['only.ajax']], function() {
+        Route::get('autocomplete-expenses/{vendor_id}', 'autocompleteExpenses')->name('autocomplete-expenses');
+    }); 
+Route::post('add-outlet-expenses', 'storeVendorDailyExpenses')->name('add-outlet-expenses');
     
-  
+   
 });
 
 Route::controller(ParentVendorController::class)->group(function () {
@@ -243,15 +250,28 @@ Route::controller(ParentVendorController::class)->group(function () {
     Route::group(['middleware' => ['only.ajax']], function() {
         Route::get('autocomplete', 'autocomplete')->name('autocomplete');
     });    
-    Route::post('push-supplies',  'pushSupplies')->name('push-supplies');
+   Route::post('push-supplies',  'pushSupplies')->name('push-supplies');
    Route::post('remove-supply-item/{id}',  'deleteTempSupply')->name('remove-supply-item');
    Route::get('/{username}/edit-outlet-supply/{ref}',  'editOutletSupply')->name('edit-outlet-supply');
    Route::post('update-supplies/{ref}',  'updateSupply')->name('update-supplies');
+   Route::get('/{username}/outlet-expenses/{id}', 'expensesList')->name('outlet-expenses');
+   Route::get('/{username}/food-category', 'foodCategory')->name('food-category');
+   Route::post('add-food-category',  'storeFoodCategory')->name('add-food-category');
+   Route::get('/{username}/new-meal-menu',  'newFoodMenu')->name('new-meal-menu');
+   Route::get('/{username}/meal-menu',  'foodMenu')->name('meal-menu');
+   Route::post('add-meal-menu',  'addFoodMenu')->name('add-meal-menu');
+   Route::get('edit-meal-menu/{id}', 'editFoodMenu')->name('edit-meal-menu');
+   Route::post('update-meal-menu/{id}',  'updateFoodMenu')->name('update-meal-menu');
+   Route::post('delete-meal-menu/{id}', 'deleteFoodMenu')->name('delete-meal-menu'); 
+   
 });
 
 
 Route::controller(VendorsController::class)->group(function () {
     Route::get('/{username}/all-supplies',  'outletAllSupplies')->name('all-supplies');
-    Route::post('accept-supply/{id}',  'acceptSupply')->name('accept-supply');
-    Route::post('reject-supply/{id}',  'rejectSupply')->name('reject-supplies');
+    Route::post('accept-supply',  'acceptSupply')->name('accept-supply');
+    Route::post('reject-supplies',  'rejectSupply')->name('reject-supplies');
+    Route::get('/{username}/instore-sales',  'inStoreSales')->name('instore-sales');
+    Route::get('/{username}/new-sales',  'newInStoreSales')->name('new-sales');
+    Route::post('add-instore-sales',  'addInstoreSales')->name('add-instore-sales');
 });

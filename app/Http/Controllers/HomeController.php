@@ -33,6 +33,7 @@ use App\Models\Invoice;
 use App\Models\Payout;
 use App\Mail\NewUserEmail;
 use App\Mail\EmailVendorInvoice;
+use App\Mail\NewVendorEmail;
 use Barryvdh\DomPDF\Facade\Pdf;
 use App\Models\ExpensesList;
 use App\Models\OfflineSales;
@@ -2172,10 +2173,8 @@ class HomeController extends Controller
 
     public function storeVendorDailyExpenses(Request $request){
         $this->validate($request, [ 
-            'vendor'        => 'required|max:255',
             'item'          => 'required|string|max:255',  
-            'price'         => 'required|string|max:255',  
-            'date'          => 'required|string|max:255'       
+            'price'         => 'required|string|max:255'     
         ]);
         $storeExpense = new ExpensesList();
         $storeExpense->vendor_id    = $request->vendor;
@@ -2671,7 +2670,6 @@ class HomeController extends Controller
          $string =  $getOrderItem;
          $substring = 'plate';
          $countAllPlate = substr_count($string, $substring);
- 
          $countPlatformWhereOrderCame = DB::table('orders')
          ->Join('platforms', 'orders.platform_id', '=', 'platforms.id')->distinct()
          ->where('orders.deleted_at', null)
@@ -3168,23 +3166,17 @@ class HomeController extends Controller
             $pin = mt_rand(100000, 999999);
             // shuffle pin
             $vendorRef = 'V'.str_shuffle($pin); 
-            // dd( $vendor_ref);
-
             $this->validate($request, [ 
+                'logo'                     => 'image|mimes:jpg,png,jpeg|max:300',
                 'store_name'               => 'required|string|max:255',
                 'area'                      => 'required|string|max:255',
                 'state'                     => 'required|string|max:255',
-               // 'restaurant_type'           => 'required|string|max:255',
-               // 'food_type'                 => 'required|max:255',
                 'number_of_store_location'  => 'required|string|max:255',
-                //'delivery_time'             => 'max:255',
                 'first_name'                => 'required|string|max:255',
                 'last_name'                 => 'required|string|max:255',
                 'phone'                     => 'regex:/^([0-9\s\-\+\(\)]*)$/|min:9|max:13',
                 'email'                     => 'required|email|max:255', 
                 'address'                   => 'required|string|max:255', 
-                //'bankName'                  => 'string|max:255', 
-                //'accountNumber'             => 'max:255', 
             ]);
             
             $verified = Carbon::now();
@@ -3222,17 +3214,26 @@ class HomeController extends Controller
             if($addUser){
             $vendorStatus                           = 'pending';
             $vendorName                             = $request->area. '-' .$foodType;
+            //this works on local host and linux
+            //$path = $request->file('image')->store('/images/resource', ['disk' =>   'my_files']);  
+            $logo= $request->file('logo');
+            if(isset($logo)){
+                 $logoName =  rand(1000000000, 9999999999).'.jpeg';
+                 $logo->move(public_path('assets/images/store'),$logoName);
+                 $logoPath = "/assets/images/store/".$logoName; 
+             }
+            else {
+             $logoPath = "";
+             }
 
             $addVendor                              = new Vendor();
             $addVendor->vendor_ref                  = $vendorRef;
             $addVendor->added_by                    = $id;
+            $addVendor->vendor_logo                  = $logoPath;
             $addVendor->store_name                  = $request->store_name;
             $addVendor->store_area                  = $request->area;
             $addVendor->vendor_name                 = $request->store_name;
-            // $addVendor->restaurant_type             = $request->restaurant_type;
-            // $addVendor->food_type                   = $foodType;
             $addVendor->number_of_store_locations   = $request->number_of_store_location;
-            // $addVendor->delivery_time               = $request->delivery_time;
             $addVendor->description                 = $request->description;
             $addVendor->contact_fname               = $request->first_name;
             $addVendor->contact_lname               = $request->last_name;
@@ -3241,9 +3242,6 @@ class HomeController extends Controller
             $addVendor->address                     = $request->address;
             $addVendor->state_id                    = $request->state;
             $addVendor->country_id                  = $request->country;
-            // $addVendor->bank_name                   = $request->bankName;
-            // $addVendor->account_number              = $request->accountNumber;
-            // $addVendor->account_name                = $request->accountName;
             $addVendor->vendor_status               = $vendorStatus;
             $addVendor->save();
 
@@ -3253,6 +3251,8 @@ class HomeController extends Controller
               $parentStore->multi_store_name = $addVendor->store_name;
               $parentStore->level            = 'parent';
               $parentStore->save();
+              User::where('id', $addUser->id)->update(['parent_store' => $parentStore->id]);
+                
                 //create vendor id in sales platform table
                 $platformStatus ='inactive';
                 $platforms = Platforms::all();
@@ -3268,13 +3268,14 @@ class HomeController extends Controller
                 $data = array(
                 'name'     => $request->name,
                 'email'    => $request->email,
-                'password' => $tempoaryPassword,        
+                'password' => $tempoaryPassword, 
+                'url'      =>'https://pos.localeats.africa',
                 );
                 //dd($data);
                 Mail::to($request->email)
                 ->cc('admin@localeats.africa')
                 //->bcc('admin@localeats.africa')
-                ->send(new NewUserEmail($data));
+                ->send(new NewVendorEmail($data));
 
                 $response = [
                     'code'      => '',
