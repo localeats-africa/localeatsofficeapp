@@ -37,6 +37,7 @@ use App\Models\TempVendorInventory;
 use App\Models\InventoryItemSizes;
 use App\Models\FoodCategory;
 use App\Models\VendorFoodMenu;
+use App\Models\VendorExpensesCategory;
 
 
 use Excel;
@@ -221,8 +222,9 @@ class ParentVendorController extends Controller
     public function autocomplete(Request $request)
     {
         $data = VendorInventory::select("item as value", "id")
-                    ->where('item', 'LIKE', '%'. $request->get('search'). '%')
-                    ->get();
+        ->where('item', 'LIKE', '%'. $request->get('search'). '%')
+        ->where('multi_store_id',   $request->get('parent'))
+        ->get();
         return response()->json($data);     
     }
 
@@ -698,7 +700,63 @@ class ParentVendorController extends Controller
         $food->update();
         if($food){
             return redirect('all-food-menu')->with('food-status', 'Record Deleted Successfully');
-        }
-        
+        }  
     }
+
+    public function expensesCategory(Request $request, $username){
+        $username = Auth::user()->username;
+        $user_id = Auth::user()->id;
+        $role = DB::table('role')->select('role_name')
+        ->join('users', 'users.role_id', 'role.id')
+        ->where('users.id', $user_id)
+        ->pluck('role_name')->first();
+
+        $parentID = DB::table('multi_store')
+        ->join('users', 'users.parent_store', 'multi_store.id')
+        ->where('users.id',  $user_id)
+        ->get('users.*')->pluck('parent_store')->first();
+
+        $perPage = $request->perPage ?? 10;
+        $search = $request->input('search');
+        
+        $expensesCategory=  DB::table('vendor_expenses_category')
+        ->where('deleted_at', null)
+        ->where('parent', $parentID)
+        ->select(['*' ])
+        ->orderBy('created_at', 'desc')
+        ->where(function ($query) use ($search) {  // <<<
+        $query->where('vendor_expenses_category.category', 'LIKE', '%'.$search.'%');
+        })
+        ->paginate($perPage,  $pageName = 'expensesCategory')->appends(['per_page'   => $perPage]);
+        $pagination = $expensesCategory->appends ( array ('search' => $search) );
+            if (count ( $pagination ) > 0){
+                return view('multistore.parent.expenses-category',  compact(
+                'perPage', 'username', 'role', 'expensesCategory', 'parentID'))->withDetails( $pagination );     
+            } 
+        else{
+            //return redirect()->back()->with('error', 'No record order found')
+            return view('multistore.parent.expenses-category',  compact(
+                'perPage', 'username', 'role', 'expensesCategory', 'parentID')); 
+        }
+
+        return view('multistore.parent.expenses-category',  compact(
+            'perPage', 'username', 'role', 'expensesCategory', 'parentID'));
+    }
+
+    public function storeExpensesCategory(Request $request){
+        $this->validate($request, [ 
+            'category'   => 'required|string|max:255',
+        ]);
+
+        $addExpensesCategory = new VendorExpensesCategory;
+        $addExpensesCategory->category   = $request->category;
+        $addExpensesCategory->parent     = $request->parent;
+        $addExpensesCategory->save();
+        
+        if($addExpensesCategory){
+           return redirect()->back()->with('add-food-type', 'Expenses Category Added!');
+        }
+        else{return redirect()->back()->with('error', 'Opps! something went wrong.'); }
+    }
+
 }

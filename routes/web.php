@@ -235,10 +235,16 @@ Route::controller(MultiVendorController::class)->group(function () {
    //autocomplete
    Route::group(['middleware' => ['only.ajax']], function() {
         Route::get('autocomplete-expenses/{vendor_id}', 'autocompleteExpenses')->name('autocomplete-expenses');
+        Route::get('autocomplete-vendor-food-menu', 'autocompleteFoodMenu')->name('autocomplete-vendor-food-menu');
+        
     }); 
-Route::post('add-outlet-expenses', 'storeVendorDailyExpenses')->name('add-outlet-expenses');
-    
-   
+    Route::post('add-outlet-expenses', 'storeVendorDailyExpenses')->name('add-outlet-expenses');
+    Route::post('add-instore-sales',  'addInstoreSales')->name('add-instore-sales');
+    Route::get('/{username}/instore-sales',  'InStoreSales')->name('instore-sales');
+    Route::get('/{username}/new-sales',  'newInStoreSales')->name('new-sales');
+    Route::post('save-food-item',  'saveTempSales')->name('save-food-item');
+    Route::post('remove-sales-item/{id}',  'deleteTempInStoreSales')->name('remove-sales-item');
+    Route::post('send-instore-sales',  'pushInstoreSales')->name('send-instore-sales');
 });
 
 Route::controller(ParentVendorController::class)->group(function () {
@@ -263,6 +269,8 @@ Route::controller(ParentVendorController::class)->group(function () {
    Route::get('edit-meal-menu/{id}', 'editFoodMenu')->name('edit-meal-menu');
    Route::post('update-meal-menu/{id}',  'updateFoodMenu')->name('update-meal-menu');
    Route::post('delete-meal-menu/{id}', 'deleteFoodMenu')->name('delete-meal-menu'); 
+   Route::get('/{username}/expenses-category', 'expensesCategory')->name('expenses-category');
+   Route::post('add-expenses-category',  'storeExpensesCategory')->name('add-expenses-category');
    
 });
 
@@ -271,7 +279,6 @@ Route::controller(VendorsController::class)->group(function () {
     Route::get('/{username}/all-supplies',  'outletAllSupplies')->name('all-supplies');
     Route::post('accept-supply',  'acceptSupply')->name('accept-supply');
     Route::post('reject-supplies',  'rejectSupply')->name('reject-supplies');
-    Route::get('/{username}/instore-sales',  'inStoreSales')->name('instore-sales');
-    Route::get('/{username}/new-sales',  'newInStoreSales')->name('new-sales');
-    Route::post('add-instore-sales',  'addInstoreSales')->name('add-instore-sales');
+
+   
 });

@@ -30,6 +30,12 @@ use App\Models\OfflineFoodMenu;
 use App\Models\MultiStoreRole;
 use App\Models\MultiStore;
 use App\Models\SubStore;
+use App\Models\InventoryItemSizes;
+use App\Models\VendorInstoreSales;
+use App\Models\FoodCategory;
+use App\Models\VendorFoodMenu;
+use App\Models\VendorExpensesCategory;
+use App\Models\TempInStoreSales;
 
 use Excel;
 use Auth;
@@ -50,10 +56,93 @@ class MultiVendorController extends Controller
     public function parent(Request $request, $username){
         if ((Auth::user()->password_change_at == null)) {
         $username = Auth::user()->username;
-        return view('multistore.parent.admin', compact('username'));
+        return redirect(route('show-change-password'));
     }
     else{
-        return view('multistore.parent.admin');
+        $username = Auth::user()->username;
+        $user_id = Auth::user()->id;
+        $role = DB::table('role')->select('role_name')
+        ->join('users', 'users.role_id', 'role.id')
+        ->where('users.id', $user_id)
+        ->pluck('role_name')->first();
+
+        $parent =  DB::table('multi_store')
+        ->join('users', 'users.parent_store', 'multi_store.id')
+        ->where('users.id',  $user_id)
+        ->get('users.*')->pluck('parent_store')->first();
+
+        $outlets =  DB::table('vendor')
+        ->join('sub_store', 'sub_store.vendor_id', 'vendor.id')
+        ->where('sub_store.multi_store_id', $parent)
+        ->get();
+
+        $outletsVendorID =  DB::table('vendor')
+        ->join('sub_store', 'sub_store.vendor_id', 'vendor.id')
+        ->where('sub_store.multi_store_id', $parent)
+        ->get('sub_store.vendor_id');
+        //dd($outletsVendorID);
+
+        // $consumers = collect($outletsVendorID);
+        // count only active vendor
+        $salesChannel = DB::table('sales_platform')
+        ->join('sub_store', 'sub_store.vendor_id', '=', 'sales_platform.vendor_id')
+        ->where('sales_platform.vendor_status', 'active')
+        ->where('sub_store.multi_store_id', $parent)
+        ->get('sales_platform.vendor_id');
+       // dd($consumers);
+
+       $offlineSales = DB::table('vendor_instore_sales')
+       ->where('parent', $parent)
+       ->get();
+
+       $countOutletsFromWhereOfflineSales = DB::table('vendor_instore_sales')
+       ->distinct('vendor_id')
+       ->where('parent', $parent)
+       ->count('vendor_id');
+
+       $outletsExpenses = DB::table('vendor_expenses')
+       ->join('sub_store', 'sub_store.vendor_id', '=', 'vendor_expenses.vendor_id')
+       ->where('vendor_expenses.parent', $parent)
+       ->sum('vendor_expenses.cost');
+
+        $countAllOrder = Orders::join('sub_store', 'sub_store.vendor_id', '=', 'orders.vendor_id')
+        ->where('orders.deleted_at', null)
+        ->where('sub_store.multi_store_id', $parent)
+        ->where('orders.order_amount', '!=', null)
+        ->where('orders.order_ref', '!=', null)
+        ->count();
+
+        $countPlatformWhereOrderCame = DB::table('orders')
+        ->Join('platforms', 'orders.platform_id', '=', 'platforms.id')->distinct()
+        ->join('sub_store', 'sub_store.vendor_id', '=', 'orders.vendor_id')
+        ->where('sub_store.multi_store_id', $parent)
+        ->where('orders.deleted_at', null)
+        ->where('orders.order_amount', '!=', null)
+        ->where('orders.order_ref', '!=', null)
+        ->count('platforms.id');
+
+        $sumAllOrders = DB::table('orders')   
+        ->join('sub_store', 'sub_store.vendor_id', '=', 'orders.vendor_id')
+        ->where('sub_store.multi_store_id', $parent)
+        ->where('deleted_at', null)
+        ->where('orders.order_amount', '!=', null)
+        ->where('orders.order_ref', '!=', null)
+        ->where('orders.food_price', '!=', null)
+        ->sum('orders.order_amount'); 
+
+        $chowdeckOrderCount= DB::table('orders')
+        ->join('platforms', 'platforms.id', '=', 'orders.platform_id')
+        ->join('sub_store', 'sub_store.vendor_id', '=', 'orders.vendor_id')
+        ->where('sub_store.multi_store_id', $parent)
+        ->where('platforms.name', 'chowdeck')
+        ->where('orders.deleted_at', null)
+        ->where('orders.order_amount', '!=', null)
+        ->where('orders.order_ref', '!=', null)
+        ->get('orders.platform_id')->count();
+
+        return view('multistore.parent.admin', compact('username','parent', 'outlets',
+        'offlineSales', 'salesChannel', 'countAllOrder', 'countPlatformWhereOrderCame', 'sumAllOrders', 
+         'chowdeckOrderCount', 'countOutletsFromWhereOfflineSales','outletsExpenses'));
         }
     }
 
@@ -159,9 +248,18 @@ class MultiVendorController extends Controller
         ->where('users.id', $id)
         ->get('vendor.store_name')->pluck('store_name')->first();
 
+        $parentID = DB::table('multi_store')
+        ->join('users', 'users.parent_store', 'multi_store.id')
+        ->where('users.id',  $id)
+        ->get('users.*')->pluck('parent_store')->first();
+
         $vendor_id = Vendor::join('users', 'users.vendor', 'vendor.id')
         ->where('users.id', $id)
         ->get('vendor.id')->pluck('id')->first();
+
+        $expensesCategory = VendorExpensesCategory::where('parent', $parentID)
+        ->orderBy('created_at', 'desc')
+        ->get();
 
         $expensesList = ExpensesList::where('vendor_id', $vendor_id)
         ->orderBy('created_at', 'desc')
@@ -181,30 +279,37 @@ class MultiVendorController extends Controller
         $pagination = $expenses->appends ( array ('search' => $search) );
             if (count ( $pagination ) > 0){
                 return view('multistore.cashier.add-expenses',  compact('username', 'role', 
-                'vendorName','expensesList', 'vendor_id', 'perPage', 'expenses'))->withDetails( $pagination );     
+                'vendorName','expensesList', 'vendor_id', 'perPage', 'expenses','expensesCategory'))->withDetails( $pagination );     
             } 
         else{
             //return redirect()->back()->with('expenses-status', 'No record order found');
             return view('multistore.cashier.add-expenses',   compact('username', 'role', 
-            'vendorName','expensesList', 'vendor_id', 'perPage', 'expenses')); 
+            'vendorName','expensesList', 'vendor_id', 'perPage', 'expenses','expensesCategory')); 
             }
 
         return view('multistore.cashier.add-expenses',   compact('username', 'role', 
-         'vendorName','expensesList', 'vendor_id', 'perPage', 'expenses'));
+         'vendorName','expensesList', 'vendor_id', 'perPage', 'expenses', 'expensesCategory'));
     }
 
     public function autocompleteExpenses(Request $request, $vendor_id)
     {
-        $data = ExpensesList::where('vendor_id', $vendor_id)
-        ->select("item as value", "id")
-                    ->where('item', 'LIKE', '%'. $request->get('search'). '%')
-                    ->get();
+        $data = ExpensesList::select("item as value", "id")
+        ->where('item', 'LIKE', '%'. $request->get('search'). '%')
+        ->where('vendor_id', $vendor_id)
+        ->get();
         return response()->json($data);     
     }
 
     public function storeVendorDailyExpenses(Request $request){
+        $id = Auth::user()->id;
+        $parentID = DB::table('multi_store')
+        ->join('users', 'users.parent_store', 'multi_store.id')
+        ->where('users.id',  $id)
+        ->get('users.*')->pluck('parent_store')->first();
+
         $this->validate($request, [ 
             'item'          => 'required|string|max:255',  
+            'category'      => 'required|string|max:255',  
             'price'         => 'required|string|max:255'     
         ]);
         $storeExpense = new ExpensesList();
@@ -215,7 +320,9 @@ class MultiVendorController extends Controller
 
         $expenses = new VendorExpenses();
         $expenses->vendor_id        = $request->vendor;
+        $expenses->parent           =  $parentID;
         $expenses->description      = $request->item;
+        $expenses->category         = $request->category;
         $expenses->cost             = $request->price;
         $expenses->added_by         = Auth::user()->id;
         $expenses->expense_date     = Carbon::now();
@@ -229,5 +336,247 @@ class MultiVendorController extends Controller
         
         }
     }
+
+    public function InStoreSales(Request $request){
+        $username = Auth::user()->username;
+        $user_id = Auth::user()->id;
+        $role = DB::table('role')->select('role_name')
+        ->join('users', 'users.role_id', 'role.id')
+        ->where('users.id', $user_id)
+        ->pluck('role_name')->first();
+
+        //a cashier should foodmenu from his HQ
+        $parentID = DB::table('multi_store')
+        ->join('users', 'users.parent_store', 'multi_store.id')
+        ->where('users.id',  $user_id)
+        ->get('users.*')->pluck('parent_store')->first();
+
+        $storeName = Vendor::join('sub_store', 'sub_store.vendor_id', 'vendor.id')
+        ->where('sub_store.user_id', $user_id)
+        ->get('vendor.*')->pluck('store_name')->first();
+  
+        $vendor_id = Vendor::join('users', 'users.vendor', 'vendor.id')
+        ->where('users.id', $user_id)
+        ->get('vendor.id')->pluck('id')->first();
+
+        $perPage = $request->perPage ?? 25;
+        $search = $request->input('search');
+
+        $sales = DB::table('vendor_instore_sales')
+        ->where('vendor_id', $vendor_id)
+        ->where('food_item', '!=', null)
+        ->orderBy('created_at', 'desc')
+        ->where(function ($query) use ($search) {  // <<<
+        $query->where('food_item', 'LIKE', '%'.$search.'%')
+                ->orWhere('category', 'LIKE', '%'.$search.'%')
+                ->orWhere('price', 'LIKE', '%'.$search.'%')
+                ->orWhere('created_at', 'LIKE', '%'.$search.'%');
+        })->paginate($perPage, $columns = ['*'], $pageName = 'sales'
+        )->appends(['per_page'   => $perPage]); $pagination = $sales->appends ( array ('search' => $search) );
+            if (count ( $pagination ) > 0){
+                return view('multistore.cashier.instore-sales', compact('perPage', 'username',
+                'storeName','parentID', 'vendor_id',  'sales'))->withDetails($pagination);     
+            } 
+        else{ 
+            return view('multistore.cashier.sales', compact('perPage', 'username',
+            'storeName','parentID', 'vendor_id',  'sales')); 
+        }
+        return view('multistore.cashier.sales', compact('perPage', 'username',
+        'storeName','parentID', 'vendor_id',  'sales'));
+
+    }
+      //search foodmenu
+   public function autocompleteFoodMenu(Request $request)
+   {
+       $data = VendorFoodMenu::select("food_item as value", "id")
+       ->where('food_item', 'LIKE', '%'. $request->get('search'). '%')
+       ->where('store_id',   $request->get('parent'))
+        ->get();
+       return response()->json($data);     
+   }
+
+    public function newInStoreSales(Request $request){
+        $username = Auth::user()->username;
+        $user_id = Auth::user()->id;
+        $role = DB::table('role')->select('role_name')
+        ->join('users', 'users.role_id', 'role.id')
+        ->where('users.id', $user_id)
+        ->pluck('role_name')->first();
+
+        //a cashier should foodmenu from his HQ
+        $parentID = DB::table('multi_store')
+        ->join('users', 'users.parent_store', 'multi_store.id')
+        ->where('users.id',  $user_id)
+        ->get('users.*')->pluck('parent_store')->first();
+
+        $storeName =  Vendor::join('sub_store', 'sub_store.vendor_id', 'vendor.id')
+        ->where('sub_store.user_id', $user_id)
+        ->get('vendor.*')->pluck('store_name')->first();
+
+        $vendor_id = Vendor::join('users', 'users.vendor', 'vendor.id')
+        ->where('users.id', $user_id)
+        ->get('vendor.id')->pluck('id')->first();
+
+        $foodMenu = VendorFoodMenu::where('store_id', $parentID)->get();
+
+        $sales = TempInStoreSales::where('vendor_id', $vendor_id)
+        ->where('food_item', '!=', null)
+        ->orderBy('created_at', 'desc')
+        ->get('*');
+        return view('multistore.cashier.add-new-sales',  compact('username',
+        'storeName','parentID', 'vendor_id',  'foodMenu', 'sales'));
+
+    }
+
+
+   //save vendor InStore sales
+   public function saveTempSales(Request $request){
+    $username = Auth::user()->username;
+    $user_id = Auth::user()->id;
+    $role = DB::table('role')->select('role_name')
+    ->join('users', 'users.role_id', 'role.id')
+    ->where('users.id', $user_id)
+    ->pluck('role_name')->first();
+
+       $this->validate($request, [ 
+           'quantity'      => 'required|max:255', 
+           'item'          => 'required|max:255'         
+       ]);
+
+       $parentID = DB::table('multi_store')
+       ->join('users', 'users.parent_store', 'multi_store.id')
+       ->where('users.id',  $user_id)
+       ->get('users.*')->pluck('parent_store')->first();
+
+       $storeName =  Vendor::join('sub_store', 'sub_store.vendor_id', 'vendor.id')
+       ->where('sub_store.user_id', $user_id)
+       ->get('vendor.*')->pluck('store_name')->first();
+
+       $vendor_id = Vendor::join('users', 'users.vendor', 'vendor.id')
+       ->where('users.id', $user_id)
+       ->get('vendor.id')->pluck('id')->first();
+
+       $food            = $request->item;
+       $quantity        =  $request->input('quantity');
+
+       $foodCategory = VendorFoodMenu::where('food_item', $food)
+       ->where('store_id',  $parentID)
+       ->get()->pluck('category')->first();
+
+       $foodPrice = VendorFoodMenu::where('food_item', $food)
+       ->where('store_id',  $parentID)
+       ->get()->pluck('price')->first();
+       $amount = (int)$foodPrice  *  $quantity; 
+       $today = Carbon::today();
+   
+       // SubVendorInventory
+           $sales = new TempInStoreSales();
+           $sales->added_by            = $user_id;
+           $sales->parent              = $parentID;
+           $sales->vendor_id           = $vendor_id;
+           $sales->category            = $foodCategory;
+           $sales->food_item           = $food; 
+           $sales->price               = $foodPrice;
+           $sales->quantity            = $quantity;
+           $sales->amount              = $amount;
+           $sales->date                = $today;
+           $sales->save();
+
+       if($sales){
+           $response = [
+               'code'      => '',
+               'message'   => 'Sales saved successfully',
+               'status'    => 'success',
+           ];
+           $data = json_encode($response, true);
+            
+           return redirect()->back()->with('sales-status', 'Item saved successfully');
+       }
+       else{
+           return redirect()->back()->with('sales-error', 'Opps! something happend');
+       }
+   }
+
+   public function deleteTempInStoreSales(Request $request, $id){
+     // $id =  $request->id;
+      $remove = TempInStoreSales::where('id', $id)->delete();
+      if($remove){
+       return redirect()->back()->with('sales-status', 'Item removed');  
+      }
+      else{
+       return redirect()->back()->with('sales-error', 'Opps! something happend');
+       }
+   }
+
+//post //vendor_id is the child vendor
+   public function pushInstoreSales(Request $request){
+        $user_id = Auth::user()->id;
+       $username   = Auth::user()->username;
+       $today = Carbon::today();
+       $characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
+       $pin = mt_rand(1000000, 9999999);
+       $supplyRef ='S'.str_shuffle($pin);
+
+       $parentID = DB::table('multi_store')
+       ->join('users', 'users.parent_store', 'multi_store.id')
+       ->where('users.id',  $user_id)
+       ->get('users.*')->pluck('parent_store')->first();
+
+       $storeName =  Vendor::join('sub_store', 'sub_store.vendor_id', 'vendor.id')
+       ->where('sub_store.user_id', $user_id)
+       ->get('vendor.*')->pluck('store_name')->first();
+
+       $vendor_id = Vendor::join('users', 'users.vendor', 'vendor.id')
+        ->where('users.id', $user_id)
+        ->get('vendor.id')->pluck('id')->first();
+
+       $getSales = TempInStoreSales::where('parent', $parentID)
+       ->where('vendor_id', $vendor_id )
+       ->get();
+      
+       if($getSales->count() >= 1){
+           foreach($getSales as $key  =>  $data){
+                   $sales = new VendorInstoreSales();
+                   $sales->added_by            = $data->added_by;
+                   $sales->parent              = $data->parent;
+                   $sales->vendor_id           = $data->vendor_id;
+                    $sales->category           = $data->category;
+                    $sales->food_item          = $data->food_item;
+                    $sales->price              = $data->price;
+                    $sales->quantity           = $data->quantity;
+                    $sales->amount             = $data->amount;
+                    $sales->date               = $data->date;
+                   $sales->save();
+           }
+           if($sales){
+               $response = [
+                   'code'      => '',
+                   'message'   => 'Sales sent successfully',
+                   'status'    => 'success',
+               ];
+               $data = json_encode($response, true);
+
+            //    $countRow =TempInStoreSales::where('parent', $parentID)
+            //     ->where('vendor_id', $vendor_id )
+            //    ->count();
+             
+            //    VendorInstoreSales::where('id', $sales->id)
+            //    ->update([
+            //    'number_of_items' => $countRow,
+            //    ]);
+              
+                TempInStoreSales::where('parent', $parentID)
+                ->where('vendor_id', $vendor_id )->delete();
+
+               return redirect($username.'/instore-sales/' )->with('sales-status', 'Sales sent successfully');
+           }
+           else{
+               return redirect()->back()->with('sales-error', 'Opps! something happend');
+           } 
+       }
+       else{
+           return redirect()->back()->with('sales-error', 'Opps! kindly enter supplies');    
+       }     
+   }
 
 }

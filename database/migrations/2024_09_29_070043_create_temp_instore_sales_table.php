@@ -13,7 +13,7 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('vendor_instore_sales', function (Blueprint $table) {
+        Schema::create('temp_instore_sales', function (Blueprint $table) {
             $table->id();
             $table->timestamps();
             $table->string('added_by');
@@ -26,7 +26,6 @@ return new class extends Migration
             $table->string('amount');
             $table->string('description')->nullable();
             $table->string('date')->nullable();
-           
         });
     }
 
@@ -37,6 +36,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('vendor_instore_sales');
+        Schema::dropIfExists('temp_instore_sales');
     }
 };

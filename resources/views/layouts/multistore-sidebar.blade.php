@@ -35,6 +35,14 @@
 
                         </a>
                   </li>
+                  <li class="nav-item">
+                        <a class="nav-link" href="{{ url(auth()->user()->username, 'expenses-category') }}" target="">
+                              <span class="menu-title">Expenses  Category (s)</span>
+                              <i class="mdi mdi-cash-minus menu-icon fs-24"></i>
+
+                        </a>
+                  </li>
+                 
                  
                   @endif
                   <!---end parent manager --->
