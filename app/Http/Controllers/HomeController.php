@@ -3542,7 +3542,11 @@ class HomeController extends Controller
                 $childStore->level            = 'child';
                 $childStore->save();
 
-                User::where('id', $addUser->id)->update(['vendor' => $addVendor->id]);
+                User::where('id', $addUser->id)
+                ->update([
+                    'vendor' => $addVendor->id,
+                    'parent_store' => $parent
+                ]);
                 //create vendor id in sales platform table
                 $platformStatus ='inactive';
                 $platforms = Platforms::all();
