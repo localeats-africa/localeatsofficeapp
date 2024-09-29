@@ -155,11 +155,11 @@ text-transform: lowercase;
                                                 </tr>
                                           </thead>
                                           <tbody>
-                                                @foreach($supply as $data)
+                                                @foreach($foodMenu as $data)
                                                 <tr>
                                                       <td>{{$loop->iteration}}</td>
                                                       <td class="text-capitalize">{{$data->category}}</td>
-                                                      <td class="text-capitalize">{{$data->item}}</td>
+                                                      <td class="text-capitalize">{{$data->food_item}}</td>
                                                       <td>{{$data->price}}</td>
                                                       <td>{{$data->quantity}}     
                                                     </td>
@@ -192,8 +192,7 @@ text-transform: lowercase;
                               <input type="hidden" name="vendor_id" value="{{$vendor_id}}">
                               
                               <button type="submit" name="submit"
-                                    class="btn bg-gradient-primary btn-md  text-white">Push Supplies To
-                                    {{$outletStoreName}}</button>
+                                    class="btn bg-gradient-primary btn-md  text-white">Submit </button>
                         </form>
                      
                   </div>
