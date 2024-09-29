@@ -169,6 +169,10 @@ class MultiVendorController extends Controller
         ->where('users.id', $id)
         ->get('vendor.id')->pluck('id')->first();
 
+        $expensesCategory = VendorExpensesCategory::where('vendor_id', $vendor_id)
+        ->orderBy('created_at', 'desc')
+        ->get();
+
         $expensesList = ExpensesList::where('vendor_id', $vendor_id)
         ->orderBy('created_at', 'desc')
         ->get();
@@ -187,16 +191,16 @@ class MultiVendorController extends Controller
         $pagination = $expenses->appends ( array ('search' => $search) );
             if (count ( $pagination ) > 0){
                 return view('multistore.cashier.add-expenses',  compact('username', 'role', 
-                'vendorName','expensesList', 'vendor_id', 'perPage', 'expenses'))->withDetails( $pagination );     
+                'vendorName','expensesList', 'vendor_id', 'perPage', 'expenses','expensesCategory'))->withDetails( $pagination );     
             } 
         else{
             //return redirect()->back()->with('expenses-status', 'No record order found');
             return view('multistore.cashier.add-expenses',   compact('username', 'role', 
-            'vendorName','expensesList', 'vendor_id', 'perPage', 'expenses')); 
+            'vendorName','expensesList', 'vendor_id', 'perPage', 'expenses','expensesCategory')); 
             }
 
         return view('multistore.cashier.add-expenses',   compact('username', 'role', 
-         'vendorName','expensesList', 'vendor_id', 'perPage', 'expenses'));
+         'vendorName','expensesList', 'vendor_id', 'perPage', 'expenses', 'expensesCategory'));
     }
 
     public function autocompleteExpenses(Request $request, $vendor_id)
