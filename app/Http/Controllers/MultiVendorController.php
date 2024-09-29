@@ -196,16 +196,19 @@ class MultiVendorController extends Controller
         $pagination = $expenses->appends ( array ('search' => $search) );
             if (count ( $pagination ) > 0){
                 return view('multistore.cashier.add-expenses',  compact('username', 'role', 
-                'vendorName','expensesList', 'vendor_id', 'perPage', 'expenses','expensesCategory'))->withDetails( $pagination );     
+                'vendorName','expensesList', 'vendor_id', 'perPage', 
+                'expenses','expensesCategory','parentID'))->withDetails( $pagination );     
             } 
         else{
             //return redirect()->back()->with('expenses-status', 'No record order found');
             return view('multistore.cashier.add-expenses',   compact('username', 'role', 
-            'vendorName','expensesList', 'vendor_id', 'perPage', 'expenses','expensesCategory')); 
+            'vendorName','expensesList', 'vendor_id', 'perPage', 
+            'expenses','expensesCategory', 'parentID')); 
             }
 
         return view('multistore.cashier.add-expenses',   compact('username', 'role', 
-         'vendorName','expensesList', 'vendor_id', 'perPage', 'expenses', 'expensesCategory'));
+         'vendorName','expensesList', 'vendor_id', 'perPage', 'expenses', 
+         'expensesCategory', 'parentID'));
     }
 
     public function autocompleteExpenses(Request $request, $vendor_id)
@@ -213,6 +216,7 @@ class MultiVendorController extends Controller
         $data = ExpensesList::where('vendor_id', $vendor_id)
         ->select("item as value", "id")
                     ->where('item', 'LIKE', '%'. $request->get('search'). '%')
+                    ->where('store_id',   $request->get('parent'))
                     ->get();
         return response()->json($data);     
     }
