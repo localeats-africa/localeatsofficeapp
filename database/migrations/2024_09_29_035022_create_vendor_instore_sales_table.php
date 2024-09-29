@@ -23,6 +23,7 @@ return new class extends Migration
             $table->string('category')->nullable();
             $table->string('quantity');
             $table->string('price');
+            $table->string('amount');
             $table->string('description')->nullable();
             $table->string('date')->nullable();
            
