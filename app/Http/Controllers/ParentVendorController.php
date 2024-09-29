@@ -54,6 +54,10 @@ class ParentVendorController extends Controller
         $this->middleware(['auth', 'user-access:9', 'verified']);
     }
 
+    public function parentDashboard(){
+        
+    }
+
     public function allChildVendor(Request $request, $username){
         $username = Auth::user()->username;
         $user_id = Auth::user()->id;
