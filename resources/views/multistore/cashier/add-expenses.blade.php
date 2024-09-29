@@ -96,7 +96,7 @@
                         @csrf
                         {{csrf_field()}}
                         <div class="row">
-                              <div class="col-md-6 col-12">
+                              <div class="col-md-4 col-12">
                                     <div class="form-group">
                                           <label for="">Expenses List</label>
                                           <br>
@@ -105,9 +105,22 @@
                                           placeholder="search here">
                                     </div>
                               </div>
-                             
-
-                              <div class="col-md-6 col-12">
+                              <div class="col-md-4 col-12">
+                                    <div class="form-group">
+                                          <label for="">Expenses Category</label>
+                                          <br>
+                                          <select class="js-example-basic-single2 text-secondary" style="width:100%" name="area" >
+                                                <option value="">Choose</option>
+                                                @foreach($expensesCategory as $data)
+                                                <option value="{{$data->category}}">
+                                                      {{$data->category}}
+                                                </option>
+                                                @endforeach
+                                          </select>
+                                    </div>
+                              </div>
+                              
+                              <div class="col-md-4 col-12">
                                     <div class="form-group">
                                           <label for="">Price</label>
                                           <br>
