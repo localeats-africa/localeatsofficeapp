@@ -60,12 +60,41 @@ class MultiVendorController extends Controller
     }
     else{
         $username = Auth::user()->username;
-        $id = Auth::user()->id;
+        $user_id = Auth::user()->id;
         $role = DB::table('role')->select('role_name')
         ->join('users', 'users.role_id', 'role.id')
         ->where('users.id', $id)
         ->pluck('role_name')->first();
-        
+
+        $parent =  DB::table('multi_store')
+        ->join('users', 'users.parent_store', 'multi_store.id')
+        ->where('users.id',  $user_id)
+        ->get('users.*')->pluck('parent_store')->first();
+
+        $outlets =  DB::table('vendor')
+        ->join('sub_store', 'sub_store.vendor_id', 'vendor.id')
+        ->where('sub_store.multi_store_id', $parent)
+        ->get();
+
+        $outletsVendorID =  DB::table('vendor')
+        ->join('sub_store', 'sub_store.vendor_id', 'vendor.id')
+        ->where('sub_store.multi_store_id', $parent)
+        ->get('sub_store.vendor_id');
+
+        $salesChannel = DB::table('sales_platform')
+        ->join('sub_store', 'sub_store.vendor_id', '=', 'sales_platform.vendor_id')->distinct()->where('vendor_status', 'active')
+        ->where('sales_platform.vendor_status', 'active')
+        ->whereIn('sub_store.vendor_id', $outletsVendorID)
+        ->where('sub_store.multi_store_id', $parent)
+        ->get('sales_platform.platform_name');
+
+         // a vendor is consider active if it's active on one or more platform
+        $countActiveOutlets = DB::table('sales_platform')
+        ->join('sub_store', 'sub_store.vendor_id', '=', 'sales_platform.vendor_id')->distinct()
+        ->where('sales_platform.vendor_status', 'active')
+        ->where('sub_store.multi_store_id', $parent)
+        ->get('sales_platform.vendor_id');
+
         return view('multistore.parent.admin');
         }
     }
