@@ -338,7 +338,6 @@ class MultiVendorController extends Controller
 
     }
 
- 
 
    //save vendor InStore sales
    public function saveTempSales(Request $request){
@@ -359,41 +358,48 @@ class MultiVendorController extends Controller
        ->where('users.id',  $user_id)
        ->get('users.*')->pluck('parent_store')->first();
 
+       $storeName =  Vendor::join('sub_store', 'sub_store.vendor_id', 'vendor.id')
+       ->where('sub_store.user_id', $user_id)
+       ->get('vendor.*')->pluck('store_name')->first();
+
        $vendor_id = Vendor::join('sub_store', 'sub_store.vendor_id', 'vendor.id')
-       ->where('sub_store.multi_store_id', $parentID)
+       ->where('sub_store.user_id', $user_id)
        ->get('vendor.id')->pluck('id')->first();
 
-       $food       = $request->item;
-       $qty        =  $request->input('quantity');
+       $food            = $request->item;
+       $quantity        =  $request->input('quantity');
 
-       $foodCategory = VendorFoodMenu::where('food_item', $item)
+       $foodCategory = VendorFoodMenu::where('food_item', $food)
        ->where('store_id',  $parentID)
        ->get()->pluck('category')->first();
 
-       $foodPrice = VendorFoodMenu::where('food_item', $item)
+       $foodPrice = VendorFoodMenu::where('food_item', $food)
        ->where('store_id',  $parentID)
        ->get()->pluck('price')->first();
-     
+       $amount = (int)$foodPrice  *  $quantity; 
+       $today = Carbon::today();
    
        // SubVendorInventory
-           $supply = new TempInStoreSales();
-           $supply->parent_id          = $request->parent_id;
-           $supply->vendor_id          = $request->vendor_id;
-           $supply->supply_qty         = $request->quantity;
-           $supply->size               = $request->size;
-           $supply->weight             = $request->weight;
-           $supply->supply             = $request->item;
-           $supply->save();
+           $sales = new TempInStoreSales();
+           $sales->parent              = $parentID;
+           $sales->vendor_id           = $vendor_id;
+           $sales->category            = $foodCategory;
+           $sales->food_item           = $food; 
+           $sales->price               = $foodPrice;
+           $sales->quantity            = $quantity;
+           $sales->amount              = $amount;
+           $sales->date                = $today;
+           $sales->save();
 
-       if($supply){
+       if($sales){
            $response = [
                'code'      => '',
-               'message'   => 'Supply sent successfully',
+               'message'   => 'Sales saved successfully',
                'status'    => 'success',
            ];
            $data = json_encode($response, true);
             
-           return redirect()->back()->with('supply-status', 'Item saved');
+           return redirect()->back()->with('sales-status', 'Item saved successfully');
        }
        else{
            return redirect()->back()->with('sales-error', 'Opps! something happend');
