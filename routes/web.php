@@ -263,6 +263,8 @@ Route::controller(ParentVendorController::class)->group(function () {
    Route::get('edit-meal-menu/{id}', 'editFoodMenu')->name('edit-meal-menu');
    Route::post('update-meal-menu/{id}',  'updateFoodMenu')->name('update-meal-menu');
    Route::post('delete-meal-menu/{id}', 'deleteFoodMenu')->name('delete-meal-menu'); 
+   Route::get('/{username}/expenses-category', 'expensesCategory')->name('expenses-category');
+   Route::post('add-expenses-category',  'storeExpensesCategory')->name('add-expenses-category');
    
 });
 
