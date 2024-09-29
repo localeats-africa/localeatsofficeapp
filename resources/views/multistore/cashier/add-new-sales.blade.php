@@ -188,7 +188,7 @@ text-transform: lowercase;
                               enctype="multipart/form-data">
                               @csrf
                               {{csrf_field()}}
-                              <input type="hidden" name="parent_id" value="{{$parentStoreID}}">
+                              <input type="hidden" name="parent" value="{{$parentID}}" id="parent">
                               <input type="hidden" name="vendor_id" value="{{$vendor_id}}">
                               
                               <button type="submit" name="submit"
@@ -247,7 +247,8 @@ $("#search").autocomplete({
                   type: 'GET',
                   dataType: "json",
                   data: {
-                        search: request.term
+                        search: request.term,
+                        parent: parent
                   },
                   success: function(data) {
                         response(data);
