@@ -3564,7 +3564,7 @@ class HomeController extends Controller
                 Mail::to($request->email)
                 ->cc('admin@localeats.africa')
                 //->bcc('admin@localeats.africa')
-                ->send(new NewUserEmail($data));
+                ->send(new NewVendorEmail($data));
         
                 $response = [
                     'code'      => '',
