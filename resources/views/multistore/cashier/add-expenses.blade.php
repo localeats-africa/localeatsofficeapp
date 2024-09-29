@@ -197,6 +197,7 @@
                                                       <th class="w-1">SN</th>
                                                       <th>Date</th>
                                                       <th>Item</th>
+                                                      <th>Category</th>
                                                       <th>Cost (₦)</th>
                                                 </tr>
                                           </thead>
@@ -206,6 +207,7 @@
                                                       <td>{{$loop->iteration}}</td>
                                                       <td>{{ date('d/m/Y', strtotime($data->expense_date))}}</td>
                                                       <td class="text-capitalize">{{$data->description}}</td>
+                                                      <td class="text-capitalize">{{$data->category}}</td>
                                                       <td>{{number_format($data->cost)}}</td>
 
 
