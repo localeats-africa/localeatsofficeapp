@@ -327,12 +327,14 @@ class MultiVendorController extends Controller
         ->where('sub_store.user_id', $user_id)
         ->get('vendor.id')->pluck('id')->first();
 
-        $foodMenu = TempInStoreSales::where('vendor_id', $vendor_id)
+        $foodMenu = VendorFoodMenu::where('store_id', $parentID)->get();
+
+        $sales = TempInStoreSales::where('vendor_id', $vendor_id)
         ->where('food_item', '!=', null)
         ->orderBy('created_at', 'desc')
         ->get('*');
         return view('multistore.cashier.add-new-sales',  compact('username',
-        'storeName','parentID', 'vendor_id',  'foodMenu'));
+        'storeName','parentID', 'vendor_id',  'foodMenu', 'sales'));
 
     }
 
