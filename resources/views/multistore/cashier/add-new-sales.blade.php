@@ -102,8 +102,7 @@ text-transform: lowercase;
                   {{csrf_field()}}
                   <div class="row">
                         <div class="col-md-12 ">
-                              <input id="vendor" name="vendor_id" type="hidden" value="{{ $vendor_id }}" />
-                              <input id="vendor" name="parent_id" type="hidden" id="parent" value="{{ $parentID }}" />
+                              <input type="hidden" id="parent" value="{{ $parentID }}" />
                               <div class="input-group">
                                     <span class="input-group-append">
                                           <span class="input-group-text text-dark d-block">
