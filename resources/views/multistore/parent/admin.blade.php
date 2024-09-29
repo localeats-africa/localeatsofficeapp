@@ -141,7 +141,7 @@
                                                 <h2 class="mb-5">{{$offlineSales->sum('amount')}}</h2>
                                                 <hr class="w-100">
                                                 <h6 class="card-text">From <span class="text-dark">(
-                                                      {{$offlineSales->count('vendor_id')}} )</span>
+                                                      {{$countOutletsFromWhereOfflineSales }} )</span>
                                                       <span style="float:right;">outlet (s)</span>
 
                                                 </h6>
