@@ -30,6 +30,10 @@ use App\Models\OfflineFoodMenu;
 use App\Models\MultiStoreRole;
 use App\Models\MultiStore;
 use App\Models\SubStore;
+use App\Models\InventoryItemSizes;
+use App\Models\VendorInstoreSales;
+use App\Models\FoodCategory;
+use App\Models\VendorFoodMenu;
 
 use Excel;
 use Auth;
