@@ -273,7 +273,7 @@ Route::controller(VendorsController::class)->group(function () {
     Route::get('/{username}/all-supplies',  'outletAllSupplies')->name('all-supplies');
     Route::post('accept-supply',  'acceptSupply')->name('accept-supply');
     Route::post('reject-supplies',  'rejectSupply')->name('reject-supplies');
-    Route::get('/{username}/instore-sales',  'inStoreSales')->name('instore-sales');
+    Route::get('/{username}/instore-sales',  'InStoreSales')->name('instore-sales');
     Route::get('/{username}/new-sales',  'newInStoreSales')->name('new-sales');
    
 });
