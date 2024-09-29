@@ -93,7 +93,7 @@
             </div>
             <p></p>
 
-            <form method="post" action="{{ route('add-food-category') }}" name="submit" enctype="multipart/form-data">
+            <form method="post" action="{{ route('add-expenses-category') }}" name="submit" enctype="multipart/form-data">
                   @csrf
                   {{csrf_field()}}
                   <div class="row">
@@ -102,7 +102,7 @@
                                     <div class="card-body">
                                           <div class="form-label required">Enter Category <i class="text-danger">*</i>
                                           </div>
-                                          <input type="text" class="form-control" name="food_category">
+                                          <input type="text" class="form-control" name="category">
 
                                           @error('food_category')
                                           <div class="alert alert-danger alert-dismissible" role="alert">
