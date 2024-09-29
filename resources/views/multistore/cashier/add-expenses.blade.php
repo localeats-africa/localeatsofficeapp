@@ -98,7 +98,7 @@
                         <div class="row">
                               <div class="col-md-4 col-12">
                                     <div class="form-group">
-                                          <label for="">Expenses List</label>
+                                          <label for="">Expenses</label>
                                           <br>
                                           <input type="hidden" id="vendor_id" value="{{$vendor_id}}" name="vendor">
                                           <input class="typeahead form-control" id="search" type="text" name="item"
@@ -107,9 +107,9 @@
                               </div>
                               <div class="col-md-4 col-12">
                                     <div class="form-group">
-                                          <label for="">Expenses Category</label>
+                                          <label for="">Category</label>
                                           <br>
-                                          <select class="js-example-basic-single2 text-secondary" style="width:100%" name="area" >
+                                          <select class="js-example-basic-single text-secondary" style="width:100%" name="area" >
                                                 <option value="">Choose</option>
                                                 @foreach($expensesCategory as $data)
                                                 <option value="{{$data->category}}">
@@ -286,12 +286,14 @@
       </footer>
 </div>
 <!-- main-panel -->
-<link rel="stylesheet" href="https://code.jquery.com/ui/1.13.3/themes/base/jquery-ui.css">
+<script src="{{ asset('assets/vendors/select2/select2.min.js')}}"></script>
+<script src="{{ asset('assets/vendors/typeahead.js/typeahead.bundle.min.js')}}"></script>
 
-<!-- <script src="https://code.jquery.com/jquery-3.7.1.js"></script> -->
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
-<script src="https://code.jquery.com/ui/1.13.3/jquery-ui.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.1/js/select2.min.js"></script>
+<!-- endinject -->
+<!-- Custom js for this page -->
+<script src="{{ asset('assets/js/file-upload.js')}}"></script>
+<script src="{{ asset('assets/js/typeahead.js')}}"></script>
+<script src="{{ asset('assets/js/select2.js')}}"></script>
 
 <script type="text/javascript">
 var id = document.getElementById('vendor_id').value;
