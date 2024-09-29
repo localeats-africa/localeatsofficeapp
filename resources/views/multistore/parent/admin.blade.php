@@ -346,7 +346,7 @@ $(function() {
             new Chart(ctx, {
                   type: 'bar',
                   data: {
-                        labels: @json($barChartData['months']),
+                        labels: ,
                         datasets: [{
                                     label: "Chowdeck",
                                     borderColor: gradientStrokeViolet,
@@ -357,7 +357,7 @@ $(function() {
                                     fill: false,
                                     borderWidth: 1,
                                     fill: 'origin',
-                                    data: @json($barChartData['chocdekSales']),
+                                    data: ,
                                     barPercentage: 0.5,
                                     categoryPercentage: 0.5,
                               },
@@ -371,7 +371,7 @@ $(function() {
                                     fill: false,
                                     borderWidth: 1,
                                     fill: 'origin',
-                                    data: @json($barChartData['glovoSales']),
+                                    data: ,
                                     barPercentage: 0.5,
                                     categoryPercentage: 0.5,
                               },
@@ -385,7 +385,7 @@ $(function() {
                                     fill: false,
                                     borderWidth: 1,
                                     fill: 'origin',
-                                    data: @json($barChartData['edenSales']),
+                                    data:,
                                     barPercentage: 0.5,
                                     categoryPercentage: 0.5,
                               }
@@ -475,9 +475,9 @@ $(function() {
             new Chart(ctx, {
                   type: 'doughnut',
                   data: {
-                        labels: @json($piechartData['label']),
+                        labels: ,
                         datasets: [{
-                              data: @json($piechartData['data']),
+                              data: ,
                               backgroundColor: [gradientStrokeBlue, gradientStrokeRed,
                                     gradientStrokeGreen
                               ],
@@ -584,10 +584,10 @@ var ctx = document.getElementById('lineChart').getContext('2d');
 var myChart = new Chart(ctx, {
       type: 'line',
       data: {
-            labels: @json($data['month']),
+            labels: ,
             datasets: [{
-                  label: @json($salesYear),
-                  data: @json($data['sales']),
+                  label:,
+                  data: ,
                   backgroundColor: [
                         'rgba(255, 99, 132, 0.2)',
                         'rgba(54, 162, 235, 0.2)',
@@ -620,10 +620,10 @@ var myChart = new Chart(ctx, {
 
 <script>
       var areaData = {
-      labels: @json($data['month']),
+      labels: ,
       datasets: [{
-      label: @json($salesYear),
-      data: @json($data['sales']),
+      label:,
+      data: ,
       backgroundColor: [
         'rgba(255, 99, 132, 0.2)',
         'rgba(54, 162, 235, 0.2)',
