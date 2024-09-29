@@ -476,14 +476,14 @@ class MultiVendorController extends Controller
                 TempInStoreSales::where('parent', $parentID)
                 ->where('vendor_id', $vendor_id )->delete();
 
-               return redirect($username.'/outlet-supplies/'.$request->vendor_id )->with('supply-status', 'Supply sent successfully');
+               return redirect($username.'/instore-sales/' )->with('sales-status', 'Sales sent successfully');
            }
            else{
                return redirect()->back()->with('sales-error', 'Opps! something happend');
            } 
        }
        else{
-           return redirect()->back()->with('supply-error', 'Opps! kindly enter supplies');    
+           return redirect()->back()->with('sales-error', 'Opps! kindly enter supplies');    
        }     
    }
 
