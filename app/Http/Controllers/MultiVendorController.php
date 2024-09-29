@@ -281,9 +281,8 @@ class MultiVendorController extends Controller
                 ->orWhere('category', 'LIKE', '%'.$search.'%')
                 ->orWhere('price', 'LIKE', '%'.$search.'%')
                 ->orWhere('created_at', 'LIKE', '%'.$search.'%');
-        })
-        ->paginate($perPage,  $pageName = 'food_item')->appends(['per_page'   => $perPage]);
-        $pagination = $sales->appends ( array ('search' => $search) );
+        })->paginate($perPage, $columns = ['*'], $pageName = 'sales'
+        )->appends(['per_page'   => $perPage]); $pagination = $sales->appends ( array ('search' => $search) );
             if (count ( $pagination ) > 0){
                 return view('multistore.cashier.instore-sales', compact('perPage', 'username',
                 'storeName','parentID', 'vendor_id',  'sales'))->withDetails($pagination);     
