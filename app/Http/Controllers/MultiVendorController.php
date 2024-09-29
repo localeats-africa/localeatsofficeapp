@@ -80,46 +80,46 @@ class MultiVendorController extends Controller
         ->join('sub_store', 'sub_store.vendor_id', 'vendor.id')
         ->where('sub_store.multi_store_id', $parent)
         ->get('sub_store.vendor_id');
+        //dd($outletsVendorID);
 
+        // $consumers = collect($outletsVendorID);
+        // count only active vendor
         $salesChannel = DB::table('sales_platform')
-        ->join('sub_store', 'sub_store.vendor_id', '=', 'sales_platform.vendor_id')->distinct()->where('vendor_status', 'active')
-        ->where('sales_platform.vendor_status', 'active')
-        ->whereIn('sub_store.vendor_id', $outletsVendorID)
-        ->where('sub_store.multi_store_id', $parent)
-        ->get();
-
-         // a vendor is consider active if it's active on one or more platform
-        $countActiveOutlets = DB::table('sales_platform')
-        ->join('sub_store', 'sub_store.vendor_id', '=', 'sales_platform.vendor_id')->distinct()
+        ->join('sub_store', 'sub_store.vendor_id', '=', 'sales_platform.vendor_id')
         ->where('sales_platform.vendor_status', 'active')
         ->where('sub_store.multi_store_id', $parent)
         ->get('sales_platform.vendor_id');
+       // dd($consumers);
 
-        $countAllOrder = Orders::where('deleted_at', null)
-        ->whereIn('vendor_id', $outletsVendorID)
+        $countAllOrder = Orders::join('sub_store', 'sub_store.vendor_id', '=', 'orders.vendor_id')
+        ->where('orders.deleted_at', null)
+        ->where('sub_store.multi_store_id', $parent)
         ->where('orders.order_amount', '!=', null)
         ->where('orders.order_ref', '!=', null)
         ->count();
 
         $countPlatformWhereOrderCame = DB::table('orders')
         ->Join('platforms', 'orders.platform_id', '=', 'platforms.id')->distinct()
-        ->whereIn('orders.vendor_id', $outletsVendorID)
+        ->join('sub_store', 'sub_store.vendor_id', '=', 'orders.vendor_id')
+        ->where('sub_store.multi_store_id', $parent)
         ->where('orders.deleted_at', null)
         ->where('orders.order_amount', '!=', null)
         ->where('orders.order_ref', '!=', null)
         ->count('platforms.id');
 
-        $sumAllOrders = DB::table('orders')
-        ->whereIn('vendor_id', $outletsVendorID)
+        $sumAllOrders = DB::table('orders')   
+        ->join('sub_store', 'sub_store.vendor_id', '=', 'orders.vendor_id')
+        ->where('sub_store.multi_store_id', $parent)
         ->where('deleted_at', null)
         ->where('orders.order_amount', '!=', null)
         ->where('orders.order_ref', '!=', null)
         ->where('orders.food_price', '!=', null)
-        ->sum('order_amount'); 
+        ->sum('orders.order_amount'); 
 
         $chowdeckOrderCount= DB::table('orders')
         ->join('platforms', 'platforms.id', '=', 'orders.platform_id')
-        ->whereIn('orders.vendor_id', $outletsVendorID)
+        ->join('sub_store', 'sub_store.vendor_id', '=', 'orders.vendor_id')
+        ->where('sub_store.multi_store_id', $parent)
         ->where('platforms.name', 'chowdeck')
         ->where('orders.deleted_at', null)
         ->where('orders.order_amount', '!=', null)
