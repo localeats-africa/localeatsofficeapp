@@ -232,6 +232,7 @@ class MultiVendorController extends Controller
         $expenses = new VendorExpenses();
         $expenses->vendor_id        = $request->vendor;
         $expenses->description      = $request->item;
+        $expenses->category         = $request->category;
         $expenses->cost             = $request->price;
         $expenses->added_by         = Auth::user()->id;
         $expenses->expense_date     = Carbon::now();
