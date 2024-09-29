@@ -273,7 +273,8 @@ class MultiVendorController extends Controller
         $search = $request->input('search');
 
         $sales = VendorInstoreSales::where('vendor_id', $vendor_id)
-        ->where('food_item', '!=', null)
+        
+        //->where('food_item', '!=', null)
         ->orderBy('created_at', 'desc')
         ->where(function ($query) use ($search) {  // <<<
         $query->where('food_item', 'LIKE', '%'.$search.'%')
