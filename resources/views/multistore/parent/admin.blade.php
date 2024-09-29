@@ -138,10 +138,10 @@
                                                 <h4 class="font-weight-normal"> In-Store Sales <i
                                                             class="fa fa-cutlery  mdi-24px float-end"></i>
                                                 </h4>
-                                                <h2 class="mb-5">{{$countAllOrder}}</h2>
+                                                <h2 class="mb-5">{{$offlineSales->sum('amount')}}</h2>
                                                 <hr class="w-100">
                                                 <h6 class="card-text">From <span class="text-dark">(
-                                                      {{ $outlets->count() }} )</span>
+                                                      {{$offlineSales->count('vendor_id')}} )</span>
                                                       <span style="float:right;">outlet (s)</span>
 
                                                 </h6>
