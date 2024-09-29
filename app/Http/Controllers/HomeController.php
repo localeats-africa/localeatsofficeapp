@@ -3558,7 +3558,8 @@ class HomeController extends Controller
                 $data = array(
                 'name'     => $request->name,
                 'email'    => $request->email,
-                'password' => $tempoaryPassword,        
+                'password' => $tempoaryPassword,   
+                'url'      =>'https://pos.localeats.africa',     
                 );
                 Mail::to($request->email)
                 ->cc('admin@localeats.africa')
