@@ -2670,7 +2670,6 @@ class HomeController extends Controller
          $string =  $getOrderItem;
          $substring = 'plate';
          $countAllPlate = substr_count($string, $substring);
- 
          $countPlatformWhereOrderCame = DB::table('orders')
          ->Join('platforms', 'orders.platform_id', '=', 'platforms.id')->distinct()
          ->where('orders.deleted_at', null)

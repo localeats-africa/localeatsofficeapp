@@ -257,14 +257,12 @@ Route::controller(ParentVendorController::class)->group(function () {
    Route::get('/{username}/outlet-expenses/{id}', 'expensesList')->name('outlet-expenses');
    Route::get('/{username}/food-category', 'foodCategory')->name('food-category');
    Route::post('add-food-category',  'storeFoodCategory')->name('add-food-category');
-   
    Route::get('/{username}/new-meal-menu',  'newFoodMenu')->name('new-meal-menu');
    Route::get('/{username}/meal-menu',  'foodMenu')->name('meal-menu');
    Route::post('add-meal-menu',  'addFoodMenu')->name('add-meal-menu');
-  Route::get('edit-meal-menu/{id}', 'editFoodMenu')->name('edit-meal-menu');
+   Route::get('edit-meal-menu/{id}', 'editFoodMenu')->name('edit-meal-menu');
    Route::post('update-meal-menu/{id}',  'updateFoodMenu')->name('update-meal-menu');
-   Route::post('delete-meal-menu/{id}', 'deleteFoodMenu')->name('delete-meal-menu');
-   
+   Route::post('delete-meal-menu/{id}', 'deleteFoodMenu')->name('delete-meal-menu'); 
    
 });
 
@@ -273,4 +271,7 @@ Route::controller(VendorsController::class)->group(function () {
     Route::get('/{username}/all-supplies',  'outletAllSupplies')->name('all-supplies');
     Route::post('accept-supply',  'acceptSupply')->name('accept-supply');
     Route::post('reject-supplies',  'rejectSupply')->name('reject-supplies');
+    Route::get('/{username}/instore-sales',  'inStoreSales')->name('instore-sales');
+    Route::get('/{username}/new-sales',  'newInStoreSales')->name('new-sales');
+    Route::post('add-instore-sales',  'addInstoreSales')->name('add-instore-sales');
 });

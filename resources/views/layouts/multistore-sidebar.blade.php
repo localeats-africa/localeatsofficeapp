@@ -72,7 +72,7 @@
                                     </li>
 
                                     <li class="nav-item">
-                                          <a class="nav-link" href="{{ url('offline-sales') }}">Sales</a>
+                                          <a class="nav-link" href="{{ url(auth()->user()->username, 'instore-sales') }}">Sales</a>
                                     </li>
 
                               </ul>
