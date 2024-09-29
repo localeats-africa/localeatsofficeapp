@@ -167,8 +167,8 @@ class VendorsController extends Controller
         ->where('users.id',  $user_id)
         ->get('users.*')->pluck('parent_store')->first();
 
-        $vendor_id = Vendor::join('sub_store', 'sub_store.vendor_id', 'vendor.id')
-        ->where('sub_store.multi_store_id', $parentID)
+        $vendor_id = Vendor::join('users', 'users.vendor', 'vendor.id')
+        ->where('users.id', $user_id)
         ->get('vendor.id')->pluck('id')->first();
         
         $storeName = Vendor::where('id', $vendor_id)
