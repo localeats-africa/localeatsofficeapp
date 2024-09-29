@@ -37,6 +37,7 @@ use App\Models\TempVendorInventory;
 use App\Models\InventoryItemSizes;
 use App\Models\FoodCategory;
 use App\Models\VendorFoodMenu;
+use App\Models\VendorExpensesCategory;
 
 
 use Excel;
