@@ -312,7 +312,7 @@ class MultiVendorController extends Controller
 
         $storeName =  Vendor::join('sub_store', 'sub_store.vendor_id', 'vendor.id')
         ->where('sub_store.user_id', $user_id)
-        ->get('vendor*')->pluck('store_name')->first();
+        ->get('vendor.*')->pluck('store_name')->first();
 
         $vendor_id = Vendor::join('sub_store', 'sub_store.vendor_id', 'vendor.id')
         ->where('sub_store.user_id', $user_id)
