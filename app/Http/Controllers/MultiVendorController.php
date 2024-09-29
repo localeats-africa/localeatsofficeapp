@@ -272,9 +272,9 @@ class MultiVendorController extends Controller
         $perPage = $request->perPage ?? 25;
         $search = $request->input('search');
 
-        $sales = VendorInstoreSales::where('vendor_id', $vendor_id)
-        
-        //->where('food_item', '!=', null)
+        $sales = DB::table('vendor_instore_sales')
+        ->where('vendor_id', $vendor_id)
+        ->where('food_item', '!=', null)
         ->orderBy('created_at', 'desc')
         ->where(function ($query) use ($search) {  // <<<
         $query->where('food_item', 'LIKE', '%'.$search.'%')
