@@ -118,11 +118,11 @@
                                                 <h4 class="font-weight-normal"> Online Sales <i
                                                             class="mdi mdi-shopping  mdi-24px float-end"></i>
                                                 </h4>
-                                                <h2 class="mb-5">{{$countAllOrder}}</h2>
+                                                <h2 class="mb-5">{{$sumAllOrders}}</h2>
                                                 <hr class="w-100">
                                                 <h6 class="card-text">From <span class="text-dark">(
-                                                            {{$countPlatformWhereOrderCame}} )</span>
-                                                      <span style="float:right;">channel (s)</span>
+                                                            {{$countAllOrder}} )</span>
+                                                      <span style="float:right;">order (s)</span>
 
                                                 </h6>
                                           </div>
