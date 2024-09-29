@@ -200,7 +200,7 @@
                                                 Search:
                                                 <div class="ms-2 d-inline-block">
 
-                                                      <form action="{{ route('food-type') }}" method="GET"
+                                                      <form action="{{ url(auth()->user()->username, 'expenses-category') }}" method="GET"
                                                             role="search">
                                                             {{ csrf_field() }}
                                                             <div class="input-group mb-2">
