@@ -17,8 +17,8 @@ return new class extends Migration
             $table->id();
             $table->timestamps();
             $table->string('deleted_at')->nullable();
-            $table->string('parent');
-            $table->string('vendor_id');
+            $table->string('parent')->nullable();
+            $table->string('vendor_id')->nullable();
             $table->string('category');
         });
     }
