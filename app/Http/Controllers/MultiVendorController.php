@@ -126,7 +126,9 @@ class MultiVendorController extends Controller
         ->where('orders.order_ref', '!=', null)
         ->get('orders.platform_id')->count();
 
-        return view('multistore.parent.admin');
+        return view('multistore.parent.admin', compact('username','parent', 'outlets',
+         'salesChannel', 'countAllOrder', 'countPlatformWhereOrderCame', 'sumAllOrders', 
+         'chowdeckOrderCount'));
         }
     }
 
