@@ -103,7 +103,7 @@ text-transform: lowercase;
                   <div class="row">
                         <div class="col-md-12 ">
                               <input id="vendor" name="vendor_id" type="hidden" value="{{ $vendor_id }}" />
-                              <input id="vendor" name="parent_id" type="hidden" value="{{ $parentStoreID }}" />
+                              <input id="vendor" name="parent_id" type="hidden" value="{{ $parentID }}" />
                               <div class="input-group">
                                     <span class="input-group-append">
                                           <span class="input-group-text text-dark d-block">
