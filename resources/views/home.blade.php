@@ -50,7 +50,7 @@
 
                                 <!-- child vendor sidebar menu-->
                                 @if(Auth::user()->role_id == '10')
-                              <a class="text-danger" href="{{ url('v', [auth()->user()->username]) }}">Click {{ __('Dashboard') }}</a>
+                                <a class="text-danger" href="{{ url('/', [auth()->user()->username, 'vendor'] ) }}">Click {{ __('Dashboard') }}</a>
                               @endif
 
                               @endauth
