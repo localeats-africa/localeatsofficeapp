@@ -247,6 +247,36 @@ class MultiVendorController extends Controller
         }
     }
 
+    public function InStoreSales(Request $request){
+        $username = Auth::user()->username;
+        $user_id = Auth::user()->id;
+        $role = DB::table('role')->select('role_name')
+        ->join('users', 'users.role_id', 'role.id')
+        ->where('users.id', $user_id)
+        ->pluck('role_name')->first();
+
+        //a cashier should foodmenu from his HQ
+        $parentID = DB::table('multi_store')
+        ->join('users', 'users.parent_store', 'multi_store.id')
+        ->where('users.id',  $user_id)
+        ->get('users.*')->pluck('parent_store')->first();
+
+        $storeName = User::where('id', $user_id)
+        ->get('*')->pluck('store_name')->first();
+
+        $vendor_id = Vendor::join('sub_store', 'sub_store.vendor_id', 'vendor.id')
+        ->where('sub_store.user_id', $user_id)
+        ->get('vendor.id')->pluck('id')->first();
+
+        $sales = VendorInstoreSales::where('vendor_id', $vendor_id)
+        ->where('food_item', '!=', null)
+        ->orderBy('created_at', 'desc')
+        ->get('*');
+        return view('multistore.child.cashier.sales',  compact('username',
+        'storeName','parentID', 'vendor_id',  'sales'));
+
+    }
+
     public function newInStoreSales(Request $request){
         $username = Auth::user()->username;
         $user_id = Auth::user()->id;
