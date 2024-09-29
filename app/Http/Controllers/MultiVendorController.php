@@ -280,15 +280,10 @@ class MultiVendorController extends Controller
    //search foodmenu
    public function autocompleteFoodMenu(Request $request)
    {
-    $parentID = DB::table('multi_store')
-    ->join('users', 'users.parent_store', 'multi_store.id')
-    ->where('users.id',  $user_id)
-    ->get('users.*')->pluck('parent_store')->first();
-    
        $data = VendorFoodMenu::select("item as value", "id")
-                   ->where('food_item', 'LIKE', '%'. $request->get('search'). '%')
-                   ->where('store_id',  $parentID)
-                   ->get();
+       ->where('food_item', 'LIKE', '%'. $request->get('search'). '%')
+       ->where('store_id',   $request->get('parent'))
+        ->get();
        return response()->json($data);     
    }
 
