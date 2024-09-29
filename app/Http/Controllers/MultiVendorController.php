@@ -57,7 +57,6 @@ class MultiVendorController extends Controller
         if ((Auth::user()->password_change_at == null)) {
         $username = Auth::user()->username;
         return redirect(route('show-change-password'));
-        //return view('multistore.parent.admin', compact('username'));
     }
     else{
         $username = Auth::user()->username;
@@ -66,6 +65,7 @@ class MultiVendorController extends Controller
         ->join('users', 'users.role_id', 'role.id')
         ->where('users.id', $id)
         ->pluck('role_name')->first();
+        
         return view('multistore.parent.admin');
         }
     }
