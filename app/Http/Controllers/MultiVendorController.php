@@ -95,6 +95,37 @@ class MultiVendorController extends Controller
         ->where('sub_store.multi_store_id', $parent)
         ->get('sales_platform.vendor_id');
 
+        $countAllOrder = Orders::where('deleted_at', null)
+        ->whereIn('vendor_id', $outletsVendorID)
+        ->where('orders.order_amount', '!=', null)
+        ->where('orders.order_ref', '!=', null)
+        ->count();
+
+        $countPlatformWhereOrderCame = DB::table('orders')
+        ->Join('platforms', 'orders.platform_id', '=', 'platforms.id')->distinct()
+        ->whereIn('orders.vendor_id', $outletsVendorID)
+        ->where('orders.deleted_at', null)
+        ->where('orders.order_amount', '!=', null)
+        ->where('orders.order_ref', '!=', null)
+        ->count('platforms.id');
+
+        $sumAllOrders = DB::table('orders')
+        ->whereIn('vendor_id', $outletsVendorID)
+        ->where('deleted_at', null)
+        ->where('orders.order_amount', '!=', null)
+        ->where('orders.order_ref', '!=', null)
+        ->where('orders.food_price', '!=', null)
+        ->sum('order_amount'); 
+
+        $chowdeckOrderCount= DB::table('orders')
+        ->join('platforms', 'platforms.id', '=', 'orders.platform_id')
+        ->whereIn('orders.vendor_id', $outletsVendorID)
+        ->where('platforms.name', 'chowdeck')
+        ->where('orders.deleted_at', null)
+        ->where('orders.order_amount', '!=', null)
+        ->where('orders.order_ref', '!=', null)
+        ->get('orders.platform_id')->count();
+
         return view('multistore.parent.admin');
         }
     }
