@@ -63,7 +63,7 @@ class MultiVendorController extends Controller
         $user_id = Auth::user()->id;
         $role = DB::table('role')->select('role_name')
         ->join('users', 'users.role_id', 'role.id')
-        ->where('users.id', $id)
+        ->where('users.id', $user_id)
         ->pluck('role_name')->first();
 
         $parent =  DB::table('multi_store')
@@ -86,7 +86,7 @@ class MultiVendorController extends Controller
         ->where('sales_platform.vendor_status', 'active')
         ->whereIn('sub_store.vendor_id', $outletsVendorID)
         ->where('sub_store.multi_store_id', $parent)
-        ->get('sales_platform.platform_name');
+        ->get();
 
          // a vendor is consider active if it's active on one or more platform
         $countActiveOutlets = DB::table('sales_platform')
