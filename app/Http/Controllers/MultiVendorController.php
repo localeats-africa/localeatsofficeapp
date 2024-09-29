@@ -165,14 +165,14 @@ class MultiVendorController extends Controller
         ->where('users.id', $id)
         ->get('vendor.store_name')->pluck('store_name')->first();
 
-        $vendor_id = Vendor::join('users', 'users.vendor', 'vendor.id')
-        ->where('users.id', $id)
-        ->get('vendor.id')->pluck('id')->first();
-
         $parentID = DB::table('multi_store')
         ->join('users', 'users.parent_store', 'multi_store.id')
         ->where('users.id',  $id)
         ->get('users.*')->pluck('parent_store')->first();
+
+        $vendor_id = Vendor::join('sub_store', 'sub_store.vendor_id', 'vendor.id')
+        ->where('sub_store.multi_store_id', $parentID)
+        ->get('vendor.id')->pluck('id')->first();
 
         $expensesCategory = VendorExpensesCategory::where('parent', $parentID)
         ->orderBy('created_at', 'desc')
@@ -264,9 +264,9 @@ class MultiVendorController extends Controller
         $storeName = Vendor::join('sub_store', 'sub_store.vendor_id', 'vendor.id')
         ->where('sub_store.user_id', $user_id)
         ->get('vendor.*')->pluck('store_name')->first();
-
+  
         $vendor_id = Vendor::join('sub_store', 'sub_store.vendor_id', 'vendor.id')
-        ->where('sub_store.user_id', $user_id)
+        ->where('sub_store.multi_store_id', $parentID)
         ->get('vendor.id')->pluck('id')->first();
 
         $perPage = $request->perPage ?? 25;
@@ -324,7 +324,7 @@ class MultiVendorController extends Controller
         ->get('vendor.*')->pluck('store_name')->first();
 
         $vendor_id = Vendor::join('sub_store', 'sub_store.vendor_id', 'vendor.id')
-        ->where('sub_store.user_id', $user_id)
+        ->where('sub_store.multi_store_id', $parentID)
         ->get('vendor.id')->pluck('id')->first();
 
         $foodMenu = VendorFoodMenu::where('store_id', $parentID)->get();
@@ -363,7 +363,7 @@ class MultiVendorController extends Controller
        ->get('vendor.*')->pluck('store_name')->first();
 
        $vendor_id = Vendor::join('sub_store', 'sub_store.vendor_id', 'vendor.id')
-       ->where('sub_store.user_id', $user_id)
+       ->where('sub_store.multi_store_id', $parentID)
        ->get('vendor.id')->pluck('id')->first();
 
        $food            = $request->item;
@@ -418,14 +418,28 @@ class MultiVendorController extends Controller
    }
 
 //post //vendor_id is the child vendor
-   public function pushSupplies(Request $request){
+   public function pushInstoreSales(Request $request){
        $username   = Auth::user()->username;
        $today = Carbon::today();
        $characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
        $pin = mt_rand(1000000, 9999999);
        $supplyRef ='S'.str_shuffle($pin);
 
-       $getSupply = TempVendorInventory::where('parent_id', $request->parent_id)
+       $parentID = DB::table('multi_store')
+       ->join('users', 'users.parent_store', 'multi_store.id')
+       ->where('users.id',  $user_id)
+       ->get('users.*')->pluck('parent_store')->first();
+
+       $storeName =  Vendor::join('sub_store', 'sub_store.vendor_id', 'vendor.id')
+       ->where('sub_store.user_id', $user_id)
+       ->get('vendor.*')->pluck('store_name')->first();
+
+       $vendor_id = Vendor::join('sub_store', 'sub_store.vendor_id', 'vendor.id')
+       ->where('sub_store.multi_store_id', $parentID)
+       ->get('vendor.id')->pluck('id')->first();
+
+       $getSupply = TempInStoreSales::where('parent', $parentID)
+       ->where('vendor_id', $vendor_id )
        ->get();
       
        if($getSupply->count() >= 1){
