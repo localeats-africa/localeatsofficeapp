@@ -406,11 +406,11 @@ class MultiVendorController extends Controller
        }
    }
 
-   public function deleteTempSupply(Request $request, $id){
+   public function deleteTempInStoreSales(Request $request, $id){
      // $id =  $request->id;
-      $remove = TempVendorInventory::where('id', $id)->delete();
+      $remove = TempInStoreSales::where('id', $id)->delete();
       if($remove){
-       return redirect()->back()->with('supply-status', 'Item removed');  
+       return redirect()->back()->with('sales-status', 'Item removed');  
       }
       else{
        return redirect()->back()->with('sales-error', 'Opps! something happend');
