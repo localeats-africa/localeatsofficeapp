@@ -109,7 +109,7 @@
                                     <div class="form-group">
                                           <label for="">Category</label>
                                           <br>
-                                          <select class="js-example-basic-single text-secondary" style="width:100%" name="area" >
+                                          <select class="js-example-basic-single text-secondary" style="width:100%" name="category" >
                                                 <option value="">Choose</option>
                                                 @foreach($expensesCategory as $data)
                                                 <option value="{{$data->category}}">
