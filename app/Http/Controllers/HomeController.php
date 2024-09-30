@@ -327,6 +327,7 @@ class HomeController extends Controller
             ->pluck('role_name')->first();
     
             $countVendor = Vendor::all();
+            //->where('restaurant_type', '!=', null)// leave out parent vendor
              // a vendor is consider active if it's active on one or more platform
             $countActivevendor = DB::table('sales_platform')
             ->join('vendor', 'vendor.id', '=', 'sales_platform.vendor_id')->distinct()
