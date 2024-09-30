@@ -271,7 +271,7 @@ Route::controller(ParentVendorController::class)->group(function () {
    Route::post('delete-meal-menu/{id}', 'deleteFoodMenu')->name('delete-meal-menu'); 
    Route::get('/{username}/expenses-category', 'expensesCategory')->name('expenses-category');
    Route::post('add-expenses-category',  'storeExpensesCategory')->name('add-expenses-category');
-   Route::get('/{username}/import-online-sales',  'foodMenu')->name('import-online-sales');
+   Route::get('/{username}/import-online-sales',  'importOnlineSales')->name('import-online-sales');
 });
 
 
