@@ -106,7 +106,7 @@ class MultiVendorController extends Controller
        ->where('vendor_expenses.parent', $parent)
        ->sum('vendor_expenses.cost');
 
-        $countAllOrder = Orders::join('sub_store', 'sub_store.vendor_id', '=', 'vendor_online_sales.vendor_id')
+        $countAllOrder = VendorOnlineSales::join('sub_store', 'sub_store.vendor_id', '=', 'vendor_online_sales.vendor_id')
         ->where('sub_store.multi_store_id', $parent)
         ->where('vendor_online_sales.order_amount', '!=', null)
         ->count();
