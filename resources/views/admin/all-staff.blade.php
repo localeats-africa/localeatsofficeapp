@@ -8,7 +8,7 @@
       <div class="content-wrapper">
             <div class="page-header">
                   <h3 class="page-title">
-                        All Staff (s)
+                        All User (s)
                   </h3>
                   <nav aria-label="breadcrumb">
                         <ul class="breadcrumb">
@@ -223,6 +223,10 @@
 
                                           @elseif($data->role_id =='7')
                                           <span class="badge bg-success">{{$data->role_name}}</span>
+                                          @elseif($data->role_id =='9')
+                                          <span class="badge bg-primary">{{$data->role_name}}</span>
+                                          @elseif($data->role_id =='10')
+                                          <span class="badge bg-warning">{{$data->role_name}}</span>
                                           @else
                                           <span class="badge bg-secondary">{{$data->role_name}}</span>
                                           @endif
