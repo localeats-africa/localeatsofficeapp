@@ -42,6 +42,29 @@
 
                         </a>
                   </li>
+
+                  <li class="nav-item">
+                        <a class="nav-link" data-bs-toggle="collapse" href="#food-menu" aria-expanded="false"
+                              aria-controls="food-menu">
+                              <span class="menu-title">Online Sales</span>
+                              <i class="menu-arrow"></i>
+                              <i class="mdi mdi-menu   menu-icon fs-24"></i>
+
+                        </a>
+                        <div class="collapse show" id="food-menu">
+                              <ul class="nav flex-column sub-menu">
+
+                                    <li class="nav-item">
+                                          <a class="nav-link" href="{{ url(auth()->user()->username, 'vendor-add-expenses') }}">Chowdeck</a>
+                                    </li>
+
+                                    <li class="nav-item">
+                                          <a class="nav-link" href="{{ url(auth()->user()->username, 'instore-sales') }}">Glovo</a>
+                                    </li>
+
+                              </ul>
+                        </div>
+                  </li>
                  
                  
                   @endif
