@@ -762,4 +762,8 @@ class ParentVendorController extends Controller
         else{return redirect()->back()->with('error', 'Opps! something went wrong.'); }
     }
 
+    public function importOnlineSales(Request $request){
+        
+    }
+
 }
