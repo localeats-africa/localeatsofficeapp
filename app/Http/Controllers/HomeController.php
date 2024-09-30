@@ -158,7 +158,7 @@ class HomeController extends Controller
                     return redirect('/'.$value.'/dashboard')->with('new-password', 'Your password was change successfully' );
                 }
 
-                if(Auth::user()->role_id == '10'){
+                if(Auth::user()->role_id ==  $childVendor){
                     $value = Auth::user()->username;
                     return redirect('/'.$value.'/vendor')->with('new-password', 'Your password was change successfully' );
                 } 
