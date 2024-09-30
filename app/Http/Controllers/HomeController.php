@@ -46,6 +46,14 @@ use App\Models\State;
 use App\Models\MultiStoreRole;
 use App\Models\MultiStore;
 use App\Models\SubStore;
+use App\Models\TempVendorInventory;
+use App\Models\InventoryItemSizes;
+use App\Models\FoodCategory;
+use App\Models\VendorFoodMenu;
+use App\Models\VendorExpensesCategory;
+use App\Models\TempInStoreSales;
+use App\Models\VendorOnlineSales;
+use App\Models\VendorInstoreSales;
 
 use Excel;
 use Auth;
@@ -154,12 +162,13 @@ class HomeController extends Controller
                 }
                 if(Auth::user()->role_id == $parentVendor){
                     $value = Auth::user()->username;
-                    return redirect()->route([$value], 'dashboard')->with('new-password', 'Your password was change successfully' );
+                    
+                    return redirect('/'.$value.'/dashboard')->with('new-password', 'Your password was change successfully' );
                 }
 
-                if(Auth::user()->role_id == $childVendor){
+                if(Auth::user()->role_id ==  $childVendor){
                     $value = Auth::user()->username;
-                    return redirect()->route('v', [$value])->with('new-password', 'Your password was change successfully' );
+                    return redirect('/'.$value.'/vendor')->with('new-password', 'Your password was change successfully' );
                 } 
             
             }
@@ -733,8 +742,9 @@ class HomeController extends Controller
 
         $platform = Platforms::where('name', '!=', 'chowdeck')->get('*');
         $vendor = Vendor::where('vendor_status', 'approved')
+        ->where('restaurant_type', '!=', null)
         ->where('deleted_at', '=', null)
-        ->get();
+        ->get('vendor.*');
 
         return view('admin.setup-vendor', compact('role', 'name', 'platform', 'vendor'));
     }
@@ -787,6 +797,7 @@ class HomeController extends Controller
         $platform = Platforms::where('name', 'chowdeck')
         ->get(['*'])->pluck('name')->first();
         $vendor = Vendor::where('vendor_status', 'approved')
+        ->where('restaurant_type', '!=', null)
         ->where('deleted_at', '=', null)
         ->get();
 
@@ -881,6 +892,7 @@ class HomeController extends Controller
         $vendor = DB::table('vendor')
         ->where('deleted_at', '=', null)
         ->where('vendor_status', 'approved')
+        ->where('restaurant_type', '!=', null)
         ->select(['*'])
         ->orderBy('created_at', 'desc')
         ->where(function ($query) use ($search) {  // <<<
@@ -3327,8 +3339,8 @@ class HomeController extends Controller
             ->join('multi_store', 'multi_store.vendor_id', 'vendor.id')
             ->join('state', 'state.id', '=', 'vendor.state_id')
             ->where('multi_store.level', 'parent')
-            ->select(['vendor.id', 'vendor.vendor_status', 'vendor.store_area',
-            'multi_store.multi_store_name', 'state.state'])
+            ->select(['multi_store.*', 'vendor.vendor_status', 'vendor.store_area',
+            'state.state'])
             ->orderBy('vendor.created_at', 'desc')
             ->where(function ($query) use ($search) {  // <<<
             $query->where('multi_store.multi_store_name', 'LIKE', '%'.$search.'%')
@@ -3388,7 +3400,7 @@ class HomeController extends Controller
             ->join('sub_store', 'sub_store.vendor_id', 'vendor.id')
             ->join('state', 'state.id', '=', 'vendor.state_id')
             ->where('sub_store.multi_store_id', $parent)
-            ->select(['vendor.id', 'vendor.vendor_status', 'vendor.store_area',
+            ->select(['sub_store.*', 'vendor.vendor_status', 'vendor.store_area',
             'vendor.store_name', 'state.state'])
             ->orderBy('sub_store.created_at', 'desc')
             ->where(function ($query) use ($search) {  // <<<
@@ -3541,7 +3553,11 @@ class HomeController extends Controller
                 $childStore->level            = 'child';
                 $childStore->save();
 
-                User::where('id', $addUser->id)->update(['vendor' => $addVendor->id]);
+                User::where('id', $addUser->id)
+                ->update([
+                    'vendor' => $addVendor->id,
+                    'parent_store' => $request->parent_id
+                ]);
                 //create vendor id in sales platform table
                 $platformStatus ='inactive';
                 $platforms = Platforms::all();
@@ -3557,12 +3573,13 @@ class HomeController extends Controller
                 $data = array(
                 'name'     => $request->name,
                 'email'    => $request->email,
-                'password' => $tempoaryPassword,        
+                'password' => $tempoaryPassword,   
+                'url'      =>'https://pos.localeats.africa',     
                 );
                 Mail::to($request->email)
                 ->cc('admin@localeats.africa')
                 //->bcc('admin@localeats.africa')
-                ->send(new NewUserEmail($data));
+                ->send(new NewVendorEmail($data));
         
                 $response = [
                     'code'      => '',
