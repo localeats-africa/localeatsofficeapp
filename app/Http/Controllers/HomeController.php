@@ -742,8 +742,9 @@ class HomeController extends Controller
 
         $platform = Platforms::where('name', '!=', 'chowdeck')->get('*');
         $vendor = Vendor::where('vendor_status', 'approved')
+        ->where('restaurant_type', '!=', null)
         ->where('deleted_at', '=', null)
-        ->get();
+        ->get('vendor.*');
 
         return view('admin.setup-vendor', compact('role', 'name', 'platform', 'vendor'));
     }
@@ -796,6 +797,7 @@ class HomeController extends Controller
         $platform = Platforms::where('name', 'chowdeck')
         ->get(['*'])->pluck('name')->first();
         $vendor = Vendor::where('vendor_status', 'approved')
+        ->where('restaurant_type', '!=', null)
         ->where('deleted_at', '=', null)
         ->get();
 
@@ -890,6 +892,7 @@ class HomeController extends Controller
         $vendor = DB::table('vendor')
         ->where('deleted_at', '=', null)
         ->where('vendor_status', 'approved')
+        ->where('restaurant_type', '!=', null)
         ->select(['*'])
         ->orderBy('created_at', 'desc')
         ->where(function ($query) use ($search) {  // <<<
