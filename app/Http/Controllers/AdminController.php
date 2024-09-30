@@ -40,6 +40,14 @@ use App\Models\OfflineFoodMenu;
 use App\Models\MultiStoreRole;
 use App\Models\MultiStore;
 use App\Models\SubStore;
+use App\Models\TempVendorInventory;
+use App\Models\InventoryItemSizes;
+use App\Models\FoodCategory;
+use App\Models\VendorFoodMenu;
+use App\Models\VendorExpensesCategory;
+use App\Models\TempInStoreSales;
+use App\Models\VendorOnlineSales;
+use App\Models\VendorInstoreSales;
 
 use Excel;
 use Auth;
