@@ -183,18 +183,6 @@
                                     </div>
                               </div>
 
-
-
-                        </div>
-                        <!--row--->
-                  </div>
-            </div>
-            <!--row-deck-->
-
-            <div class="row ">
-                  <div class="col-12">
-                        <div class="row row-cards">
-
                               <div class="col-md-3 stretch-card grid-margin">
                                     <div class="card bg-primary card-img-holder text-dark">
                                           <div class="card-body">
@@ -210,7 +198,16 @@
                               </div>
 
 
-                              <div class="col-md-3 stretch-card grid-margin">
+                        </div>
+                        <!--row--->
+                  </div>
+            </div>
+            <!--row-deck-->
+
+            <div class="row ">
+                  <div class="col-12">
+                        <div class="row row-cards">
+                              <div class="col-md-4 stretch-card grid-margin">
                                     <div class="card bg-gradient-dark card-img-holder text-white">
                                           <div class="card-body">
                                                 <img src="{{ asset('assets/images/dashboard/circle.svg') }}"
@@ -230,7 +227,7 @@
                                     </div>
                               </div>
 
-                              <div class="col-md-3 stretch-card grid-margin">
+                              <div class="col-md-4 stretch-card grid-margin">
                                     <div class="card  bg-secondary  card-img-holder text-dark">
                                           <div class="card-body">
                                                 <img src="{{ asset('assets/images/dashboard/circle.svg') }}"
@@ -250,7 +247,7 @@
                                     </div>
                               </div>
 
-                              <div class="col-md-3 stretch-card grid-margin">
+                              <div class="col-md-4 stretch-card grid-margin">
                                     <div class="card bg-gradient-danger card-img-holder text-dark">
                                           <div class="card-body">
                                                 <img src="{{ asset('assets/images/dashboard/circle.svg') }}"
