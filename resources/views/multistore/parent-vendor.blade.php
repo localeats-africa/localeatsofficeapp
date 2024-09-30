@@ -352,18 +352,18 @@
                                     @endif
                                     @endauth
                                     @php
-                                    $outlets = 0;
-                                    $outlets += App\Models\SubStore::where('multi_store_id',
+                                 
+                                    $outlets = App\Models\SubStore::where('multi_store_id',
                                     $data->id)->count();
-                                    @endphp
+                                    @endphp 
 
-                                    <a href="child-vendor/{{$data->id}}" class="card-btn "
+                                    <a href="child-vendor/{{$data->vendor_id}}" class="card-btn "
                                           style="text-decoration:none;" title="Outlets">
                                           <small> ( {{$outlets}} ) Outlets </small> <small class="text-info"> &nbsp;<i
                                                       class="fa fa-cutlery" aria-hidden="true"></i></small>
                                     </a>
 
-                                    <a href="new-child-vendor/{{$data->id}}" class="card-btn "
+                                    <a href="new-child-vendor/{{$data->vendor_id}}" class="card-btn "
                                           style="text-decoration:none;" title="Outlets">
                                           <small> Create New Outlet </small> <small class="text-info"> &nbsp;<i
                                                       class="fa fa-cutlery" aria-hidden="true"></i></small>
