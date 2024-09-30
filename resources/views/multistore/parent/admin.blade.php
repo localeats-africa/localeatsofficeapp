@@ -8,7 +8,7 @@
       <div class="content-wrapper">
             <div class="page-header">
                   <h3 class="page-title">
-                        Overview 
+                        Overview
                   </h3>
                   <nav aria-label="breadcrumb">
                         <ul class="breadcrumb">
@@ -18,7 +18,7 @@
                         </ul>
                   </nav>
             </div>
-               <!--Alert here--->
+            <!--Alert here--->
             <div class="row ">
                   <div class="col-12">
                         @if(session('add-vendor'))
@@ -69,17 +69,16 @@
             <!---end Alert --->
             <!-- filter dashboard  -->
             <div class="row ">
-                  <form method="GET" action="" name="submit"
-                        enctype="multipart/form-data">
+                  <form method="GET" action="" name="submit" enctype="multipart/form-data">
                         @csrf
                         {{csrf_field()}}
                         <div class="row text-end">
-                        <h6>Filter record:</h6>
+                              <h6>Filter record:</h6>
                               <div class="col-md-3">
                               </div>
                               <div class="col-md-3">
                               </div>
-                              
+
                               <div class="col-md-3 col-12">
                                     <div class="form-group">
                                           <div class="input-group ">
@@ -132,7 +131,7 @@
                         <div class="row row-cards">
 
                               <div class="col-md-3 stretch-card grid-margin">
-                                    <div class="card bg-gradient-dark card-img-holder text-white">
+                                    <div class="card bg-gradient-success card-img-holder text-white">
                                           <div class="card-body">
                                                 <img src="{{ asset('assets/images/dashboard/circle.svg')}}"
                                                       class="card-img-absolute" alt="circle-image">
@@ -145,7 +144,7 @@
                                     </div>
                               </div>
                               <div class="col-md-3 stretch-card grid-margin">
-                              <div class="card bg-gradient-secondary card-img-holder text-dark">
+                                    <div class="card bg-gradient-secondary card-img-holder text-dark">
                                           <div class="card-body">
                                                 <img src="{{ asset('assets/images/dashboard/circle.svg') }}"
                                                       class="card-img-absolute" alt="circle-image">
@@ -159,8 +158,72 @@
                                     </div>
                               </div>
 
+
                               <div class="col-md-3 stretch-card grid-margin">
-                              <div class="card bg-gradient-dark card-img-holder text-white">
+                                    <div class="card bg-secondary card-img-holder text-dark">
+                                          <div class="card-body">
+                                                <img src="{{ asset('assets/images/dashboard/circle.svg') }}"
+                                                      class="card-img-absolute" alt="circle-image">
+                                                <h4 class="font-weight-normal"> Chowdeck Sales <i
+                                                            class="mdi mdi-cloud-braces mdi-24px float-end"></i>
+                                                </h4>
+                                                <h2 class="mb-5">₦{{0}}</h2>
+                                                <hr class="w-100">
+                                                <h6 class="card-text">From <span class="text-dark">(
+                                                            {{$countOutletsFromWhereOfflineSales }} )</span>
+                                                      <span style="float:right;">outlet (s)</span>
+
+                                                </h6>
+                                          </div>
+
+                                    </div>
+                              </div>
+
+                              <div class="col-md-3 stretch-card grid-margin">
+                                    <div class="card bg-gradient-warning card-img-holder text-dark">
+                                          <div class="card-body">
+                                                <img src="{{ asset('assets/images/dashboard/circle.svg')}}"
+                                                      class="card-img-absolute" alt="circle-image">
+                                                <h4 class="font-weight-normal">Glovo (s) <i
+                                                            class="mdi mdi-cloud-braces mdi-24px float-end"></i>
+                                                </h4>
+                                                <h2 class="mb-5">₦{{0}}</h2>
+                                                <hr class="w-100">
+                                          </div>
+                                    </div>
+                              </div>
+
+
+
+                        </div>
+                        <!--row--->
+                  </div>
+            </div>
+            <!--row-deck-->
+
+            <div class="row ">
+                  <div class="col-12">
+                        <div class="row row-cards">
+
+                           
+
+                              <div class="col-md-3 stretch-card grid-margin">
+                                    <div class="card bg-secondary card-img-holder text-dark">
+                                          <div class="card-body">
+                                                <img src="{{ asset('assets/images/dashboard/circle.svg')}}"
+                                                      class="card-img-absolute" alt="circle-image">
+                                                <h4 class="font-weight-normal">Bertatech Sales <i
+                                                            class="mdi mdi-cloud-braces mdi-24px float-end"></i>
+                                                </h4>
+                                                <h2 class="mb-5">₦{{0}}</h2>
+                                                <hr class="w-100">
+                                          </div>
+                                    </div>
+                              </div>
+
+
+                              <div class="col-md-3 stretch-card grid-margin">
+                                    <div class="card bg-gradient-dark card-img-holder text-white">
                                           <div class="card-body">
                                                 <img src="{{ asset('assets/images/dashboard/circle.svg') }}"
                                                       class="card-img-absolute" alt="circle-image">
@@ -180,52 +243,6 @@
                               </div>
 
                               <div class="col-md-3 stretch-card grid-margin">
-                              <div class="card bg-secondary card-img-holder text-dark">
-                                          <div class="card-body">
-                                                <img src="{{ asset('assets/images/dashboard/circle.svg') }}"
-                                                      class="card-img-absolute" alt="circle-image">
-                                                <h4 class="font-weight-normal"> Chowdeck Sales <i
-                                                class="mdi mdi-cloud-braces mdi-24px float-end"></i>
-                                                </h4>
-                                                <h2 class="mb-5">₦{{0}}</h2>
-                                                <hr class="w-100">
-                                                <h6 class="card-text">From <span class="text-dark">(
-                                                      {{$countOutletsFromWhereOfflineSales }} )</span>
-                                                      <span style="float:right;">outlet (s)</span>
-
-                                                </h6>
-                                          </div>
-
-                                    </div>
-                              </div>
-
-
-
-                        </div>
-                        <!--row--->
-                  </div>
-            </div>
-            <!--row-deck-->
-
-            <div class="row ">
-                  <div class="col-12">
-                        <div class="row row-cards">
-
-                              <div class="col-md-3 stretch-card grid-margin">
-                                    <div class="card bg-gradient-warning card-img-holder text-dark">
-                                          <div class="card-body">
-                                                <img src="{{ asset('assets/images/dashboard/circle.svg')}}"
-                                                      class="card-img-absolute" alt="circle-image">
-                                                <h4 class="font-weight-normal">Glovo (s) <i
-                                                            class="mdi mdi-cloud-braces mdi-24px float-end"></i>
-                                                </h4>
-                                                <h2 class="mb-5">₦{{0}}</h2>
-                                                <hr class="w-100">
-                                          </div>
-                                    </div>
-                              </div>
-                          
-                              <div class="col-md-3 stretch-card grid-margin">
                                     <div class="card  bg-gradient-success  card-img-holder text-dark">
                                           <div class="card-body">
                                                 <img src="{{ asset('assets/images/dashboard/circle.svg') }}"
@@ -236,7 +253,7 @@
                                                 <h2 class="mb-5">₦{{number_format($offlineSales->sum('amount'))}}</h2>
                                                 <hr class="w-100">
                                                 <h6 class="card-text">From <span class="text-dark">(
-                                                      {{$countOutletsFromWhereOfflineSales }} )</span>
+                                                            {{$countOutletsFromWhereOfflineSales }} )</span>
                                                       <span style="float:right;">outlet (s)</span>
 
                                                 </h6>
@@ -259,6 +276,16 @@
 
                                     </div>
                               </div>
+
+                        </div>
+                        <!--row--->
+                  </div>
+            </div>
+            <!--row-deck-->
+
+            <div class="row ">
+                  <div class="col-12">
+                        <div class="row row-cards">
 
                               <div class="col-md-3 stretch-card grid-margin">
                                     <div class="card bg-gradient-info card-img-holder text-dark">
@@ -299,19 +326,16 @@
                                     </div>
                               </div>
 
-
-
-
                         </div>
-                        <!--row--->
+
                   </div>
             </div>
-            <!--row-deck-->
+
 
             <!--row-deck-->
-         
+
             <p></p>
-         
+
             <div class="row">
                   <div class="col-md-7 grid-margin stretch-card">
                         <div class="card">
@@ -336,7 +360,7 @@
                                                       </tr>
                                                 </thead>
                                                 <tbody>
-                                                    <tr></tr>
+                                                      <tr></tr>
 
                                                 </tbody>
                                           </table>
@@ -384,7 +408,8 @@
       <!--content wrapper-->
       <footer class="footer">
             <div class="d-sm-flex justify-content-center justify-content-sm-between">
-                  <span class="text-muted text-center text-sm-left d-block d-sm-inline-block">Copyright ©
+                  <span class="text-muted text-center text-sm-left d-block d-sm-inline-block">Copyright
+                        ©
                         LocalEats Africa {{ date('Y')}} </a>. All rights
                         reserved.</span>
                   <span class="float-none float-sm-right d-block mt-1 mt-sm-0 text-center"><i
@@ -429,17 +454,20 @@ $(function() {
             var gradientStrokeViolet = graphGradient1.createLinearGradient(0, 0, 0, 181);
             gradientStrokeViolet.addColorStop(0, 'rgba(12, 81, 63, 1)');
             gradientStrokeViolet.addColorStop(1, 'rgba(12, 81, 63, 1)');
-            var gradientLegendViolet = 'linear-gradient(to right, rgba(12, 81, 63, 1), rgba(12, 81, 63, 1))';
+            var gradientLegendViolet =
+                  'linear-gradient(to right, rgba(12, 81, 63, 1), rgba(12, 81, 63, 1))';
 
             var gradientStrokeBlue = graphGradient2.createLinearGradient(0, 0, 0, 360);
             gradientStrokeBlue.addColorStop(0, 'rgba(255, 194, 68, 1)');
             gradientStrokeBlue.addColorStop(1, 'rgba(255, 194, 68, 1)');
-            var gradientLegendBlue = 'linear-gradient(to right, rgba(255, 194, 68, 1), rgba(255, 194, 68, 1))';
+            var gradientLegendBlue =
+                  'linear-gradient(to right, rgba(255, 194, 68, 1), rgba(255, 194, 68, 1))';
 
             var gradientStrokeRed = graphGradient3.createLinearGradient(0, 0, 0, 300);
             gradientStrokeRed.addColorStop(0, 'rgba(162, 153, 149, 1)');
             gradientStrokeRed.addColorStop(1, 'rgba(162, 153, 149, 1)');
-            var gradientLegendRed = 'linear-gradient(to right, rgba(162, 153, 149, 1), rgba(162, 153, 149, 1))';
+            var gradientLegendRed =
+                  'linear-gradient(to right, rgba(162, 153, 149, 1), rgba(162, 153, 149, 1))';
             const bgColor1 = ["rgba(12, 81, 63, 1)"];
             const bgColor2 = ["rgba(255, 194, 68, 1"];
             const bgColor3 = ["rgba(162, 153, 149, 1)"];
@@ -486,7 +514,7 @@ $(function() {
                                     fill: false,
                                     borderWidth: 1,
                                     fill: 'origin',
-                                    data:,
+                                    data: ,
                                     barPercentage: 0.5,
                                     categoryPercentage: 0.5,
                               }
@@ -523,12 +551,16 @@ $(function() {
                         }
                   },
                   plugins: [{
-                        afterDatasetUpdate: function(chart, args, options) {
+                        afterDatasetUpdate: function(chart, args,
+                              options) {
                               const chartId = chart.canvas.id;
                               var i;
-                              const legendId = `${chartId}-legend`;
-                              const ul = document.createElement('ul');
-                              for (i = 0; i < chart.data.datasets.length; i++) {
+                              const legendId =
+                                    `${chartId}-legend`;
+                              const ul = document.createElement(
+                                    'ul');
+                              for (i = 0; i < chart.data.datasets
+                                    .length; i++) {
                                     ul.innerHTML += `
               <li>
                 <span style="background-color: ${chart.data.datasets[i].fillColor}"></span>
@@ -537,7 +569,8 @@ $(function() {
             `;
                               }
                               // alert(chart.data.datasets[0].backgroundColor);
-                              return document.getElementById(legendId).appendChild(
+                              return document.getElementById(
+                                    legendId).appendChild(
                                     ul);
                         }
                   }]
@@ -579,7 +612,8 @@ $(function() {
                         labels: ,
                         datasets: [{
                               data: ,
-                              backgroundColor: [gradientStrokeBlue, gradientStrokeRed,
+                              backgroundColor: [gradientStrokeBlue,
+                                    gradientStrokeRed,
                                     gradientStrokeGreen
                               ],
                               hoverBackgroundColor: [
@@ -618,12 +652,16 @@ $(function() {
                         }
                   },
                   plugins: [{
-                        afterDatasetUpdate: function(chart, args, options) {
+                        afterDatasetUpdate: function(chart, args,
+                              options) {
                               const chartId = chart.canvas.id;
                               var i;
-                              const legendId = `${chartId}-legend`;
-                              const ul = document.createElement('ul');
-                              for (i = 0; i < chart.data.datasets[0].data
+                              const legendId =
+                                    `${chartId}-legend`;
+                              const ul = document.createElement(
+                                    'ul');
+                              for (i = 0; i < chart.data.datasets[
+                                          0].data
                                     .length; i++) {
                                     ul.innerHTML += `
                 <li>
@@ -632,7 +670,8 @@ $(function() {
                 </li>
               `;
                               }
-                              return document.getElementById(legendId).appendChild(
+                              return document.getElementById(
+                                    legendId).appendChild(
                                     ul);
                         }
                   }]
@@ -669,7 +708,8 @@ $(function() {
             document.querySelector('#proBanner').classList.remove('d-flex');
             document.querySelector('.navbar').classList.remove('pt-5');
             document.querySelector('.navbar').classList.add('fixed-top');
-            document.querySelector('.page-body-wrapper').classList.add('proBanner-padding-top');
+            document.querySelector('.page-body-wrapper').classList.add(
+                  'proBanner-padding-top');
             document.querySelector('.navbar').classList.remove('mt-3');
             var date = new Date();
             date.setTime(date.getTime() + 24 * 60 * 60 * 1000);
@@ -687,7 +727,7 @@ var myChart = new Chart(ctx, {
       data: {
             labels: ,
             datasets: [{
-                  label:,
+                  label: ,
                   data: ,
                   backgroundColor: [
                         'rgba(255, 99, 132, 0.2)',
@@ -720,50 +760,49 @@ var myChart = new Chart(ctx, {
 </script>
 
 <script>
-      var areaData = {
+var areaData = {
       labels: ,
       datasets: [{
-      label:,
-      data: ,
-      backgroundColor: [
-        'rgba(255, 99, 132, 0.2)',
-        'rgba(54, 162, 235, 0.2)',
-        'rgba(255, 206, 86, 0.2)',
-        'rgba(75, 192, 192, 0.2)',
-        'rgba(153, 102, 255, 0.2)',
-        'rgba(255, 159, 64, 0.2)'
-      ],
-      borderColor: [
-        'rgba(255,99,132,1)',
-        'rgba(54, 162, 235, 1)',
-        'rgba(255, 206, 86, 1)',
-        'rgba(75, 192, 192, 1)',
-        'rgba(153, 102, 255, 1)',
-        'rgba(255, 159, 64, 1)'
-      ],
-      borderWidth: 1,
-      fill: true, // 3: no fill
-    }]
-  };
+            label: ,
+            data: ,
+            backgroundColor: [
+                  'rgba(255, 99, 132, 0.2)',
+                  'rgba(54, 162, 235, 0.2)',
+                  'rgba(255, 206, 86, 0.2)',
+                  'rgba(75, 192, 192, 0.2)',
+                  'rgba(153, 102, 255, 0.2)',
+                  'rgba(255, 159, 64, 0.2)'
+            ],
+            borderColor: [
+                  'rgba(255,99,132,1)',
+                  'rgba(54, 162, 235, 1)',
+                  'rgba(255, 206, 86, 1)',
+                  'rgba(75, 192, 192, 1)',
+                  'rgba(153, 102, 255, 1)',
+                  'rgba(255, 159, 64, 1)'
+            ],
+            borderWidth: 1,
+            fill: true, // 3: no fill
+      }]
+};
 
-  var areaOptions = {
-    elements: {
-      line: {
-        tension: 0.5
+var areaOptions = {
+      elements: {
+            line: {
+                  tension: 0.5
+            }
+      },
+      plugins: {
+            filler: {
+                  propagate: true
+            }
       }
-    },
-    plugins: {
-      filler: {
-        propagate: true
-      }
-    }
-  }
-    var areaChartCanvas =document.getElementById('areaChart').getContext('2d');
-    var areaChart = new Chart(areaChartCanvas, {
+}
+var areaChartCanvas = document.getElementById('areaChart').getContext('2d');
+var areaChart = new Chart(areaChartCanvas, {
       type: 'line',
       data: areaData,
       options: areaOptions
-    });
-
+});
 </script>
 @endsection
