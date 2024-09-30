@@ -129,7 +129,7 @@
                                     </div>
                                     <input type="hidden" id="parent" value="{{ $parentID }}" />
                                     <button type="submit" name="submit"
-                                          class="btn bg-gradient-primary btn-sm  text-white">Enter</button>
+                                          class="btn bg-gradient-primary btn-sm  text-white">Save</button>
                               </div>
 
                         </div>
@@ -197,8 +197,7 @@
                               {{csrf_field()}}
 
                               <button type="submit" name="submit"
-                                    class="btn bg-gradient-primary btn-md  text-white">Save
-                                    Sales </button>
+                                    class="btn bg-gradient-primary btn-md  text-white">Submit </button>
                         </form>
 
                   </div>
