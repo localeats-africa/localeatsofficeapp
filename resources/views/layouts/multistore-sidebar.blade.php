@@ -48,7 +48,7 @@
                               aria-controls="food-menu">
                               <span class="menu-title">Online Sales</span>
                               <i class="menu-arrow"></i>
-                              <i class="mdi mdi-menu   menu-icon fs-24"></i>
+                              <i class="mdi mdi-sale   menu-icon fs-24"></i>
 
                         </a>
                         <div class="collapse show" id="food-menu">
