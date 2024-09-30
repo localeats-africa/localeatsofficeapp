@@ -36,6 +36,7 @@ use App\Models\FoodCategory;
 use App\Models\VendorFoodMenu;
 use App\Models\VendorExpensesCategory;
 use App\Models\TempInStoreSales;
+use App\Models\VendorOnlineSales;
 
 use Excel;
 use Auth;
