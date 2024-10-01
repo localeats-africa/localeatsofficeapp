@@ -780,10 +780,12 @@ class ParentVendorController extends Controller
         ->where('sub_store.multi_store_id', $parentID)
         ->get('vendor.*');
 
-        $salesChannel = DB::table('sales_platform')
+        $salesChannel = 
+        DB::table('sales_platform')
         ->join('sub_store', 'sub_store.vendor_id', '=', 'sales_platform.vendor_id')
         ->where('sales_platform.vendor_status', 'active')
         ->where('sub_store.multi_store_id', $parentID)
+        ->distinct('platform_name')
         ->get('sales_platform.platform_name');
         //Platforms::all();
 
