@@ -762,8 +762,59 @@ class ParentVendorController extends Controller
         else{return redirect()->back()->with('error', 'Opps! something went wrong.'); }
     }
 
-    public function importOnlineSales(Request $request){
+    public function importOnlineSales(Request $request, $username){
+        $username = Auth::user()->username;
+        $user_id = Auth::user()->id;
+        $role = DB::table('role')->select('role_name')
+        ->join('users', 'users.role_id', 'role.id')
+        ->where('users.id', $user_id)
+        ->pluck('role_name')->first();
+
+        $parentID = DB::table('multi_store')
+        ->join('users', 'users.parent_store', 'multi_store.id')
+        ->where('users.id',  $user_id)
+        ->get('users.*')->pluck('parent_store')->first();
+
+        $outlets =  DB::table('vendor')
+        ->join('sub_store', 'sub_store.vendor_id', 'vendor.id')
+        ->where('sub_store.multi_store_id', $parentID)
+        ->get('vendor.*');
+
+        $salesChannel = DB::table('sales_platform')
+        ->join('sub_store', 'sub_store.vendor_id', '=', 'sales_platform.vendor_id')
+        ->where('sales_platform.vendor_status', 'active')
+        ->where('sub_store.multi_store_id', $parentID)
+        ->get('sales_platform.platform_name');
+
+        $perPage = $request->perPage ?? 10;
+        $search = $request->input('search');
+
+        $onlineSales=  DB::table('vendor_online_sales')
+        ->join('vendor', 'vendor.id', 'vendor_online_sales.vendor_id')
+        ->join('platforms', 'platform.sid', 'vendor_online_sales.platform_id')
+        ->where('parent_id', $parentID)
+        ->select(['vendor.store_name', 'vendor_online_sales.*', 'platforms.name' ])
+        ->orderBy('vendor_online_sales.created_at', 'desc')
+        ->where(function ($query) use ($search) {  // <<<
+        $query->where('vendor_online_sales.food_menu', 'LIKE', '%'.$search.'%')
+        ->orwhere('vendor_online_sales.delivery_date', 'LIKE', '%'.$search.'%')
+        ->orwhere('vendor.store_name', 'LIKE', '%'.$search.'%')
+        ->orderBy('vendor_online_sales.delivery_date', 'desc');
+        })
+        ->paginate($perPage,  $pageName = 'onlineSales')->appends(['per_page'   => $perPage]);
+        $pagination = $onlineSales->appends ( array ('search' => $search) );
+            if (count ( $pagination ) > 0){
+                return view('multistore.parent.import-online-sales',  compact(
+                'perPage', 'username', 'role', 'outlets', 'parentID', 'salesChannel', 'onlineSales'))->withDetails( $pagination );     
+            } 
+        else{
+            //return redirect()->back()->with('error', 'No record order found')
+            return view('multistore.parent.import-online-sales',  compact(
+                'perPage', 'username', 'role', 'outlets', 'parentID', 'salesChannel', 'onlineSales')); 
+        }
         
+        return view('multistore.parent.import-online-sales',  compact(
+            'perPage', 'username', 'role', 'outlets', 'parentID', 'salesChannel', 'onlineSales'));
     }
 
 }
