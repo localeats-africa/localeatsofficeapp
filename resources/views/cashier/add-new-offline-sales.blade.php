@@ -91,17 +91,17 @@
             </div>
             <!---end Alert --->
 
+            <form method="post" action="" name="submit"
+                  enctype="multipart/form-data">
+                  @csrf
+                  {{csrf_field()}}
 
+                  <div class="row">
+                        <h6 class="text-danger">Check multiple one or more food item, enter each quantity, enter
+                              total price and date</h6>
+                        <p></p>
+                        <div class="col-md-6 col-12 list-wrapper">
 
-            <div class="row">
-                  <h6 class="text-danger">Check multiple one or more food item, enter each quantity, enter
-                        total price and date</h6>
-                  <p></p>
-                  <div class="col-md-6 col-12 list-wrapper">
-                        <form method="post" action="{{ route('add-vendor-offline-soup') }}" name="submit"
-                              enctype="multipart/form-data">
-                              @csrf
-                              {{csrf_field()}}
                               <h6>Soup</h6>
 
                               <ul class="d-flex flex-column-reverse ">
@@ -135,27 +135,8 @@
                                     @endforeach
                               </ul>
 
-                              <div class="form-group">
-                                    <h6 for="">Date</h6>
-                                    <br>
-                                    <div class="input-group date">
-
-                                          <input type="text" class="form-control" value="{{ date('Y-m-d')}}" id="date1"
-                                                name="date" placeholder="Enter expenses" />
-                                          <input id="vendor" name="vendor" type="hidden" value="{{ $vendor_id }}" />
-                                          <button type="submit" name="submit"
-                                                class="btn bg-gradient-primary btn-sm  text-white">Save Soup</button>
-                                    </div>
-                              </div>
-
-                        </form>
-
-                  </div>
-                  <div class="col-md-6 col-12 list-wrapper">
-                        <form method="post" action="{{ route('add-vendor-offline-swallow') }}" name="submit"
-                              enctype="multipart/form-data">
-                              @csrf
-                              {{csrf_field()}}
+                        </div>
+                        <div class="col-md-6 col-12 list-wrapper">
                               <h6>Swallow</h6>
                               <ul class="d-flex flex-column-reverse ">
                                     @foreach($vendorSwallow as $data)
@@ -184,30 +165,13 @@
                                     @endforeach
                               </ul>
 
-                              <div class="form-group">
-                                    <h6 for="">Date</h6>
-                                    <br>
-                                    <div class="input-group date">
-
-                                          <input type="text" class="form-control" value="{{ date('Y-m-d')}}" id="date2"
-                                                name="date" placeholder="Enter expenses" />
-                                          <input id="vendor" name="vendor" type="hidden" value="{{ $vendor_id }}" />
-                                          <button type="submit" name="submit"
-                                                class="btn bg-gradient-primary btn-sm  text-white">Save Swallow</button>
-                                    </div>
-                              </div>
-                        </form>
-
+                        </div>
                   </div>
-            </div>
 
-
-            <div class="row">
-                  <div class="col-md-6 col-12 list-wrapper">
-                        <form method="post" action="{{ route('add-vendor-offline-protein') }}" name="submit"
-                              enctype="multipart/form-data">
-                              @csrf
-                              {{csrf_field()}}
+                  <p></p>
+                  <p></p>
+                  <div class="row">
+                        <div class="col-md-6 col-12 list-wrapper">
                               <h6>Protein</h6>
                               <ul class="d-flex flex-column-reverse ">
                                     @foreach($vendorProtein as $data)
@@ -236,29 +200,11 @@
                                     </li>
                                     @endforeach
                               </ul>
-
-                              <div class="form-group">
-                                    <h6 for="">Date</h6>
-                                    <br>
-                                    <div class="input-group date">
-
-                                          <input type="text" class="form-control" value="{{ date('Y-m-d')}}" id="date3"
-                                                name="date" placeholder="Enter expenses" />
-                                          <input id="vendor" name="vendor" type="hidden" value="{{ $vendor_id }}" />
-                                          <button type="submit" name="submit"
-                                                class="btn bg-gradient-primary btn-sm  text-white">Save Protein</button>
-                                    </div>
-                              </div>
-                        </form>
-
-                  </div>
+                        </div>
 
 
-                  <div class="col-md-6 col-12 list-wrapper">
-                        <form method="post" action="{{ route('add-vendor-offline-others') }}" name="submit"
-                              enctype="multipart/form-data">
-                              @csrf
-                              {{csrf_field()}}
+                        <div class="col-md-6 col-12 list-wrapper">
+
                               <h6>Others</h6>
                               <ul class="d-flex flex-column-reverse ">
                                     @foreach($vendorOthersFoodItem as $data)
@@ -282,12 +228,28 @@
 
                                           <div class="btn btn-sm" id="increaseOthers-{{ $data->id }}"
                                                 onclick="increaseOthers({{$data->id}})" value="Increase Value">+</div>
-
-
-
                                     </li>
                                     @endforeach
                               </ul>
+
+
+                        </div>
+
+                  </div>
+                  <!---row--->
+                  <div class="row ">
+                  <div class="col-md-6 col-12 list-wrapper">
+                              <div class="form-group">
+                                    <h6 for="">Price</h6>
+                                    <br>
+                                    <input type="text" class="form-control" value="" id="" name="date"
+                                          placeholder="Enter expenses" />
+
+                              </div>
+
+                        </div>
+
+                        <div class="col-md-6 col-12 list-wrapper">
                               <div class="form-group">
                                     <h6 for="">Date</h6>
                                     <br>
@@ -297,135 +259,135 @@
                                                 name="date" placeholder="Enter expenses" />
                                           <input id="vendor" name="vendor" type="hidden" value="{{ $vendor_id }}" />
                                           <button type="submit" name="submit"
-                                                class="btn bg-gradient-primary btn-sm  text-white">Save Others</button>
+                                                class="btn bg-gradient-primary btn-sm  text-white">Save</button>
                                     </div>
                               </div>
-                        </form>
 
-                  </div>
-
-            </div>
-            <!---row--->
-            <p></p>
-
-
-            <p></p>
-            <div class="row ">
-                  <div class="col-12">
-                        <div class="card">
-                              <div class="card-header">
-                                    <h4 class="card-title"> </h4>
-                              </div>
-                            
-
-                              <div class="table-responsive " id="card">
-                                    <table class="table table-striped card-table table-vcenter text-nowrap datatable "
-                                          id="orders">
-                                          <thead>
-                                                <tr>
-                                                      <th>Date</th>
-                                                      <th>Sales Item</th>
-                                                      <th>Price</th>
-                                                      <th>Total</th>
-                                                </tr>
-                                          </thead>
-                                          <tbody>
-                                                @foreach($sales as $data)
-                                                <tr>
-                                               
-                                                      <td>{{ date('Y-m-d', strtotime($data->sales_date))}} Time: <span class="text-info"> {{\Carbon\Carbon::parse($data->created_at)->format('H:i:s')}}</span></td>
-                                                      <td class="text-capitalize">
-                                                            {{ $data->sales_item }}
-                                                            @if($data->soup ==' ')
-                                                            @else
-
-                                                            {{ $data->soup_qty }}
-                                                            {{$data->soup}}
-                                                            @endif
-
-                                                            @if($data->swallow ==' ')
-                                                            @else
-                                                            {{$data->swallow_qty }} {{$data->swallow}}
-                                                            @endif
-
-                                                            @if($data->protein ==' ')
-                                                            @else
-                                                            {{$data->protein_qty }} {{$data->protein}}
-                                                            @endif
-
-                                                            @if($data->others ==' ')
-                                                            @else
-                                                            {{$data->others_qty }} {{$data->others}}
-                                                            @endif
-                                                            <a class=" btn btn-sm text-capitalize text-danger"
-                                                                  href="edit-offline-sales/{{$data->id}}">
-                                                                  <i class=" fa fa-pencil"></i>
-                                                            </a>
-                                                      </td>
-                                                      <td>
-                                                            @if($data->soup ==' ')
-                                                            @else
-                                                            {{$data->soup_price}}
-                                                            @endif
-
-                                                            @if($data->swallow ==' ')
-                                                            @else
-                                                            {{$data->swallow_price}}
-                                                            @endif
-
-                                                            @if($data->protein ==' ')
-                                                            @else
-                                                            {{$data->protein_price}}
-                                                            @endif
-
-                                                            @if($data->others ==' ')
-                                                            @else
-                                                            {{$data->others_price}}
-                                                            @endif
-                                                            {{$data->price}}
-
-                                                      </td>
-
-                                                      <td>
-                                                          
-
-                                                            @if($data->soup ==' ')
-                                                            @else
-                                                          
-                                                            {{ $data->soup_total }} 
-                                                            @endif
-
-                                                            @if($data->swallow ==' ')
-                                                            @else
-                                                        
-                                                            {{$data->swallow_total }}
-                                                            @endif
-
-                                                            @if($data->protein ==' ')
-                                                            @else
-                                                      
-                                                            {{$data->protein_total }}
-                                                            @endif
-
-                                                            @if($data->others ==' ')
-                                                            @else
-                                                         
-                                                            {{$data->others_total  }}
-                                                            @endif
-                                                            {{$data->price}}
-                                                      </td>
-                                                </tr>
-                                                @endforeach
-
-                                          </tbody>
-
-                                    </table>
-                              </div>
-                             
                         </div>
-                        <!--- card-->
                   </div>
-            </div>
+                  <p></p>
+
+
+                  <p></p>
+                  <div class="row ">
+                        <div class="col-12">
+                              <div class="card">
+                                    <div class="card-header">
+                                          <h4 class="card-title"> </h4>
+                                    </div>
+
+
+                                    <div class="table-responsive " id="card">
+                                          <table class="table table-striped card-table table-vcenter text-nowrap datatable "
+                                                id="orders">
+                                                <thead>
+                                                      <tr>
+                                                            <th>Date</th>
+                                                            <th>Sales Item</th>
+                                                            <th>Price</th>
+                                                            <th>Total</th>
+                                                      </tr>
+                                                </thead>
+                                                <tbody>
+                                                      @foreach($sales as $data)
+                                                      <tr>
+
+                                                            <td>{{ date('Y-m-d', strtotime($data->sales_date))}} Time:
+                                                                  <span class="text-info">
+                                                                        {{\Carbon\Carbon::parse($data->created_at)->format('H:i:s')}}</span>
+                                                            </td>
+                                                            <td class="text-capitalize">
+                                                                  {{ $data->sales_item }}
+                                                                  @if($data->soup ==' ')
+                                                                  @else
+
+                                                                  {{ $data->soup_qty }}
+                                                                  {{$data->soup}}
+                                                                  @endif
+
+                                                                  @if($data->swallow ==' ')
+                                                                  @else
+                                                                  {{$data->swallow_qty }} {{$data->swallow}}
+                                                                  @endif
+
+                                                                  @if($data->protein ==' ')
+                                                                  @else
+                                                                  {{$data->protein_qty }} {{$data->protein}}
+                                                                  @endif
+
+                                                                  @if($data->others ==' ')
+                                                                  @else
+                                                                  {{$data->others_qty }} {{$data->others}}
+                                                                  @endif
+                                                                  <a class=" btn btn-sm text-capitalize text-danger"
+                                                                        href="edit-offline-sales/{{$data->id}}">
+                                                                        <i class=" fa fa-pencil"></i>
+                                                                  </a>
+                                                            </td>
+                                                            <td>
+                                                                  @if($data->soup ==' ')
+                                                                  @else
+                                                                  {{$data->soup_price}}
+                                                                  @endif
+
+                                                                  @if($data->swallow ==' ')
+                                                                  @else
+                                                                  {{$data->swallow_price}}
+                                                                  @endif
+
+                                                                  @if($data->protein ==' ')
+                                                                  @else
+                                                                  {{$data->protein_price}}
+                                                                  @endif
+
+                                                                  @if($data->others ==' ')
+                                                                  @else
+                                                                  {{$data->others_price}}
+                                                                  @endif
+                                                                  {{$data->price}}
+
+                                                            </td>
+
+                                                            <td>
+
+
+                                                                  @if($data->soup ==' ')
+                                                                  @else
+
+                                                                  {{ $data->soup_total }}
+                                                                  @endif
+
+                                                                  @if($data->swallow ==' ')
+                                                                  @else
+
+                                                                  {{$data->swallow_total }}
+                                                                  @endif
+
+                                                                  @if($data->protein ==' ')
+                                                                  @else
+
+                                                                  {{$data->protein_total }}
+                                                                  @endif
+
+                                                                  @if($data->others ==' ')
+                                                                  @else
+
+                                                                  {{$data->others_total  }}
+                                                                  @endif
+                                                                  {{$data->price}}
+                                                            </td>
+                                                      </tr>
+                                                      @endforeach
+
+                                                </tbody>
+
+                                          </table>
+                                    </div>
+
+                              </div>
+                              <!--- card-->
+                        </div>
+                  </div>
       </div>
       <!--- content wrapper---->
       <!-- partial -->
