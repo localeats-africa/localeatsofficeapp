@@ -2335,14 +2335,6 @@ class HomeController extends Controller
          ->where('others', '!=', null)
          //->orderBy('created_at', 'desc')
          ->get();
- 
-
-        $salesList = OfflineFoodMenu::where('vendor_id', $vendor_id)
-        ->where('item', '!=', null)
-        ->orderBy('created_at', 'desc')
-        ->get('*');
-
-        $category = DB::table('offline_food_category')->get('*');
 
         $sales = TempInStoreSales::where('vendor_id', $vendor_id)->get();
 
