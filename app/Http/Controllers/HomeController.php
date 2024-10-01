@@ -2235,7 +2235,7 @@ class HomeController extends Controller
         ->get('*');
 
         return view('cashier.add-new-offline-sales',  compact('name', 'role', 
-        'vendorName','salesList', 'vendor_id', 'sales'));
+        'vendorName','salesList', 'vendor_id'));
     
     }
 
