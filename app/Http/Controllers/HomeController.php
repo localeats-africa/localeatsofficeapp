@@ -2213,7 +2213,6 @@ class HomeController extends Controller
     }
 
     public function newOfflineSales(Request $request){
-
         $name = Auth::user()->fullname;
         $id = Auth::user()->id;
         $role = DB::table('role')->select('role_name')
