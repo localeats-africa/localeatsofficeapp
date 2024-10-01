@@ -2328,6 +2328,7 @@ class HomeController extends Controller
     ->pluck('role_name')->first();
 
        $this->validate($request, [ 
+            'category'      => 'required|max:255', 
            'quantity'      => 'required|max:255', 
            'item'          => 'required|max:255'         
        ]);
