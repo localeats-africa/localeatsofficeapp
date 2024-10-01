@@ -2234,8 +2234,10 @@ class HomeController extends Controller
         ->orderBy('created_at', 'desc')
         ->get('*');
 
+        $sales = TempInStoreSales::where('vendor_id', $vendor_id)->get();
+
         return view('cashier.add-new-offline-sales',  compact('name', 'role', 
-        'vendorName','salesList', 'vendor_id'));
+        'vendorName','salesList', 'vendor_id', 'sales'));
     
     }
 
