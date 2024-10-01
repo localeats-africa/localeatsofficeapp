@@ -2327,7 +2327,6 @@ class HomeController extends Controller
 
        $this->validate($request, [ 
            'quantity'      => 'required|max:255', 
-           'price'         => 'required|max:255' ,
            'item'          => 'required|max:255'         
        ]);
 
