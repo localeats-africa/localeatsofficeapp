@@ -97,7 +97,7 @@
 
             <p></p>
             <p></p>
-            <form method="post" action="{{ route('save-food-item') }}" name="submit" enctype="multipart/form-data">
+            <form method="post" action="{{ route('save-offline-sales') }}" name="submit" enctype="multipart/form-data">
                   @csrf
                   {{csrf_field()}}
                   <div class="row">
@@ -191,7 +191,7 @@
                         <!--- card-->
                         <p></p>
 
-                        <form method="post" action="{{ route('send-instore-sales') }}" name="submit"
+                        <form method="post" action="{{ route('send-offline-sales') }}" name="submit"
                               enctype="multipart/form-data">
                               @csrf
                               {{csrf_field()}}
