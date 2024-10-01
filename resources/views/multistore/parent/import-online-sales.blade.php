@@ -147,8 +147,8 @@
                                           <select class="js-example-basic-single2 text-secondary" style="width:100%" name="sales_channel" >
                                                 <option value="">Choose</option>
                                                 @foreach($salesChannel as $data)
-                                                <option value="{{$data->id}}">
-                                                      {{$data->name}}
+                                                <option value="{{$data->platform_name}}">
+                                                      {{$data->platform_name}}
                                                 </option>
                                                 @endforeach
                                           </select>
