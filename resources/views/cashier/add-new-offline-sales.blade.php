@@ -116,7 +116,7 @@
                         </div>
 
                         <div class="col-md-3">
-                              <div class="form-label required"> Food item <i class="text-danger">*</i>
+                              <div class="form-label required"> Food Category <i class="text-danger">*</i>
                               </div>
 
                               <select class="js-example-basic-single2 text-secondary " style="width:100%;" name="item">
