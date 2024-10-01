@@ -290,8 +290,8 @@
 
                                                       <td class="text-capitalize">{{$data->name}}</td>
                                                       <td class="text-capitalize">{{$data->food_menu}}</td>
-                                                      <td class="text-capitalize">{{$data->amount}}</td>
-
+                                                      <td class="text-capitalize">{{$data->food_price}}</td>
+                                                      <td class="text-capitalize">{{$data->delivery_date}}</td>
                                                 </tr>
                                                 @endforeach
 
