@@ -14,7 +14,7 @@
       <div class="content-wrapper">
             <div class="page-header">
                   <h3 class="page-title">
-                        <span class="text-info"> {{$storeName}}</span> >> In-Store Sales
+                        <span class="text-info"> {{$vendorName}}</span> >> In-Store Sales
                   </h3>
             </div>
 
@@ -107,9 +107,9 @@
 
                               <select class="js-example-basic-single2 text-secondary " style="width:100%;" name="item">
                                     <option value="">Choose</option>
-                                    @foreach($foodMenu as $data)
-                                    <option  value="{{$data->food_item}}" >
-                                    {{$data->food_item}}
+                                    @foreach($salesList as $data)
+                                    <option  value="{{$data->item}}" >
+                                    {{$data->item}}
                                     </option>
                                     @endforeach
                               </select>
