@@ -101,7 +101,7 @@
                   @csrf
                   {{csrf_field()}}
                   <div class="row">
-                        <div class="col-md-6 ">
+                        <div class="col-md-4">
                               <div class="form-label required"> Food item <i class="text-danger">*</i>
                               </div>
 
@@ -115,7 +115,7 @@
                               </select>
                         </div>
 
-                        <div class="col-md-6">
+                        <div class="col-md-4">
                               <div class="form-label required">Quantity <i class="text-danger">*</i>
                               </div>
                               <div class="input-group">
@@ -127,11 +127,21 @@
                                     <div class="btn btn-sm" id="increaseSupply" onclick="increaseSupply()"
                                           value="Increase Value">+
                                     </div>
+                              </div>
+
+                        </div>
+
+                        <div class="col-md-4">
+                              <div class="form-label required">Price <i class="text-danger">*</i>
+                              </div>
+                              <div class="input-group">
+                                    <input type="text" class="form-control" name="price">
                                     <button type="submit" name="submit"
                                           class="btn bg-gradient-primary btn-sm  text-white">Save</button>
                               </div>
 
                         </div>
+
                   </div>
             </form>
 
@@ -158,7 +168,7 @@
                                                 </tr>
                                           </thead>
                                           <tbody>
-                                                @foreach($salesList as $data)
+                                                @foreach($sales as $data)
                                                 <tr>
                                                       <td>{{$loop->iteration}}</td>
                                                       <td class="text-capitalize">{{$data->category}}</td>
