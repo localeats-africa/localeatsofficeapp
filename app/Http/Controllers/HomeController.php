@@ -2418,22 +2418,27 @@ class HomeController extends Controller
          ->where('users.id', $user_id)
          ->get('vendor.id')->pluck('id')->first();
     
-        $getSales = TempInStoreSales::where('vendor_id', $vendor_id)
-        ->get();
+        // $getSales = TempInStoreSales::where('vendor_id', $vendor_id)
+        // ->get();
         
-        if($getSales->count() >= 1){
-            foreach($getSales as $key  =>  $data){
+        // if($getSales->count() >= 1){
+            // foreach($getSales as $key  =>  $data){
                     $sales = new OfflineSales();
-                    $sales->added_by            = $data->added_by;
-                    $sales->vendor_id           = $data->vendor_id;
-                     $sales->category           = $data->category;
-                     $sales->sales_item         = $data->food_item;
-                     $sales->price              = $data->price;
-                     $sales->quantity           = $data->quantity;
-                     $sales->amount             = $data->amount;
-                     $sales->sales_date         = $data->date;
-                    $sales->save();
-            }
+                    $sales->added_by            = $request->added_by;
+                    $sales->vendor_id           = $request->vendor_id;
+                     $sales->soup               = 'plate of '. $request->soup_item;
+                     $sales->soup_qty           = $request->soup_qty;
+                     $sales->swallow            = $request->swallow_item;
+                     $sales->swallow_qty        = $request->swallow_qty;
+                     $sales->protein            = $request->protein_item;
+                     $sales->protein_qty        = $request->protein_qty;
+                     $sales->others             = $request->others_item;
+                     $sales->others_qty         = $request->others_qty;
+                     $sales->price              = $request->price;
+                     $sales->amount             = $request->amount;
+                     $sales->sales_date         = $request->orderdate;
+                     $sales->save();
+            // }
             if($sales){
                 $response = [
                     'code'      => '',
@@ -2442,18 +2447,14 @@ class HomeController extends Controller
                 ];
                 $data = json_encode($response, true);
  
-                 TempInStoreSales::where('vendor_id', $vendor_id )->delete();
+                 //TempInStoreSales::where('vendor_id', $vendor_id )->delete();
  
                 return redirect('offline-sales' )->with('sales-status', 'Sales sent successfully');
             }
             else{
                 return redirect()->back()->with('sales-error', 'Opps! something happend');
             } 
-        }
-        else{
-            return redirect()->back()->with('sales-error', 'Opps! kindly enter sales item');    
-        }     
-    
+      
     }
 
     public function storeVendorOfflineSoupSales(Request $request){
