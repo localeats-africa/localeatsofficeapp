@@ -2305,6 +2305,38 @@ class HomeController extends Controller
         ->where('users.id', $id)
         ->get('vendor.id')->pluck('id')->first();
 
+         //a cashier should only see things for the vendor assigned to him
+         $vendorName = Vendor::join('users', 'users.vendor', 'vendor.id')
+         ->where('users.id', $id)
+         ->get('vendor.vendor_name')->pluck('vendor_name')->first();
+
+ 
+         $salesList = OfflineFoodMenu::where('vendor_id', $vendor_id)
+         ->where('item', '!=', null)
+         ->orderBy('created_at', 'desc')
+         ->get();
+ 
+         $vendorSwallow = OfflineFoodMenu::where('vendor_id', $vendor_id)
+         ->where('swallow', '!=', null)
+         //->orderBy('created_at', 'desc')
+         ->get();
+ 
+         $vendorSoup= OfflineFoodMenu::where('vendor_id', $vendor_id)
+         ->where('soup', '!=', null)
+         ->orderBy('created_at', 'desc')
+         ->get();
+ 
+         $vendorProtein= OfflineFoodMenu::where('vendor_id', $vendor_id)
+         ->where('protein', '!=', null)
+         //->orderBy('created_at', 'desc')
+         ->get();
+ 
+         $vendorOthersFoodItem= OfflineFoodMenu::where('vendor_id', $vendor_id)
+         ->where('others', '!=', null)
+         //->orderBy('created_at', 'desc')
+         ->get();
+ 
+
         $salesList = OfflineFoodMenu::where('vendor_id', $vendor_id)
         ->where('item', '!=', null)
         ->orderBy('created_at', 'desc')
@@ -2315,7 +2347,8 @@ class HomeController extends Controller
         $sales = TempInStoreSales::where('vendor_id', $vendor_id)->get();
 
         return view('cashier.add-new-offline-sales',  compact('name', 'role', 
-        'vendorName','salesList', 'vendor_id', 'sales', 'category'));
+        'vendorName','salesList', 'vendor_id', 'sales','category',
+        'vendorSwallow', 'vendorSoup', 'vendorProtein', 'vendorOthersFoodItem'));
     
     }
 
