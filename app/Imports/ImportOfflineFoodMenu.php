@@ -25,8 +25,8 @@ class ImportOfflineFoodMenu implements ToModel
     {
         return new OfflineFoodMenu([
             //
-            'item'          => $row[0],   
-            'category'      => $row[1],
+            'item'          => $row[0],
+            'category'      => $row[1],     
             'added_by'      => Auth::id(),
             'vendor_id'     => $this->vendor_id,
         ]);
