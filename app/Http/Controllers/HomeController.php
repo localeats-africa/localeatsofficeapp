@@ -2335,12 +2335,19 @@ class HomeController extends Controller
        ->where('users.id', $user_id)
        ->get('vendor.id')->pluck('id')->first();
 
-       $food            = $request->item;
-       $foodPrice       = $request->price;
-       $quantity        =  $request->input('quantity');
-       $foodCategory = OfflineFoodMenu::where('item', $food)
+       $foodCategory = OfflineFoodMenu::where('item', $request->item)
        ->where('vendor_id',  $vendor_id)
        ->get()->pluck('category')->first();
+      
+       if($foodCategory == 'soup'){
+        $food = 'plate of '.$request->item;
+       }
+       else{
+        $food  = $request->item;
+       }
+       $foodPrice       = $request->price;
+       $quantity        =  $request->input('quantity');
+       
        $amount = (int)$foodPrice  *  $quantity; 
        $today = Carbon::today();
    
