@@ -8,7 +8,7 @@
       <div class="content-wrapper">
             <div class="page-header">
                   <h3 class="page-title">
-                    Import Online Sales
+                        Import Online Sales
                   </h3>
             </div>
             <!--Alert here--->
@@ -102,7 +102,8 @@
                                     <div class="card-body">
                                           <div class="form-label required">Outlet <i class="text-danger">*</i>
                                           </div>
-                                          <select class="js-example-basic-single text-secondary" style="width:100%" name="outlet" >
+                                          <select class="js-example-basic-single text-secondary" style="width:100%"
+                                                name="outlet">
                                                 <option value="">Choose</option>
                                                 @foreach($outlets as $data)
                                                 <option value="{{$data->id}}">
@@ -144,7 +145,8 @@
                                     <div class="card-body">
                                           <div class="form-label required">Platform <i class="text-danger">*</i>
                                           </div>
-                                          <select class="js-example-basic-single2 text-secondary" style="width:100%" name="platform" >
+                                          <select class="js-example-basic-single2 text-secondary" style="width:100%"
+                                                name="platform">
                                                 <option value="">Choose</option>
                                                 @foreach($salesChannel as $data)
                                                 <option value="{{$data->platform_name}}">
@@ -180,37 +182,38 @@
                               </div>
                         </div>
 
-
                         <div class="col-md-4 grid-margin stretch-card">
-                              <!-- send button here -->
-                              <div class="card-footer bg-transparent mt-auto">
-                                    <input type="hidden" name="parent" value="{{$parentID}}">
-                                    <div class="btn-list ">
-                                          <button type="submit" name="submit"
-                                                class="btn bg-gradient-primary btn-sm  text-white">
-                                                <svg xmlns="http://www.w3.org/2000/svg"
-                                                      class="icon icon-tabler icon-tabler-device-floppy" width="24"
-                                                      height="24" viewBox="0 0 24 24" stroke-width="1.5"
-                                                      stroke="currentColor" fill="none" stroke-linecap="round"
-                                                      stroke-linejoin="round">
-                                                      <path stroke="none" d="M0 0h24v24H0z" fill="none" />
-                                                      <path
-                                                            d="M6 4h10l4 4v10a2 2 0 0 1 -2 2h-12a2 2 0 0 1 -2 -2v-12a2 2 0 0 1 2 -2" />
-                                                      <path d="M12 14m-2 0a2 2 0 1 0 4 0a2 2 0 1 0 -4 0" />
-                                                      <path d="M14 4l0 4l-6 0l0 -4" />
-                                                </svg>
-                                                Add New
-                                          </button>
+                              <div class="card">
+                                    <div class="card-body">
+                                          <div class="form-label required">Import 
+                                              <small class="">(.xlsx, .xls)</small> <i class="text-danger">*</i>
+                                          </div>
+                                          <div class="form-group" style="width:100%;">
+                                          <input type="file" name="file" accept=".xlsx,.xls"
+                                                class="file-upload-default " id="file">
+                                          <div class="input-group">
+                                                <div class="input-group-prepend">
+                                                      <button
+                                                            class="file-upload-browse btn btn-sm  bg-gradient-dark  text-white py-2"
+                                                            type="button">
+                                                            <i
+                                                                  class="mdi mdi-cloud-braces fs-24 menu-icon"></i></button>
+                                                </div>
+                                                <input type="text" class="form-control file-upload-info text-dark"
+                                                      disabled="" placeholder="xlsx,.xls" style="height:34px; ">
+                                                <div class="input-group-append">
+                                                      <button type="submit" name="submit"
+                                                            class="btn btn-outline-danger btn-sm py-2">
+                                                            <i class="mdi mdi-upload btn-icon-prepend fs-24"></i>
+                                                            Upload </button>
+                                                </div>
+                                          </div>
+                                          </div>
+
                                     </div>
+
                               </div>
-
                         </div>
-
-
-                        <div class="col-md-4 grid-margin stretch-card">
-
-                        </div>
-
 
                   </div>
                   <!--- row---->
@@ -251,8 +254,8 @@
                                                 Search:
                                                 <div class="ms-2 d-inline-block">
 
-                                                      <form action="{{ url(auth()->user()->username, 'food-category') }}" method="GET"
-                                                            role="search">
+                                                      <form action="{{ url(auth()->user()->username, 'food-category') }}"
+                                                            method="GET" role="search">
                                                             {{ csrf_field() }}
                                                             <div class="input-group mb-2">
                                                                   <input type="text" class="form-control"
@@ -374,12 +377,12 @@
 <!-- main-panel -->
 
 <script src="{{ asset('assets/vendors/select2/select2.min.js')}}"></script>
-<script src="{{ asset('assets/vendors/typeahead.js/typeahead.bundle.min.js')}}"></script>
+<!-- <script src="{{ asset('assets/vendors/typeahead.js/typeahead.bundle.min.js')}}"></script> -->
 
 <!-- endinject -->
 <!-- Custom js for this page -->
 <script src="{{ asset('assets/js/file-upload.js')}}"></script>
-<script src="{{ asset('assets/js/typeahead.js')}}"></script>
+<!-- <script src="{{ asset('assets/js/typeahead.js')}}"></script> -->
 <script src="{{ asset('assets/js/select2.js')}}"></script>
 <!-- End custom js for this page -->
 @endsection
