@@ -17,6 +17,14 @@
                   <h3 class="page-title">
                         <span class="text-info"> {{$vendorName}}</span> >> In-Store Sales
                   </h3>
+                  <nav aria-label="breadcrumb">
+                        <ul class="breadcrumb">
+                              <li class="breadcrumb-item active" aria-current="page">
+                                    <span></span><a href="/new-offline-sales"
+                                          class="btn btn-outline-danger">Add New Sales </a>
+                              </li>
+                        </ul>
+                  </nav>
             </div>
 
             <p></p>
