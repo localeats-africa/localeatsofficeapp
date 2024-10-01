@@ -147,13 +147,13 @@
                                           <select class="js-example-basic-single2 text-secondary" style="width:100%" name="sales_channel" >
                                                 <option value="">Choose</option>
                                                 @foreach($salesChannel as $data)
-                                                <option value="{{$data->store_name}}">
+                                                <option value="{{$data->name}}">
                                                       {{$data->id}}
                                                 </option>
                                                 @endforeach
                                           </select>
 
-                                          @error('outlet')
+                                          @error('sales_channel')
                                           <div class="alert alert-danger alert-dismissible" role="alert">
                                                 <div class="d-flex">
                                                       <div>
@@ -203,6 +203,7 @@
                                           </button>
                                     </div>
                               </div>
+
                         </div>
 
 
@@ -222,7 +223,7 @@
                   <div class="col-md-12">
                         <div class="card">
                               <div class="card-header">
-                                    <h4 class="card-title">List </h4>
+                                    <h4 class="card-title">Online Sales </h4>
                               </div>
                               <div class="card-body border-bottom py-3">
                                     <div class="d-flex">
@@ -270,41 +271,26 @@
                                           id="orders">
                                           <thead>
                                                 <tr>
-                                                      <th class="w-1"><input class="form-check-input m-0 align-middle"
-                                                                  type="checkbox" aria-label="Select all product">
-                                                      </th>
                                                       <th>SN</th>
-                                                      <th>Food Category</th>
-                                                      <th></th>
+                                                      <th>Oulet (s)</th>
+                                                      <th>Platform</th>
+                                                      <th>Food</th>
+                                                      <th>Amount</th>
+                                                      <th>Delivery Date</th>
                                                 </tr>
                                           </thead>
                                           <tbody>
-                                                @foreach($foodCategory as $data)
+                                                @foreach($onlineSales as $data)
                                                 <tr>
-                                                      <td><input class="form-check-input m-0 align-middle"
-                                                                  type="checkbox" aria-label="Select"></td>
                                                       <td class="py-1">
                                                             {{$loop->iteration}}
                                                       </td>
 
-                                                      <td class="text-capitalize">{{$data->category}}</td>
+                                                      <td class="text-capitalize">{{$data->store_name}}</td>
 
-
-                                                      <td class="text-end">
-                                                            <span class="dropdown">
-                                                                  <button
-                                                                        class="btn dropdown-toggle align-text-top text-danger"
-                                                                        data-bs-boundary="viewport"
-                                                                        data-bs-toggle="dropdown">Actions</button>
-                                                                  <div class="dropdown-menu ">
-                                                                        <a class="dropdown-item text-capitalize text-dark"
-                                                                              href="">
-                                                                              <small>Delete</small>
-                                                                        </a>
-
-                                                                  </div>
-                                                            </span>
-                                                      </td>
+                                                      <td class="text-capitalize">{{$data->name}}</td>
+                                                      <td class="text-capitalize">{{$data->food_menu}}</td>
+                                                      <td class="text-capitalize">{{$data->amount}}</td>
 
                                                 </tr>
                                                 @endforeach
@@ -317,18 +303,18 @@
                                     <p class="m-0 text-secondary">
 
                                           Showing
-                                          {{ ($foodCategory->currentPage() - 1) * $foodCategory->perPage() + 1; }} to
-                                          {{ min($foodCategory->currentPage()* $foodCategory->perPage(), $foodCategory->total()) }}
+                                          {{ ($onlineSales->currentPage() - 1) * $onlineSales->perPage() + 1; }} to
+                                          {{ min($onlineSales->currentPage()* $onlineSales->perPage(), $onlineSales->total()) }}
                                           of
-                                          {{$foodCategory->total()}} entries
+                                          {{$onlineSales->total()}} entries
                                     </p>
 
                                     <ul class="pagination m-0 ms-auto">
-                                          @if(isset($foodCategory))
-                                          @if($foodCategory->currentPage() > 1)
+                                          @if(isset($onlineSales))
+                                          @if($onlineSales->currentPage() > 1)
                                           <li class="page-item ">
                                                 <a class="page-link text-danger"
-                                                      href="{{ $foodCategory->previousPageUrl() }}" tabindex="-1"
+                                                      href="{{ $onlineSales->previousPageUrl() }}" tabindex="-1"
                                                       aria-disabled="true">
                                                       <!-- Download SVG icon from http://tabler-icons.io/i/chevron-left -->
                                                       <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24"
@@ -345,12 +331,12 @@
 
 
                                           <li class="page-item">
-                                                {{ $foodCategory->appends(compact('perPage'))->links()  }}
+                                                {{ $onlineSales->appends(compact('perPage'))->links()  }}
                                           </li>
-                                          @if($foodCategory->hasMorePages())
+                                          @if($onlineSales->hasMorePages())
                                           <li class="page-item">
                                                 <a class="page-link text-danger"
-                                                      href="{{ $foodCategory->nextPageUrl() }}">
+                                                      href="{{ $onlineSales->nextPageUrl() }}">
                                                       next
                                                       <!-- Download SVG icon from http://tabler-icons.io/i/chevron-right -->
                                                       <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24"
