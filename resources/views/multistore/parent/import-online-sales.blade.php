@@ -142,9 +142,9 @@
                         <div class="col-md-4 grid-margin stretch-card">
                               <div class="card">
                                     <div class="card-body">
-                                          <div class="form-label required">Outlet <i class="text-danger">*</i>
+                                          <div class="form-label required">Platform <i class="text-danger">*</i>
                                           </div>
-                                          <select class="js-example-basic-single2 text-secondary" style="width:100%" name="sales_channel" >
+                                          <select class="js-example-basic-single2 text-secondary" style="width:100%" name="platform" >
                                                 <option value="">Choose</option>
                                                 @foreach($salesChannel as $data)
                                                 <option value="{{$data->platform_name}}">
