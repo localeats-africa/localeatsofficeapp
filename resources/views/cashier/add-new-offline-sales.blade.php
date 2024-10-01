@@ -229,7 +229,7 @@
                               <div class="form-group">
                                     <h6 for="">Price</h6>
                                     <br>
-                                    <input type="text" class="form-control" value="" id="" name="date"
+                                    <input type="text" class="form-control" value="" id="price" name="price"
                                           placeholder="Enter expenses" />
 
                               </div>
@@ -409,7 +409,7 @@ function sendSales(data) {
       var others_item = document.querySelector('#others_item-' + data).value;
       var others_qty = document.querySelector('#others-' + data).value;
       var price = document.getElementById('price').value;
-      var orderdate = document.getElementById('date').value;
+      var orderdate = document.getElementById('date4').value;
 
 
       var url = "{{ route('reject-supplies') }}";
