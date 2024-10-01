@@ -637,4 +637,75 @@ class MultiVendorController extends Controller
        }     
    }
 
+   public function outletDashboard(Request $request, $vendor_id){
+    $username = Auth::user()->username;
+        $user_id = Auth::user()->id;
+        $role = DB::table('role')->select('role_name')
+        ->join('users', 'users.role_id', 'role.id')
+        ->where('users.id', $user_id)
+        ->pluck('role_name')->first();
+
+        $parent =  DB::table('multi_store')
+        ->join('users', 'users.parent_store', 'multi_store.id')
+        ->where('users.id',  $user_id)
+        ->get('users.*')->pluck('parent_store')->first();
+
+        $vendor_id =  DB::table('vendor')
+        ->join('sub_store', 'sub_store.vendor_id', 'vendor.id')
+        ->where('sub_store.multi_store_id', $parent)
+        ->get('sub_store.vendor_id')->pluck('vendor_id')->first();
+
+        // count only active vendor
+        $salesChannel = DB::table('sales_platform')
+        ->join('sub_store', 'sub_store.vendor_id', '=', 'sales_platform.vendor_id')
+        ->where('sales_platform.vendor_status', 'active')
+        ->where('sub_store.vendor_id', $vendor_id)
+        ->get('sales_platform.vendor_id');
+       // dd($consumers);
+
+       $offlineSales = DB::table('vendor_instore_sales')
+       ->where('vendor_id', $vendor_id)
+       ->get();
+
+       $countOutletsFromWhereOfflineSales = DB::table('vendor_instore_sales')
+       ->where('vendor_id', $vendor_id)
+       ->count('vendor_id');
+
+       $outletsExpenses = DB::table('vendor_expenses')
+       ->join('sub_store', 'sub_store.vendor_id', '=', 'vendor_expenses.vendor_id')
+       ->where('vendor_expenses.vendor_id', $vendor_id)
+       ->sum('vendor_expenses.cost');
+
+        $countAllOrder = VendorOnlineSales::join('sub_store', 'sub_store.vendor_id', '=', 'vendor_online_sales.vendor_id')
+        ->where('sub_store.vendor_id', $vendor_id)
+        ->where('vendor_online_sales.order_amount', '!=', null)
+        ->count();
+
+        $countPlatformWhereOrderCame = DB::table('vendor_online_sales')
+        ->Join('platforms', 'vendor_online_sales.platform_id', '=', 'platforms.id')->distinct()
+        ->join('sub_store', 'sub_store.vendor_id', '=', 'vendor_online_sales.vendor_id')
+        ->where('sub_store.vendor_id', $vendor_id)
+        ->where('vendor_online_sales.order_amount', '!=', null)
+        ->count('platforms.id');
+
+        $sumAllOrders = DB::table('vendor_online_sales')   
+        ->join('sub_store', 'sub_store.vendor_id', '=', 'vendor_online_sales.vendor_id')
+        ->where('sub_store.vendor_id', $vendor_id)
+        ->where('vendor_online_sales.order_amount', '!=', null)
+        ->sum('vendor_online_sales.order_amount'); 
+
+        $chowdeckOrderCount= DB::table('vendor_online_sales')
+        ->join('platforms', 'platforms.id', '=', 'vendor_online_sales.platform_id')
+        ->join('sub_store', 'sub_store.vendor_id', '=', 'vendor_online_sales.vendor_id')
+        ->where('sub_store.vendor_id', $vendor_id)
+        ->where('platforms.name', 'chowdeck')
+        ->where('vendor_online_sales.order_amount', '!=', null)
+        ->get('vendor_online_sales.platform_id')->count();
+
+        return view('multistore.child.admin', compact('username','parent', 'vendor_id',
+        'offlineSales', 'salesChannel', 'countAllOrder', 'countPlatformWhereOrderCame', 'sumAllOrders', 
+         'chowdeckOrderCount', 'countOutletsFromWhereOfflineSales','outletsExpenses'));
+       }
+   
+
 }
