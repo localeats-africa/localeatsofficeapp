@@ -1,15 +1,21 @@
+
 @extends('layouts.head')
 @extends('layouts.header')
 @extends('layouts.sidebar')
 @extends('layouts.footer')
 @section('content')
+<style>
+.select2-results__option[aria-selected] {
+      cursor: pointer;
+      text-transform: capitalize;
+}
 </style>
 <!-- main-panel -->
 <div class="main-panel">
       <div class="content-wrapper">
             <div class="page-header">
                   <h3 class="page-title">
-                        <span class="text-info">{{$vendorName}}</span> >>>> Add New Sales
+                        <span class="text-info"> {{$vendorName}}</span> >> In-Store Sales
                   </h3>
             </div>
 
@@ -17,7 +23,7 @@
             <!--Alert here--->
             <div class="row ">
                   <div class="col-12">
-                        @if(session('sales-status'))
+                  @if(session('sales-status'))
                         <div class="alert alert-important alert-success alert-dismissible" role="alert">
                               <div class="d-flex">
                                     <div>
@@ -86,228 +92,50 @@
                         </div>
                         @endif
 
-
                   </div>
             </div>
             <!---end Alert --->
 
-
-
-            <div class="row">
-                  <h6 class="text-danger">Check multiple one or more food item, enter each quantity, enter
-                        total price and date</h6>
-                  <p></p>
-                  <div class="col-md-6 col-12 list-wrapper">
-                        <form method="post" action="{{ route('add-vendor-offline-soup') }}" name="submit"
-                              enctype="multipart/form-data">
-                              @csrf
-                              {{csrf_field()}}
-                              <h6>Soup</h6>
-
-                              <ul class="d-flex flex-column-reverse ">
-                                    @foreach($vendorSoup as $data)
-                                    <li>
-                                          <div class="form-check">
-                                                <label class="form-check-label">
-                                                      <input class="checkbox" type="checkbox" name="soup[]"
-                                                            value="{{$data->soup}}" multiple="multiple">{{$data->soup}}
-                                                      <i class="input-helper"></i>
-                                                </label>
-                                          </div>
-
-                                          <i class="remove"></i>
-                                          <input type="hidden" value="{{ $data->id }}" name="soup_id[]">
-
-                                          <input class="form-control" type="text" name="soup_price[]"
-                                                value="{{$data->soup_price}}" style="width:85px;" disabled>
-
-                                          <div class="btn btn-sm" id="decreaseSoup-{{ $data->id }}"
-                                                onclick="decreaseSoup({{$data->id}})" value="Decrease Value">-</div>
-
-                                          <input type="text" class="form-control" name="soup_qty[]" value="1"
-                                                style="width:85px;" id="soup-{{ $data->id }}">
-
-                                          <div class="btn btn-sm" id="increaseSoup-{{ $data->id }}"
-                                                onclick="increaseSoup({{$data->id}})" value="Increase Value">+</div>
-
-                                    </li>
-
-                                    @endforeach
-                              </ul>
-
-                              <div class="form-group">
-                                    <h6 for="">Date</h6>
-                                    <br>
-                                    <div class="input-group date">
-
-                                          <input type="text" class="form-control" value="{{ date('Y-m-d')}}" id="date1"
-                                                name="date" placeholder="Enter expenses" />
-                                          <input id="vendor" name="vendor" type="hidden" value="{{ $vendor_id }}" />
-                                          <button type="submit" name="submit"
-                                                class="btn bg-gradient-primary btn-sm  text-white">Save Soup</button>
-                                    </div>
-                              </div>
-
-                        </form>
-
-                  </div>
-                  <div class="col-md-6 col-12 list-wrapper">
-                        <form method="post" action="{{ route('add-vendor-offline-swallow') }}" name="submit"
-                              enctype="multipart/form-data">
-                              @csrf
-                              {{csrf_field()}}
-                              <h6>Swallow</h6>
-                              <ul class="d-flex flex-column-reverse ">
-                                    @foreach($vendorSwallow as $data)
-                                    <li>
-                                          <div class="form-check">
-                                                <label class="form-check-label">
-                                                      <input class="checkbox" type="checkbox" name="swallow[]"
-                                                            value="{{$data->swallow}}">{{$data->swallow}}
-                                                </label>
-                                          </div>
-
-                                          <i class="remove"></i>
-                                          <input class="form-control" type="text" name="swallow_price[]"
-                                                value="{{$data->swallow_price}}" style="width:85px;" disabled>
-
-                                          <div class="btn btn-sm" id="decreaseSwallow-{{ $data->id }}"
-                                                onclick="decreaseSwallow({{$data->id}})" value="Decrease Value">-</div>
-
-                                          <input type="text" class="form-control" name="swallow_qty[]" value="1"
-                                                style="width:85px;" id="swallow-{{ $data->id }}">
-
-                                          <div class="btn btn-sm" id="increaseSwallow-{{ $data->id }}"
-                                                onclick="increaseSwallow({{$data->id}})" value="Increase Value">+</div>
-
-                                    </li>
-                                    @endforeach
-                              </ul>
-
-                              <div class="form-group">
-                                    <h6 for="">Date</h6>
-                                    <br>
-                                    <div class="input-group date">
-
-                                          <input type="text" class="form-control" value="{{ date('Y-m-d')}}" id="date2"
-                                                name="date" placeholder="Enter expenses" />
-                                          <input id="vendor" name="vendor" type="hidden" value="{{ $vendor_id }}" />
-                                          <button type="submit" name="submit"
-                                                class="btn bg-gradient-primary btn-sm  text-white">Save Swallow</button>
-                                    </div>
-                              </div>
-                        </form>
-
-                  </div>
-            </div>
-
-
-            <div class="row">
-                  <div class="col-md-6 col-12 list-wrapper">
-                        <form method="post" action="{{ route('add-vendor-offline-protein') }}" name="submit"
-                              enctype="multipart/form-data">
-                              @csrf
-                              {{csrf_field()}}
-                              <h6>Protein</h6>
-                              <ul class="d-flex flex-column-reverse ">
-                                    @foreach($vendorProtein as $data)
-                                    <li>
-                                          <div class="form-check">
-                                                <label class="form-check-label">
-                                                      <input class="checkbox" type="checkbox" name="protein[]"
-                                                            value="{{$data->protein}}">{{$data->protein}}
-                                                </label>
-                                          </div>
-
-                                          <i class="remove"></i>
-                                          <input class="form-control" type="text" name="protein_price[]"
-                                                value="{{$data->protein_price}}" style="width:85px;" disabled>
-
-                                          <div class="btn btn-sm" id="decreaseProtein-{{ $data->id }}"
-                                                onclick="decreaseProtein({{$data->id}})" value="Decrease Value">-</div>
-
-                                          <input type="text" class="form-control" name="protein_qty[]" value="1"
-                                                style="width:85px;" id="protein-{{ $data->id }}">
-
-                                          <div class="btn btn-sm" id="increaseProtein-{{ $data->id }}"
-                                                onclick="increaseProtein({{$data->id}})" value="Increase Value">+</div>
-
-
-                                    </li>
-                                    @endforeach
-                              </ul>
-
-                              <div class="form-group">
-                                    <h6 for="">Date</h6>
-                                    <br>
-                                    <div class="input-group date">
-
-                                          <input type="text" class="form-control" value="{{ date('Y-m-d')}}" id="date3"
-                                                name="date" placeholder="Enter expenses" />
-                                          <input id="vendor" name="vendor" type="hidden" value="{{ $vendor_id }}" />
-                                          <button type="submit" name="submit"
-                                                class="btn bg-gradient-primary btn-sm  text-white">Save Protein</button>
-                                    </div>
-                              </div>
-                        </form>
-
-                  </div>
-
-
-                  <div class="col-md-6 col-12 list-wrapper">
-                        <form method="post" action="{{ route('add-vendor-offline-others') }}" name="submit"
-                              enctype="multipart/form-data">
-                              @csrf
-                              {{csrf_field()}}
-                              <h6>Others</h6>
-                              <ul class="d-flex flex-column-reverse ">
-                                    @foreach($vendorOthersFoodItem as $data)
-                                    <li>
-                                          <div class="form-check">
-                                                <label class="form-check-label">
-                                                      <input class="checkbox" type="checkbox" name="others[]"
-                                                            value="{{$data->others}}">{{$data->others}}
-                                                </label>
-                                          </div>
-
-                                          <i class="remove"></i>
-                                          <input class="form-control" type="text" name="others_price[]"
-                                                value="{{$data->others_price}}" style="width:85px;" disabled>
-
-                                          <div class="btn btn-sm" id="decreaseOthers-{{ $data->id }}"
-                                                onclick="decreaseOthers({{$data->id}})" value="Decrease Value">-</div>
-
-                                          <input type="text" class="form-control" name="others_qty[]" value="1"
-                                                style="width:85px;" id="others-{{ $data->id }}">
-
-                                          <div class="btn btn-sm" id="increaseOthers-{{ $data->id }}"
-                                                onclick="increaseOthers({{$data->id}})" value="Increase Value">+</div>
-
-
-
-                                    </li>
-                                    @endforeach
-                              </ul>
-                              <div class="form-group">
-                                    <h6 for="">Date</h6>
-                                    <br>
-                                    <div class="input-group date">
-
-                                          <input type="text" class="form-control" value="{{ date('Y-m-d')}}" id="date4"
-                                                name="date" placeholder="Enter expenses" />
-                                          <input id="vendor" name="vendor" type="hidden" value="{{ $vendor_id }}" />
-                                          <button type="submit" name="submit"
-                                                class="btn bg-gradient-primary btn-sm  text-white">Save Others</button>
-                                    </div>
-                              </div>
-                        </form>
-
-                  </div>
-
-            </div>
-            <!---row--->
             <p></p>
+            <p></p>
+            <form method="post" action="{{ route('save-food-item') }}" name="submit" enctype="multipart/form-data">
+                  @csrf
+                  {{csrf_field()}}
+                  <div class="row">
+                        <div class="col-md-6 ">
+                              <div class="form-label required"> Food item <i class="text-danger">*</i>
+                              </div>
 
+                              <select class="js-example-basic-single2 text-secondary " style="width:100%;" name="item">
+                                    <option value="">Choose</option>
+                                    @foreach($foodMenu as $data)
+                                    <option  value="{{$data->food_item}}" >
+                                    {{$data->food_item}}
+                                    </option>
+                                    @endforeach
+                              </select>
+                        </div>
+
+                        <div class="col-md-6">
+                              <div class="form-label required">Quantity <i class="text-danger">*</i>
+                              </div>
+                              <div class="input-group">
+                                    <div class="btn btn-sm" id="decreaseSupply" onclick="decreaseSupply()"
+                                          value="Decrease Value">-
+                                    </div>
+                                    <input type="text" class="form-control" name="quantity" value="1" style="width:85px;" id="supply"
+                                          multiple="multiple">
+                                    <div class="btn btn-sm" id="increaseSupply" onclick="increaseSupply()"
+                                          value="Increase Value">+
+                                    </div>
+                                    <input type="hidden" id="parent" value="{{ $parentID }}" />
+                                    <button type="submit" name="submit"
+                                          class="btn bg-gradient-primary btn-sm  text-white">Save</button>
+                              </div>
+
+                        </div>
+                  </div>
+            </form>
 
             <p></p>
             <div class="row ">
@@ -529,87 +357,57 @@
       </footer>
 </div>
 <!-- main-panel -->
-<link rel="stylesheet" href="https://code.jquery.com/ui/1.13.3/themes/base/jquery-ui.css">
+<script src="{{ asset('assets/vendors/select2/select2.min.js')}}"></script>
+<script src="{{ asset('assets/vendors/typeahead.js/typeahead.bundle.min.js')}}"></script>
 
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
-<script src="https://code.jquery.com/ui/1.13.3/jquery-ui.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.6/js/bootstrap.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.1/js/select2.min.js"></script>
+<!-- endinject -->
+<!-- Custom js for this page -->
+<script src="{{ asset('assets/js/file-upload.js')}}"></script>
+<script src="{{ asset('assets/js/typeahead.js')}}"></script>
+<script src="{{ asset('assets/js/select2.js')}}"></script>
 
-<!-- End custom js for this page -->
+<!-- header search bar js -->
 <script type="text/javascript">
-$(document).ready(function() {
-      $("#item").select2({
-            placeholder: "Search ",
-            closeOnSelect: true,
-            language: {
-                  noResults: function(term) {
-                        return $(
-                              "<div>Result not found!. <a href='#' onclick='return myClick()'>click here add new</a></div>"
-                        );
-                  }
-            },
-      });
-
-      $('#btn-add-state').on("click", function() {
-            var newStateVal = $('#new-item').val();
-            // Set the value, creating a new option if necessary
-            // if ($('#item').find("option[value=" + newStateVal + "]").length) {
-            //       $('#item').val(newStateVal).trigger("change");
-            // } else {
-            // Create the DOM option that is pre-selected by default
-            var newState = new Option(newStateVal, newStateVal, true, true);
-            // Append it to the select
-            $('#item').append(newState).trigger('change').select2();
-            // }
-            var item = document.getElementById('new-item').value;
-            var vendor = document.getElementById('vendor').value;
-
-            var url = "{{ route('offline-sales-list') }}";
-            // url = showRoute;
-
-            //window.location = url;
-            $.ajaxSetup({
-                  headers: {
-                        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-                  }
+var path = "{{ route('autocomplete') }}";
+$('input.search').typeahead({
+      source: function(str, process) {
+            return $.get(path, {
+                  str: str
+            }, function(data) {
+                  return process(data);
             });
+      }
+});
+</script>
+
+
+<script type="text/javascript">
+var path = "{{ route('autocomplete-vendor-food-menu') }}";
+
+$("#search").autocomplete({
+      source: function(request, response) {
+            var parent = document.getElementById('parent').value;
             $.ajax({
-                  method: 'POST',
-                  enctype: 'multipart/form-data',
-                  url: url,
+                  url: path,
+                  type: 'GET',
+                  dataType: "json",
                   data: {
-                        //you can more data here
-                        'item': item,
-                        'vendor': vendor
+                        search: request.term,
+                        parent: parent
                   },
                   success: function(data) {
-                        console.log(data.message);
-                        document.getElementById('response').style.display =
-                              '';
-                        document.getElementById('response').style.color =
-                              'green';
-                        document.getElementById('response').innerHTML = data
-                              .message;
-                        document.getElementById("show").style.display =
-                              'none';
-                  },
-                  error: function(data) {
-                        console.log(data);
+                        response(data);
                   }
             });
-      });
-});
-
-function myClick() {
-      var x = document.getElementById("show");
-      if (x.style.display === "none") {
-            x.style.display = "block";
-      } else {
-            x.style.display = "none";
+      },
+      select: function(event, ui) {
+            $('#search').val(ui.item.label);
+            console.log(ui.item);
+            return false;
       }
-}
+});
 </script>
+
 
 
 
