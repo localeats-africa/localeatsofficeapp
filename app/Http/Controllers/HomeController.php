@@ -2212,7 +2212,7 @@ class HomeController extends Controller
         }
     }
 
-    public function newOfflineSales(){
+    public function newOfflineSales(Request $request){
 
         $name = Auth::user()->fullname;
         $id = Auth::user()->id;
