@@ -122,7 +122,7 @@
                                     <div class="btn btn-sm" id="decreaseSupply" onclick="decreaseSupply()"
                                           value="Decrease Value">-
                                     </div>
-                                    <input type="text" class="form-control" name="quantity" value="1" style="width:85px;" id="supply"
+                                    <input type="text" class="form-control" name="quantity" value="1" style="width:45px;" id="supply"
                                           multiple="multiple">
                                     <div class="btn btn-sm" id="increaseSupply" onclick="increaseSupply()"
                                           value="Increase Value">+
