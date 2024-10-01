@@ -2234,7 +2234,7 @@ class HomeController extends Controller
         ->orderBy('created_at', 'desc')
         ->get('*');
 
-        $category = DB::table('offline_food_category')->select('*');
+        $category = DB::table('offline_food_category')->get('*');
 
         $sales = TempInStoreSales::where('vendor_id', $vendor_id)->get();
 
