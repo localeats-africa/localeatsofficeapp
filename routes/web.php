@@ -128,8 +128,8 @@ Route::controller(HomeController::class)->group(function () {
     Route::post('add-expenses-list', 'addExpensesList')->name('add-expenses-list');
     Route::post('add-vendor-expenses', 'storeVendorDailyExpenses')->name('add-vendor-expenses');
     Route::get('new-offline-sales', 'newOfflineSales')->name('new-offline-sales');
-    Route::post('save-office-sales', 'saveTempOfflineSales')->name('save-office-sales');
-    Route::post('send-office-sales', 'storeOfflineSales')->name('send-office-sales');
+    Route::post('save-offline-sales', 'saveTempOfflineSales')->name('save-offline-sales');
+    Route::post('send-offline-sales', 'storeOfflineSales')->name('send-offline-sales');
 
     Route::get('offline-sales', 'offlineSales')->name('offline-sales');
     Route::post('offline-sales-list', 'OfflineSaleList')->name('offline-sales-list');
