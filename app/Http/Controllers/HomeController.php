@@ -2235,7 +2235,7 @@ class HomeController extends Controller
         ->orderBy('created_at', 'desc')
         ->get('*');
 
-        return view('cashier.add-new-sales',  compact('name', 'role', 
+        return view('cashier.add-new-offline-sales',  compact('name', 'role', 
         'vendorName','salesList', 'vendor_id', 'sales'));
     
     }
