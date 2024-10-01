@@ -128,7 +128,6 @@
                                     <div class="btn btn-sm" id="increaseSupply" onclick="increaseSupply()"
                                           value="Increase Value">+
                                     </div>
-                                    <input type="hidden" id="parent" value="{{ $parentID }}" />
                                     <button type="submit" name="submit"
                                           class="btn bg-gradient-primary btn-sm  text-white">Save</button>
                               </div>
@@ -138,6 +137,74 @@
             </form>
 
             <p></p>
+
+            <p></p>
+            <div class="row ">
+                  <div class="col-12">
+                        <div class="card">
+                              <div class="card-header">
+                                    <h4 class="card-title"> </h4>
+                              </div>
+
+
+                              <div class="table-responsive " id="card">
+                                    <table class="table table-striped card-table table-center text-nowrap datatable"
+                                          id="orders">
+                                          <thead>
+                                                <tr>
+                                                      <th>SN</th>
+                                                      <th>Food Category</th>
+                                                      <th>Item</th>
+                                                      <th>Price</th>
+                                                      <th>Quantity</th>
+                                                      <th>Amount</th>
+                                                </tr>
+                                          </thead>
+                                          <tbody>
+                                                @foreach($sales as $data)
+                                                <tr>
+                                                      <td>{{$loop->iteration}}</td>
+                                                      <td class="text-capitalize">{{$data->category}}</td>
+                                                      <td class="text-capitalize">{{$data->food_item}}</td>
+                                                      <td>{{$data->price}}</td>
+                                                      <td>{{$data->quantity}}</td>
+                                                      <td>{{$data->amount}}</td>
+                                                      <td>
+                                                            <form action="{{ route('remove-sales-item', [$data->id]) }}"
+                                                                  method="post">
+                                                                  @csrf
+                                                                  {{csrf_field()}}
+                                                                  <input type="hidden" value="" name="id">
+                                                                  <button type="submit" name="submit"
+                                                                        class=" btn btn-xs text-danger"><i
+                                                                              class="fa fa-trash"></i></button>
+                                                            </form>
+                                                      </td>
+
+                                                </tr>
+                                                @endforeach
+
+                                          </tbody>
+
+                                    </table>
+                              </div>
+
+                        </div>
+                        <!--- card-->
+                        <p></p>
+
+                        <form method="post" action="{{ route('send-instore-sales') }}" name="submit"
+                              enctype="multipart/form-data">
+                              @csrf
+                              {{csrf_field()}}
+
+                              <button type="submit" name="submit"
+                                    class="btn bg-gradient-primary btn-md  text-white">Submit </button>
+                        </form>
+
+                  </div>
+            </div>
+      </div>
             <div class="row ">
                   <div class="col-12">
                         <div class="card">
