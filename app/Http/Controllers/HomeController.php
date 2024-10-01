@@ -2230,13 +2230,15 @@ class HomeController extends Controller
         ->get('vendor.id')->pluck('id')->first();
 
         $salesList = OfflineFoodMenu::where('vendor_id', $vendor_id)
-        ->where('item', '!=', null)
+        ->where('soup', '!=', null)
+        ->where('swallow', '!=', null)
+        ->where('protein', '!=', null)
+        ->where('others', '!=', null)
         ->orderBy('created_at', 'desc')
         ->get();
 
         $vendorSwallow = OfflineFoodMenu::where('vendor_id', $vendor_id)
         ->where('swallow', '!=', null)
-        //->orderBy('created_at', 'desc')
         ->get();
 
         $vendorSoup= OfflineFoodMenu::where('vendor_id', $vendor_id)
@@ -2246,12 +2248,10 @@ class HomeController extends Controller
 
         $vendorProtein= OfflineFoodMenu::where('vendor_id', $vendor_id)
         ->where('protein', '!=', null)
-        //->orderBy('created_at', 'desc')
         ->get();
 
         $vendorOthersFoodItem= OfflineFoodMenu::where('vendor_id', $vendor_id)
         ->where('others', '!=', null)
-        //->orderBy('created_at', 'desc')
         ->get();
 
         $perPage = $request->perPage ?? 10;
