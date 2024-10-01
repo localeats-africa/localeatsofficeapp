@@ -650,10 +650,10 @@ class MultiVendorController extends Controller
         ->where('users.id',  $user_id)
         ->get('users.*')->pluck('parent_store')->first();
 
-        $vendor_id =  DB::table('vendor')
-        ->join('sub_store', 'sub_store.vendor_id', 'vendor.id')
-        ->where('sub_store.multi_store_id', $parent)
-        ->get('sub_store.vendor_id')->pluck('vendor_id')->first();
+        // $vendor_id =  DB::table('vendor')
+        // ->join('sub_store', 'sub_store.vendor_id', 'vendor.id')
+        // ->where('sub_store.multi_store_id', $parent)
+        // ->get('sub_store.vendor_id')->pluck('vendor_id')->first();
 
         // count only active vendor
         $salesChannel = DB::table('sales_platform')
@@ -665,19 +665,23 @@ class MultiVendorController extends Controller
 
        $offlineSales = DB::table('vendor_instore_sales')
        ->where('vendor_id', $vendor_id)
+       ->where('parent_id', $parent)
        ->get();
 
        $countOutletsFromWhereOfflineSales = DB::table('vendor_instore_sales')
        ->where('vendor_id', $vendor_id)
+       ->where('parent_id', $parent)
        ->count('vendor_id');
 
        $outletsExpenses = DB::table('vendor_expenses')
        ->join('sub_store', 'sub_store.vendor_id', '=', 'vendor_expenses.vendor_id')
        ->where('vendor_expenses.vendor_id', $vendor_id)
+       ->where('parent', $parent)
        ->sum('vendor_expenses.cost');
 
         $countAllOrder = VendorOnlineSales::join('sub_store', 'sub_store.vendor_id', '=', 'vendor_online_sales.vendor_id')
         ->where('sub_store.vendor_id', $vendor_id)
+        ->where('vendor_online_sales.parent_id', $parent)
         ->where('vendor_online_sales.order_amount', '!=', null)
         ->count();
 
@@ -685,12 +689,14 @@ class MultiVendorController extends Controller
         ->Join('platforms', 'vendor_online_sales.platform_id', '=', 'platforms.id')->distinct()
         ->join('sub_store', 'sub_store.vendor_id', '=', 'vendor_online_sales.vendor_id')
         ->where('sub_store.vendor_id', $vendor_id)
+        ->where('vendor_online_sales.parent_id', $parent)
         ->where('vendor_online_sales.order_amount', '!=', null)
         ->count('platforms.id');
 
         $sumAllOrders = DB::table('vendor_online_sales')   
         ->join('sub_store', 'sub_store.vendor_id', '=', 'vendor_online_sales.vendor_id')
         ->where('sub_store.vendor_id', $vendor_id)
+        ->where('vendor_online_sales.parent_id', $parent)
         ->where('vendor_online_sales.order_amount', '!=', null)
         ->sum('vendor_online_sales.order_amount'); 
 
@@ -698,11 +704,12 @@ class MultiVendorController extends Controller
         ->join('platforms', 'platforms.id', '=', 'vendor_online_sales.platform_id')
         ->join('sub_store', 'sub_store.vendor_id', '=', 'vendor_online_sales.vendor_id')
         ->where('sub_store.vendor_id', $vendor_id)
+        ->where('vendor_online_sales.parent_id', $parent)
         ->where('platforms.name', 'chowdeck')
         ->where('vendor_online_sales.order_amount', '!=', null)
         ->get('vendor_online_sales.platform_id')->count();
 
-        return view('multistore.child.admin', compact('username','parent', 'vendor_id',
+        return view('multistore.parent.outlet-dashboard', compact('username','parent', 'vendor_id',
         'offlineSales', 'salesChannel', 'countAllOrder', 'countPlatformWhereOrderCame', 'sumAllOrders', 
          'chowdeckOrderCount', 'countOutletsFromWhereOfflineSales','outletsExpenses'));
        }
