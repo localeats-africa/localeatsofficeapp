@@ -780,14 +780,14 @@ class ParentVendorController extends Controller
         ->where('sub_store.multi_store_id', $parentID)
         ->get('vendor.*');
 
-        $salesChannel = Platform::all();
+        $salesChannel = Platforms::all();
 
         $perPage = $request->perPage ?? 10;
         $search = $request->input('search');
 
         $onlineSales=  DB::table('vendor_online_sales')
         ->join('vendor', 'vendor.id', 'vendor_online_sales.vendor_id')
-        ->join('platforms', 'platform.sid', 'vendor_online_sales.platform_id')
+        ->join('platforms', 'platforms.id', 'vendor_online_sales.platform_id')
         ->where('parent_id', $parentID)
         ->select(['vendor.store_name', 'vendor_online_sales.*', 'platforms.name' ])
         ->orderBy('vendor_online_sales.created_at', 'desc')
