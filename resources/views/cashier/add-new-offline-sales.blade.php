@@ -1,20 +1,10 @@
-@extends('layouts.head')
-@extends('layouts.header')
-@extends('layouts.sidebar')
-@extends('layouts.footer')
-@section('content')
-<style>
-.select2-results__option[aria-selected] {
-      cursor: pointer;
-      text-transform: capitalize;
-}
 </style>
 <!-- main-panel -->
 <div class="main-panel">
       <div class="content-wrapper">
             <div class="page-header">
                   <h3 class="page-title">
-                        <span class="text-info"> {{$vendorName}}</span> >> In-Store Sales
+                        <span class="text-info">{{$vendorName}}</span> >>>> Add New Sales
                   </h3>
             </div>
 
@@ -22,272 +12,230 @@
             <!--Alert here--->
             <div class="row ">
                   <div class="col-12">
-                        @if(session('sales-status'))
-                        <div class="alert alert-important alert-success alert-dismissible" role="alert">
-                              <div class="d-flex">
-                                    <div>
-                                          <!-- Download SVG icon from http://tabler-icons.io/i/alert-triangle -->
-                                          <svg xmlns="http://www.w3.org/2000/svg" class="icon alert-icon" width="24"
-                                                height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"
-                                                fill="none" stroke-linecap="round" stroke-linejoin="round">
-                                                <path stroke="none" d="M0 0h24v24H0z" fill="none" />
-                                                <path
-                                                      d="M10.24 3.957l-8.422 14.06a1.989 1.989 0 0 0 1.7 2.983h16.845a1.989 1.989 0 0 0 1.7 -2.983l-8.423 -14.06a1.989 1.989 0 0 0 -3.4 0z" />
-                                                <path d="M12 9v4" />
-                                                <path d="M12 17h.01" />
-                                          </svg>
-                                    </div>
-                                    <div> {!! session('sales-status') !!}</div>
-                              </div>
-                              <a class="btn-close" data-bs-dismiss="alert" aria-label="close"></a>
-                        </div>
-                        @endif
+                      
 
-
-                        @if(session('sales-error'))
-                        <div class="alert  alert-danger alert-dismissible" role="alert">
-                              <div class="d-flex">
-                                    <div>
-                                          <!-- Download SVG icon from http://tabler-icons.io/i/alert-triangle -->
-                                          <svg xmlns="http://www.w3.org/2000/svg" class="icon alert-icon" width="24"
-                                                height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"
-                                                fill="none" stroke-linecap="round" stroke-linejoin="round">
-                                                <path stroke="none" d="M0 0h24v24H0z" fill="none" />
-                                                <path
-                                                      d="M10.24 3.957l-8.422 14.06a1.989 1.989 0 0 0 1.7 2.983h16.845a1.989 1.989 0 0 0 1.7 -2.983l-8.423 -14.06a1.989 1.989 0 0 0 -3.4 0z" />
-                                                <path d="M12 9v4" />
-                                                <path d="M12 17h.01" />
-                                          </svg>
-                                    </div>
-                                    <div> {!! session('sales-error') !!}</div>
-                              </div>
-                              <a class="btn-close" data-bs-dismiss="alert" aria-label="close"></a>
-                        </div>
-                        @endif
-
-                        @if ($errors->any())
-                        <div class="alert alert-danger alert-dismissible" role="alert">
-                              <div class="d-flex">
-                                    <div>
-                                          <!-- Download SVG icon from http://tabler-icons.io/i/alert-circle -->
-                                          <svg xmlns="http://www.w3.org/2000/svg" class="icon alert-icon" width="24"
-                                                height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"
-                                                fill="none" stroke-linecap="round" stroke-linejoin="round">
-                                                <path stroke="none" d="M0 0h24v24H0z" fill="none" />
-                                                <path d="M3 12a9 9 0 1 0 18 0a9 9 0 0 0 -18 0" />
-                                                <path d="M12 8v4" />
-                                                <path d="M12 16h.01" />
-                                          </svg>
-                                    </div>
-                                    <div>
-                                          <ul>
-                                                @foreach ($errors->all() as $error)
-                                                <li>{{ $error }}</li>
-                                                @endforeach
-                                          </ul>
-                                    </div>
-                              </div>
-                              <a class="btn-close" data-bs-dismiss="alert" aria-label="close"></a>
-                        </div>
-                        @endif
 
                   </div>
             </div>
             <!---end Alert --->
 
-            <p></p>
-            <p></p>
-            <form method="post" action="{{ route('save-offline-sales') }}" name="submit" enctype="multipart/form-data">
-                  @csrf
-                  {{csrf_field()}}
-                  <div class="row">
-                        <div class="col-md-3">
-                              <div class="form-label required"> Food item <i class="text-danger">*</i>
-                              </div>
-
-                              <select class="js-example-basic-single2 text-secondary " style="width:100%;" name="item">
-                                    <option value="">Choose</option>
-                                    @foreach($salesList as $data)
-                                    <option  value="{{$data->item}}" >
-                                    {{$data->item}}
-                                    </option>
-                                    @endforeach
-                              </select>
-                        </div>
-
-                        <div class="col-md-3">
-                              <div class="form-label required"> Food Category <i class="text-danger">*</i>
-                              </div>
-
-                              <select class="js-example-basic-single2 text-secondary " style="width:100%;" name="item">
-                                    <option value="">Choose</option>
-                                    @foreach($category as $data)
-                                    <option  value="{{$data->category}}" >
-                                    {{$data->category}}
-                                    </option>
-                                    @endforeach
-                              </select>
-                        </div>
-
-                        <div class="col-md-3">
-                              <div class="form-label required">Quantity <i class="text-danger">*</i>
-                              </div>
-                              <div class="input-group">
-                                    <div class="btn btn-sm" id="decreaseSupply" onclick="decreaseSupply()"
-                                          value="Decrease Value">-
-                                    </div>
-                                    <input type="text" class="form-control" name="quantity" value="1" style="width:45px;" id="supply"
-                                          multiple="multiple">
-                                    <div class="btn btn-sm" id="increaseSupply" onclick="increaseSupply()"
-                                          value="Increase Value">+
-                                    </div>
-                              </div>
-
-                        </div>
-
-                        <div class="col-md-3">
-                              <div class="form-label required">Price <i class="text-danger">*</i>
-                              </div>
-                              <div class="input-group">
-                                    <input type="text" class="form-control" name="price">
-                                    <button type="submit" name="submit"
-                                          class="btn bg-gradient-primary btn-sm  text-white">Save</button>
-                              </div>
-
-                        </div>
-
-                  </div>
-            </form>
-
-            <p></p>
-            <div class="row ">
-                  <div class="col-12">
-                        <div class="card">
-                              <div class="card-header">
-                                    <h4 class="card-title"> </h4>
-                              </div>
 
 
-                              <div class="table-responsive " id="card">
-                                    <table class="table table-striped card-table table-center text-nowrap datatable"
-                                          id="orders">
-                                          <thead>
-                                                <tr>
-                                                      <th>SN</th>
-                                                      <th>Food Category</th>
-                                                      <th>Item</th>
-                                                      <th>Price</th>
-                                                      <th>Quantity</th>
-                                                      <th>Amount</th>
-                                                </tr>
-                                          </thead>
-                                          <tbody>
-                                                @foreach($sales as $data)
-                                                <tr>
-                                                      <td>{{$loop->iteration}}</td>
-                                                      <td class="text-capitalize">{{$data->category}}</td>
-                                                      <td class="text-capitalize">{{$data->food_item}}</td>
-                                                      <td>{{$data->price}}</td>
-                                                      <td>{{$data->quantity}}</td>
-                                                      <td>{{$data->amount}}</td>
-                                                      <td>
-                                                            <form action="{{ route('remove-sales-item', [$data->id]) }}"
-                                                                  method="post">
-                                                                  @csrf
-                                                                  {{csrf_field()}}
-                                                                  <input type="hidden" value="" name="id">
-                                                                  <button type="submit" name="submit"
-                                                                        class=" btn btn-xs text-danger"><i
-                                                                              class="fa fa-trash"></i></button>
-                                                            </form>
-                                                      </td>
-
-                                                </tr>
-                                                @endforeach
-
-                                          </tbody>
-
-                                    </table>
-                              </div>
-
-                        </div>
-                        <!--- card-->
-                        <p></p>
-
-                        <form method="post" action="{{ route('send-offline-sales') }}" name="submit"
+            <div class="row">
+                  <h6 class="text-danger">Check multiple one or more food item, enter each quantity, enter
+                        total price and date</h6>
+                  <p></p>
+                  <div class="col-md-6 col-12 list-wrapper">
+                        <form method="post" action="{{ route('add-vendor-offline-soup') }}" name="submit"
                               enctype="multipart/form-data">
                               @csrf
                               {{csrf_field()}}
+                              <h6>Soup</h6>
 
-                              <button type="submit" name="submit"
-                                    class="btn bg-gradient-primary btn-md  text-white">Submit </button>
+                              <ul class="d-flex flex-column-reverse ">
+                                    @foreach($vendorSoup as $data)
+                                    <li>
+                                          <div class="form-check">
+                                                <label class="form-check-label">
+                                                      <input class="checkbox" type="checkbox" name="soup[]"
+                                                            value="{{$data->soup}}" multiple="multiple">{{$data->soup}}
+                                                      <i class="input-helper"></i>
+                                                </label>
+                                          </div>
+
+                                          <i class="remove"></i>
+                                          <input type="hidden" value="{{ $data->id }}" name="soup_id[]">
+
+                                          <input class="form-control" type="text" name="soup_price[]"
+                                                value="{{$data->soup_price}}" style="width:85px;" disabled>
+
+                                          <div class="btn btn-sm" id="decreaseSoup-{{ $data->id }}"
+                                                onclick="decreaseSoup({{$data->id}})" value="Decrease Value">-</div>
+
+                                          <input type="text" class="form-control" name="soup_qty[]" value="1"
+                                                style="width:85px;" id="soup-{{ $data->id }}">
+
+                                          <div class="btn btn-sm" id="increaseSoup-{{ $data->id }}"
+                                                onclick="increaseSoup({{$data->id}})" value="Increase Value">+</div>
+
+                                    </li>
+
+                                    @endforeach
+                              </ul>
+
+                              <div class="form-group">
+                                    <h6 for="">Date</h6>
+                                    <br>
+                                    <div class="input-group date">
+
+                                          <input type="text" class="form-control" value="{{ date('Y-m-d')}}" id="date1"
+                                                name="date" placeholder="Enter expenses" />
+                                          <input id="vendor" name="vendor" type="hidden" value="{{ $vendor_id }}" />
+                                          <button type="submit" name="submit"
+                                                class="btn bg-gradient-primary btn-sm  text-white">Save Soup</button>
+                                    </div>
+                              </div>
+
+                        </form>
+
+                  </div>
+                  <div class="col-md-6 col-12 list-wrapper">
+                        <form method="post" action="{{ route('add-vendor-offline-swallow') }}" name="submit"
+                              enctype="multipart/form-data">
+                              @csrf
+                              {{csrf_field()}}
+                              <h6>Swallow</h6>
+                              <ul class="d-flex flex-column-reverse ">
+                                    @foreach($vendorSwallow as $data)
+                                    <li>
+                                          <div class="form-check">
+                                                <label class="form-check-label">
+                                                      <input class="checkbox" type="checkbox" name="swallow[]"
+                                                            value="{{$data->swallow}}">{{$data->swallow}}
+                                                </label>
+                                          </div>
+
+                                          <i class="remove"></i>
+                                          <input class="form-control" type="text" name="swallow_price[]"
+                                                value="{{$data->swallow_price}}" style="width:85px;" disabled>
+
+                                          <div class="btn btn-sm" id="decreaseSwallow-{{ $data->id }}"
+                                                onclick="decreaseSwallow({{$data->id}})" value="Decrease Value">-</div>
+
+                                          <input type="text" class="form-control" name="swallow_qty[]" value="1"
+                                                style="width:85px;" id="swallow-{{ $data->id }}">
+
+                                          <div class="btn btn-sm" id="increaseSwallow-{{ $data->id }}"
+                                                onclick="increaseSwallow({{$data->id}})" value="Increase Value">+</div>
+
+                                    </li>
+                                    @endforeach
+                              </ul>
+
+                              <div class="form-group">
+                                    <h6 for="">Date</h6>
+                                    <br>
+                                    <div class="input-group date">
+
+                                          <input type="text" class="form-control" value="{{ date('Y-m-d')}}" id="date2"
+                                                name="date" placeholder="Enter expenses" />
+                                          <input id="vendor" name="vendor" type="hidden" value="{{ $vendor_id }}" />
+                                          <button type="submit" name="submit"
+                                                class="btn bg-gradient-primary btn-sm  text-white">Save Swallow</button>
+                                    </div>
+                              </div>
                         </form>
 
                   </div>
             </div>
-      </div>
-      <!--- content wrapper---->
-      <!-- partial -->
-      <footer class="footer">
-            <div class="d-sm-flex justify-content-center justify-content-sm-between">
-                  <span class="text-muted text-center text-sm-left d-block d-sm-inline-block">Copyright ©
-                        LocalEats Africa {{ date('Y')}} </a>. All rights
-                        reserved.</span>
-                  <span class="float-none float-sm-right d-block mt-1 mt-sm-0 text-center"><i
-                              class="mdi mdi-heart text-danger"></i></span>
+
+
+            <div class="row">
+                  <div class="col-md-6 col-12 list-wrapper">
+                        <form method="post" action="{{ route('add-vendor-offline-protein') }}" name="submit"
+                              enctype="multipart/form-data">
+                              @csrf
+                              {{csrf_field()}}
+                              <h6>Protein</h6>
+                              <ul class="d-flex flex-column-reverse ">
+                                    @foreach($vendorProtein as $data)
+                                    <li>
+                                          <div class="form-check">
+                                                <label class="form-check-label">
+                                                      <input class="checkbox" type="checkbox" name="protein[]"
+                                                            value="{{$data->protein}}">{{$data->protein}}
+                                                </label>
+                                          </div>
+
+                                          <i class="remove"></i>
+                                          <input class="form-control" type="text" name="protein_price[]"
+                                                value="{{$data->protein_price}}" style="width:85px;" disabled>
+
+                                          <div class="btn btn-sm" id="decreaseProtein-{{ $data->id }}"
+                                                onclick="decreaseProtein({{$data->id}})" value="Decrease Value">-</div>
+
+                                          <input type="text" class="form-control" name="protein_qty[]" value="1"
+                                                style="width:85px;" id="protein-{{ $data->id }}">
+
+                                          <div class="btn btn-sm" id="increaseProtein-{{ $data->id }}"
+                                                onclick="increaseProtein({{$data->id}})" value="Increase Value">+</div>
+
+
+                                    </li>
+                                    @endforeach
+                              </ul>
+
+                              <div class="form-group">
+                                    <h6 for="">Date</h6>
+                                    <br>
+                                    <div class="input-group date">
+
+                                          <input type="text" class="form-control" value="{{ date('Y-m-d')}}" id="date3"
+                                                name="date" placeholder="Enter expenses" />
+                                          <input id="vendor" name="vendor" type="hidden" value="{{ $vendor_id }}" />
+                                          <button type="submit" name="submit"
+                                                class="btn bg-gradient-primary btn-sm  text-white">Save Protein</button>
+                                    </div>
+                              </div>
+                        </form>
+
+                  </div>
+
+
+                  <div class="col-md-6 col-12 list-wrapper">
+                        <form method="post" action="{{ route('add-vendor-offline-others') }}" name="submit"
+                              enctype="multipart/form-data">
+                              @csrf
+                              {{csrf_field()}}
+                              <h6>Others</h6>
+                              <ul class="d-flex flex-column-reverse ">
+                                    @foreach($vendorOthersFoodItem as $data)
+                                    <li>
+                                          <div class="form-check">
+                                                <label class="form-check-label">
+                                                      <input class="checkbox" type="checkbox" name="others[]"
+                                                            value="{{$data->others}}">{{$data->others}}
+                                                </label>
+                                          </div>
+
+                                          <i class="remove"></i>
+                                          <input class="form-control" type="text" name="others_price[]"
+                                                value="{{$data->others_price}}" style="width:85px;" disabled>
+
+                                          <div class="btn btn-sm" id="decreaseOthers-{{ $data->id }}"
+                                                onclick="decreaseOthers({{$data->id}})" value="Decrease Value">-</div>
+
+                                          <input type="text" class="form-control" name="others_qty[]" value="1"
+                                                style="width:85px;" id="others-{{ $data->id }}">
+
+                                          <div class="btn btn-sm" id="increaseOthers-{{ $data->id }}"
+                                                onclick="increaseOthers({{$data->id}})" value="Increase Value">+</div>
+
+
+
+                                    </li>
+                                    @endforeach
+                              </ul>
+                              <div class="form-group">
+                                    <h6 for="">Date</h6>
+                                    <br>
+                                    <div class="input-group date">
+
+                                          <input type="text" class="form-control" value="{{ date('Y-m-d')}}" id="date4"
+                                                name="date" placeholder="Enter expenses" />
+                                          <input id="vendor" name="vendor" type="hidden" value="{{ $vendor_id }}" />
+                                          <button type="submit" name="submit"
+                                                class="btn bg-gradient-primary btn-sm  text-white">Save Others</button>
+                                    </div>
+                              </div>
+                        </form>
+
+                  </div>
+
             </div>
-      </footer>
-</div>
-<!-- main-panel -->
-<script src="{{ asset('assets/vendors/select2/select2.min.js')}}"></script>
-<script src="{{ asset('assets/vendors/typeahead.js/typeahead.bundle.min.js')}}"></script>
-
-<!-- endinject -->
-<!-- Custom js for this page -->
-<script src="{{ asset('assets/js/file-upload.js')}}"></script>
-<script src="{{ asset('assets/js/typeahead.js')}}"></script>
-<script src="{{ asset('assets/js/select2.js')}}"></script>
-
-<!-- header search bar js -->
-<script type="text/javascript">
-var path = "{{ route('autocomplete') }}";
-$('input.search').typeahead({
-      source: function(str, process) {
-            return $.get(path, {
-                  str: str
-            }, function(data) {
-                  return process(data);
-            });
-      }
-});
-</script>
+            <!---row--->
+            <p></p>
 
 
-<script type="text/javascript">
-var path = "{{ route('autocomplete-vendor-food-menu') }}";
-
-$("#search").autocomplete({
-      source: function(request, response) {
-            var parent = document.getElementById('parent').value;
-            $.ajax({
-                  url: path,
-                  type: 'GET',
-                  dataType: "json",
-                  data: {
-                        search: request.term,
-                        parent: parent
-                  },
-                  success: function(data) {
-                        response(data);
-                  }
-            });
-      },
-      select: function(event, ui) {
-            $('#search').val(ui.item.label);
-            console.log(ui.item);
-            return false;
-      }
-});
-</script>
-
-@endsection
+           
+      </div>
