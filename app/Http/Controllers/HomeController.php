@@ -2234,10 +2234,12 @@ class HomeController extends Controller
         ->orderBy('created_at', 'desc')
         ->get('*');
 
+        $category = DB::table('offline_food_category')->select('*');
+
         $sales = TempInStoreSales::where('vendor_id', $vendor_id)->get();
 
         return view('cashier.add-new-offline-sales',  compact('name', 'role', 
-        'vendorName','salesList', 'vendor_id', 'sales'));
+        'vendorName','salesList', 'vendor_id', 'sales', 'category'));
     
     }
 
@@ -2334,9 +2336,10 @@ class HomeController extends Controller
        ->where('users.id', $user_id)
        ->get('vendor.id')->pluck('id')->first();
 
-       $foodCategory = OfflineFoodMenu::where('item', $request->item)
-       ->where('vendor_id',  $vendor_id)
-       ->get()->pluck('category')->first();
+       $foodCategory = $request->category;
+    //    OfflineFoodMenu::where('item', $request->item)
+    //    ->where('vendor_id',  $vendor_id)
+    //    ->get()->pluck('category')->first();
       
        if($foodCategory == 'soup'){
         $food = 'plate of '.$request->item;
