@@ -2339,7 +2339,7 @@ class HomeController extends Controller
         $sales = TempInStoreSales::where('vendor_id', $vendor_id)->get();
 
         return view('cashier.add-new-offline-sales',  compact('name', 'role', 
-        'vendorName','salesList', 'vendor_id', 'sales','category',
+        'vendorName','salesList', 'vendor_id', 'sales',
         'vendorSwallow', 'vendorSoup', 'vendorProtein', 'vendorOthersFoodItem'));
     
     }
