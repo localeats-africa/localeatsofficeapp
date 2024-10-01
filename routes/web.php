@@ -272,7 +272,7 @@ Route::controller(ParentVendorController::class)->group(function () {
    Route::get('/{username}/expenses-category', 'expensesCategory')->name('expenses-category');
    Route::post('add-expenses-category',  'storeExpensesCategory')->name('add-expenses-category');
    Route::get('/{username}/import-online-sales',  'importOnlineSales')->name('import-online-sales');
-   Route::get('/{username}/outlet-dasboard/{id}',  'outletDashboard')->name('outlet-dashboard');
+   Route::get('/{username}/outlet-dashboard/{id}',  'outletDashboard')->name('outlet-dashboard');
     
 
 });
