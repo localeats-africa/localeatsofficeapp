@@ -108,7 +108,7 @@
 
                               <select class="js-example-basic-single2 text-secondary " style="width:100%;" name="item">
                                     <option value="">Choose</option>
-                                    @foreach($foodMenu as $data)
+                                    @foreach($salesList as $data)
                                     <option  value="{{$data->food_item}}" >
                                     {{$data->food_item}}
                                     </option>
