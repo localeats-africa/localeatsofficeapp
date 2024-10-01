@@ -127,7 +127,6 @@
                                     <div class="btn btn-sm" id="increaseSupply" onclick="increaseSupply()"
                                           value="Increase Value">+
                                     </div>
-                                    <input type="hidden" id="parent" value="{{ $parentID }}" />
                                     <button type="submit" name="submit"
                                           class="btn bg-gradient-primary btn-sm  text-white">Save</button>
                               </div>
@@ -159,7 +158,7 @@
                                                 </tr>
                                           </thead>
                                           <tbody>
-                                                @foreach($sales as $data)
+                                                @foreach($salesList as $data)
                                                 <tr>
                                                       <td>{{$loop->iteration}}</td>
                                                       <td class="text-capitalize">{{$data->category}}</td>
