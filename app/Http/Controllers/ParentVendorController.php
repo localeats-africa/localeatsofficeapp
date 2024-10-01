@@ -846,12 +846,12 @@ class ParentVendorController extends Controller
     
            $offlineSales = DB::table('vendor_instore_sales')
            ->where('vendor_id', $vendor_id)
-           ->where('parent_id', $parent)
+           ->where('parent', $parent)
            ->get();
     
            $countOutletsFromWhereOfflineSales = DB::table('vendor_instore_sales')
            ->where('vendor_id', $vendor_id)
-           ->where('parent_id', $parent)
+           ->where('parent', $parent)
            ->count('vendor_id');
     
            $outletsExpenses = DB::table('vendor_expenses')
