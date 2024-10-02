@@ -2240,12 +2240,12 @@ class HomeController extends Controller
 
         $sales = OfflineSales::where('vendor_id', $vendor_id)
         ->where('deleted_at', '=', null)
-        ->orderBy('created_at', 'desc')
+        ->orderBy('sales_date', 'desc')
+        ->select(['*',  ])
         ->where(function ($query) use ($search) {  // <<<
-        $query->where('category', 'LIKE', '%'.$search.'%')
-        ->orWhere('sales_item', 'LIKE', '%'.$search.'%')
-        ->orWhere('amount', 'LIKE', '%'.$search.'%')
-        ->orWhere('sales_date', 'LIKE', '%'.$search.'%');
+        $query->Where('sales_item', 'LIKE', '%'.$search.'%')
+        ->orWhere('sales_date', 'LIKE', '%'.$search.'%')
+        ->orderBy('sales_date', 'desc');
         })
         ->paginate($perPage)->appends(['per_page'   => $perPage]);
         $pagination = $sales->appends ( array ('search' => $search) );
@@ -2336,7 +2336,7 @@ class HomeController extends Controller
          //->orderBy('created_at', 'desc')
          ->get();
 
-        $sales = TempInStoreSales::where('vendor_id', $vendor_id)->get();
+        $sales = OfflineSales::where('vendor_id', $vendor_id)->get();
 
         return view('cashier.add-new-offline-sales',  compact('name', 'role', 
         'vendorName','salesList', 'vendor_id', 'sales',
@@ -2345,71 +2345,11 @@ class HomeController extends Controller
     }
 
 
-      //save vendor InStore sales
-   public function saveTempOfflineSales(Request $request){
-    $username = Auth::user()->username;
-    $user_id = Auth::user()->id;
-    $role = DB::table('role')->select('role_name')
-    ->join('users', 'users.role_id', 'role.id')
-    ->where('users.id', $user_id)
-    ->pluck('role_name')->first();
-
-       $this->validate($request, [ 
-            'category'      => 'required|max:255', 
-           'quantity'      => 'required|max:255', 
-           'item'          => 'required|max:255'         
-       ]);
-
-       $vendor_id = Vendor::join('users', 'users.vendor', 'vendor.id')
-       ->where('users.id', $user_id)
-       ->get('vendor.id')->pluck('id')->first();
-
-       $foodCategory = $request->category;
-    //    OfflineFoodMenu::where('item', $request->item)
-    //    ->where('vendor_id',  $vendor_id)
-    //    ->get()->pluck('category')->first();
-      
-       if($foodCategory == 'soup'){
-        $food = 'plate of '.$request->item;
-       }
-       else{
-        $food  = $request->item;
-       }
-       $foodPrice       = $request->price;
-       $quantity        =  $request->input('quantity');
-       
-       $amount = (int)$foodPrice  *  $quantity; 
-       $today = Carbon::today();
-   
-       // SubVendorInventory
-           $sales = new TempInStoreSales();
-           $sales->added_by            = $user_id;
-           $sales->vendor_id           = $vendor_id;
-           $sales->category            = $foodCategory;
-           $sales->food_item           = $food; 
-           $sales->price               = $foodPrice;
-           $sales->quantity            = $quantity;
-           $sales->amount              = $amount;
-           $sales->date                = $today;
-           $sales->save();
-
-       if($sales){
-           $response = [
-               'code'      => '',
-               'message'   => 'Sales saved successfully',
-               'status'    => 'success',
-           ];
-           $data = json_encode($response, true);
-            
-           return redirect()->back()->with('sales-status', 'Item saved successfully');
-       }
-       else{
-           return redirect()->back()->with('sales-error', 'Opps! something happend');
-       }
-   }
-
-
     public function storeOfflineSales(Request $request){
+        $this->validate($request, [ 
+            'date'          => 'required|max:255',
+            'price'          => 'required|max:255',
+        ]);
         $user_id = Auth::user()->id;
         $username   = Auth::user()->username;
         $today = Carbon::today();
@@ -2417,26 +2357,70 @@ class HomeController extends Controller
         $vendor_id = Vendor::join('users', 'users.vendor', 'vendor.id')
          ->where('users.id', $user_id)
          ->get('vendor.id')->pluck('id')->first();
-    
-        // $getSales = TempInStoreSales::where('vendor_id', $vendor_id)
-        // ->get();
-        
-        // if($getSales->count() >= 1){
-            // foreach($getSales as $key  =>  $data){
+         
+         $others = $request->input('others');
+         $otherItem = json_encode($others);
+         
+         if($request->soup_qty == '0'){
+            $soup_qty = '';
+         }
+         else{
+            $soup_qty = $request->soup_qty. '  ' ; 
+         }
+
+         if($request->swallow_qty == '0'){
+            $swallow_qty = '';
+         }
+         else{
+            $swallow_qty = $request->swallow_qty .'  '; 
+         }
+
+         if($request->protein_qty == '0'){
+            $protein_qty = '';
+         }
+         else{
+            $protein_qty = $request->protein_qty .' '; 
+         }
+
+         if(is_null($request->soup)){
+            $soup  = ' ';
+         }
+         else{
+            $soup = 'plate of ' .$request->soup.' , ';
+         }
+
+         if(is_null($request->swallow)){
+            $swallow  = ' ';
+         }
+         else{
+            $swallow = $request->swallow.' , ';
+         }
+
+         if(is_null($request->protein)){
+            $protein  = ' ';
+
+         }
+         else{
+            $protein = $request->protein.' , ';
+         }
+
+         if(is_null($otherItem)){
+            $getOthers  = ' ';
+
+         }
+         else{
+            $getOthers = $otherItem.'  ';
+         }
+
+        $salesItem =   $soup_qty.  '  ' .$soup. '  ' .$swallow_qty.  '  '  .$swallow. '  ' .$protein_qty. '  ' .$protein.
+        '  '   .substr($getOthers, 1, -1) ;
+      
                     $sales = new OfflineSales();
                     $sales->added_by            = $request->added_by;
-                    $sales->vendor_id           = $request->vendor_id;
-                     $sales->soup               = 'plate of '. $request->soup_item;
-                     $sales->soup_qty           = $request->soup_qty;
-                     $sales->swallow            = $request->swallow_item;
-                     $sales->swallow_qty        = $request->swallow_qty;
-                     $sales->protein            = $request->protein_item;
-                     $sales->protein_qty        = $request->protein_qty;
-                     $sales->others             = $request->others_item;
-                     $sales->others_qty         = $request->others_qty;
+                    $sales->vendor_id           = $request->vendor;
+                     $sales->sales_item         =  $salesItem ;
                      $sales->price              = $request->price;
-                     $sales->amount             = $request->amount;
-                     $sales->sales_date         = $request->orderdate;
+                     $sales->sales_date         = $request->date;
                      $sales->save();
             // }
             if($sales){
@@ -2446,15 +2430,12 @@ class HomeController extends Controller
                     'status'    => 'success',
                 ];
                 $data = json_encode($response, true);
- 
-                 //TempInStoreSales::where('vendor_id', $vendor_id )->delete();
- 
+
                 return redirect('offline-sales' )->with('sales-status', 'Sales sent successfully');
             }
             else{
                 return redirect()->back()->with('sales-error', 'Opps! something happend');
             } 
-      
     }
 
     public function storeVendorOfflineSoupSales(Request $request){

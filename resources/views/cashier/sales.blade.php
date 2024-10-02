@@ -165,7 +165,7 @@
                                                 </tr>
                                           </thead>
                                           <tbody>
-                                                @foreach($sales as $data)
+                                          @foreach($sales as $data)
                                                 <tr>
                                                
                                                       <td>{{ date('Y-m-d', strtotime($data->sales_date))}} Time: <span class="text-info"> {{\Carbon\Carbon::parse($data->created_at)->format('H:i:s')}}</span></td>

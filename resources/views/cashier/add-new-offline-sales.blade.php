@@ -3,13 +3,34 @@
 @extends('layouts.sidebar')
 @extends('layouts.footer')
 @section('content')
+<style>
+.select2-results__option[aria-selected] {
+      cursor: pointer;
+      text-transform: capitalize;
+}
+
+.select2-container--default .select2-selection--multiple .select2-selection__rendered {
+box-sizing: border-box;
+list-style: none;
+margin: 7px !important;
+padding: 0 5px;
+width: 100%;
+}
+
+.select2-container--default .select2-selection--multiple .select2-selection__rendered {
+box-sizing: border-box;
+list-style: none;
+/* margin: 0; */
+padding: 0 5px;
+width: 100%;
+}
 </style>
 <!-- main-panel -->
 <div class="main-panel">
       <div class="content-wrapper">
             <div class="page-header">
                   <h3 class="page-title">
-                        <span class="text-info">{{$vendorName}}</span> >>>> Add New Sales
+                        <span class="text-info"> {{$vendorName}}</span> >> In-Store Sales
                   </h3>
             </div>
 
@@ -86,295 +107,198 @@
                         </div>
                         @endif
 
-
                   </div>
             </div>
             <!---end Alert --->
 
-            <form method="post" action="" name="submit"
-                  enctype="multipart/form-data">
+            <p></p>
+            <p></p>
+            <form method="post" action="{{ route('send-offline-sales') }}" name="submit"  enctype="multipart/form-data">
                   @csrf
                   {{csrf_field()}}
+                  <div class="row">
+                        <div class="col-md-6 col-12">
+                              <div class="input-group">
+                                    <span class="input-group-append">
+                                          <span class="input-group-text text-dark d-block">
+                                                Soup &nbsp; &nbsp;
+                                          </span>
+                                    </span>
+                                    <select class="js-example-basic-single2 text-secondary " style="width:40%;"
+                                          name="soup">
+                                          <option value="">Choose</option>
+                                          @foreach($vendorSoup as $data)
+                                          <option value="{{$data->soup}}">
+                                                {{$data->soup}}
+                                          </option>
+                                          @endforeach
+                                    </select>
+                                    <i class="remove"></i>
+                                    <span class="input-group-append">
+                                          <span class="input-group-text text-dark  d-block">
+                                                qty
+                                          </span>
+                                    </span>
+                                    <div class="btn btn-sm" id="decreaseSoup-{{ $data->id }}"
+                                          onclick="decreaseSoup({{$data->id}})" value="Decrease Value">-</div>
+
+                                    <input type="text" class="form-control" name="soup_qty" value="0"
+                                          style="width:55px;" id="soup-{{ $data->id }}">
+
+                                    <div class="btn btn-sm" id="increaseSoup-{{ $data->id }}"
+                                          onclick="increaseSoup({{$data->id}})" value="Increase Value">+</div>
+                                    <i class="remove"></i>
+
+                              </div>
+                        </div>
+
+
+                        <div class="col-md-6 col-12">
+                              <div class="input-group">
+                                    <span class="input-group-append">
+                                          <span class="input-group-text text-dark d-block">
+                                                Swallow
+                                          </span>
+                                    </span>
+                                    <select class="js-example-basic-single text-secondary " style="width:40%;"
+                                          name="swallow">
+                                          <option value="">Choose</option>
+                                          @foreach($vendorSwallow as $data)
+                                          <option value="{{$data->swallow}}">
+                                                {{$data->swallow}}
+                                          </option>
+                                          @endforeach
+                                    </select>
+                                    <i class="remove"></i>
+                                    <span class="input-group-append">
+                                          <span class="input-group-text text-dark  d-block">
+                                                qty
+                                          </span>
+                                    </span>
+                                    <div class="btn btn-sm" id="decreaseSwallow-{{ $data->id }}"
+                                          onclick="decreaseSwallow({{$data->id}})" value="Decrease Value">-</div>
+
+                                    <input type="text" class="form-control" name="swallow_qty" value="0"
+                                          style="width:55px;" id="swallow-{{ $data->id }}">
+
+                                    <div class="btn btn-sm" id="increaseSwallow-{{ $data->id }}"
+                                          onclick="increaseSwallow({{$data->id}})" value="Increase Value">+</div>
+                                    <i class="remove"></i>
+
+                              </div>
+                        </div>
+
+                  </div>
+
+                  <p></p>
+                  <p></p>
+
 
                   <div class="row">
-                        <h6 class="text-danger">Check multiple one or more food item, enter each quantity, enter
-                              total price and date</h6>
+                        <div class="col-md-6 col-12">
+                              <div class="input-group">
+                                    <span class="input-group-append">
+                                          <span class="input-group-text text-dark d-block">
+                                                Protein
+                                          </span>
+                                    </span>
+                                    <select class="js-example-basic-single text-secondary " style="width:40%;"
+                                          name="protein">
+                                          <option value="">Choose</option>
+                                          @foreach($vendorProtein as $data)
+                                          <option value="{{$data->protein}}">
+                                                {{$data->protein}}
+                                          </option>
+                                          @endforeach
+                                    </select>
+                                    <i class="remove"></i>
+                                    <span class="input-group-append">
+                                          <span class="input-group-text text-dark  d-block">
+                                                qty
+                                          </span>
+                                    </span>
+                                    <div class="btn btn-sm" id="decreaseProtein-{{ $data->id }}"
+                                          onclick="decreaseProtein({{$data->id}})" value="Decrease Value">-</div>
+
+                                    <input type="text" class="form-control" name="protein_qty" value="0"
+                                          style="width:55px;" id="protein-{{ $data->id }}">
+
+                                    <div class="btn btn-sm" id="increaseProtein-{{ $data->id }}"
+                                          onclick="increaseProtein({{$data->id}})" value="Increase Value">+</div>
+
+                                    <i class="remove"></i>
+
+                              </div>
+                        </div>
+
+
+                        <div class="col-md-6 col-12">
+                              <div class="input-group">
+                                    <span class="input-group-append">
+                                          <span class="input-group-text text-dark d-block">
+                                                Others
+                                          </span>
+                                    </span>
+                                    <select class="js-example-basic-multiple" multiple="multiple" style="width:40%; "
+                                          name="others[]">
+                                          <option value="">Choose</option>
+                                          @foreach($vendorOthersFoodItem as $data)
+                                          <option value="{{$data->others}}">
+                                                {{$data->others}}
+                                          </option>
+                                          @endforeach
+                                    </select>
+                                    <i class="remove"></i>
+                                    <span class="input-group-append">
+                                          <span class="input-group-text text-dark  d-block">
+                                                qty
+                                          </span>
+                                    </span>
+
+                                    <div class="btn btn-sm" id="decreaseOthers-{{ $data->id }}"
+                                          onclick="decreaseOthers({{$data->id}})" value="Decrease Value">-</div>
+
+                                    <input type="text" class="form-control" name="others_qty" value="0"
+                                          style="width:55px;" id="others-{{ $data->id }}">
+
+                                    <div class="btn btn-sm" id="increaseOthers-{{ $data->id }}"
+                                          onclick="increaseOthers({{$data->id}})" value="Increase Value">+</div>
+
+                              </div>
+                        </div>
                         <p></p>
-                        <div class="col-md-6 col-12 list-wrapper">
+                        <div class="col-md-12 col-12">
+                              <div class="input-group">
+                                    <span class="input-group-append">
+                                          <span class="input-group-text text-dark d-block">
+                                                Date <i class="text-danger">*</i>
+                                          </span>
+                                    </span>
+                                    <input type="text" class="form-control" value="{{ date('Y-m-d')}}" id="date1"
+                                          name="date" placeholder="Enter expenses" />
+                                    <input id="vendor" name="vendor" type="hidden" value="{{ $vendor_id }}" />
 
-                              <h6>Soup</h6>
-
-                              <ul class="d-flex flex-column-reverse ">
-                                    @foreach($vendorSoup as $data)
-                                    <li>
-                                          <div class="form-check">
-                                                <label class="form-check-label">
-                                                      <input class="checkbox" type="checkbox" name="soup[]"
-                                                            value="{{$data->soup}}" multiple="multiple" id="soup_item-{{ $data->soup }}">{{$data->soup}}
-                                                      <i class="input-helper"></i>
-                                                </label>
-                                          </div>
-
-                                          <i class="remove"></i>
-           
-                                          <div class="btn btn-sm" id="decreaseSoup-{{ $data->id }}"
-                                                onclick="decreaseSoup({{$data->id}})" value="Decrease Value">-</div>
-
-                                          <input type="text" class="form-control" name="soup_qty[]" value="1"
-                                                style="width:85px;" id="soup-{{ $data->id }}">
-
-                                          <div class="btn btn-sm" id="increaseSoup-{{ $data->id }}"
-                                                onclick="increaseSoup({{$data->id}})" value="Increase Value">+</div>
-
-                                    </li>
-
-                                    @endforeach
-                              </ul>
-
-                        </div>
-                        <div class="col-md-6 col-12 list-wrapper">
-                              <h6>Swallow</h6>
-                              <ul class="d-flex flex-column-reverse ">
-                                    @foreach($vendorSwallow as $data)
-                                    <li>
-                                          <div class="form-check">
-                                                <label class="form-check-label">
-                                                      <input class="checkbox" type="checkbox" name="swallow[]"
-                                                            value="{{$data->swallow}}"  id="swallow_item-{{ $data->swallow }}">{{$data->swallow}}
-                                                </label>
-                                          </div>
-
-                                          <i class="remove"></i>
-                                          <div class="btn btn-sm" id="decreaseSwallow-{{ $data->id }}"
-                                                onclick="decreaseSwallow({{$data->id}})" value="Decrease Value">-</div>
-
-                                          <input type="text" class="form-control" name="swallow_qty[]" value="1"
-                                                style="width:85px;" id="swallow-{{ $data->id }}">
-
-                                          <div class="btn btn-sm" id="increaseSwallow-{{ $data->id }}"
-                                                onclick="increaseSwallow({{$data->id}})" value="Increase Value">+</div>
-
-                                    </li>
-                                    @endforeach
-                              </ul>
-
-                        </div>
-                  </div>
-
-                  <p></p>
-                  <p></p>
-                  <div class="row">
-                        <div class="col-md-6 col-12 list-wrapper">
-                              <h6>Protein</h6>
-                              <ul class="d-flex flex-column-reverse ">
-                                    @foreach($vendorProtein as $data)
-                                    <li>
-                                          <div class="form-check">
-                                                <label class="form-check-label">
-                                                      <input class="checkbox" type="checkbox" name="protein[]"
-                                                            value="{{$data->protein}}"  id="protein_item-{{ $data->protein }}">{{$data->protein}}
-                                                </label>
-                                          </div>
-
-                                          <i class="remove"></i>
-                                          <div class="btn btn-sm" id="decreaseProtein-{{ $data->id }}"
-                                                onclick="decreaseProtein({{$data->id}})" value="Decrease Value">-</div>
-
-                                          <input type="text" class="form-control" name="protein_qty[]" value="1"
-                                                style="width:85px;" id="protein-{{ $data->id }}">
-
-                                          <div class="btn btn-sm" id="increaseProtein-{{ $data->id }}"
-                                                onclick="increaseProtein({{$data->id}})" value="Increase Value">+</div>
-
-
-                                    </li>
-                                    @endforeach
-                              </ul>
-                        </div>
-
-
-                        <div class="col-md-6 col-12 list-wrapper">
-
-                              <h6>Others</h6>
-                              <ul class="d-flex flex-column-reverse ">
-                                    @foreach($vendorOthersFoodItem as $data)
-                                    <li>
-                                          <div class="form-check">
-                                                <label class="form-check-label">
-                                                      <input class="checkbox" type="checkbox" name="others[]"
-                                                            value="{{$data->others}}" id="others_item-{{ $data->others }}" >{{$data->others}}
-                                                </label>
-                                          </div>
-
-                                          <i class="remove"></i>
-                                          <div class="btn btn-sm" id="decreaseOthers-{{ $data->id }}"
-                                                onclick="decreaseOthers({{$data->id}})" value="Decrease Value">-</div>
-
-                                          <input type="text" class="form-control" name="others_qty[]" value="1"
-                                                style="width:85px;" id="others-{{ $data->id }}">
-
-                                          <div class="btn btn-sm" id="increaseOthers-{{ $data->id }}"
-                                                onclick="increaseOthers({{$data->id}})" value="Increase Value">+</div>
-                                    </li>
-                                    @endforeach
-                              </ul>
-
-
-                        </div>
-
-                  </div>
-                  <!---row--->
-                  <div class="row ">
-                  <div class="col-md-6 col-12 list-wrapper">
-                              <div class="form-group">
-                                    <h6 for="">Price</h6>
-                                    <br>
-                                    <input type="text" class="form-control" value="" id="price" name="price"
-                                          placeholder="Enter expenses" />
+                                    <i class="remove"></i>
+                                    <span class="input-group-append">
+                                          <span class="input-group-text text-dark  d-block">
+                                                Price <i class="text-danger">*</i>
+                                          </span>
+                                    </span>
+                                    <input type="text" class="form-control" name="price">
+                                    <button type="submit" name="submit"
+                                          class="btn bg-gradient-primary  btn-block  text-white">Save</button>
 
                               </div>
 
-                        </div>
 
-                        <div class="col-md-6 col-12 list-wrapper">
-                              <div class="form-group">
-                                    <h6 for="">Date</h6>
-                                    <br>
-                                    <div class="input-group date">
 
-                                          <input type="text" class="form-control" value="{{ date('Y-m-d')}}" id="date4"
-                                                name="date" placeholder="Enter expenses" />
-                                          <input id="vendor" name="vendor" type="hidden" value="{{ $vendor_id }}" />
-                                          <button type="submit" name="submit"
-                                                class="btn bg-gradient-primary btn-sm  text-white">Save</button>
-                                    </div>
-                              </div>
 
                         </div>
                   </div>
-                  <p></p>
+            </form>
 
+            <p></p>
 
-                  <p></p>
-                  <div class="row ">
-                        <div class="col-12">
-                              <div class="card">
-                                    <div class="card-header">
-                                          <h4 class="card-title"> </h4>
-                                    </div>
-
-
-                                    <div class="table-responsive " id="card">
-                                          <table class="table table-striped card-table table-vcenter text-nowrap datatable "
-                                                id="orders">
-                                                <thead>
-                                                      <tr>
-                                                            <th>Date</th>
-                                                            <th>Sales Item</th>
-                                                            <th>Price</th>
-                                                            <th>Total</th>
-                                                      </tr>
-                                                </thead>
-                                                <tbody>
-                                                      @foreach($sales as $data)
-                                                      <tr>
-
-                                                            <td>{{ date('Y-m-d', strtotime($data->sales_date))}} Time:
-                                                                  <span class="text-info">
-                                                                        {{\Carbon\Carbon::parse($data->created_at)->format('H:i:s')}}</span>
-                                                            </td>
-                                                            <td class="text-capitalize">
-                                                                  {{ $data->sales_item }}
-                                                                  @if($data->soup ==' ')
-                                                                  @else
-
-                                                                  {{ $data->soup_qty }}
-                                                                  {{$data->soup}}
-                                                                  @endif
-
-                                                                  @if($data->swallow ==' ')
-                                                                  @else
-                                                                  {{$data->swallow_qty }} {{$data->swallow}}
-                                                                  @endif
-
-                                                                  @if($data->protein ==' ')
-                                                                  @else
-                                                                  {{$data->protein_qty }} {{$data->protein}}
-                                                                  @endif
-
-                                                                  @if($data->others ==' ')
-                                                                  @else
-                                                                  {{$data->others_qty }} {{$data->others}}
-                                                                  @endif
-                                                                  <a class=" btn btn-sm text-capitalize text-danger"
-                                                                        href="edit-offline-sales/{{$data->id}}">
-                                                                        <i class=" fa fa-pencil"></i>
-                                                                  </a>
-                                                            </td>
-                                                            <td>
-                                                                  @if($data->soup ==' ')
-                                                                  @else
-                                                                  {{$data->soup_price}}
-                                                                  @endif
-
-                                                                  @if($data->swallow ==' ')
-                                                                  @else
-                                                                  {{$data->swallow_price}}
-                                                                  @endif
-
-                                                                  @if($data->protein ==' ')
-                                                                  @else
-                                                                  {{$data->protein_price}}
-                                                                  @endif
-
-                                                                  @if($data->others ==' ')
-                                                                  @else
-                                                                  {{$data->others_price}}
-                                                                  @endif
-                                                                  {{$data->price}}
-
-                                                            </td>
-
-                                                            <td>
-
-
-                                                                  @if($data->soup ==' ')
-                                                                  @else
-
-                                                                  {{ $data->soup_total }}
-                                                                  @endif
-
-                                                                  @if($data->swallow ==' ')
-                                                                  @else
-
-                                                                  {{$data->swallow_total }}
-                                                                  @endif
-
-                                                                  @if($data->protein ==' ')
-                                                                  @else
-
-                                                                  {{$data->protein_total }}
-                                                                  @endif
-
-                                                                  @if($data->others ==' ')
-                                                                  @else
-
-                                                                  {{$data->others_total  }}
-                                                                  @endif
-                                                                  {{$data->price}}
-                                                            </td>
-                                                      </tr>
-                                                      @endforeach
-
-                                                </tbody>
-
-                                          </table>
-                                    </div>
-
-                              </div>
-                              <!--- card-->
-                        </div>
-                  </div>
       </div>
       <!--- content wrapper---->
       <!-- partial -->
@@ -389,90 +313,61 @@
       </footer>
 </div>
 <!-- main-panel -->
-<link rel="stylesheet" href="https://code.jquery.com/ui/1.13.3/themes/base/jquery-ui.css">
+<script src="{{ asset('assets/vendors/select2/select2.min.js')}}"></script>
+<script src="{{ asset('assets/vendors/typeahead.js/typeahead.bundle.min.js')}}"></script>
 
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
-<script src="https://code.jquery.com/ui/1.13.3/jquery-ui.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.6/js/bootstrap.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.1/js/select2.min.js"></script>
+<!-- endinject -->
+<!-- Custom js for this page -->
+<script src="{{ asset('assets/js/file-upload.js')}}"></script>
+<script src="{{ asset('assets/js/typeahead.js')}}"></script>
+<script src="{{ asset('assets/js/select2.js')}}"></script>
+
+<!-- header search bar js -->
+<script type="text/javascript">
+var path = "{{ route('autocomplete') }}";
+$('input.search').typeahead({
+      source: function(str, process) {
+            return $.get(path, {
+                  str: str
+            }, function(data) {
+                  return process(data);
+            });
+      }
+});
+</script>
 
 
+<script type="text/javascript">
+var path = "{{ route('autocomplete-vendor-food-menu') }}";
 
-<script>
-function sendSales(data) {
-      var soup_item = document.querySelector('#soup_item-' + data).value;
-      var soup_qty = document.querySelector('#soup-' + data).value;
-      var swallow_item = document.querySelector('#swallow_item-' + data).value;
-      var swallow_qty = document.querySelector('#swallow-' + data).value;
-      var protein_item = document.querySelector('#protein_item-' + data).value;
-      var protein_qty = document.querySelector('#protein-' + data).value;
-      var others_item = document.querySelector('#others_item-' + data).value;
-      var others_qty = document.querySelector('#others-' + data).value;
-      var price = document.getElementById('price').value;
-      var orderdate = document.getElementById('date4').value;
-
-
-      var url = "{{ route('reject-supplies') }}";
-      // url = showRoute;
-
-      //window.location = url;
-      $.ajaxSetup({
-            headers: {
-                  'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-            }
-      });
-      $.ajax({
-            method: 'POST',
-            enctype: 'multipart/form-data',
-            url: url,
-            data: {
-                  //you can more data here
-                  'soup_item': soup_item,
-                  'soup_qty': soup_qty,
-                  'swallow_item': swallow_item,
-                  'swallow_qty': swallow_qty,
-                  'protein_item': protein_item,
-                  'protein_qty': protein_qty,
-                  'others_item': others_item,
-                  'others_qty': others_qty,
-                  'price': price,
-                  'orderdate':orderdate
-            },
-            success: function(data) {
-                  console.log(data.message);
-                    alert("Update Successful");
-                     location.reload();
-                  
-            },
-            error: function(data) {
-                  console.log(data);
-            }
-      });
-
-}
+$("#search").autocomplete({
+      source: function(request, response) {
+            var parent = document.getElementById('parent').value;
+            $.ajax({
+                  url: path,
+                  type: 'GET',
+                  dataType: "json",
+                  data: {
+                        search: request.term,
+                        parent: parent
+                  },
+                  success: function(data) {
+                        response(data);
+                  }
+            });
+      },
+      select: function(event, ui) {
+            $('#search').val(ui.item.label);
+            console.log(ui.item);
+            return false;
+      }
+});
+</script>
 
 <script>
 $(function() {
       $("#date1").datepicker();
 });
 </script>
-
-<script>
-$(function() {
-      $("#date2").datepicker();
-});
-</script>
-<script>
-$(function() {
-      $("#date3").datepicker();
-});
-</script>
-
-<script>
-$(function() {
-      $("#date4").datepicker();
-});
-</script>
-
 
 @endsection
