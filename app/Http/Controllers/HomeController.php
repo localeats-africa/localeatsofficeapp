@@ -265,6 +265,7 @@ class HomeController extends Controller
             $addVendor->vendor_status               = $vendorStatus;
             $addVendor->save();
 
+            //vendor is added to all existing platform upon creation with inactive status
             if($addVendor){
                 //create vendor id in sales platform table
                 $platformStatus ='inactive';
@@ -757,19 +758,38 @@ class HomeController extends Controller
             'code'          => 'required|max:255',
         ]);
 
-        $checkVendorStatus = SalesPlatform::where('vendor_id', $request->vendor)
-        ->where('platform_name', $request->platform)
-        ->get('vendor_status');
-
         $checkVendorCode = SalesPlatform::where('vendor_id', $request->vendor)
         ->where('platform_name', $request->platform)
         ->get('platform_ref');
 
         $status = 'active';
-        if(empty($checkVendorCode && $checkVendorStatus == 'inactive')){
+
+        $checkIfVendorExistOnPlatform = SalesPlatform::where('vendor_id', $request->vendor)
+        ->where('platform_name', $request->platform)
+        ->get('vendor_status');
+
+        $getVendorStatus = SalesPlatform::where('vendor_id', $request->vendor)
+        ->where('platform_name', $request->platform)
+        ->get()->pluck('vendor_status')->first();
+
+        if($checkIfVendorExistOnPlatform->isEmpty()){
+            $addPlatform = new SalesPlatform();
+            $addPlatform->vendor_id         = $request->vendor;
+            $addPlatform->platform_name     = $request->platform;
+            $addPlatform->platform_ref      = $request->code;
+            $addPlatform->vendor_status     = 'active';
+            $addPlatform->save();
+
+            $vendorName = Vendor::where('id', $request->vendor)
+            ->get('*')->pluck('vendor_name')->first();
+
+            return redirect('all-vendor')->with('setup-vendor', 'Setup successful for ' .$vendorName. ' on ' .$request->platform);
+        
+        }
+        else if (!$checkIfVendorExistOnPlatform->isEmpty() &&  $getVendorStatus == 'inactive') {
             $setupVendor = DB::table('sales_platform')
-            ->where('vendor_id', $request->vendor)
             ->where('platform_name', $request->platform)
+            ->where('vendor_id', $request->vendor)
             ->update([
                 'vendor_status' => $status,
                 'platform_ref'  => $request->code
@@ -782,8 +802,8 @@ class HomeController extends Controller
         }
         else{
             return redirect()->back()->with('setup-error', 'Opps something went wrong');
-        
         }
+        
     }
     
 
