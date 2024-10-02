@@ -494,6 +494,8 @@ $(function() {
             var graphGradient2 = document.getElementById('visit-sale-chart').getContext("2d");
             //eden
             var graphGradient3 = document.getElementById('visit-sale-chart').getContext("2d");
+            //mano  
+            var graphGradient4 = document.getElementById('visit-sale-chart').getContext("2d");
 
             var gradientStrokeViolet = graphGradient1.createLinearGradient(0, 0, 0, 181);
             gradientStrokeViolet.addColorStop(0, 'rgba(12, 81, 63, 1)');
@@ -509,9 +511,16 @@ $(function() {
             gradientStrokeRed.addColorStop(0, 'rgba(162, 153, 149, 1)');
             gradientStrokeRed.addColorStop(1, 'rgba(162, 153, 149, 1)');
             var gradientLegendRed = 'linear-gradient(to right, rgba(162, 153, 149, 1), rgba(162, 153, 149, 1))';
+            
+            var gradientStrokeMano = graphGradient4.createLinearGradient(0, 0, 0, 170);
+            gradientStrokeMano.addColorStop(0, 'rgba(238, 39, 55, 1)');
+            gradientStrokeMano.addColorStop(1, 'rgba(238, 39, 55, 1)');
+            var gradientLegendMano = 'linear-gradient(to right, rgba(238, 39, 55, 1), rgba(238, 39, 55, 1))';
+            
             const bgColor1 = ["rgba(12, 81, 63, 1)"];
             const bgColor2 = ["rgba(255, 194, 68, 1"];
             const bgColor3 = ["rgba(162, 153, 149, 1)"];
+            const bgManoColor = ["rgba(238, 39, 55, 1)"];
 
             new Chart(ctx, {
                   type: 'bar',
@@ -558,7 +567,21 @@ $(function() {
                                     data: @json($barChartData['edenSales']),
                                     barPercentage: 0.5,
                                     categoryPercentage: 0.5,
-                              }
+                              },
+                              {
+                                    label: "Mano",
+                                    borderColor: gradientStrokeMano,
+                                    backgroundColor: gradientStrokeMano,
+                                    hoverBackgroundColor: gradientStrokeMano,
+                                    fillColor: bgManoColor,
+                                    pointRadius: 0,
+                                    fill: false,
+                                    borderWidth: 1,
+                                    fill: 'origin',
+                                    data: @json($barChartData['manoSales']),
+                                    barPercentage: 0.5,
+                                    categoryPercentage: 0.5,
+                              },
                         ]
                   },
                   options: {
@@ -621,6 +644,9 @@ $(function() {
             var graphGradient2 = document.getElementById("traffic-chart").getContext('2d');
             //eden
             var graphGradient3 = document.getElementById("traffic-chart").getContext('2d');
+            //mano
+            var graphGradient4 = document.getElementById("traffic-chart").getContext('2d');
+            
             //chowdeck
             var gradientStrokeBlue = graphGradient1.createLinearGradient(0, 0, 0, 181);
             gradientStrokeBlue.addColorStop(0, 'rgba(12, 81, 63, 1)');
@@ -637,6 +663,11 @@ $(function() {
             gradientStrokeGreen.addColorStop(0, 'rgba(162, 153, 149, 1)');
             gradientStrokeGreen.addColorStop(1, 'rgba(162, 153, 149, 1)');
             var gradientLegendGreen = 'rgba(162, 153, 149, 1)';
+            //mano
+            var gradientStrokeMano = graphGradient4.createLinearGradient(0, 0, 0, 300);
+            gradientStrokeMano.addColorStop(0, 'rgba(238, 39, 55, 1)');
+            gradientStrokeMano.addColorStop(1, 'rgba(238, 39, 55, 1)');
+            var gradientLegendMano = 'rgba(238, 39, 55, 1)';
 
             // const bgColor1 = ["rgba(54, 215, 232, 1)"];
             // const bgColor2 = ["rgba(255, 191, 150, 1"];
@@ -649,24 +680,27 @@ $(function() {
                         datasets: [{
                               data: @json($piechartData['data']),
                               backgroundColor: [gradientStrokeBlue, gradientStrokeRed,
-                                    gradientStrokeGreen
+                                    gradientStrokeGreen, gradientStrokeMano
                               ],
                               hoverBackgroundColor: [
                                     gradientStrokeBlue,
                                     gradientStrokeRed,
-                                    gradientStrokeGreen
+                                    gradientStrokeGreen,
+                                    gradientStrokeMano
 
                               ],
                               borderColor: [
                                     gradientStrokeBlue,
                                     gradientStrokeRed,
-                                    gradientStrokeGreen
+                                    gradientStrokeGreen,
+                                    gradientStrokeMano
 
                               ],
                               legendColor: [
                                     gradientLegendBlue,
                                     gradientLegendRed,
-                                    gradientLegendGreen
+                                    gradientLegendGreen,
+                                    gradientLegendMano
 
                               ]
                         }]
