@@ -346,12 +346,28 @@ class AdminController extends Controller
         ->groupby('month')
         ->get();
         $barChartEdenSales = Arr::pluck($edenOrder, 'sales');
+
+        $manoOrder =  Orders::join('platforms', 'platforms.id', '=', 'orders.platform_id')
+        ->select(
+        \DB::raw('DATE_FORMAT(orders.delivery_date,"%M ") as month'),
+        \DB::raw('SUM(orders.order_amount) as sales'),
+        \DB::raw('COUNT(orders.order_amount) as count'),
+        )
+        ->where('platforms.name', 'mano')
+        ->where('orders.deleted_at', null)
+        ->where('orders.order_amount', '!=', null)
+        ->where('orders.order_ref', '!=', null)
+        ->where('orders.food_price', '!=', null)
+        ->groupby('month')
+        ->get();
+    $barChartManoSales = Arr::pluck($manoOrder, 'sales');
   
     $barChartData = [
         'months'        =>  $chartSalesMonth,
         'chocdekSales'  =>  $barChartChowdeckSales,
         'glovoSales'    =>  $barChartGlovoSales,
         'edenSales'     =>  $barChartEdenSales,
+        'manoSales'     =>  $barChartManoSales,
     ]; 
     
         return view('admin.admin', compact('name', 'role', 'countVendor',
