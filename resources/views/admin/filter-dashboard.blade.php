@@ -8,7 +8,8 @@
       <div class="content-wrapper">
             <div class="page-header">
                   <h3 class="page-title">
-                        Overview >>> <span class="text-info"> {{ $startDate }}</span> - <span class="text-info"> {{ $endDate   }}</span>
+                        Overview >>> <span class="text-info"> {{ $startDate }}</span> - <span class="text-info">
+                              {{ $endDate   }}</span>
                   </h3>
                   <nav aria-label="breadcrumb">
                         <ul class="breadcrumb">
@@ -30,56 +31,57 @@
                         @csrf
                         {{csrf_field()}}
                         <div class="row">
-                        <div class="row text-end">
-                        <h6>Filter record: &nbsp; <a href="{{ url('admin') }}" class="btn bg-info btn-sm  text-white"> View All</a>
-                        </h6>
-                              <div class="col-md-3">
-                              </div>
-                              <div class="col-md-3 col-12">
-                              </div>
-                              <div class="col-md-3 col-12">
-                                    <div class="form-group">
-                                          <div class="input-group date">
-                                          <span class="input-group-append">
-                                                      <span class="input-group-text text-dark d-block">
-                                                            Start
+                              <div class="row text-end">
+                                    <h6>Filter record: &nbsp; <a href="{{ url('admin') }}"
+                                                class="btn bg-info btn-sm  text-white"> View All</a>
+                                    </h6>
+                                    <div class="col-md-3">
+                                    </div>
+                                    <div class="col-md-3 col-12">
+                                    </div>
+                                    <div class="col-md-3 col-12">
+                                          <div class="form-group">
+                                                <div class="input-group date">
+                                                      <span class="input-group-append">
+                                                            <span class="input-group-text text-dark d-block">
+                                                                  Start
+                                                            </span>
                                                       </span>
-                                                </span>
-                                                <input type="text" value="" name="from" class="form-control"
-                                                      placeholder="" id="from" />
-                                                <span class="input-group-append">
-                                                      <span class="input-group-text bg-light d-block">
-                                                            <i class="fa fa-calendar"></i>
+                                                      <input type="text" value="" name="from" class="form-control"
+                                                            placeholder="" id="from" />
+                                                      <span class="input-group-append">
+                                                            <span class="input-group-text bg-light d-block">
+                                                                  <i class="fa fa-calendar"></i>
+                                                            </span>
                                                       </span>
-                                                </span>
+                                                </div>
                                           </div>
                                     </div>
-                              </div>
 
-                              <div class="col-md-3 col-12">
-                                    <div class="form-group">
-                                          <div class="input-group date">
-                                          <span class="input-group-append">
-                                                      <span class="input-group-text text-dark d-block">
-                                                            End
+                                    <div class="col-md-3 col-12">
+                                          <div class="form-group">
+                                                <div class="input-group date">
+                                                      <span class="input-group-append">
+                                                            <span class="input-group-text text-dark d-block">
+                                                                  End
+                                                            </span>
                                                       </span>
-                                                </span>
-                                                <input type="text" value="" name="to" class="form-control"
-                                                      placeholder="" id="to" />
-                                                <span class="input-group-append">
-                                                      <span class="input-group-text bg-light d-block">
-                                                            <i class="fa fa-calendar"></i>
+                                                      <input type="text" value="" name="to" class="form-control"
+                                                            placeholder="" id="to" />
+                                                      <span class="input-group-append">
+                                                            <span class="input-group-text bg-light d-block">
+                                                                  <i class="fa fa-calendar"></i>
+                                                            </span>
                                                       </span>
-                                                </span>
-                                                <button type="submit" name="submit"
-                                                      class="btn bg-gradient-dark btn-sm  text-white">GO!</button>
+                                                      <button type="submit" name="submit"
+                                                            class="btn bg-gradient-dark btn-sm  text-white">GO!</button>
+                                                </div>
                                           </div>
                                     </div>
-                              </div>
 
-                           
-                        </div>
-                        <!---end row--->
+
+                              </div>
+                              <!---end row--->
                   </form>
             </div>
             <!---end row --->
@@ -212,7 +214,7 @@
                                           <div class="card-body">
                                                 <img src="{{ asset('assets/images/dashboard/circle.svg')}}"
                                                       class="card-img-absolute" alt="circle-image">
-                                                <h4 class="font-weight-normal">Food  Price
+                                                <h4 class="font-weight-normal">Food Price
                                                       <i class="mdi mdi-cash mdi-24px float-end"></i>
                                                 </h4>
                                                 <h2 class="mb-5">₦{{number_format($vendorFoodPrice, 2)}}</h2>
@@ -234,14 +236,14 @@
                                           </div>
                                     </div>
                               </div>
-                             
+
                         </div>
                         <!--row--->
 
                         <!--row-->
                         <div class="row row-cards">
 
-                        <div class="col-sm-4  col-12 stretch-card grid-margin">
+                              <div class="col-sm-4  col-12 stretch-card grid-margin">
                                     <div class="card bg-success card-img-holder text-white">
                                           <div class="card-body">
                                                 <img src="{{ asset('assets/images/dashboard/circle.svg')}}"
@@ -384,6 +386,14 @@
                                                                   @if($platform->name == 'Glovo')
                                                                   {{$glovoOrderCount}}
                                                                   @endif
+
+                                                                  @if($platform->name == 'Edenlife')
+                                                                  {{$edenOrderCount}}
+                                                                  @endif
+
+                                                                  @if($platform->name == 'Mano')
+                                                                  {{$manoOrderCount}}
+                                                                  @endif
                                                             </td>
                                                             <td>
                                                                   @if($platform->name == 'Chowdeck')
@@ -409,6 +419,31 @@
                                                                         </div>
                                                                   </div>
                                                                   @endif
+
+                                                                  @if($platform->name == 'Edenlife')
+
+                                                                  <div class="progress" role="progressbar">
+                                                                        <div class="progress-bar  progress-bar-striped progress-bar-animated bg-info"
+                                                                              role="progressbar"
+                                                                              style="width: {{$edenSalesPercentageChart}}%"
+                                                                              aria-valuenow="{{$edenSalesPercentageChart}}"
+                                                                              aria-valuemin="" aria-valuemax="100">
+                                                                        </div>
+                                                                  </div>
+                                                                  @endif
+
+                                                                  @if($platform->name == 'Mano')
+
+                                                                  <div class="progress" role="progressbar">
+                                                                        <div class="progress-bar  progress-bar-striped progress-bar-animated bg-info"
+                                                                              role="progressbar"
+                                                                              style="width: {{$manoSalesPercentageChart}}%"
+                                                                              aria-valuenow="{{$manoSalesPercentageChart}}"
+                                                                              aria-valuemin="" aria-valuemax="100">
+                                                                        </div>
+                                                                  </div>
+                                                                  @endif
+
                                                             </td>
                                                       </tr>
                                                       @endforeach
@@ -511,12 +546,12 @@ $(function() {
             gradientStrokeRed.addColorStop(0, 'rgba(162, 153, 149, 1)');
             gradientStrokeRed.addColorStop(1, 'rgba(162, 153, 149, 1)');
             var gradientLegendRed = 'linear-gradient(to right, rgba(162, 153, 149, 1), rgba(162, 153, 149, 1))';
-            
+
             var gradientStrokeMano = graphGradient4.createLinearGradient(0, 0, 0, 170);
             gradientStrokeMano.addColorStop(0, 'rgba(238, 39, 55, 1)');
             gradientStrokeMano.addColorStop(1, 'rgba(238, 39, 55, 1)');
             var gradientLegendMano = 'linear-gradient(to right, rgba(238, 39, 55, 1), rgba(238, 39, 55, 1))';
-            
+
             const bgColor1 = ["rgba(12, 81, 63, 1)"];
             const bgColor2 = ["rgba(255, 194, 68, 1"];
             const bgColor3 = ["rgba(162, 153, 149, 1)"];
@@ -646,7 +681,7 @@ $(function() {
             var graphGradient3 = document.getElementById("traffic-chart").getContext('2d');
             //mano
             var graphGradient4 = document.getElementById("traffic-chart").getContext('2d');
-            
+
             //chowdeck
             var gradientStrokeBlue = graphGradient1.createLinearGradient(0, 0, 0, 181);
             gradientStrokeBlue.addColorStop(0, 'rgba(12, 81, 63, 1)');
