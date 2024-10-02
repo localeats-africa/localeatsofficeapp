@@ -215,6 +215,11 @@ class AdminController extends Controller
         //->whereDate('updated_at', '>=', $lastSevenDays)   
         ->whereDate('updated_at', '<', $today)  
         ->sum('commission');
+
+        $platformOrders = DB::table('orders')
+        ->join('platforms', 'platforms.id', '=', 'orders.platform_id')->distinct()
+        ->where('platforms.deleted_at', null)
+        ->get(['platforms.*']);
     
         $chartYearlyTotalSales = Orders::select(
         \DB::raw('YEAR(delivery_date) as year'),)
@@ -235,7 +240,7 @@ class AdminController extends Controller
         ->where('orders.food_price', '!=', null)
         //->whereYear('orders.delivery_date', '=', Carbon::now()->year)
         ->groupBy('month')
-        ->get();
+        ->get(); 
         $chartSalesMonth = Arr::pluck($chartMonthlyTotalSales, 'month');
         $chartSalesVolume = Arr::pluck($chartMonthlyTotalSales, 'sales_volume');
         $chartSalesTotal = Arr::pluck($chartMonthlyTotalSales, 'total_sales');
@@ -254,7 +259,6 @@ class AdminController extends Controller
         ->where('orders.deleted_at', null)
         ->where('orders.order_amount', '!=', null)
         ->where('orders.order_ref', '!=', null)
-       // ->whereYear('orders.delivery_date', '=', Carbon::now()->year)
         ->get('orders.platform_id')->count();
 
         $glovoOrderCount= DB::table('orders')
@@ -263,7 +267,6 @@ class AdminController extends Controller
         ->where('orders.deleted_at', null)
         ->where('orders.order_amount', '!=', null)
         ->where('orders.order_ref', '!=', null)
-        //->whereYear('orders.delivery_date', '=', Carbon::now()->year)
         ->get('orders.platform_id')->count();
 
         $edenOrderCount= DB::table('orders')
@@ -272,23 +275,26 @@ class AdminController extends Controller
         ->where('orders.deleted_at', null)
         ->where('orders.order_amount', '!=', null)
         ->where('orders.order_ref', '!=', null)
-       // ->whereYear('orders.delivery_date', '=', Carbon::now()->year)
         ->get('orders.platform_id')->count();
 
-        $platformOrders = DB::table('orders')
-        ->join('platforms', 'platforms.id', '=', 'orders.platform_id')->distinct()
-        ->where('platforms.deleted_at', null)
-       // ->whereYear('orders.delivery_date', '=', Carbon::now()->year)
-        ->get(['platforms.*']);
-        
-        // bar chart
+        $manoOrderCount= DB::table('orders')
+        ->join('platforms', 'platforms.id', '=', 'orders.platform_id')
+        ->where('platforms.name', 'mano')
+        ->where('orders.deleted_at', null)
+        ->where('orders.order_amount', '!=', null)
+        ->where('orders.order_ref', '!=', null)
+        ->get('orders.platform_id')->count();
+
+        // pie chart
         $chowdeckSalesPercentageChart = $chowdeckOrderCount / $countAllOrder * 100;
         $glovoSalesPercentageChart = $glovoOrderCount / $countAllOrder * 100;
         $edenSalesPercentageChart = $edenOrderCount / $countAllOrder * 100;
+        $manoSalesPercentageChart = $manoOrderCount / $countAllOrder * 100;
+
 
         $piechartData = [            
         'label' => ['Chowdeck', 'Glovo', 'Eden'],
-        'data' => [round($chowdeckSalesPercentageChart) , round($glovoSalesPercentageChart),  round($edenSalesPercentageChart)] ,
+        'data' => [round($chowdeckSalesPercentageChart) , round($glovoSalesPercentageChart),  round($edenSalesPercentageChart), round( $manoSalesPercentageChart)] ,
         ];
         
     //sales for barchart
