@@ -380,7 +380,8 @@ class AdminController extends Controller
         'chowdeckOrderCount','glovoOrderCount', 'edenOrderCount', 'currentYear',
         'chowdeckSalesPercentageChart', 'glovoSalesPercentageChart', 
         'edenSalesPercentageChart', 'piechartData' ,  'barChartData',
-        'sumGlovoComm', 'vendorFoodPrice'));
+        'sumGlovoComm', 'vendorFoodPrice', 'manoOrderCount', 
+        'manoSalesPercentageChart'));
       }
     }
 
@@ -674,7 +675,8 @@ class AdminController extends Controller
             'chowdeckOrderCount','glovoOrderCount', 'edenOrderCount', 
             'chowdeckSalesPercentageChart', 'glovoSalesPercentageChart', 
             'edenSalesPercentageChart', 'piechartData' ,  'barChartData',
-            'startDate', 'endDate',  'sumGlovoComm', 'vendorFoodPrice'));
+            'startDate', 'endDate',  'sumGlovoComm', 'vendorFoodPrice',
+            'manoOrderCount', 'manoSalesPercentageChart'));
           
     }
 
