@@ -539,7 +539,7 @@ $(function() {
             const bgColor1 = ["rgba(12, 81, 63, 1)"];
             const bgColor2 = ["rgba(255, 194, 68, 1"];
             const bgColor3 = ["rgba(162, 153, 149, 1)"];
-            const bgManoColor = ["rgba(238, 39, 55, 1)"]
+            const bgManoColor = ["rgba(238, 39, 55, 1)"];
 
             new Chart(ctx, {
                   type: 'bar',
