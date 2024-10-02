@@ -8,7 +8,7 @@
       <div class="content-wrapper">
             <div class="page-header">
                   <h3 class="page-title">
-                        Overview 
+                        Overview
                   </h3>
                   <nav aria-label="breadcrumb">
                         <ul class="breadcrumb">
@@ -25,12 +25,12 @@
                         @csrf
                         {{csrf_field()}}
                         <div class="row text-end">
-                        <h6>Filter record:</h6>
+                              <h6>Filter record:</h6>
                               <div class="col-md-3">
                               </div>
                               <div class="col-md-3">
                               </div>
-                              
+
                               <div class="col-md-3 col-12">
                                     <div class="form-group">
                                           <div class="input-group ">
@@ -209,13 +209,12 @@
                                           <div class="card-body">
                                                 <img src="{{ asset('assets/images/dashboard/circle.svg')}}"
                                                       class="card-img-absolute" alt="circle-image">
-                                                <h4 class="font-weight-normal">Estimated Vendor  Sales
+                                                <h4 class="font-weight-normal">Estimated Vendor Sales
                                                       <i class="mdi mdi-cash mdi-24px float-end"></i>
                                                 </h4>
                                                 <h2 class="mb-5">₦{{number_format($vendorFoodPrice, 2)}}</h2>
                                                 <hr class="w-100">
-                                                <h6 class="card-text">weekly average <span
-                                                            style="float:right;">0
+                                                <h6 class="card-text">weekly average <span style="float:right;">0
                                                       </span> </h6>
                                           </div>
                                     </div>
@@ -231,21 +230,20 @@
                                                 </h4>
                                                 <h2 class="mb-5">₦ {{number_format($sumGlovoComm, 2) }}</h2>
                                                 <hr class="w-100">
-                                                <h6 class="card-text">weekly average<span
-                                                            style="float:right;">0
+                                                <h6 class="card-text">weekly average<span style="float:right;">0
                                                       </span> </h6>
                                           </div>
                                     </div>
                               </div>
 
 
-                            
+
                         </div>
                         <!--row--->
 
                         <!--row-->
                         <div class="row row-cards">
-                        <div class="col-sm-4  col-12 stretch-card grid-margin">
+                              <div class="col-sm-4  col-12 stretch-card grid-margin">
                                     <div class="card bg-success card-img-holder text-white">
                                           <div class="card-body">
                                                 <img src="{{ asset('assets/images/dashboard/circle.svg')}}"
@@ -302,7 +300,7 @@
                   </div>
             </div>
             <!--row-deck-->
-         
+
             <p></p>
             <!--Alert here--->
             <!-- <div class="container "> -->
@@ -397,6 +395,14 @@
                                                                   @if($platform->name == 'Glovo')
                                                                   {{$glovoOrderCount}}
                                                                   @endif
+
+                                                                  @if($platform->name == 'Edenlife')
+                                                                  {{$edenOrderCount}}
+                                                                  @endif
+
+                                                                  @if($platform->name == 'Mano')
+                                                                  {{$manoOrderCount}}
+                                                                  @endif
                                                             </td>
                                                             <td>
                                                                   @if($platform->name == 'Chowdeck')
@@ -418,6 +424,30 @@
                                                                               role="progressbar"
                                                                               style="width: {{$glovoSalesPercentageChart}}%"
                                                                               aria-valuenow="{{$glovoSalesPercentageChart}}"
+                                                                              aria-valuemin="" aria-valuemax="100">
+                                                                        </div>
+                                                                  </div>
+                                                                  @endif
+
+                                                                  @if($platform->name == 'Edenlife')
+
+                                                                  <div class="progress" role="progressbar">
+                                                                        <div class="progress-bar  progress-bar-striped progress-bar-animated bg-info"
+                                                                              role="progressbar"
+                                                                              style="width: {{$edenSalesPercentageChart}}%"
+                                                                              aria-valuenow="{{$edenSalesPercentageChart}}"
+                                                                              aria-valuemin="" aria-valuemax="100">
+                                                                        </div>
+                                                                  </div>
+                                                                  @endif
+
+                                                                  @if($platform->name == 'Mano')
+
+                                                                  <div class="progress" role="progressbar">
+                                                                        <div class="progress-bar  progress-bar-striped progress-bar-animated bg-info"
+                                                                              role="progressbar"
+                                                                              style="width: {{$manoSalesPercentageChart}}%"
+                                                                              aria-valuenow="{{$manoSalesPercentageChart}}"
                                                                               aria-valuemin="" aria-valuemax="100">
                                                                         </div>
                                                                   </div>
@@ -530,12 +560,12 @@ $(function() {
             gradientStrokeRed.addColorStop(0, 'rgba(162, 153, 149, 1)');
             gradientStrokeRed.addColorStop(1, 'rgba(162, 153, 149, 1)');
             var gradientLegendRed = 'linear-gradient(to right, rgba(162, 153, 149, 1), rgba(162, 153, 149, 1))';
-            
+
             var gradientStrokeMano = graphGradient4.createLinearGradient(0, 0, 0, 170);
             gradientStrokeMano.addColorStop(0, 'rgba(238, 39, 55, 1)');
             gradientStrokeMano.addColorStop(1, 'rgba(238, 39, 55, 1)');
             var gradientLegendMano = 'linear-gradient(to right, rgba(238, 39, 55, 1), rgba(238, 39, 55, 1))';
-            
+
             const bgColor1 = ["rgba(12, 81, 63, 1)"];
             const bgColor2 = ["rgba(255, 194, 68, 1"];
             const bgColor3 = ["rgba(162, 153, 149, 1)"];
@@ -667,7 +697,7 @@ $(function() {
             var graphGradient3 = document.getElementById("traffic-chart").getContext('2d');
             //mano
             var graphGradient4 = document.getElementById("traffic-chart").getContext('2d');
-            
+
             //chowdeck
             var gradientStrokeBlue = graphGradient1.createLinearGradient(0, 0, 0, 181);
             gradientStrokeBlue.addColorStop(0, 'rgba(12, 81, 63, 1)');
@@ -840,50 +870,49 @@ var myChart = new Chart(ctx, {
 </script>
 
 <script>
-      var areaData = {
+var areaData = {
       labels: @json($data['month']),
       datasets: [{
-      label: @json($salesYear),
-      data: @json($data['sales']),
-      backgroundColor: [
-        'rgba(255, 99, 132, 0.2)',
-        'rgba(54, 162, 235, 0.2)',
-        'rgba(255, 206, 86, 0.2)',
-        'rgba(75, 192, 192, 0.2)',
-        'rgba(153, 102, 255, 0.2)',
-        'rgba(255, 159, 64, 0.2)'
-      ],
-      borderColor: [
-        'rgba(255,99,132,1)',
-        'rgba(54, 162, 235, 1)',
-        'rgba(255, 206, 86, 1)',
-        'rgba(75, 192, 192, 1)',
-        'rgba(153, 102, 255, 1)',
-        'rgba(255, 159, 64, 1)'
-      ],
-      borderWidth: 1,
-      fill: true, // 3: no fill
-    }]
-  };
+            label: @json($salesYear),
+            data: @json($data['sales']),
+            backgroundColor: [
+                  'rgba(255, 99, 132, 0.2)',
+                  'rgba(54, 162, 235, 0.2)',
+                  'rgba(255, 206, 86, 0.2)',
+                  'rgba(75, 192, 192, 0.2)',
+                  'rgba(153, 102, 255, 0.2)',
+                  'rgba(255, 159, 64, 0.2)'
+            ],
+            borderColor: [
+                  'rgba(255,99,132,1)',
+                  'rgba(54, 162, 235, 1)',
+                  'rgba(255, 206, 86, 1)',
+                  'rgba(75, 192, 192, 1)',
+                  'rgba(153, 102, 255, 1)',
+                  'rgba(255, 159, 64, 1)'
+            ],
+            borderWidth: 1,
+            fill: true, // 3: no fill
+      }]
+};
 
-  var areaOptions = {
-    elements: {
-      line: {
-        tension: 0.5
+var areaOptions = {
+      elements: {
+            line: {
+                  tension: 0.5
+            }
+      },
+      plugins: {
+            filler: {
+                  propagate: true
+            }
       }
-    },
-    plugins: {
-      filler: {
-        propagate: true
-      }
-    }
-  }
-    var areaChartCanvas =document.getElementById('areaChart').getContext('2d');
-    var areaChart = new Chart(areaChartCanvas, {
+}
+var areaChartCanvas = document.getElementById('areaChart').getContext('2d');
+var areaChart = new Chart(areaChartCanvas, {
       type: 'line',
       data: areaData,
       options: areaOptions
-    });
-
+});
 </script>
 @endsection
