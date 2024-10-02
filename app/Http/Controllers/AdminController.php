@@ -293,7 +293,7 @@ class AdminController extends Controller
 
 
         $piechartData = [            
-        'label' => ['Chowdeck', 'Glovo', 'Eden'],
+        'label' => ['Chowdeck', 'Glovo', 'Eden', 'Mano'],
         'data' => [round($chowdeckSalesPercentageChart) , round($glovoSalesPercentageChart),  round($edenSalesPercentageChart), round( $manoSalesPercentageChart)] ,
         ];
         
@@ -495,7 +495,6 @@ class AdminController extends Controller
          ->whereDate('delivery_date', '<=', $endDate)
          ->sum('commission');
 
-
          $chartYearlyTotalSales = Orders::select(
             \DB::raw('YEAR(delivery_date) as year'),)
             ->where('deleted_at', null)
@@ -590,11 +589,11 @@ class AdminController extends Controller
                 $chowdeckSalesPercentageChart = $chowdeckOrderCount / $countAllOrder * 100;
                 $glovoSalesPercentageChart = $glovoOrderCount / $countAllOrder * 100;
                 $edenSalesPercentageChart = $edenOrderCount / $countAllOrder * 100;
-                $manoSalesPercentageChart =  $countAllOrder / 1 * 100;
+                $manoSalesPercentageChart = $manoOrderCount / $countAllOrder  * 100;
             }
     
             $piechartData = [            
-            'label' => ['Chowdeck', 'Glovo', 'Eden'],
+            'label' => ['Chowdeck', 'Glovo', 'Eden', 'Mano'],
             'data' => [round($chowdeckSalesPercentageChart) , round($glovoSalesPercentageChart),  round($edenSalesPercentageChart), round($manoSalesPercentageChart)] ,
             ];
 
@@ -664,7 +663,7 @@ class AdminController extends Controller
             'chocdekSales'  =>  $barChartChowdeckSales,
             'glovoSales'    =>  $barChartGlovoSales,
             'edenSales'     =>  $barChartEdenSales,
-            'manpSales'     => $barChartManoSales,
+            'manoSales'     => $barChartManoSales,
         ]; 
         
             return view('admin.filter-dashboard', compact('name', 'role', 'countVendor',
