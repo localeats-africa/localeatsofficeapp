@@ -42,7 +42,16 @@
 
                         </a>
                   </li>
-                 
+
+                  <li class="nav-item">
+                        <a class="nav-link" href="{{ url(auth()->user()->username, 'import-online-sales') }}" target="">
+                              <span class="menu-title">Import Online Sales</span>
+                              <i class="mdi mdi-sale   menu-icon fs-24"></i>
+
+                        </a>
+                  </li>
+
+                
                  
                   @endif
                   <!---end parent manager --->

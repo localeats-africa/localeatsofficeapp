@@ -215,6 +215,11 @@ class AdminController extends Controller
         //->whereDate('updated_at', '>=', $lastSevenDays)   
         ->whereDate('updated_at', '<', $today)  
         ->sum('commission');
+
+        $platformOrders = DB::table('orders')
+        ->join('platforms', 'platforms.id', '=', 'orders.platform_id')->distinct()
+        ->where('platforms.deleted_at', null)
+        ->get(['platforms.*']);
     
         $chartYearlyTotalSales = Orders::select(
         \DB::raw('YEAR(delivery_date) as year'),)
@@ -235,7 +240,7 @@ class AdminController extends Controller
         ->where('orders.food_price', '!=', null)
         //->whereYear('orders.delivery_date', '=', Carbon::now()->year)
         ->groupBy('month')
-        ->get();
+        ->get(); 
         $chartSalesMonth = Arr::pluck($chartMonthlyTotalSales, 'month');
         $chartSalesVolume = Arr::pluck($chartMonthlyTotalSales, 'sales_volume');
         $chartSalesTotal = Arr::pluck($chartMonthlyTotalSales, 'total_sales');
@@ -254,7 +259,6 @@ class AdminController extends Controller
         ->where('orders.deleted_at', null)
         ->where('orders.order_amount', '!=', null)
         ->where('orders.order_ref', '!=', null)
-       // ->whereYear('orders.delivery_date', '=', Carbon::now()->year)
         ->get('orders.platform_id')->count();
 
         $glovoOrderCount= DB::table('orders')
@@ -263,7 +267,6 @@ class AdminController extends Controller
         ->where('orders.deleted_at', null)
         ->where('orders.order_amount', '!=', null)
         ->where('orders.order_ref', '!=', null)
-        //->whereYear('orders.delivery_date', '=', Carbon::now()->year)
         ->get('orders.platform_id')->count();
 
         $edenOrderCount= DB::table('orders')
@@ -272,23 +275,26 @@ class AdminController extends Controller
         ->where('orders.deleted_at', null)
         ->where('orders.order_amount', '!=', null)
         ->where('orders.order_ref', '!=', null)
-       // ->whereYear('orders.delivery_date', '=', Carbon::now()->year)
         ->get('orders.platform_id')->count();
 
-        $platformOrders = DB::table('orders')
-        ->join('platforms', 'platforms.id', '=', 'orders.platform_id')->distinct()
-        ->where('platforms.deleted_at', null)
-       // ->whereYear('orders.delivery_date', '=', Carbon::now()->year)
-        ->get(['platforms.*']);
-        
-        // bar chart
+        $manoOrderCount= DB::table('orders')
+        ->join('platforms', 'platforms.id', '=', 'orders.platform_id')
+        ->where('platforms.name', 'mano')
+        ->where('orders.deleted_at', null)
+        ->where('orders.order_amount', '!=', null)
+        ->where('orders.order_ref', '!=', null)
+        ->get('orders.platform_id')->count();
+
+        // pie chart
         $chowdeckSalesPercentageChart = $chowdeckOrderCount / $countAllOrder * 100;
         $glovoSalesPercentageChart = $glovoOrderCount / $countAllOrder * 100;
         $edenSalesPercentageChart = $edenOrderCount / $countAllOrder * 100;
+        $manoSalesPercentageChart = $manoOrderCount / $countAllOrder * 100;
+
 
         $piechartData = [            
         'label' => ['Chowdeck', 'Glovo', 'Eden'],
-        'data' => [round($chowdeckSalesPercentageChart) , round($glovoSalesPercentageChart),  round($edenSalesPercentageChart)] ,
+        'data' => [round($chowdeckSalesPercentageChart) , round($glovoSalesPercentageChart),  round($edenSalesPercentageChart), round( $manoSalesPercentageChart)] ,
         ];
         
     //sales for barchart
@@ -340,12 +346,28 @@ class AdminController extends Controller
         ->groupby('month')
         ->get();
         $barChartEdenSales = Arr::pluck($edenOrder, 'sales');
+
+        $manoOrder =  Orders::join('platforms', 'platforms.id', '=', 'orders.platform_id')
+        ->select(
+        \DB::raw('DATE_FORMAT(orders.delivery_date,"%M ") as month'),
+        \DB::raw('SUM(orders.order_amount) as sales'),
+        \DB::raw('COUNT(orders.order_amount) as count'),
+        )
+        ->where('platforms.name', 'mano')
+        ->where('orders.deleted_at', null)
+        ->where('orders.order_amount', '!=', null)
+        ->where('orders.order_ref', '!=', null)
+        ->where('orders.food_price', '!=', null)
+        ->groupby('month')
+        ->get();
+    $barChartManoSales = Arr::pluck($manoOrder, 'sales');
   
     $barChartData = [
         'months'        =>  $chartSalesMonth,
         'chocdekSales'  =>  $barChartChowdeckSales,
         'glovoSales'    =>  $barChartGlovoSales,
         'edenSales'     =>  $barChartEdenSales,
+        'manoSales'     =>  $barChartManoSales,
     ]; 
     
         return view('admin.admin', compact('name', 'role', 'countVendor',
@@ -539,6 +561,16 @@ class AdminController extends Controller
             ->whereDate('delivery_date', '>=', $startDate)                                 
             ->whereDate('delivery_date', '<=', $endDate) 
             ->get('orders.platform_id')->count();
+
+            $manoOrderCount= DB::table('orders')
+            ->join('platforms', 'platforms.id', '=', 'orders.platform_id')
+            ->where('platforms.name', 'mano')
+            ->where('orders.deleted_at', null)
+            ->where('orders.order_amount', '!=', null)
+            ->where('orders.order_ref', '!=', null)
+            ->whereDate('delivery_date', '>=', $startDate)                                 
+            ->whereDate('delivery_date', '<=', $endDate) 
+            ->get('orders.platform_id')->count();
     
             $platformOrders = DB::table('orders')
             ->join('platforms', 'platforms.id', '=', 'orders.platform_id')->distinct()
@@ -547,24 +579,26 @@ class AdminController extends Controller
             ->whereDate('delivery_date', '<=', $endDate) 
             ->get(['platforms.*']);
             
-            // bar chart
+            // pie chart
             if($countAllOrder < 1){
                 $chowdeckSalesPercentageChart = $chowdeckOrderCount / 1 * 100;
                 $glovoSalesPercentageChart = $glovoOrderCount / 1 * 100;
                 $edenSalesPercentageChart = $edenOrderCount / 1 * 100;
+                $manoSalesPercentageChart =  $manoOrderCount / 1 * 100;
             }
             else{
                 $chowdeckSalesPercentageChart = $chowdeckOrderCount / $countAllOrder * 100;
                 $glovoSalesPercentageChart = $glovoOrderCount / $countAllOrder * 100;
                 $edenSalesPercentageChart = $edenOrderCount / $countAllOrder * 100;
+                $manoSalesPercentageChart =  $countAllOrder / 1 * 100;
             }
     
             $piechartData = [            
             'label' => ['Chowdeck', 'Glovo', 'Eden'],
-            'data' => [round($chowdeckSalesPercentageChart) , round($glovoSalesPercentageChart),  round($edenSalesPercentageChart)] ,
+            'data' => [round($chowdeckSalesPercentageChart) , round($glovoSalesPercentageChart),  round($edenSalesPercentageChart), round($manoSalesPercentageChart)] ,
             ];
+
         //sales for barchart
-    
         $chowdeckOrder =  Orders::join('platforms', 'platforms.id', '=', 'orders.platform_id')
         ->select(
             \DB::raw('DATE_FORMAT(orders.delivery_date,"%M ") as month'),
@@ -609,12 +643,28 @@ class AdminController extends Controller
             ->groupby('month')
             ->get();
             $barChartEdenSales = Arr::pluck($edenOrder, 'sales');
+
+        $manoOrder=  Orders::join('platforms', 'platforms.id', '=', 'orders.platform_id')
+            ->select(
+                \DB::raw('DATE_FORMAT(orders.delivery_date,"%M ") as month'),
+                \DB::raw('SUM(orders.order_amount) as sales'),
+                )
+                ->where('platforms.name', 'mano')
+                ->where('orders.deleted_at', null)
+                ->where('orders.order_amount', '!=', null)
+                ->where('orders.order_ref', '!=', null)
+                ->whereDate('delivery_date', '>=', $startDate)                                 
+                ->whereDate('delivery_date', '<=', $endDate) 
+                ->groupby('month')
+                ->get();
+        $barChartManoSales = Arr::pluck($manoOrder, 'sales');
       
         $barChartData = [
             'months'        =>  $chartSalesMonth,
             'chocdekSales'  =>  $barChartChowdeckSales,
             'glovoSales'    =>  $barChartGlovoSales,
             'edenSales'     =>  $barChartEdenSales,
+            'manpSales'     => $barChartManoSales,
         ]; 
         
             return view('admin.filter-dashboard', compact('name', 'role', 'countVendor',

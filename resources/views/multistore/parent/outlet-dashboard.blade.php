@@ -8,7 +8,7 @@
       <div class="content-wrapper">
             <div class="page-header">
                   <h3 class="page-title">
-                        Overview
+                     <span class="text-info">  {{$outletStoreName}}</span> >>> Dashboard Overview
                   </h3>
                   <nav aria-label="breadcrumb">
                         <ul class="breadcrumb">
@@ -143,22 +143,7 @@
                                           </div>
                                     </div>
                               </div>
-                              <div class="col-md-3 stretch-card grid-margin">
-                                    <div class="card bg-gradient-info card-img-holder text-dark">
-                                          <div class="card-body">
-                                                <img src="{{ asset('assets/images/dashboard/circle.svg') }}"
-                                                      class="card-img-absolute" alt="circle-image">
-                                                <h4 class="font-weight-normal">Outlets <i
-                                                            class="mdi mdi-pot-steam  mdi-24px float-end"></i>
-                                                </h4>
-                                                <h2 class="mb-5">{{$outlets->count()}}</h2>
-                                                <hr class="w-100">
-                                          </div>
-
-                                    </div>
-                              </div>
-
-
+                         
                               <div class="col-md-3 stretch-card grid-margin">
                                     <div class="card bg-success card-img-holder text-dark">
                                           <div class="card-body">
@@ -198,20 +183,6 @@
                                     </div>
                               </div>
 
-
-
-                        </div>
-                        <!--row--->
-                  </div>
-            </div>
-            <!--row-deck-->
-
-            <div class="row ">
-                  <div class="col-12">
-                        <div class="row row-cards">
-
-                           
-
                               <div class="col-md-3 stretch-card grid-margin">
                                     <div class="card bg-primary card-img-holder text-dark">
                                           <div class="card-body">
@@ -227,7 +198,16 @@
                               </div>
 
 
-                              <div class="col-md-3 stretch-card grid-margin">
+                        </div>
+                        <!--row--->
+                  </div>
+            </div>
+            <!--row-deck-->
+
+            <div class="row ">
+                  <div class="col-12">
+                        <div class="row row-cards">
+                              <div class="col-md-4 stretch-card grid-margin">
                                     <div class="card bg-gradient-dark card-img-holder text-white">
                                           <div class="card-body">
                                                 <img src="{{ asset('assets/images/dashboard/circle.svg') }}"
@@ -247,7 +227,7 @@
                                     </div>
                               </div>
 
-                              <div class="col-md-3 stretch-card grid-margin">
+                              <div class="col-md-4 stretch-card grid-margin">
                                     <div class="card  bg-secondary  card-img-holder text-dark">
                                           <div class="card-body">
                                                 <img src="{{ asset('assets/images/dashboard/circle.svg') }}"
@@ -267,7 +247,7 @@
                                     </div>
                               </div>
 
-                              <div class="col-md-3 stretch-card grid-margin">
+                              <div class="col-md-4 stretch-card grid-margin">
                                     <div class="card bg-gradient-danger card-img-holder text-dark">
                                           <div class="card-body">
                                                 <img src="{{ asset('assets/images/dashboard/circle.svg') }}"
