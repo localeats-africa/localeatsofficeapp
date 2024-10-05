@@ -27,7 +27,7 @@ class ImportVendorGlovoSales implements ToModel, WithHeadingRow
     }
     public function model(array $row)
     {
-        return new User([
+        return new VendorGlovoImportSales([
             'a'     => $row['a'],
             'b'     => $row['b'],
             'c'     => $row['c'],
