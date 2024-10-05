@@ -799,7 +799,7 @@ class ParentVendorController extends Controller
         ->select(['vendor.store_name', 'vendor_online_sales.*', 'platforms.name' ])
         ->orderBy('vendor_online_sales.created_at', 'desc')
         ->where(function ($query) use ($search) {  // <<<
-        $query->where('vendor_online_sales.food_menu', 'LIKE', '%'.$search.'%')
+        $query->where('vendor_online_sales.description', 'LIKE', '%'.$search.'%')
         ->orwhere('vendor_online_sales.delivery_date', 'LIKE', '%'.$search.'%')
         ->orwhere('vendor.store_name', 'LIKE', '%'.$search.'%')
         ->orderBy('vendor_online_sales.delivery_date', 'desc');
