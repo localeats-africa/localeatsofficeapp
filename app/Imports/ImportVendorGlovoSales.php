@@ -43,6 +43,7 @@ class ImportVendorGlovoSales implements ToModel, WithHeadingRow
             'n'     => $row['n'],
             'o'     => $row['o'],
             'p'     => $row['p'],
+            'added_by' => Auth::user()->id,
             'parent_id'     => $this->platform_id,
             'vendor_id'     => $this->vendor_id,
             'platform_id'   => $this->platform_id,
