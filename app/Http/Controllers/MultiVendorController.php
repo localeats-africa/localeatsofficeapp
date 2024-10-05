@@ -642,9 +642,8 @@ class MultiVendorController extends Controller
    public function importVendorOnlineSales(Request $request){
         // Validate the uploaded file
         $request->validate([
-            'vendor'      => 'required|string|max:255',
+            'outlet'      => 'required|string|max:255',
             'paltform'    => 'required|string|max:255',
-            'parent'      => 'max:255',
             'file'        => 'required|mimes:xlsx,xls',
         ]);
         $characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
@@ -654,14 +653,16 @@ class MultiVendorController extends Controller
         $today = Carbon::today();
         
         $file           = $request->file('file');
-        $vendor_id      = $request->vendor;
+        $vendor_id      = $request->outlet;
         $platform_id    = $request->paltform;
-        $parent_id      = $request->parent;
 
-        $platform_name  = Platforms::where('id', $platform_id)
-        ->get()->pluck('name')->first();
+        $parent_id      = User::where('venodr', $vendor_id)
+        ->get()->pluck('parent_store')->first();
 
-       if($platform_name == 'glovo'){
+        $platform_name  = Platforms::where('name', $platform_id)
+        ->get()->pluck('id')->first();
+
+       if($platform_id == 'glovo'){
         $import =  Excel::import(new ImportVendorGlovoSales($parent_id, $vendor_id, $platform_id), $file);   
 
         $glovoImport = VendorGlovoImportSales::whereDate('created_at', $today)
