@@ -114,11 +114,11 @@ class MultiVendorController extends Controller
         ->count();
 
         $countPlatformWhereOrderCame = DB::table('vendor_online_sales')
-        ->Join('platforms', 'vendor_online_sales.platform_id', '=', 'platforms.id')->distinct()
+        ->Join('platforms', 'vendor_online_sales.platform_id', '=', 'platforms.name')->distinct()
         ->join('sub_store', 'sub_store.vendor_id', '=', 'vendor_online_sales.vendor_id')
         ->where('sub_store.multi_store_id', $parent)
         ->where('vendor_online_sales.order_amount', '!=', null)
-        ->count('platforms.id');
+        ->count('platforms.name');
 
         $sumAllOrders = DB::table('vendor_online_sales')   
         ->join('sub_store', 'sub_store.vendor_id', '=', 'vendor_online_sales.vendor_id')
@@ -127,16 +127,25 @@ class MultiVendorController extends Controller
         ->sum('vendor_online_sales.order_amount'); 
 
         $chowdeckOrderCount= DB::table('vendor_online_sales')
-        ->join('platforms', 'platforms.id', '=', 'vendor_online_sales.platform_id')
+        ->join('platforms', 'platforms.name', '=', 'vendor_online_sales.platform_id')
         ->join('sub_store', 'sub_store.vendor_id', '=', 'vendor_online_sales.vendor_id')
         ->where('sub_store.multi_store_id', $parent)
         ->where('platforms.name', 'chowdeck')
         ->where('vendor_online_sales.order_amount', '!=', null)
         ->get('vendor_online_sales.platform_id')->count();
 
+        $GlovoOrderCount= DB::table('vendor_online_sales')
+        ->join('platforms', 'platforms.name', '=', 'vendor_online_sales.platform_id')
+        ->join('sub_store', 'sub_store.vendor_id', '=', 'vendor_online_sales.vendor_id')
+        ->where('sub_store.multi_store_id', $parent)
+        ->where('platforms.name', 'glovo')
+        ->where('vendor_online_sales.order_amount', '!=', null)
+        ->get('vendor_online_sales.platform_id')->count();
+
         return view('multistore.parent.admin', compact('username','parent', 'outlets',
         'offlineSales', 'salesChannel', 'countAllOrder', 'countPlatformWhereOrderCame', 'sumAllOrders', 
-         'chowdeckOrderCount', 'countOutletsFromWhereOfflineSales','outletsExpenses'));
+         'chowdeckOrderCount', 'countOutletsFromWhereOfflineSales','outletsExpenses',
+        'GlovoOrderCount'));
         }
     }
 
