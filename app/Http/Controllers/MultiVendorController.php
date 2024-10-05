@@ -643,7 +643,7 @@ class MultiVendorController extends Controller
         // Validate the uploaded file
         $request->validate([
             'outlet'      => 'required|string|max:255',
-            'paltform'    => 'required|string|max:255',
+            'platform'    => 'required|string|max:255',
             'file'        => 'required|mimes:xlsx,xls',
         ]);
         $characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
@@ -654,7 +654,7 @@ class MultiVendorController extends Controller
         
         $file           = $request->file('file');
         $vendor_id      = $request->outlet;
-        $platform_id    = $request->paltform;
+        $platform_id    = $request->platform;
 
         $parent_id      = User::where('venodr', $vendor_id)
         ->get()->pluck('parent_store')->first();
