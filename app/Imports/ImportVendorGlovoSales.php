@@ -2,7 +2,7 @@
 
 namespace App\Imports;
 
-use App\VendorGlovoImportSales;
+use App\Models\VendorGlovoImportSales;
 use Illuminate\Support\Collection;
 use Maatwebsite\Excel\Concerns\ToCollection;
 use Maatwebsite\Excel\Concerns\ToModel;
