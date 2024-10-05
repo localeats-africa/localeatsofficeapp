@@ -658,9 +658,7 @@ class MultiVendorController extends Controller
 
         $parent_id      = User::where('vendor', $vendor_id)
         ->get()->pluck('parent_store')->first();
-
           //dd($parent_id);
-
         $platform_name  = Platforms::where('name', $platform_id)
         ->get()->pluck('id')->first();
 
@@ -672,19 +670,19 @@ class MultiVendorController extends Controller
         ->where('parent_id', $parent_id)
         ->where('platform_id', $platform_id)
         ->get();
-        dd($glovoImport);
+        //dd($glovoImport);
 
         if($glovoImport->count() >= 1){
             foreach($glovoImport as $glovo){
                 $sales = new VendorOnlineSales();
                 $sales->added_by        = $glovo->added_by;
-                $sales->parent_id       = $order->parent_id;
-                $sales->vendor_id       = $order->vendor_id;
-                $sales->platform_id     = $order->platform_id;
-                $sales->order_ref       = $order->b;
-                $sales->order_amount    = $order->p;
-                $sales->description     = $order->e;
-                $sales->delivery_date   = $order->m;
+                $sales->parent_id       = $glovo->parent_id;
+                $sales->vendor_id       = $glovo->vendor_id;
+                $sales->platform_id     = $glovo->platform_id;
+                $sales->order_ref       = $glovo->b;
+                $sales->order_amount    = $glovo->o;
+                $sales->description     = $glovo->f;
+                $sales->delivery_date   = $glovo->n;
                 $sales->save();
             }
             if ($sales){
