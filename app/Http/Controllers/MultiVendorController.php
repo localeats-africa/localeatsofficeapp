@@ -655,40 +655,43 @@ class MultiVendorController extends Controller
         
         $file           = $request->file('file');
         $vendor_id      = $request->vendor;
-        $paltform_id    = $request->paltform;
+        $platform_id    = $request->paltform;
         $parent_id      = $request->parent;
 
-        $import =  Excel::import(new ImportVendorGlovoSales($parent_id, $vendor_id, $paltform_id), $file);   
+        $import =  Excel::import(new ImportVendorGlovoSales($parent_id, $vendor_id, $platform_id), $file);   
 
         $glovoImport = VendorGlovoImportSales::whereDate('created_at', $today)
         ->where('vendor_id', $vendor_id)
         ->where('parent_id', $parent_id)
-        ->where('paltform_id', $paltform_id)
+        ->where('platform_id', $platform_id)
         ->get();
 
         if($glovoImport->count() >= 1){
             foreach($glovoImport as $glovo){
                 $sales = new VendorOnlineSales();
-                $sales->invoice_ref     = $invoice_ref; 
                 $sales->added_by        = $glovo->added_by;
-                $sales->platform_id     = $order->platform_id;
+                $sales->parent_id       = $order->parent_id;
                 $sales->vendor_id       = $order->vendor_id;
-                $sales->order_ref       = $order->order_ref;
-                $sales->order_amount    = $order->order_amount;
-                $sales->food_menu_id    = $order->food_menu_id;
-                $sales->food_price      = $order->food_price;
-                $sales->extra           = $order->extra;
-                $sales->description     = $order->description;
-                $storeOrder->order_status    = 'pending';
-                $storeOrder->delivery_date   = $order->delivery_date;
-                $storeOrder->save();
+                $sales->platform_id     = $order->platform_id;
+                $sales->order_ref       = $order->b;
+                $sales->order_amount    = $order->p;
+                $sales->description     = $order->e;
+                $sales->delivery_date   = $order->m;
+                $sales->save();
             }
-           
-
-        return redirect()->back()->with('invoice-status',  ' Record saved successfully!');
+            if ($sales){
+                VendorGlovoImportSales::where('vendor_id', $vendor_id)
+                ->where('parent_id', $parent_id)
+                ->where('platform_id', $platform_id)
+                ->delete();
+                return redirect()->back()->with('upload-status',  ' Record saved successfully!');
+            }
+            else{
+                return redirect()->back()->with('upload-error', 'Opps! something went wrong');
+                }
         }
         else{
-        return redirect()->back()->with('invoice-error', 'Opps! something went wrong');
+        return redirect()->back()->with('upload-error', 'Opps! Can not upload this file');
         }
     }
 
