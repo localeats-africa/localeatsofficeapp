@@ -292,8 +292,8 @@
                                                       <td class="text-capitalize">{{$data->store_name}}</td>
 
                                                       <td class="text-capitalize">{{$data->name}}</td>
-                                                      <td class="text-capitalize">{{$data->food_menu}}</td>
-                                                      <td class="text-capitalize">{{$data->food_price}}</td>
+                                                      <td class="text-capitalize">{{$data->description}}</td>
+                                                      <td class="text-capitalize">{{$data->order_amount}}</td>
                                                       <td class="text-capitalize">{{$data->delivery_date}}</td>
                                                 </tr>
                                                 @endforeach
