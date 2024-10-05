@@ -26,7 +26,8 @@ class VendorGlovoImportSales extends Model
         'n',
         'o',
         'p',
-        'parent_id',
+        'p',
+        'added_by',
         'platform_id',
         'vendor_id',
     ];
