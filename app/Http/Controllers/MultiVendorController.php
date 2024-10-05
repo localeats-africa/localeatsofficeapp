@@ -655,14 +655,15 @@ class MultiVendorController extends Controller
         $file           = $request->file('file');
         $vendor_id      = $request->outlet;
         $platform_id    = $request->platform;
+       // dd($vendor_id);
 
-        $parent_id      = User::where('venodr', $vendor_id)
+        $parent_id      = User::where('vendor', $vendor_id)
         ->get()->pluck('parent_store')->first();
 
         $platform_name  = Platforms::where('name', $platform_id)
         ->get()->pluck('id')->first();
 
-       if($platform_id == 'glovo'){
+       if($platform_id == 'Glovo'){
         $import =  Excel::import(new ImportVendorGlovoSales($parent_id, $vendor_id, $platform_id), $file);   
 
         $glovoImport = VendorGlovoImportSales::whereDate('created_at', $today)
@@ -670,6 +671,7 @@ class MultiVendorController extends Controller
         ->where('parent_id', $parent_id)
         ->where('platform_id', $platform_id)
         ->get();
+        dd($glovoImport);
 
         if($glovoImport->count() >= 1){
             foreach($glovoImport as $glovo){
