@@ -37,6 +37,9 @@ use App\Models\VendorFoodMenu;
 use App\Models\VendorExpensesCategory;
 use App\Models\TempInStoreSales;
 use App\Models\VendorOnlineSales;
+use App\Models\VendorGlovoImportSales;
+use App\Imports\ImportVendorGlovoSales;
+
 
 use Excel;
 use Auth;
