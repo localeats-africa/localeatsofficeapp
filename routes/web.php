@@ -249,6 +249,9 @@ Route::controller(MultiVendorController::class)->group(function () {
     Route::post('save-food-item',  'saveTempSales')->name('save-food-item');
     Route::post('remove-sales-item/{id}',  'deleteTempInStoreSales')->name('remove-sales-item');
     Route::post('send-instore-sales',  'pushInstoreSales')->name('send-instore-sales');
+    Route::post('vendor-import-sales',  'importVendorOnlineGlovoSales')->name('vendor-import-sales');
+    
+    
 });
 
 Route::controller(ParentVendorController::class)->group(function () {
