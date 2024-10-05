@@ -651,6 +651,7 @@ class MultiVendorController extends Controller
         // generate a pin based on 2 * 7 digits + a random character
         $pin = mt_rand(1000000, 9999999);
         $import_id ='L'.str_shuffle($pin);
+        $today = Carbon::today();
         
         $file           = $request->file('file');
         $vendor_id      = $request->vendor;
@@ -659,7 +660,31 @@ class MultiVendorController extends Controller
 
         $import =  Excel::import(new ImportVendorGlovoSales($parent_id, $vendor_id, $paltform_id), $file);   
 
-        if($import){
+        $glovoImport = VendorGlovoImportSales::whereDate('created_at', $today)
+        ->where('vendor_id', $vendor_id)
+        ->where('parent_id', $parent_id)
+        ->where('paltform_id', $paltform_id)
+        ->get();
+
+        if($glovoImport->count() >= 1){
+            foreach($glovoImport as $glovo){
+                $sales = new Orders();
+                $sales->invoice_ref     = $invoice_ref; 
+                $sales->added_by        = $glovo->added_by;
+                $sales->platform_id     = $order->platform_id;
+                $sales->vendor_id       = $order->vendor_id;
+                $sales->order_ref       = $order->order_ref;
+                $sales->order_amount    = $order->order_amount;
+                $sales->food_menu_id    = $order->food_menu_id;
+                $sales->food_price      = $order->food_price;
+                $sales->extra           = $order->extra;
+                $sales->description     = $order->description;
+                $storeOrder->order_status    = 'pending';
+                $storeOrder->delivery_date   = $order->delivery_date;
+                $storeOrder->save();
+            }
+           
+
         return redirect()->back()->with('invoice-status',  ' Record saved successfully!');
         }
         else{
