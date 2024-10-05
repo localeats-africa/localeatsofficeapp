@@ -794,7 +794,7 @@ class ParentVendorController extends Controller
 
         $onlineSales=  DB::table('vendor_online_sales')
         ->join('vendor', 'vendor.id', 'vendor_online_sales.vendor_id')
-        ->join('platforms', 'platforms.id', 'vendor_online_sales.platform_id')
+        ->join('platforms', 'platforms.name', 'vendor_online_sales.platform_id')
         ->where('parent_id', $parentID)
         ->select(['vendor.store_name', 'vendor_online_sales.*', 'platforms.name' ])
         ->orderBy('vendor_online_sales.created_at', 'desc')
