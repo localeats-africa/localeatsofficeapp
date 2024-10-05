@@ -138,6 +138,14 @@ class MultiVendorController extends Controller
         ->where('vendor_online_sales.order_amount', '!=', null)
         ->get('vendor_online_sales.platform_id')->count();
 
+        $sumChowdeckOrder= DB::table('vendor_online_sales')
+        ->join('platforms', 'platforms.name', '=', 'vendor_online_sales.platform_id')
+        ->join('sub_store', 'sub_store.vendor_id', '=', 'vendor_online_sales.vendor_id')
+        ->where('sub_store.multi_store_id', $parent)
+        ->where('platforms.name', 'chowdeck')
+        ->where('vendor_online_sales.order_amount', '!=', null)
+        ->sum('vendor_online_sales.order_amount');
+
         $GlovoOrderCount= DB::table('vendor_online_sales')
         ->join('platforms', 'platforms.name', '=', 'vendor_online_sales.platform_id')
         ->join('sub_store', 'sub_store.vendor_id', '=', 'vendor_online_sales.vendor_id')
@@ -158,7 +166,7 @@ class MultiVendorController extends Controller
         return view('multistore.parent.admin', compact('username','parent', 'outlets',
         'offlineSales', 'salesChannel', 'countAllOrder', 'countPlatformWhereOrderCame', 'sumAllOrders', 
          'chowdeckOrderCount', 'countOutletsFromWhereOfflineSales','outletsExpenses',
-        'GlovoOrderCount', 'sumGlovoOrder', 'countOutletsExpensesCameFrom'));
+        'GlovoOrderCount', 'sumGlovoOrder', 'countOutletsExpensesCameFrom', 'sumChowdeckOrder'));
         }
     }
 
