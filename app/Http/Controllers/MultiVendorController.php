@@ -639,4 +639,32 @@ class MultiVendorController extends Controller
        }     
    }
 
+   public function importVendorOnlineGlovoSales(Request $request){
+        // Validate the uploaded file
+        $request->validate([
+            'vendor'      => 'required|string|max:255',
+            'paltform'    => 'required|string|max:255',
+            'parent'      => 'max:255',
+            'file'        => 'required|mimes:xlsx,xls',
+        ]);
+        $characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
+        // generate a pin based on 2 * 7 digits + a random character
+        $pin = mt_rand(1000000, 9999999);
+        $import_id ='L'.str_shuffle($pin);
+        
+        $file           = $request->file('file');
+        $vendor_id      = $request->vendor;
+        $paltform_id    = $request->paltform;
+        $parent_id      = $request->parent;
+
+        $import =  Excel::import(new ImportVendorGlovoSales($parent_id, $vendor_id, $paltform_id), $file);   
+
+        if($import){
+        return redirect()->back()->with('invoice-status',  ' Record saved successfully!');
+        }
+        else{
+        return redirect()->back()->with('invoice-error', 'Opps! something went wrong');
+        }
+    }
+
 }
