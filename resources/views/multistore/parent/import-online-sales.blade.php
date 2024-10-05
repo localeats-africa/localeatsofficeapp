@@ -15,7 +15,7 @@
             <div class="row">
                   <div class="col-12">
 
-                        @if(session('add-food-type'))
+                        @if(session('upload-status'))
                         <div class="alert  alert-success alert-dismissible" role="alert">
                               <div class="d-flex">
                                     <div>
@@ -30,13 +30,13 @@
                                                 <path d="M12 17h.01" />
                                           </svg>
                                     </div>
-                                    <div> {!! session('add-food-type') !!}</div>
+                                    <div> {!! session('upload-status') !!}</div>
                               </div>
                               <a class="btn-close" data-bs-dismiss="alert" aria-label="close"></a>
                         </div>
                         @endif
 
-                        @if(session('error'))
+                        @if(session('upload-error'))
                         <div class="alert  alert-danger alert-dismissible" role="alert">
                               <div class="d-flex">
                                     <div>
@@ -51,7 +51,7 @@
                                                 <path d="M12 17h.01" />
                                           </svg>
                                     </div>
-                                    <div> {!! session('error') !!}</div>
+                                    <div> {!! session('upload-error') !!}</div>
                               </div>
                               <a class="btn-close" data-bs-dismiss="alert" aria-label="close"></a>
                         </div>
