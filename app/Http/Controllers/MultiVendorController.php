@@ -655,10 +655,11 @@ class MultiVendorController extends Controller
         $file           = $request->file('file');
         $vendor_id      = $request->outlet;
         $platform_id    = $request->platform;
-       // dd($vendor_id);
 
         $parent_id      = User::where('vendor', $vendor_id)
         ->get()->pluck('parent_store')->first();
+
+          //dd($parent_id);
 
         $platform_name  = Platforms::where('name', $platform_id)
         ->get()->pluck('id')->first();
