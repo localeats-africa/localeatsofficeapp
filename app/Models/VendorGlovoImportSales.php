@@ -30,5 +30,6 @@ class VendorGlovoImportSales extends Model
         'added_by',
         'platform_id',
         'vendor_id',
+        'parent_id',
     ];
 }
