@@ -32,6 +32,7 @@ return new class extends Migration
             $table->string('n')->nullable();
             $table->string('o')->nullable();
             $table->string('p')->nullable();
+            $table->string('added_by')->nullable();
             $table->string('parent_id')->nullable();
             $table->string('vendor_id')->nullable();
             $table->string('platform_id')->nullable();
