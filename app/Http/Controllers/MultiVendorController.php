@@ -639,7 +639,7 @@ class MultiVendorController extends Controller
        }     
    }
 
-   public function importVendorOnlineGlovoSales(Request $request){
+   public function importVendorOnlineSales(Request $request){
         // Validate the uploaded file
         $request->validate([
             'vendor'      => 'required|string|max:255',
@@ -658,6 +658,10 @@ class MultiVendorController extends Controller
         $platform_id    = $request->paltform;
         $parent_id      = $request->parent;
 
+        $platform_name  = Platforms::where('id', $platform_id)
+        ->get()->pluck('name')->first();
+
+       if($platform_name == 'glovo'){
         $import =  Excel::import(new ImportVendorGlovoSales($parent_id, $vendor_id, $platform_id), $file);   
 
         $glovoImport = VendorGlovoImportSales::whereDate('created_at', $today)
@@ -693,6 +697,9 @@ class MultiVendorController extends Controller
         else{
         return redirect()->back()->with('upload-error', 'Opps! Can not upload this file');
         }
+       }
+       //end glovoimport
+
     }
 
 }
