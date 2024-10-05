@@ -278,7 +278,7 @@
                                                 <h2 class="mb-5">₦{{number_format($outletsExpenses)}}</h2>
                                                 <hr class="w-100">
                                                 <h6 class="card-text">From <span class="text-dark">(
-                                                            {{0}} )</span>
+                                                            {{$countOutletsExpensesCameFrom}} )</span>
                                                       <span style="float:right;">outlet (s)</span>
 
                                                 </h6>
