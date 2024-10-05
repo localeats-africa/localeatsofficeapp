@@ -668,7 +668,7 @@ class MultiVendorController extends Controller
 
         if($glovoImport->count() >= 1){
             foreach($glovoImport as $glovo){
-                $sales = new Orders();
+                $sales = new VendorOnlineSales();
                 $sales->invoice_ref     = $invoice_ref; 
                 $sales->added_by        = $glovo->added_by;
                 $sales->platform_id     = $order->platform_id;
