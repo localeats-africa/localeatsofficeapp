@@ -155,7 +155,7 @@
                                                 @endforeach
                                           </select>
 
-                                          @error('sales_channel')
+                                          @error('platform')
                                           <div class="alert alert-danger alert-dismissible" role="alert">
                                                 <div class="d-flex">
                                                       <div>
@@ -185,29 +185,29 @@
                         <div class="col-md-4 grid-margin stretch-card">
                               <div class="card">
                                     <div class="card-body">
-                                          <div class="form-label required">Import 
-                                              <small class="">(.xlsx, .xls)</small> <i class="text-danger">*</i>
+                                          <div class="form-label required">Import
+                                                <small class="">(.xlsx, .xls)</small> <i class="text-danger">*</i>
                                           </div>
                                           <div class="form-group" style="width:100%;">
-                                          <input type="file" name="file" accept=".xlsx,.xls"
-                                                class="file-upload-default " id="file">
-                                          <div class="input-group">
-                                                <div class="input-group-prepend">
-                                                      <button
-                                                            class="file-upload-browse btn btn-sm  bg-gradient-dark  text-white py-2"
-                                                            type="button">
-                                                            <i
-                                                                  class="mdi mdi-cloud-braces fs-24 menu-icon"></i></button>
+                                                <input type="file" name="file" accept=".xlsx,.xls"
+                                                      class="file-upload-default " id="file">
+                                                <div class="input-group">
+                                                      <div class="input-group-prepend">
+                                                            <button
+                                                                  class="file-upload-browse btn btn-sm  bg-gradient-dark  text-white py-2"
+                                                                  type="button">
+                                                                  <i
+                                                                        class="mdi mdi-cloud-braces fs-24 menu-icon"></i></button>
+                                                      </div>
+                                                      <input type="text" class="form-control file-upload-info text-dark"
+                                                            disabled="" placeholder="xlsx,.xls" style="height:34px; ">
+                                                      <div class="input-group-append">
+                                                            <button type="submit" name="submit"
+                                                                  class="btn btn-outline-danger btn-sm py-2">
+                                                                  <i class="mdi mdi-upload btn-icon-prepend fs-24"></i>
+                                                                  Upload </button>
+                                                      </div>
                                                 </div>
-                                                <input type="text" class="form-control file-upload-info text-dark"
-                                                      disabled="" placeholder="xlsx,.xls" style="height:34px; ">
-                                                <div class="input-group-append">
-                                                      <button type="submit" name="submit"
-                                                            class="btn btn-outline-danger btn-sm py-2">
-                                                            <i class="mdi mdi-upload btn-icon-prepend fs-24"></i>
-                                                            Upload </button>
-                                                </div>
-                                          </div>
                                           </div>
 
                                     </div>
@@ -381,7 +381,7 @@
 
 <!-- endinject -->
 <!-- Custom js for this page -->
-<script src="{{ asset('assets/js/file-upload.js')}}"></script>
+<!-- <script src="{{ asset('assets/js/file-upload.js')}}"></script> -->
 <!-- <script src="{{ asset('assets/js/typeahead.js')}}"></script> -->
 <script src="{{ asset('assets/js/select2.js')}}"></script>
 <!-- End custom js for this page -->
