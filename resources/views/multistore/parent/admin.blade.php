@@ -190,7 +190,7 @@
                                                 <h2 class="mb-5">₦{{0}}</h2>
                                                 <hr class="w-100">
                                                 <h6 class="card-text">From <span class="text-dark">(
-                                                            {{0}} )</span>
+                                                            {{$GlovoOrderCount}} )</span>
                                                       <span style="float:right;">outlet (s)</span>
 
                                                 </h6>
