@@ -2342,8 +2342,8 @@ class HomeController extends Controller
          ->get();
  
          $vendorSoup= OfflineFoodMenu::where('vendor_id', $vendor_id)
-         ->where('soup', '!=', null)
-         ->orderBy('created_at', 'desc')
+        //  ->where('soup', '!=', null)
+        //  ->orderBy('created_at', 'desc')
          ->get();
  
          $vendorProtein= OfflineFoodMenu::where('vendor_id', $vendor_id)
@@ -2356,7 +2356,7 @@ class HomeController extends Controller
          //->orderBy('created_at', 'desc')
          ->get();
 
-        $sales = OfflineSales::where('vendor_id', $vendor_id)->get();
+        $sales = OfflineFoodMenu::where('vendor_id', $vendor_id)->get();
 
         return view('cashier.add-new-offline-sales',  compact('name', 'role', 
         'vendorName','salesList', 'vendor_id', 'sales',
