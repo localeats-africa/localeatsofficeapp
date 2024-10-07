@@ -17,8 +17,6 @@ class ExportOfflineFoodMenu implements FromCollection
     public function collection()
     {
         return OfflineFoodMenu::where('deleted_at', null)
-        ->get(['swallow', 'swallow_price',
-         'soup',  'soup_price', 'protein', 'protein_price',
-        'others', 'others_price'])->take(10);
+        ->get(['swallow','soup', 'protein', 'others'])->take(2);
     }
 }
