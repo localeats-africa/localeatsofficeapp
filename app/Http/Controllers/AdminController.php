@@ -232,7 +232,7 @@ class AdminController extends Controller
         // %Y/%m  %M %M %Y
         $chartMonthlyTotalSales = Orders::select(
         \DB::raw("COUNT(*) as total_sales"), 
-        \DB::raw('DATE_FORMAT(delivery_date,"%m %Y") as month'),
+        \DB::raw('Month(delivery_date) as month'),
         \DB::raw('SUM(order_amount) as sales_volume'),
         )->where('deleted_at', null)
         ->where('orders.order_amount', '!=', null)
@@ -240,8 +240,9 @@ class AdminController extends Controller
         ->where('orders.food_price', '!=', null)
         //->whereYear('orders.delivery_date', '=', Carbon::now()->year)
        // ->orderBy('month', 'asc')
-        ->groupBy('month')
-        ->get(); 
+       // ->groupBy('month')
+        ->groupBy(DB::raw("month(delivery_date)"))
+        ->get()->toArray(); 
         $chartSalesMonth = Arr::pluck($chartMonthlyTotalSales, 'month');
         $chartSalesVolume = Arr::pluck($chartMonthlyTotalSales, 'sales_volume');
         $chartSalesTotal = Arr::pluck($chartMonthlyTotalSales, 'total_sales');
