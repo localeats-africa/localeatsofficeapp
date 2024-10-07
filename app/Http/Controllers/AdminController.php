@@ -778,6 +778,20 @@ class AdminController extends Controller
         ->where('sales_platform.platform_name', 'edenlife')
         ->get('sales_platform.vendor_id');
 
+
+        $activeManoVendor = DB::table('sales_platform')
+        ->join('vendor', 'vendor.id', '=', 'sales_platform.vendor_id')->distinct()
+        ->join('platforms', 'platforms.name', '=', 'sales_platform.platform_name')
+        ->where('sales_platform.vendor_status', 'active')
+        ->where('sales_platform.platform_name', 'mano')
+        ->get('sales_platform.vendor_id');
+
+        $manoVendor = DB::table('sales_platform')
+        ->join('vendor', 'vendor.id', '=', 'sales_platform.vendor_id')
+        ->join('platforms', 'platforms.name', '=', 'sales_platform.platform_name')
+        ->where('sales_platform.platform_name', 'mano')
+        ->get('sales_platform.vendor_id');
+
         $perPage = $request->perPage ?? 10;
         $search = $request->input('search');
 
@@ -806,7 +820,8 @@ class AdminController extends Controller
         return view('admin.all-platform', compact('perPage', 'name', 
         'role', 'platform',  'activeChowdeckVendor', 'chowdeckVendor',
         'glovoVendor', 'activeGlovoVendor',   'activeEdenlifeVendor', 
-        'edenlifeVendor', 'activePlatform', 'countPlatforms'));
+        'edenlifeVendor', 'activePlatform', 'countPlatforms', 'activeManoVendor',
+        'manoVendor'));
     }
 
     public function approveVendor(Request $request, $vendor_id){
