@@ -239,6 +239,7 @@ class AdminController extends Controller
         ->where('orders.order_ref', '!=', null)
         ->where('orders.food_price', '!=', null)
         //->whereYear('orders.delivery_date', '=', Carbon::now()->year)
+       // ->orderBy('month', 'asc')
         ->groupBy('month')
         ->get(); 
         $chartSalesMonth = Arr::pluck($chartMonthlyTotalSales, 'month');
