@@ -229,10 +229,10 @@ class AdminController extends Controller
         ->where('orders.food_price', '!=', null)
         ->groupby('year')
         ->get();
-
+        // %Y/%m  %M %M %Y
         $chartMonthlyTotalSales = Orders::select(
         \DB::raw("COUNT(*) as total_sales"), 
-        \DB::raw('DATE_FORMAT(delivery_date,"%M ") as month'),
+        \DB::raw('DATE_FORMAT(delivery_date,"%m %Y") as month'),
         \DB::raw('SUM(order_amount) as sales_volume'),
         )->where('deleted_at', null)
         ->where('orders.order_amount', '!=', null)
