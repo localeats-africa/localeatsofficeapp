@@ -245,7 +245,7 @@ class AdminController extends Controller
         $chartSalesVolume = Arr::pluck($chartMonthlyTotalSales, 'sales_volume');
         $chartSalesTotal = Arr::pluck($chartMonthlyTotalSales, 'total_sales');
 
-        $monthlist = array_map(fn($month) => Carbon::create(null, $month)->format('M'), range(1, 12));
+        $monthlist = array_map(fn($chartSalesMonth) => Carbon::create(null, $chartSalesMonth)->format('M'), range(1, 12));
         $salesYear =  Arr::pluck($chartYearlyTotalSales, 'year');
         $data = [
          'month' =>  $chartSalesMonth ,
@@ -290,7 +290,6 @@ class AdminController extends Controller
         $glovoSalesPercentageChart = $glovoOrderCount / $countAllOrder * 100;
         $edenSalesPercentageChart = $edenOrderCount / $countAllOrder * 100;
         $manoSalesPercentageChart = $manoOrderCount / $countAllOrder * 100;
-
 
         $piechartData = [            
         'label' => ['Chowdeck', 'Glovo', 'Eden', 'Mano'],
