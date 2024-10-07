@@ -835,7 +835,7 @@ var ctx = document.getElementById('lineChart').getContext('2d');
 var myChart = new Chart(ctx, {
       type: 'line',
       data: {
-            labels: @json($monthlist),
+            labels: @json($data['month']),
             datasets: [{
                   label: @json($salesYear),
                   data: @json($data['sales']),
