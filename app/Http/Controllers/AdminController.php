@@ -795,13 +795,10 @@ class AdminController extends Controller
         $perPage = $request->perPage ?? 10;
         $search = $request->input('search');
 
-        $platform = 
-        
-        DB::table('platforms')
+        $platform = DB::table('platforms')
         ->where('platforms.deleted_at', null)
         ->select(['platforms.*' ])
         ->orderBy('platforms.created_at', 'desc')
-
         ->where(function ($query) use ($search) {  // <<<
         $query->where('platforms.name', 'LIKE', '%'.$search.'%');
         })
@@ -813,7 +810,8 @@ class AdminController extends Controller
                 'activeChowdeckVendor', 'chowdeckVendor',
                 'glovoVendor', 'activeGlovoVendor',
                 'activeEdenlifeVendor', 'edenlifeVendor', 
-                'activePlatform', 'countPlatforms'))->withDetails( $pagination );     
+                'activePlatform', 'countPlatforms', 'activeManoVendor',
+                'manoVendor'))->withDetails( $pagination );     
             } 
         else{return redirect()->back()->with('platform-status', 'No record order found'); }
 
