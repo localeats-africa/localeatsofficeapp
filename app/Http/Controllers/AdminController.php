@@ -347,7 +347,7 @@ class AdminController extends Controller
         ->get();
         $barChartEdenSales = Arr::pluck($edenOrder, 'sales');
 
-        $manoOrder =  Orders::join('platforms', 'platforms.id', '=', 'orders.platform_id')
+    $manoOrder =  Orders::join('platforms', 'platforms.id', '=', 'orders.platform_id')
         ->select(
         \DB::raw('DATE_FORMAT(orders.delivery_date,"%M ") as month'),
         \DB::raw('SUM(orders.order_amount) as sales'),
