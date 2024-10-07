@@ -380,7 +380,7 @@ class AdminController extends Controller
         'chowdeckSalesPercentageChart', 'glovoSalesPercentageChart', 
         'edenSalesPercentageChart', 'piechartData' ,  'barChartData',
         'sumGlovoComm', 'vendorFoodPrice', 'manoOrderCount', 
-        'manoSalesPercentageChart'));
+        'manoSalesPercentageChart','monthlist'));
       }
     }
 
