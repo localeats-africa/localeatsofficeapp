@@ -232,17 +232,29 @@ class AdminController extends Controller
         // %Y/%m  %M %M %Y
         $chartMonthlyTotalSales = Orders::select(
         \DB::raw("COUNT(*) as total_sales"), 
-        \DB::raw('Month(delivery_date) as month'),
+        \DB::raw('DATE_FORMAT(delivery_date,"%m/%Y") as month'),
         \DB::raw('SUM(order_amount) as sales_volume'),
         )->where('deleted_at', null)
         ->where('orders.order_amount', '!=', null)
         ->where('orders.order_ref', '!=', null)
         ->where('orders.food_price', '!=', null)
+       // ->whereMonth('delivery_date', date('MM'))
         //->whereYear('orders.delivery_date', '=', Carbon::now()->year)
        // ->orderBy('month', 'asc')
-       // ->groupBy('month')
-        ->groupBy(DB::raw("month(delivery_date)"))
+        ->groupBy('month')
         ->get()->toArray(); 
+
+
+        $month =   Orders::select(
+            \DB::raw('MONTH(delivery_date) as month')
+            )->where('deleted_at', null)
+            ->where('orders.order_amount', '!=', null)
+            ->where('orders.order_ref', '!=', null)
+            ->where('orders.food_price', '!=', null)
+            ->groupBy('month')
+            ->get()->toArray(); 
+      
+
         $chartSalesMonth = Arr::pluck($chartMonthlyTotalSales, 'month');
         $chartSalesVolume = Arr::pluck($chartMonthlyTotalSales, 'sales_volume');
         $chartSalesTotal = Arr::pluck($chartMonthlyTotalSales, 'total_sales');
