@@ -33,7 +33,7 @@ class ImportPastInvoices implements ToModel
             'order_amount'              => $row[0],
             'past_invoice_vendor_price' => $row[1],
             'payout'                    => $row[2],
-            'commission'                => $row[3],
+            'past_invoice_commission'   => $row[3],
             'past_paid_commission'      => $row[4],
             'past_number_of_plates'     => $row[5],
             'past_number_of_orders'     => $row[6],
