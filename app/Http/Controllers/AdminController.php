@@ -189,8 +189,24 @@ class AdminController extends Controller
         ->sum('commission.localeats_comm');
 
         $pastInvoiceCommission = Orders::where('past_invoice_commission', '!=', null)
+        ->sum('past_invoice_commission');
 
-        $commission =    $commissionImported ;
+        $commission = $commissionImported  + $pastInvoiceCommission ;
+        //commission Paid
+        $commissionPaidImportedInvoice = DB::table('orders')->sum('commission');
+        $pastPaidCommision = Orders::where('past_invoice_commission', '!=', null)
+        ->sum('past_paid_commission');
+
+        $commissionPaid = $commissionPaidImportedInvoice + $pastPaidCommision;
+
+        $averageWeeklyCommissionPaid = DB::table('orders')
+        ->where('deleted_at', null)
+        ->where('orders.order_amount', '!=', null)
+        ->where('orders.order_ref', '!=', null)
+       // ->where('payout', '!=', null)
+        //->whereDate('updated_at', '>=', $lastSevenDays)   
+        ->whereDate('updated_at', '<', $today)  
+        ->sum('commission');
 
         $averageWeeklyComm = DB::table('commission')
         ->join('orders', 'orders.id', 'commission.order_id')
@@ -210,17 +226,24 @@ class AdminController extends Controller
         ->where('orders.order_ref', '!=', null)
         ->sum('extra');
 
-        $pastInvoiceVendorPrice = Orders::where('past_number_of_orders', '!=', null)
+        $pastInvoiceVendorPrice = Orders::where('past_invoice_vendor_price', '!=', null)
         ->sum('past_invoice_vendor_price');
 
         $vendorFoodPrice =  $sumFoodPrice + $sumExtra + $pastInvoiceVendorPrice;
-
-        $payouts = DB::table('orders')
+        
+        $payoutsImported = DB::table('orders')
         ->where('deleted_at', null)
         ->where('order_amount', '!=', null)
         ->where('order_ref', '!=', null)
-        //->where('payment_status',  'paid')
         ->sum('payout');
+
+        $pastPayout = DB::table('orders')
+        ->where('deleted_at', null)
+        ->where('order_amount', '!=', null)
+        ->where('order_ref', '!=', null)
+        ->sum('past_invoice_payout');
+
+        $payouts =  $payoutsImported + $pastPayout;
 
         $averageWeeklyPayouts = DB::table('orders')
         ->where('deleted_at', null)
@@ -229,19 +252,6 @@ class AdminController extends Controller
        ->where('payout', '!=', null)
         ->whereDate('updated_at', '=', $lastSevenDays)    
         ->sum('payout');
-
-        $commissionPaid = DB::table('orders')->sum('commission');
-
-        $commissionPaid = DB::table('orders')->sum('commission');
-
-        $averageWeeklyCommissionPaid = DB::table('orders')
-        ->where('deleted_at', null)
-        ->where('orders.order_amount', '!=', null)
-        ->where('orders.order_ref', '!=', null)
-       // ->where('payout', '!=', null)
-        //->whereDate('updated_at', '>=', $lastSevenDays)   
-        ->whereDate('updated_at', '<', $today)  
-        ->sum('commission');
 
         $platformOrders = DB::table('orders')
         ->join('platforms', 'platforms.id', '=', 'orders.platform_id')->distinct()
