@@ -134,7 +134,7 @@ class AdminController extends Controller
 
         $pastInvoiceNumberOfOrders = Orders::where('past_number_of_orders', '!=', null)
         ->sum('past_number_of_orders');
-//count row
+        //count row
         $pastInvoiceOrders = Orders::where('past_number_of_orders', '!=', null)
         ->count();
 
@@ -205,7 +205,7 @@ class AdminController extends Controller
         ->where('orders.order_ref', '!=', null)
        // ->where('payout', '!=', null)
         //->whereDate('updated_at', '>=', $lastSevenDays)   
-        ->whereDate('updated_at', '<', $today)  
+        ->whereDate('updated_at', '=', $lastSevenDays)  
         ->sum('commission');
 
         $averageWeeklyComm = DB::table('commission')
@@ -280,17 +280,6 @@ class AdminController extends Controller
        // ->orderBy('month', 'asc')
         ->groupBy('month')
         ->get()->toArray(); 
-
-
-        $month =   Orders::select(
-            \DB::raw('MONTH(delivery_date) as month')
-            )->where('deleted_at', null)
-            ->where('orders.order_amount', '!=', null)
-            ->where('orders.order_ref', '!=', null)
-            ->where('orders.food_price', '!=', null)
-            ->groupBy('month')
-            ->get()->toArray(); 
-      
 
         $chartSalesMonth = Arr::pluck($chartMonthlyTotalSales, 'month');
         $chartSalesVolume = Arr::pluck($chartMonthlyTotalSales, 'sales_volume');
@@ -469,6 +458,26 @@ class AdminController extends Controller
          ->whereDate('delivery_date', '<=', $endDate) 
          ->sum('order_amount');
 
+        $countimportOrder = Orders::where('deleted_at', null)
+        ->where('orders.order_amount', '!=', null)
+        ->where('orders.order_ref', '!=', null)
+        ->whereDate('delivery_date', '>=', $startDate)                                 
+        ->whereDate('delivery_date', '<=', $endDate) 
+        ->count();
+
+        $pastInvoiceNumberOfOrders = Orders::where('past_number_of_orders', '!=', null)
+        ->whereDate('delivery_date', '>=', $startDate)                                 
+        ->whereDate('delivery_date', '<=', $endDate) 
+        ->sum('past_number_of_orders');
+        //count row
+        $pastInvoiceOrders = Orders::where('past_number_of_orders', '!=', null)
+        ->whereDate('delivery_date', '>=', $startDate)                                 
+        ->whereDate('delivery_date', '<=', $endDate) 
+        ->count();
+
+        $numberOfOrders = $countimportOrder  + $pastInvoiceNumberOfOrders;
+        $countAllOrder =   $numberOfOrders  - $pastInvoiceOrders ;
+
          $sumFoodPrice = DB::table('orders')
          ->where('deleted_at', null)
          ->where('orders.order_amount', '!=', null)
@@ -485,7 +494,30 @@ class AdminController extends Controller
          ->whereDate('delivery_date', '<=', $endDate) 
          ->sum('extra');
  
-         $vendorFoodPrice =  $sumFoodPrice + $sumExtra ;
+         $pastInvoiceVendorPrice = Orders::where('past_invoice_vendor_price', '!=', null)
+         ->whereDate('delivery_date', '>=', $startDate)                                 
+         ->whereDate('delivery_date', '<=', $endDate) 
+         ->sum('past_invoice_vendor_price');
+ 
+         $vendorFoodPrice =  $sumFoodPrice + $sumExtra + $pastInvoiceVendorPrice;
+         
+         $payoutsImported = DB::table('orders')
+         ->where('deleted_at', null)
+         ->where('order_amount', '!=', null)
+         ->where('order_ref', '!=', null)
+         ->whereDate('delivery_date', '>=', $startDate)                                 
+         ->whereDate('delivery_date', '<=', $endDate) 
+         ->sum('payout');
+ 
+         $pastPayout = DB::table('orders')
+         ->where('deleted_at', null)
+         ->where('order_amount', '!=', null)
+         ->where('order_ref', '!=', null)
+         ->whereDate('delivery_date', '>=', $startDate)                                 
+         ->whereDate('delivery_date', '<=', $endDate) 
+         ->sum('past_invoice_payout');
+
+         $payouts =  $payoutsImported + $pastPayout;
  
          $sumGlovoComm = DB::table('commission')
          ->join('orders', 'orders.id', 'commission.order_id')
@@ -494,16 +526,15 @@ class AdminController extends Controller
          ->whereDate('orders.delivery_date', '>=', $startDate)                                 
          ->whereDate('orders.delivery_date', '<=', $endDate) 
          ->sum('commission.platform_comm');
- 
-      
-         $countAllOrder = Orders::where('deleted_at', null)
+
+         $pastInvoicePlates = Orders::where('past_number_of_plates', '!=', null)
+         ->where('deleted_at', null)
          ->where('orders.order_amount', '!=', null)
          ->where('orders.order_ref', '!=', null)
          ->whereDate('delivery_date', '>=', $startDate)                                 
          ->whereDate('delivery_date', '<=', $endDate) 
-         ->count();
-        // dd( $countAllOrder );
- 
+         ->sum('past_number_of_plates');
+    
          $getOrderItem = DB::table('orders')
          ->where('deleted_at', null)
          ->where('orders.order_amount', '!=', null)
@@ -514,7 +545,8 @@ class AdminController extends Controller
  
          $string =  $getOrderItem;
          $substring = 'plate';
-         $countAllPlate = substr_count($string, $substring);
+         $countPlateImportOrder = substr_count($string, $substring);
+         $countAllPlate =   $countPlateImportOrder + $pastInvoicePlates ;
  
          $countPlatformWhereOrderCame = DB::table('orders')
          ->Join('platforms', 'orders.platform_id', '=', 'platforms.id')->distinct()
@@ -525,26 +557,32 @@ class AdminController extends Controller
          ->whereDate('delivery_date', '<=', $endDate) 
          ->count('platforms.id');
  
-         $payouts = DB::table('orders')
-         ->where('deleted_at', null)
-         ->where('orders.order_amount', '!=', null)
-         ->where('orders.order_ref', '!=', null)
-         ->whereDate('delivery_date', '>=', $startDate)                                 
-         ->whereDate('delivery_date', '<=', $endDate) 
-         ->sum('payout');
- 
-         //$commission = (int)$sumAllOrders - (int)$payouts ;
-         $commission = Commission::join('orders', 'orders.id', '=', 'commission.order_id')
+         $commissionImported =  DB::table('commission')
+         ->join('orders', 'orders.id', 'commission.order_id')
          ->where('orders.deleted_at', null)
          ->where('orders.food_price', '!=', null)
-         ->whereDate('orders.delivery_date', '>=', $startDate)                                 
-         ->whereDate('orders.delivery_date', '<=', $endDate) 
+         ->whereDate('delivery_date', '>=', $startDate)                                 
+         ->whereDate('delivery_date', '<=', $endDate)
          ->sum('commission.localeats_comm');
  
-         $commissionPaid = DB::table('orders')
+         $pastInvoiceCommission = Orders::where('past_invoice_commission', '!=', null)
+         ->whereDate('delivery_date', '>=', $startDate)                                 
+         ->whereDate('delivery_date', '<=', $endDate)
+         ->sum('past_invoice_commission');
+ 
+         $commission = $commissionImported  + $pastInvoiceCommission ;
+         //commission Paid
+         $commissionPaidImportedInvoice = DB::table('orders')
          ->whereDate('delivery_date', '>=', $startDate)                                 
          ->whereDate('delivery_date', '<=', $endDate)
          ->sum('commission');
+
+         $pastPaidCommision = Orders::where('past_invoice_commission', '!=', null)
+         ->whereDate('delivery_date', '>=', $startDate)                                 
+         ->whereDate('delivery_date', '<=', $endDate)
+         ->sum('past_paid_commission');
+ 
+         $commissionPaid = $commissionPaidImportedInvoice + $pastPaidCommision;
 
          $chartYearlyTotalSales = Orders::select(
             \DB::raw('YEAR(delivery_date) as year'),)
