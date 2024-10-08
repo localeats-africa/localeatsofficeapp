@@ -139,7 +139,6 @@ class AdminController extends Controller
         ->count();
 
         $numberOfOrders = $countimportOrder  + $pastInvoiceNumberOfOrders;
-
         $countAllOrder =   $numberOfOrders  - $pastInvoiceOrders ;
 
         $getOrderItem = DB::table('orders')
@@ -149,12 +148,16 @@ class AdminController extends Controller
         ->get('description')->pluck('description');
 
         $pastInvoicePlates = Orders::where('past_number_of_plates', '!=', null)
-        ->sum();
+        ->where('deleted_at', null)
+        ->where('orders.order_amount', '!=', null)
+        ->where('orders.order_ref', '!=', null)
+        ->sum('past_number_of_plates');
+       // dd($pastInvoicePlates);
 
         $string =  $getOrderItem;
         $substring = 'plate';
         $countPlateImportOrder = substr_count($string, $substring);
-        $countAllPlate =   $countPlateImportOrder +  $pastInvoicePlates ;
+        $countAllPlate =   $countPlateImportOrder + $pastInvoicePlates ;
 
         $countPlatformWhereOrderCame = DB::table('orders')
         ->Join('platforms', 'orders.platform_id', '=', 'platforms.id')->distinct()
@@ -178,11 +181,16 @@ class AdminController extends Controller
 
         //$commission = (int)$sumAllOrders - (int)$payouts ;
         //$averageWeeklyComm =$averageWeeklySales - $averageWeeklyPayouts ;
-        $commission =  DB::table('commission')
+
+        $commissionImported =  DB::table('commission')
         ->join('orders', 'orders.id', 'commission.order_id')
         ->where('orders.deleted_at', null)
         ->where('orders.food_price', '!=', null)
         ->sum('commission.localeats_comm');
+
+        $pastInvoiceCommission = Orders::where('past_invoice_commission', '!=', null)
+
+        $commission =    $commissionImported ;
 
         $averageWeeklyComm = DB::table('commission')
         ->join('orders', 'orders.id', 'commission.order_id')
@@ -221,6 +229,8 @@ class AdminController extends Controller
        ->where('payout', '!=', null)
         ->whereDate('updated_at', '=', $lastSevenDays)    
         ->sum('payout');
+
+        $commissionPaid = DB::table('orders')->sum('commission');
 
         $commissionPaid = DB::table('orders')->sum('commission');
 
