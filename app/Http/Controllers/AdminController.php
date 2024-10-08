@@ -132,15 +132,15 @@ class AdminController extends Controller
         ->where('orders.order_ref', '!=', null)
         ->count();
 
+        $pastInvoiceNumberOfOrders = Orders::where('past_number_of_orders', '!=', null)
+        ->sum('past_number_of_orders');
+//count row
         $pastInvoiceOrders = Orders::where('past_number_of_orders', '!=', null)
         ->count();
 
-        $pastInvoiceNumberOfOrders = Orders::where('past_number_of_orders', '!=', null)
-        ->sum('past_number_of_orders');
-
         $numberOfOrders = $countimportOrder  + $pastInvoiceNumberOfOrders;
 
-        $countAllOrder =   $numberOfOrders  -   $pastInvoiceOrders ;
+        $countAllOrder =   $numberOfOrders  - $pastInvoiceOrders ;
 
         $getOrderItem = DB::table('orders')
         ->where('deleted_at', null)
@@ -148,9 +148,13 @@ class AdminController extends Controller
         ->where('orders.order_ref', '!=', null)
         ->get('description')->pluck('description');
 
+        $pastInvoicePlates = Orders::where('past_number_of_plates', '!=', null)
+        ->sum();
+
         $string =  $getOrderItem;
         $substring = 'plate';
-        $countAllPlate = substr_count($string, $substring);
+        $countPlateImportOrder = substr_count($string, $substring);
+        $countAllPlate =   $countPlateImportOrder +  $pastInvoicePlates ;
 
         $countPlatformWhereOrderCame = DB::table('orders')
         ->Join('platforms', 'orders.platform_id', '=', 'platforms.id')->distinct()
