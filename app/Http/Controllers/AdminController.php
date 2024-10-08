@@ -127,10 +127,20 @@ class AdminController extends Controller
         ->whereDate('delivery_date', '=', $lastSevenDays)   
         ->sum('order_amount');
 
-        $countAllOrder = Orders::where('deleted_at', null)
+        $countimportOrder = Orders::where('deleted_at', null)
         ->where('orders.order_amount', '!=', null)
         ->where('orders.order_ref', '!=', null)
         ->count();
+
+        $pastInvoiceOrders = Orders::where('past_number_of_orders', '!=', null)
+        ->count();
+
+        $pastInvoiceNumberOfOrders = Orders::where('past_number_of_orders', '!=', null)
+        ->sum('past_number_of_orders');
+
+        $numberOfOrders = $countimportOrder  + $pastInvoiceNumberOfOrders;
+
+        $countAllOrder =   $numberOfOrders  -   $pastInvoiceOrders ;
 
         $getOrderItem = DB::table('orders')
         ->where('deleted_at', null)
@@ -156,20 +166,6 @@ class AdminController extends Controller
         ->where('orders.food_price', '!=', null)
         ->sum('order_amount'); 
 
-        $sumFoodPrice = DB::table('orders')
-        ->where('deleted_at', null)
-        ->where('orders.order_amount', '!=', null)
-        ->where('orders.order_ref', '!=', null)
-        ->sum('food_price');
-
-        $sumExtra =  DB::table('orders')
-        ->where('deleted_at', null)
-        ->where('orders.order_amount', '!=', null)
-        ->where('orders.order_ref', '!=', null)
-        ->sum('extra');
-
-        $vendorFoodPrice =  $sumFoodPrice + $sumExtra ;
-
         $sumGlovoComm = DB::table('commission')
         ->join('orders', 'orders.id', 'commission.order_id')
         ->where('orders.deleted_at', null)
@@ -189,6 +185,23 @@ class AdminController extends Controller
         ->where('orders.deleted_at', null)
         ->whereDate('commission.created_at', '=', $lastSevenDays)   
         ->sum('commission.localeats_comm');
+
+        $sumFoodPrice = DB::table('orders')
+        ->where('deleted_at', null)
+        ->where('orders.order_amount', '!=', null)
+        ->where('orders.order_ref', '!=', null)
+        ->sum('food_price');
+
+        $sumExtra =  DB::table('orders')
+        ->where('deleted_at', null)
+        ->where('orders.order_amount', '!=', null)
+        ->where('orders.order_ref', '!=', null)
+        ->sum('extra');
+
+        $pastInvoiceVendorPrice = Orders::where('past_number_of_orders', '!=', null)
+        ->sum('past_invoice_vendor_price');
+
+        $vendorFoodPrice =  $sumFoodPrice + $sumExtra + $pastInvoiceVendorPrice;
 
         $payouts = DB::table('orders')
         ->where('deleted_at', null)
