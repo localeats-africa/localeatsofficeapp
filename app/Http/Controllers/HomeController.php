@@ -2317,23 +2317,9 @@ class HomeController extends Controller
         ->join('users', 'users.role_id', 'role.id')
         ->where('users.id', $id)
         ->pluck('role_name')->first();
-
-        $vendorsAssigned = User::where('id', $id)
-        ->get('vendor')->toArray();
-
-        $vendorID_list = array_column($vendorsAssigned, 'vendor'); 
-        $selectMultipleVendor= call_user_func_array('array_merge', $vendorID_list);
-        $multipleVendor_list = Vendor::whereIn('id', $selectMultipleVendor)
-        // ->groupBy('id')
-        ->get();
      
-        //a cashier should only see things for the vendor assigned to him
-        $vendorName = $multipleVendor_list;
-
-         //a cashier should only see things for the vendor assigned to him
-         $vendorName = Vendor::join('users', 'users.vendor', 'vendor.id')
-         ->where('users.id', $id)
-         ->get('vendor.vendor_name')->pluck('vendor_name')->first();
+        $vendorName = Vendor::where('id', $vendor_id)
+        ->get()->pluck('vendor_name')->first();
 
  
          $salesList = OfflineFoodMenu::where('vendor_id', $vendor_id)
@@ -2415,9 +2401,7 @@ class HomeController extends Controller
         $username   = Auth::user()->username;
         $today = Carbon::today();
  
-        $vendor_id = Vendor::join('users', 'users.vendor', 'vendor.id')
-         ->where('users.id', $user_id)
-         ->get('vendor.id')->pluck('id')->first();
+        $vendor_id = $request->vendor;
          
          $others = $request->input('others');
          $otherItem = json_encode($others);
@@ -2474,30 +2458,28 @@ class HomeController extends Controller
        //  ;
         $salesItem =   $soup_qty.  '  ' .$soup. '  ' .$swallow_qty.  '  '  .$swallow. '  ' .$protein_qty. '  ' .$protein.
         '  '  .substr($getOthers, 1, -1);
-        //dd($salesItem );
-       
-      
-                    $sales = new OfflineSales();
-                    $sales->added_by            = $request->added_by;
-                    $sales->vendor_id           = $request->vendor;
-                     $sales->sales_item         =  $salesItem ;
-                     $sales->price              = $request->price;
-                     $sales->sales_date         = date("Y-m-d ", strtotime($request->date)) ;
-                     $sales->save();
+   
+        $sales = new OfflineSales();
+        $sales->added_by           = $request->added_by;
+        $sales->vendor_id          = $request->vendor;
+        $sales->sales_item         =  $salesItem ;
+        $sales->price              = $request->price;
+        $sales->sales_date         = date("Y-m-d ", strtotime($request->date)) ;
+        $sales->save();
             // }
-            if($sales){
-                $response = [
+        if($sales){
+            $response = [
                     'code'      => '',
                     'message'   => 'Sales sent successfully',
                     'status'    => 'success',
-                ];
-                $data = json_encode($response, true);
+            ];
+            $data = json_encode($response, true);
 
-                return redirect('offline-sales' )->with('sales-status', 'Sales sent successfully');
-            }
-            else{
-                return redirect()->back()->with('sales-error', 'Opps! something happend');
-            } 
+            return redirect('offline-sales/'.$vendor_id )->with('sales-status', 'Sales sent successfully');
+        }
+        else{
+            return redirect()->back()->with('sales-error', 'Opps! something happend');
+        } 
     }
 
     public function storeVendorOfflineSoupSales(Request $request){
