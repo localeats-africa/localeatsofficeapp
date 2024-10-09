@@ -1819,6 +1819,7 @@ class AdminController extends Controller
             ->join('users', 'users.role_id', 'role.id')
             ->where('users.id', $id)
             ->pluck('role_name')->first();
+           // dd( $staffRoleName );
 
             $staffVendorAssignedTo = DB::table('vendor')->select('vendor_name')
             ->join('users', 'users.vendor', 'vendor.id')
@@ -1861,6 +1862,8 @@ class AdminController extends Controller
             else{
                 $vendor = $request->old_vendor;
             }
+
+            dd( $vendor);
             $user = User::find($id);
             $user->fullname         = $request->fullname;
             $user->email            = $request->email;
