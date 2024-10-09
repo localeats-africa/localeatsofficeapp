@@ -1814,31 +1814,27 @@ class AdminController extends Controller
             ->where('id', '!=', '2')
             ->get();
             //->where('role.id', '!=', '2')//except admin
-         
+            
             $staffRoleName = DB::table('role')->select('role_name')
             ->join('users', 'users.role_id', 'role.id')
             ->where('users.id', $id)
             ->pluck('role_name')->first();
        
-           $getVendorID = User::where('id', $id)
-           ->get('vendor');
-    //
+            $getVendorID = User::where('id', $id)
+           ->get('vendor')->toArray();
+    
+            $vendorID_list = array_column($getVendorID, 'vendor'); 
+            $selectMultipleVendor= call_user_func_array('array_merge', $vendorID_list);
+            $multipleVendor_list = Vendor::whereIn('id', $selectMultipleVendor)
+            ->groupBy('id')
+            ->get()->pluck('vendor_name');
+            //dd( $data_list );
 
-    // $id_list = [5,9,13]; 
-
-$data_list = Vendor::whereIn('id', $getVendorID)->get();
-
-
-    dd($data_list);
-
-            $staffVendorAssignedTo = DB::table('vendor')->select('vendor_name')
-            ->join('users', 'users.vendor', 'vendor.id')
-            ->where('users.id', $id)
-            ->pluck('vendor_name')->first();
+            $removeBracket = substr($multipleVendor_list, 1, -1);
+            $staffVendorAssignedTo =  str_replace('"', ' ', $removeBracket);
 
             $vendor = Vendor::all();
       
-
             return view('admin.edit-user-role', compact('userRole', 'user', 
             'role', 'name', 'staffRoleName', 'vendor', 'staffVendorAssignedTo')); 
         }
@@ -1867,19 +1863,18 @@ $data_list = Vendor::whereIn('id', $getVendorID)->get();
 
             if($request->vendor){
                 //
-                $jsonVendor = json_encode($request->vendor);
-                $vendor =  substr($jsonVendor, 1, -1);
+                $vendor = $request->vendor;
             }
             else{
                 $vendor =  $request->old_vendor;
               
             }
-            //dd(str_replace('"', '', $vendor));
+           // dd($request->vendor);
             $user = User::find($id);
             $user->fullname         = $request->fullname;
             $user->email            = $request->email;
             $user->role_id          = $role ;
-            $user->vendor           = str_replace('"', '', $vendor);
+            $user->vendor           = $vendor;
             $user->update();
 
             if($user){
