@@ -175,15 +175,12 @@
                                           <small>New Sales </small>
                                     </a>
 
-                                    <a href="vendor-dashboard/{{$data->id}}" class="card-btn "
+                                    <a href="add-expenses/{{$data->id}}" class="card-btn "
                                           style="text-decoration:none;" title="Expenses">
                                           <small>Expenses </small>
                                     </a>
 
-                                    <a href="add-expenses/{{$data->id}}" class="card-btn "
-                                          style="text-decoration:none;" title="New Expenses">
-                                          <small>New Expenses</small>
-                                    </a>
+                                   
                               </div>
 
 
