@@ -2232,6 +2232,33 @@ class HomeController extends Controller
         }
     }
 
+    public function OfflineSaleList(Request $request){
+        $this->validate($request, [ 
+            'vendor'  => 'required|max:255',
+            'item'   => 'required|string|max:255'      
+        ]);
+
+        $foodItem = new OfflineFoodMenu();
+        $foodItem->vendor_id    = $request->vendor;
+        $foodItem->item         = $request->item;
+        $foodItem->added_by     = Auth::user()->id;
+        $foodItem->save();
+
+        if($foodItem){
+            $data = [
+                'status' => true,
+                'message'=> 'New list added successfully.'
+            ];
+            return response()->json($data);
+        }
+        else{
+            $data = [
+                'status' => false,
+                'message'=> 'Something went wrong'
+            ];
+            return response()->json($data);
+        }
+    }
 
     public function offlineSales(Request $request){
         $this->validate($request, [ 
@@ -2287,35 +2314,7 @@ class HomeController extends Controller
         'vendorName','salesList', 'vendor_id', 'sales', 'perPage'));
     }
 
-    public function OfflineSaleList(Request $request){
-        $this->validate($request, [ 
-            'vendor'  => 'required|max:255',
-            'item'   => 'required|string|max:255'      
-        ]);
-
-        $foodItem = new OfflineFoodMenu();
-        $foodItem->vendor_id    = $request->vendor;
-        $foodItem->item         = $request->item;
-        $foodItem->added_by     = Auth::user()->id;
-        $foodItem->save();
-
-        if($foodItem){
-            $data = [
-                'status' => true,
-                'message'=> 'New list added successfully.'
-            ];
-            return response()->json($data);
-        }
-        else{
-            $data = [
-                'status' => false,
-                'message'=> 'Something went wrong'
-            ];
-            return response()->json($data);
-        }
-    }
-
-
+   
     public function newOfflineSales(Request $request){
         $this->validate($request, [ 
             'vendor'  => 'max:255',
@@ -2380,9 +2379,7 @@ class HomeController extends Controller
         return view('cashier.add-new-offline-sales',  compact('name', 'role', 
         'vendorName','salesList', 'vendor_id', 'sales',
         'vendorSwallow', 'vendorSoup', 'vendorProtein', 'vendorOthersFoodItem'));
-    
     }
-
 
     public function vendorsAssignedSales(Request $request){
         $name = Auth::user()->fullname;
