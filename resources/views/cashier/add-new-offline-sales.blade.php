@@ -140,13 +140,13 @@
                                     <br>
                                     <div class="input-group">
                                           <div class="btn btn-sm" id="decreaseSupply"
-                                                onclick="decreaseSupply()" value="Decrease Value">-</div>
+                                                onclick="decreaseOne()" value="Decrease Value">-</div>
 
                                           <input type="text" class="form-control" name="soup_qty" value="0"
-                                                style="width:45px;" id="supply">
+                                                style="width:45px;" id="qtyOne">
 
                                           <div class="btn btn-sm" id="increaseSupply"
-                                                onclick="increaseSupply()" value="Increase Value">+</div>
+                                                onclick="increaseOne()" value="Increase Value">+</div>
                                     </div>
 
                               </div>
@@ -179,13 +179,13 @@
                                     <br>
                                     <div class="input-group">
                                           <div class="btn btn-sm" id=""
-                                                onclick="decreaseSwallow()" value="Decrease Value">-</div>
+                                                onclick="decreaseTwo()" value="Decrease Value">-</div>
 
                                           <input type="text" class="form-control" name="swallow_qty" value="0"
-                                                style="width:45px;" id="swallow">
+                                                style="width:45px;" id="qtyTwo">
 
                                           <div class="btn btn-sm" id=""
-                                                onclick="increaseSwallow()" value="Increase Value">+</div>
+                                                onclick="increaseTwo()" value="Increase Value">+</div>
 
                                     </div>
 
@@ -223,13 +223,13 @@
                                     <br>
                                     <div class="input-group">
                                           <div class="btn btn-sm" id=""
-                                                onclick="decreaseProtein()" value="Decrease Value">-</div>
+                                                onclick="decreaseThree()" value="Decrease Value">-</div>
 
                                           <input type="text" class="form-control" name="protein_qty" value="0"
-                                                style="width:55px;" id="protein">
+                                                style="width:55px;" id="qtyThree">
 
                                           <div class="btn btn-sm" id=""
-                                                onclick="increaseProtein()" value="Increase Value">+</div>
+                                                onclick="increaseThree()" value="Increase Value">+</div>
 
 
                                     </div>
@@ -265,13 +265,13 @@
                                     <br>
                                     <div class="input-group">
                                     <div class="btn btn-sm" id=""
-                                          onclick="decreaseOthers()" value="Decrease Value">-</div>
+                                          onclick="decreaseFour()" value="Decrease Value">-</div>
 
                                     <input type="text" class="form-control" name="others_qty" value="0"
-                                          style="width:55px;" id="others">
+                                          style="width:55px;" id="qtyFour">
 
                                     <div class="btn btn-sm" id=""
-                                          onclick="increaseOthers()" value="Increase Value">+</div>
+                                          onclick="increaseFour()" value="Increase Value">+</div>
 
                                     </div>
 
