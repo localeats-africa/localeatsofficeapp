@@ -1819,7 +1819,17 @@ class AdminController extends Controller
             ->join('users', 'users.role_id', 'role.id')
             ->where('users.id', $id)
             ->pluck('role_name')->first();
-           // dd( $staffRoleName );
+       
+           $getVendorID = User::where('id', $id)
+           ->get('vendor');
+    //
+
+    // $id_list = [5,9,13]; 
+
+$data_list = Vendor::whereIn('id', $getVendorID)->get();
+
+
+    dd($data_list);
 
             $staffVendorAssignedTo = DB::table('vendor')->select('vendor_name')
             ->join('users', 'users.vendor', 'vendor.id')
@@ -1857,18 +1867,19 @@ class AdminController extends Controller
 
             if($request->vendor){
                 //
-                $vendor = $request->vendor;
+                $jsonVendor = json_encode($request->vendor);
+                $vendor =  substr($jsonVendor, 1, -1);
             }
             else{
-                $vendor = $request->old_vendor;
+                $vendor =  $request->old_vendor;
+              
             }
-
-            dd( $vendor);
+            //dd(str_replace('"', '', $vendor));
             $user = User::find($id);
             $user->fullname         = $request->fullname;
             $user->email            = $request->email;
             $user->role_id          = $role ;
-            $user->vendor           = $vendor;
+            $user->vendor           = str_replace('"', '', $vendor);
             $user->update();
 
             if($user){
