@@ -10,19 +10,19 @@
 }
 
 .select2-container--default .select2-selection--multiple .select2-selection__rendered {
-box-sizing: border-box;
-list-style: none;
-margin: 7px !important;
-padding: 0 5px;
-width: 100%;
+      box-sizing: border-box;
+      list-style: none;
+      margin: 7px !important;
+      padding: 0 5px;
+      /* width: 100%; */
 }
 
 .select2-container--default .select2-selection--multiple .select2-selection__rendered {
-box-sizing: border-box;
-list-style: none;
-/* margin: 0; */
-padding: 0 5px;
-width: 100%;
+      box-sizing: border-box;
+      list-style: none;
+      /* margin: 0; */
+      padding: 0 5px;
+      /* width: 100%; */
 }
 </style>
 <!-- main-panel -->
@@ -113,77 +113,81 @@ width: 100%;
 
             <p></p>
             <p></p>
-            <form method="post" action="{{ route('send-offline-sales') }}" name="submit"  enctype="multipart/form-data">
+            <form method="post" action="{{ route('send-offline-sales') }}" name="submit" enctype="multipart/form-data">
                   @csrf
                   {{csrf_field()}}
                   <div class="row">
-                        <div class="col-md-6 col-12">
-                              <div class="input-group">
-                                    <span class="input-group-append">
-                                          <span class="input-group-text text-dark d-block">
-                                                Soup &nbsp; &nbsp;
-                                          </span>
-                                    </span>
-                                    <select class="js-example-basic-single2 text-secondary " style="width:40%;"
+                        <div class="col-md-3 col-6">
+                              <div class="form-group">
+                                    <label for="">Soup </label>
+                                    <br>
+                                    <select class="js-example-basic-single2 text-secondary " style="width:100%;"
                                           name="soup">
                                           <option value="">Choose</option>
-                                          @foreach($vendorSoup as $data)
+                                          @foreach($sales as $data)
                                           <option value="{{$data->soup}}">
                                                 {{$data->soup}}
                                           </option>
                                           @endforeach
                                     </select>
-                                    <i class="remove"></i>
-                                    <span class="input-group-append">
-                                          <span class="input-group-text text-dark  d-block">
-                                                qty
-                                          </span>
-                                    </span>
-                                    <div class="btn btn-sm" id="decreaseSoup-{{ $data->id }}"
-                                          onclick="decreaseSoup({{$data->id}})" value="Decrease Value">-</div>
 
-                                    <input type="text" class="form-control" name="soup_qty" value="0"
-                                          style="width:55px;" id="soup-{{ $data->id }}">
+                              </div>
+                        </div>
 
-                                    <div class="btn btn-sm" id="increaseSoup-{{ $data->id }}"
-                                          onclick="increaseSoup({{$data->id}})" value="Increase Value">+</div>
-                                    <i class="remove"></i>
+                        <div class="col-md-3 col-6">
+                              <div class="form-group">
+                                    <label for="">Quantity</label>
+                                    <br>
+                                    <div class="input-group">
+                                          <div class="btn btn-sm" id="decreaseSoup-{{ $data->id }}"
+                                                onclick="decreaseSoup({{$data->id}})" value="Decrease Value">-</div>
+
+                                          <input type="text" class="form-control" name="soup_qty" value="0"
+                                                style="width:45px;" id="soup-{{ $data->id }}">
+
+                                          <div class="btn btn-sm" id="increaseSoup-{{ $data->id }}"
+                                                onclick="increaseSoup({{$data->id}})" value="Increase Value">+</div>
+                                    </div>
 
                               </div>
                         </div>
 
 
-                        <div class="col-md-6 col-12">
-                              <div class="input-group">
-                                    <span class="input-group-append">
-                                          <span class="input-group-text text-dark d-block">
-                                                Swallow
-                                          </span>
-                                    </span>
-                                    <select class="js-example-basic-single text-secondary " style="width:40%;"
+                        <div class="col-md-3 col-6">
+                              <div class="form-group">
+                                    <label for="">
+
+                                          Swallow
+                                    </label>
+                                    <br>
+                                    <select class="js-example-basic-single4 text-secondary " style="width:100%;"
                                           name="swallow">
                                           <option value="">Choose</option>
-                                          @foreach($vendorSwallow as $data)
+                                          @foreach($sales as $data)
                                           <option value="{{$data->swallow}}">
                                                 {{$data->swallow}}
                                           </option>
                                           @endforeach
                                     </select>
-                                    <i class="remove"></i>
-                                    <span class="input-group-append">
-                                          <span class="input-group-text text-dark  d-block">
-                                                qty
-                                          </span>
-                                    </span>
-                                    <div class="btn btn-sm" id="decreaseSwallow-{{ $data->id }}"
-                                          onclick="decreaseSwallow({{$data->id}})" value="Decrease Value">-</div>
 
-                                    <input type="text" class="form-control" name="swallow_qty" value="0"
-                                          style="width:55px;" id="swallow-{{ $data->id }}">
+                              </div>
+                        </div>
 
-                                    <div class="btn btn-sm" id="increaseSwallow-{{ $data->id }}"
-                                          onclick="increaseSwallow({{$data->id}})" value="Increase Value">+</div>
-                                    <i class="remove"></i>
+                        <div class="col-md-3 col-6">
+                              <div class="form-group">
+                                    <label for="">Quantity</label>
+                                    <br>
+                                    <div class="input-group">
+                                          <div class="btn btn-sm" id="decreaseSwallow-{{ $data->id }}"
+                                                onclick="decreaseSwallow({{$data->id}})" value="Decrease Value">-</div>
+
+                                          <input type="text" class="form-control" name="swallow_qty" value="0"
+                                                style="width:45px;" id="swallow-{{ $data->id }}">
+
+                                          <div class="btn btn-sm" id="increaseSwallow-{{ $data->id }}"
+                                                onclick="increaseSwallow({{$data->id}})" value="Increase Value">+</div>
+
+                                    </div>
 
                               </div>
                         </div>
@@ -191,18 +195,16 @@ width: 100%;
                   </div>
 
                   <p></p>
-                  <p></p>
-
-
                   <div class="row">
-                        <div class="col-md-6 col-12">
-                              <div class="input-group">
-                                    <span class="input-group-append">
-                                          <span class="input-group-text text-dark d-block">
-                                                Protein
-                                          </span>
-                                    </span>
-                                    <select class="js-example-basic-single text-secondary " style="width:40%;"
+
+
+                        <div class="col-md-3 col-6">
+                              <div class="form-group">
+                                    <label for="">
+                                          Protein
+                                    </label>
+                                    <br>
+                                    <select class="js-example-basic-single text-secondary " style="width:100%;"
                                           name="protein">
                                           <option value="">Choose</option>
                                           @foreach($vendorProtein as $data)
@@ -211,35 +213,37 @@ width: 100%;
                                           </option>
                                           @endforeach
                                     </select>
-                                    <i class="remove"></i>
-                                    <span class="input-group-append">
-                                          <span class="input-group-text text-dark  d-block">
-                                                qty
-                                          </span>
-                                    </span>
-                                    <div class="btn btn-sm" id="decreaseProtein-{{ $data->id }}"
-                                          onclick="decreaseProtein({{$data->id}})" value="Decrease Value">-</div>
 
-                                    <input type="text" class="form-control" name="protein_qty" value="0"
-                                          style="width:55px;" id="protein-{{ $data->id }}">
+                              </div>
+                        </div>
 
-                                    <div class="btn btn-sm" id="increaseProtein-{{ $data->id }}"
-                                          onclick="increaseProtein({{$data->id}})" value="Increase Value">+</div>
+                        <div class="col-md-3 col-6">
+                              <div class="form-group">
+                                    <label for="">Quantity</label>
+                                    <br>
+                                    <div class="input-group">
+                                          <div class="btn btn-sm" id="decreaseProtein-{{ $data->id }}"
+                                                onclick="decreaseProtein({{$data->id}})" value="Decrease Value">-</div>
 
-                                    <i class="remove"></i>
+                                          <input type="text" class="form-control" name="protein_qty" value="0"
+                                                style="width:55px;" id="protein-{{ $data->id }}">
+
+                                          <div class="btn btn-sm" id="increaseProtein-{{ $data->id }}"
+                                                onclick="increaseProtein({{$data->id}})" value="Increase Value">+</div>
+
+
+                                    </div>
 
                               </div>
                         </div>
 
 
-                        <div class="col-md-6 col-12">
-                              <div class="input-group">
-                                    <span class="input-group-append">
-                                          <span class="input-group-text text-dark d-block">
-                                                Others
-                                          </span>
-                                    </span>
-                                    <select class="js-example-basic-multiple" multiple="multiple" style="width:40%; "
+
+                        <div class="col-md-3 col-6">
+                              <div class="form-group">
+                                    <label for="">Others</label>
+                                    <br>
+                                    <select class="js-example-basic-multiple" multiple="multiple" style="width:100%; "
                                           name="others[]">
                                           <option value="">Choose</option>
                                           @foreach($vendorOthersFoodItem as $data)
@@ -248,13 +252,18 @@ width: 100%;
                                           </option>
                                           @endforeach
                                     </select>
-                                    <i class="remove"></i>
-                                    <span class="input-group-append">
-                                          <span class="input-group-text text-dark  d-block">
-                                                qty
-                                          </span>
-                                    </span>
 
+
+                              </div>
+                        </div>
+
+
+
+                        <div class="col-md-3 col-6">
+                              <div class="form-group">
+                                    <label for="">Quantity</label>
+                                    <br>
+                                    <div class="input-group">
                                     <div class="btn btn-sm" id="decreaseOthers-{{ $data->id }}"
                                           onclick="decreaseOthers({{$data->id}})" value="Decrease Value">-</div>
 
@@ -264,9 +273,12 @@ width: 100%;
                                     <div class="btn btn-sm" id="increaseOthers-{{ $data->id }}"
                                           onclick="increaseOthers({{$data->id}})" value="Increase Value">+</div>
 
+                                    </div>
+
                               </div>
                         </div>
-                        <p></p>
+
+                    <p></p>
                         <div class="col-md-12 col-12">
                               <div class="input-group">
                                     <span class="input-group-append">

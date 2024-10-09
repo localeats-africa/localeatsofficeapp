@@ -15,7 +15,7 @@
             <div class="row">
                   <div class="col-12">
 
-                        @if(session('add-food-type'))
+                        @if(session('upload-status'))
                         <div class="alert  alert-success alert-dismissible" role="alert">
                               <div class="d-flex">
                                     <div>
@@ -30,13 +30,13 @@
                                                 <path d="M12 17h.01" />
                                           </svg>
                                     </div>
-                                    <div> {!! session('add-food-type') !!}</div>
+                                    <div> {!! session('upload-status') !!}</div>
                               </div>
                               <a class="btn-close" data-bs-dismiss="alert" aria-label="close"></a>
                         </div>
                         @endif
 
-                        @if(session('error'))
+                        @if(session('upload-error'))
                         <div class="alert  alert-danger alert-dismissible" role="alert">
                               <div class="d-flex">
                                     <div>
@@ -51,7 +51,7 @@
                                                 <path d="M12 17h.01" />
                                           </svg>
                                     </div>
-                                    <div> {!! session('error') !!}</div>
+                                    <div> {!! session('upload-error') !!}</div>
                               </div>
                               <a class="btn-close" data-bs-dismiss="alert" aria-label="close"></a>
                         </div>
@@ -93,7 +93,7 @@
             </div>
             <p></p>
 
-            <form method="post" action="{{ route('add-food-category') }}" name="submit" enctype="multipart/form-data">
+            <form method="post" action="{{ route('import-vendor-sales') }}" name="submit" enctype="multipart/form-data">
                   @csrf
                   {{csrf_field()}}
                   <div class="row">
@@ -155,7 +155,7 @@
                                                 @endforeach
                                           </select>
 
-                                          @error('sales_channel')
+                                          @error('platform')
                                           <div class="alert alert-danger alert-dismissible" role="alert">
                                                 <div class="d-flex">
                                                       <div>
@@ -185,29 +185,29 @@
                         <div class="col-md-4 grid-margin stretch-card">
                               <div class="card">
                                     <div class="card-body">
-                                          <div class="form-label required">Import 
-                                              <small class="">(.xlsx, .xls)</small> <i class="text-danger">*</i>
+                                          <div class="form-label required">Import
+                                                <small class="">(.xlsx, .xls)</small> <i class="text-danger">*</i>
                                           </div>
                                           <div class="form-group" style="width:100%;">
-                                          <input type="file" name="file" accept=".xlsx,.xls"
-                                                class="file-upload-default " id="file">
-                                          <div class="input-group">
-                                                <div class="input-group-prepend">
-                                                      <button
-                                                            class="file-upload-browse btn btn-sm  bg-gradient-dark  text-white py-2"
-                                                            type="button">
-                                                            <i
-                                                                  class="mdi mdi-cloud-braces fs-24 menu-icon"></i></button>
+                                                <input type="file" name="file" accept=".xlsx,.xls"
+                                                      class="file-upload-default " id="file">
+                                                <div class="input-group">
+                                                      <div class="input-group-prepend">
+                                                            <button
+                                                                  class="file-upload-browse btn btn-sm  bg-gradient-dark  text-white py-2"
+                                                                  type="button">
+                                                                  <i
+                                                                        class="mdi mdi-cloud-braces fs-24 menu-icon"></i></button>
+                                                      </div>
+                                                      <input type="text" class="form-control file-upload-info text-dark"
+                                                            disabled="" placeholder="xlsx,.xls" style="height:34px; ">
+                                                      <div class="input-group-append">
+                                                            <button type="submit" name="submit"
+                                                                  class="btn btn-outline-danger btn-sm py-2">
+                                                                  <i class="mdi mdi-upload btn-icon-prepend fs-24"></i>
+                                                                  Upload </button>
+                                                      </div>
                                                 </div>
-                                                <input type="text" class="form-control file-upload-info text-dark"
-                                                      disabled="" placeholder="xlsx,.xls" style="height:34px; ">
-                                                <div class="input-group-append">
-                                                      <button type="submit" name="submit"
-                                                            class="btn btn-outline-danger btn-sm py-2">
-                                                            <i class="mdi mdi-upload btn-icon-prepend fs-24"></i>
-                                                            Upload </button>
-                                                </div>
-                                          </div>
                                           </div>
 
                                     </div>
@@ -292,8 +292,8 @@
                                                       <td class="text-capitalize">{{$data->store_name}}</td>
 
                                                       <td class="text-capitalize">{{$data->name}}</td>
-                                                      <td class="text-capitalize">{{$data->food_menu}}</td>
-                                                      <td class="text-capitalize">{{$data->food_price}}</td>
+                                                      <td class="text-capitalize">{{$data->description}}</td>
+                                                      <td class="text-capitalize">{{$data->order_amount}}</td>
                                                       <td class="text-capitalize">{{$data->delivery_date}}</td>
                                                 </tr>
                                                 @endforeach
@@ -381,7 +381,7 @@
 
 <!-- endinject -->
 <!-- Custom js for this page -->
-<script src="{{ asset('assets/js/file-upload.js')}}"></script>
+<!-- <script src="{{ asset('assets/js/file-upload.js')}}"></script> -->
 <!-- <script src="{{ asset('assets/js/typeahead.js')}}"></script> -->
 <script src="{{ asset('assets/js/select2.js')}}"></script>
 <!-- End custom js for this page -->

@@ -31,11 +31,13 @@ class ImportPastInvoices implements ToModel
     {
         return new Orders([
             'order_amount'              => $row[0],
-            'payout'                    => $row[1],
-            'commission'                => $row[2],
-            'past_number_of_plates'     => $row[3],
-            'past_number_of_orders'     => $row[4],
-            'delivery_date'             => $row[5],
+            'past_invoice_vendor_price' => $row[1],
+            'past_invoice_payout'       => $row[2],
+            'past_invoice_commission'   => $row[3],
+            'past_paid_commission'      => $row[4],
+            'past_number_of_plates'     => $row[5],
+            'past_number_of_orders'     => $row[6],
+            'delivery_date'             => $row[7],
             'payment_status'            => 'paid',
             'order_status'              => 'paid',
             'added_by'                  => Auth::id(),

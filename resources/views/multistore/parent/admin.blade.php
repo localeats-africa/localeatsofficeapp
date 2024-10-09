@@ -167,10 +167,10 @@
                                                 <h4 class="font-weight-normal"> Chowdeck Sales <i
                                                             class="mdi mdi-cloud-braces mdi-24px float-end"></i>
                                                 </h4>
-                                                <h2 class="mb-5">₦{{0}}</h2>
+                                                <h2 class="mb-5">₦{{$sumChowdeckOrder}}</h2>
                                                 <hr class="w-100">
                                                 <h6 class="card-text">From <span class="text-dark">(
-                                                            {{0}} )</span>
+                                                            {{$chowdeckOrderCount}} )</span>
                                                       <span style="float:right;">outlet (s)</span>
 
                                                 </h6>
@@ -187,10 +187,10 @@
                                                 <h4 class="font-weight-normal">Glovo Sales<i
                                                             class="mdi mdi-cloud-braces mdi-24px float-end"></i>
                                                 </h4>
-                                                <h2 class="mb-5">₦{{0}}</h2>
+                                                <h2 class="mb-5">₦{{$sumGlovoOrder}}</h2>
                                                 <hr class="w-100">
                                                 <h6 class="card-text">From <span class="text-dark">(
-                                                            {{0}} )</span>
+                                                            {{$GlovoOrderCount}} )</span>
                                                       <span style="float:right;">outlet (s)</span>
 
                                                 </h6>
@@ -237,7 +237,7 @@
                                                 </h4>
                                                 <h2 class="mb-5">₦{{number_format($sumAllOrders)}}</h2>
                                                 <hr class="w-100">
-                                                <h6 class="card-text">From <span class="text-dark">(
+                                                <h6 class="card-text">From <span class="text-white">(
                                                             {{$countAllOrder}} )</span>
                                                       <span style="float:right;">order (s)</span>
 
@@ -278,7 +278,7 @@
                                                 <h2 class="mb-5">₦{{number_format($outletsExpenses)}}</h2>
                                                 <hr class="w-100">
                                                 <h6 class="card-text">From <span class="text-dark">(
-                                                            {{0}} )</span>
+                                                            {{$countOutletsExpensesCameFrom}} )</span>
                                                       <span style="float:right;">outlet (s)</span>
 
                                                 </h6>

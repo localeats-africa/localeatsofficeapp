@@ -794,12 +794,12 @@ class ParentVendorController extends Controller
 
         $onlineSales=  DB::table('vendor_online_sales')
         ->join('vendor', 'vendor.id', 'vendor_online_sales.vendor_id')
-        ->join('platforms', 'platforms.id', 'vendor_online_sales.platform_id')
+        ->join('platforms', 'platforms.name', 'vendor_online_sales.platform_id')
         ->where('parent_id', $parentID)
         ->select(['vendor.store_name', 'vendor_online_sales.*', 'platforms.name' ])
         ->orderBy('vendor_online_sales.created_at', 'desc')
         ->where(function ($query) use ($search) {  // <<<
-        $query->where('vendor_online_sales.food_menu', 'LIKE', '%'.$search.'%')
+        $query->where('vendor_online_sales.description', 'LIKE', '%'.$search.'%')
         ->orwhere('vendor_online_sales.delivery_date', 'LIKE', '%'.$search.'%')
         ->orwhere('vendor.store_name', 'LIKE', '%'.$search.'%')
         ->orderBy('vendor_online_sales.delivery_date', 'desc');

@@ -127,10 +127,19 @@ class AdminController extends Controller
         ->whereDate('delivery_date', '=', $lastSevenDays)   
         ->sum('order_amount');
 
-        $countAllOrder = Orders::where('deleted_at', null)
+        $countimportOrder = Orders::where('deleted_at', null)
         ->where('orders.order_amount', '!=', null)
         ->where('orders.order_ref', '!=', null)
         ->count();
+
+        $pastInvoiceNumberOfOrders = Orders::where('past_number_of_orders', '!=', null)
+        ->sum('past_number_of_orders');
+        //count row
+        $pastInvoiceOrders = Orders::where('past_number_of_orders', '!=', null)
+        ->count();
+
+        $numberOfOrders = $countimportOrder  + $pastInvoiceNumberOfOrders;
+        $countAllOrder =   $numberOfOrders  - $pastInvoiceOrders ;
 
         $getOrderItem = DB::table('orders')
         ->where('deleted_at', null)
@@ -138,9 +147,17 @@ class AdminController extends Controller
         ->where('orders.order_ref', '!=', null)
         ->get('description')->pluck('description');
 
+        $pastInvoicePlates = Orders::where('past_number_of_plates', '!=', null)
+        ->where('deleted_at', null)
+        ->where('orders.order_amount', '!=', null)
+        ->where('orders.order_ref', '!=', null)
+        ->sum('past_number_of_plates');
+       // dd($pastInvoicePlates);
+
         $string =  $getOrderItem;
         $substring = 'plate';
-        $countAllPlate = substr_count($string, $substring);
+        $countPlateImportOrder = substr_count($string, $substring);
+        $countAllPlate =   $countPlateImportOrder + $pastInvoicePlates ;
 
         $countPlatformWhereOrderCame = DB::table('orders')
         ->Join('platforms', 'orders.platform_id', '=', 'platforms.id')->distinct()
@@ -156,6 +173,47 @@ class AdminController extends Controller
         ->where('orders.food_price', '!=', null)
         ->sum('order_amount'); 
 
+        $sumGlovoComm = DB::table('commission')
+        ->join('orders', 'orders.id', 'commission.order_id')
+        ->where('orders.deleted_at', null)
+        ->where('orders.food_price', '!=', null)
+        ->sum('commission.platform_comm');
+
+        //$commission = (int)$sumAllOrders - (int)$payouts ;
+        //$averageWeeklyComm =$averageWeeklySales - $averageWeeklyPayouts ;
+
+        $commissionImported =  DB::table('commission')
+        ->join('orders', 'orders.id', 'commission.order_id')
+        ->where('orders.deleted_at', null)
+        ->where('orders.food_price', '!=', null)
+        ->sum('commission.localeats_comm');
+
+        $pastInvoiceCommission = Orders::where('past_invoice_commission', '!=', null)
+        ->sum('past_invoice_commission');
+
+        $commission = $commissionImported  + $pastInvoiceCommission ;
+        //commission Paid
+        $commissionPaidImportedInvoice = DB::table('orders')->sum('commission');
+        $pastPaidCommision = Orders::where('past_invoice_commission', '!=', null)
+        ->sum('past_paid_commission');
+
+        $commissionPaid = $commissionPaidImportedInvoice + $pastPaidCommision;
+
+        $averageWeeklyCommissionPaid = DB::table('orders')
+        ->where('deleted_at', null)
+        ->where('orders.order_amount', '!=', null)
+        ->where('orders.order_ref', '!=', null)
+       // ->where('payout', '!=', null)
+        //->whereDate('updated_at', '>=', $lastSevenDays)   
+        ->whereDate('updated_at', '=', $lastSevenDays)  
+        ->sum('commission');
+
+        $averageWeeklyComm = DB::table('commission')
+        ->join('orders', 'orders.id', 'commission.order_id')
+        ->where('orders.deleted_at', null)
+        ->whereDate('commission.created_at', '=', $lastSevenDays)   
+        ->sum('commission.localeats_comm');
+
         $sumFoodPrice = DB::table('orders')
         ->where('deleted_at', null)
         ->where('orders.order_amount', '!=', null)
@@ -168,34 +226,24 @@ class AdminController extends Controller
         ->where('orders.order_ref', '!=', null)
         ->sum('extra');
 
-        $vendorFoodPrice =  $sumFoodPrice + $sumExtra ;
+        $pastInvoiceVendorPrice = Orders::where('past_invoice_vendor_price', '!=', null)
+        ->sum('past_invoice_vendor_price');
 
-        $sumGlovoComm = DB::table('commission')
-        ->join('orders', 'orders.id', 'commission.order_id')
-        ->where('orders.deleted_at', null)
-        ->where('orders.food_price', '!=', null)
-        ->sum('commission.platform_comm');
-
-        //$commission = (int)$sumAllOrders - (int)$payouts ;
-        //$averageWeeklyComm =$averageWeeklySales - $averageWeeklyPayouts ;
-        $commission =  DB::table('commission')
-        ->join('orders', 'orders.id', 'commission.order_id')
-        ->where('orders.deleted_at', null)
-        ->where('orders.food_price', '!=', null)
-        ->sum('commission.localeats_comm');
-
-        $averageWeeklyComm = DB::table('commission')
-        ->join('orders', 'orders.id', 'commission.order_id')
-        ->where('orders.deleted_at', null)
-        ->whereDate('commission.created_at', '=', $lastSevenDays)   
-        ->sum('commission.localeats_comm');
-
-        $payouts = DB::table('orders')
+        $vendorFoodPrice =  $sumFoodPrice + $sumExtra + $pastInvoiceVendorPrice;
+        
+        $payoutsImported = DB::table('orders')
         ->where('deleted_at', null)
         ->where('order_amount', '!=', null)
         ->where('order_ref', '!=', null)
-        //->where('payment_status',  'paid')
         ->sum('payout');
+
+        $pastPayout = DB::table('orders')
+        ->where('deleted_at', null)
+        ->where('order_amount', '!=', null)
+        ->where('order_ref', '!=', null)
+        ->sum('past_invoice_payout');
+
+        $payouts =  $payoutsImported + $pastPayout;
 
         $averageWeeklyPayouts = DB::table('orders')
         ->where('deleted_at', null)
@@ -204,17 +252,6 @@ class AdminController extends Controller
        ->where('payout', '!=', null)
         ->whereDate('updated_at', '=', $lastSevenDays)    
         ->sum('payout');
-
-        $commissionPaid = DB::table('orders')->sum('commission');
-
-        $averageWeeklyCommissionPaid = DB::table('orders')
-        ->where('deleted_at', null)
-        ->where('orders.order_amount', '!=', null)
-        ->where('orders.order_ref', '!=', null)
-       // ->where('payout', '!=', null)
-        //->whereDate('updated_at', '>=', $lastSevenDays)   
-        ->whereDate('updated_at', '<', $today)  
-        ->sum('commission');
 
         $platformOrders = DB::table('orders')
         ->join('platforms', 'platforms.id', '=', 'orders.platform_id')->distinct()
@@ -229,23 +266,23 @@ class AdminController extends Controller
         ->where('orders.food_price', '!=', null)
         ->groupby('year')
         ->get();
-
+        // Monthly Sales  Chart%Y/%m  %M %M %Y
         $chartMonthlyTotalSales = Orders::select(
         \DB::raw("COUNT(*) as total_sales"), 
-        \DB::raw('DATE_FORMAT(delivery_date,"%M ") as month'),
+        \DB::raw('DATE_FORMAT(delivery_date,"%m/%Y") as month'),
         \DB::raw('SUM(order_amount) as sales_volume'),
         )->where('deleted_at', null)
         ->where('orders.order_amount', '!=', null)
         ->where('orders.order_ref', '!=', null)
         ->where('orders.food_price', '!=', null)
-        //->whereYear('orders.delivery_date', '=', Carbon::now()->year)
         ->groupBy('month')
-        ->get(); 
+        ->get()->toArray(); 
+
         $chartSalesMonth = Arr::pluck($chartMonthlyTotalSales, 'month');
         $chartSalesVolume = Arr::pluck($chartMonthlyTotalSales, 'sales_volume');
         $chartSalesTotal = Arr::pluck($chartMonthlyTotalSales, 'total_sales');
 
-        $monthlist = array_map(fn($month) => Carbon::create(null, $month)->format('M'), range(1, 12));
+        $monthlist = array_map(fn($chartSalesMonth) => Carbon::create(null, $chartSalesMonth)->format('M'), range(1, 12));
         $salesYear =  Arr::pluck($chartYearlyTotalSales, 'year');
         $data = [
          'month' =>  $chartSalesMonth ,
@@ -291,16 +328,15 @@ class AdminController extends Controller
         $edenSalesPercentageChart = $edenOrderCount / $countAllOrder * 100;
         $manoSalesPercentageChart = $manoOrderCount / $countAllOrder * 100;
 
-
         $piechartData = [            
-        'label' => ['Chowdeck', 'Glovo', 'Eden'],
+        'label' => ['Chowdeck', 'Glovo', 'Eden', 'Mano'],
         'data' => [round($chowdeckSalesPercentageChart) , round($glovoSalesPercentageChart),  round($edenSalesPercentageChart), round( $manoSalesPercentageChart)] ,
         ];
         
     //sales for barchart
     $chowdeckOrder =  Orders::join('platforms', 'platforms.id', '=', 'orders.platform_id')
     ->select(
-        \DB::raw('DATE_FORMAT(orders.delivery_date,"%M ") as month'),
+        \DB::raw('DATE_FORMAT(orders.delivery_date,"%m/%Y") as month'),
         \DB::raw('SUM(orders.order_amount) as sales'),
         \DB::raw('COUNT(orders.order_amount) as count'),
         )
@@ -317,7 +353,7 @@ class AdminController extends Controller
 
     $glovoOrder = Orders::join('platforms', 'platforms.id', '=', 'orders.platform_id')
     ->select(
-        \DB::raw('DATE_FORMAT(orders.delivery_date,"%M ") as month'),
+        \DB::raw('DATE_FORMAT(orders.delivery_date,"%m/%Y") as month'),
         \DB::raw('SUM(orders.order_amount) as sales'),
         \DB::raw('COUNT(orders.order_amount) as count'),
         )
@@ -333,7 +369,7 @@ class AdminController extends Controller
 
     $edenOrder=  Orders::join('platforms', 'platforms.id', '=', 'orders.platform_id')
     ->select(
-        \DB::raw('DATE_FORMAT(orders.delivery_date,"%M ") as month'),
+        \DB::raw('DATE_FORMAT(orders.delivery_date,"%m/%Y") as month'),
         \DB::raw('SUM(orders.order_amount) as sales'),
         \DB::raw('COUNT(orders.order_amount) as count'),
         )
@@ -347,9 +383,9 @@ class AdminController extends Controller
         ->get();
         $barChartEdenSales = Arr::pluck($edenOrder, 'sales');
 
-        $manoOrder =  Orders::join('platforms', 'platforms.id', '=', 'orders.platform_id')
+    $manoOrder =  Orders::join('platforms', 'platforms.id', '=', 'orders.platform_id')
         ->select(
-        \DB::raw('DATE_FORMAT(orders.delivery_date,"%M ") as month'),
+        \DB::raw('DATE_FORMAT(orders.delivery_date,"%m/%Y") as month'),
         \DB::raw('SUM(orders.order_amount) as sales'),
         \DB::raw('COUNT(orders.order_amount) as count'),
         )
@@ -380,7 +416,8 @@ class AdminController extends Controller
         'chowdeckOrderCount','glovoOrderCount', 'edenOrderCount', 'currentYear',
         'chowdeckSalesPercentageChart', 'glovoSalesPercentageChart', 
         'edenSalesPercentageChart', 'piechartData' ,  'barChartData',
-        'sumGlovoComm', 'vendorFoodPrice'));
+        'sumGlovoComm', 'vendorFoodPrice', 'manoOrderCount', 
+        'manoSalesPercentageChart','monthlist'));
       }
     }
 
@@ -418,6 +455,26 @@ class AdminController extends Controller
          ->whereDate('delivery_date', '<=', $endDate) 
          ->sum('order_amount');
 
+        $countimportOrder = Orders::where('deleted_at', null)
+        ->where('orders.order_amount', '!=', null)
+        ->where('orders.order_ref', '!=', null)
+        ->whereDate('delivery_date', '>=', $startDate)                                 
+        ->whereDate('delivery_date', '<=', $endDate) 
+        ->count();
+
+        $pastInvoiceNumberOfOrders = Orders::where('past_number_of_orders', '!=', null)
+        ->whereDate('delivery_date', '>=', $startDate)                                 
+        ->whereDate('delivery_date', '<=', $endDate) 
+        ->sum('past_number_of_orders');
+        //count row
+        $pastInvoiceOrders = Orders::where('past_number_of_orders', '!=', null)
+        ->whereDate('delivery_date', '>=', $startDate)                                 
+        ->whereDate('delivery_date', '<=', $endDate) 
+        ->count();
+
+        $numberOfOrders = $countimportOrder  + $pastInvoiceNumberOfOrders;
+        $countAllOrder =   $numberOfOrders  - $pastInvoiceOrders ;
+
          $sumFoodPrice = DB::table('orders')
          ->where('deleted_at', null)
          ->where('orders.order_amount', '!=', null)
@@ -434,7 +491,30 @@ class AdminController extends Controller
          ->whereDate('delivery_date', '<=', $endDate) 
          ->sum('extra');
  
-         $vendorFoodPrice =  $sumFoodPrice + $sumExtra ;
+         $pastInvoiceVendorPrice = Orders::where('past_invoice_vendor_price', '!=', null)
+         ->whereDate('delivery_date', '>=', $startDate)                                 
+         ->whereDate('delivery_date', '<=', $endDate) 
+         ->sum('past_invoice_vendor_price');
+ 
+         $vendorFoodPrice =  $sumFoodPrice + $sumExtra + $pastInvoiceVendorPrice;
+         
+         $payoutsImported = DB::table('orders')
+         ->where('deleted_at', null)
+         ->where('order_amount', '!=', null)
+         ->where('order_ref', '!=', null)
+         ->whereDate('delivery_date', '>=', $startDate)                                 
+         ->whereDate('delivery_date', '<=', $endDate) 
+         ->sum('payout');
+ 
+         $pastPayout = DB::table('orders')
+         ->where('deleted_at', null)
+         ->where('order_amount', '!=', null)
+         ->where('order_ref', '!=', null)
+         ->whereDate('delivery_date', '>=', $startDate)                                 
+         ->whereDate('delivery_date', '<=', $endDate) 
+         ->sum('past_invoice_payout');
+
+         $payouts =  $payoutsImported + $pastPayout;
  
          $sumGlovoComm = DB::table('commission')
          ->join('orders', 'orders.id', 'commission.order_id')
@@ -443,16 +523,15 @@ class AdminController extends Controller
          ->whereDate('orders.delivery_date', '>=', $startDate)                                 
          ->whereDate('orders.delivery_date', '<=', $endDate) 
          ->sum('commission.platform_comm');
- 
-      
-         $countAllOrder = Orders::where('deleted_at', null)
+
+         $pastInvoicePlates = Orders::where('past_number_of_plates', '!=', null)
+         ->where('deleted_at', null)
          ->where('orders.order_amount', '!=', null)
          ->where('orders.order_ref', '!=', null)
          ->whereDate('delivery_date', '>=', $startDate)                                 
          ->whereDate('delivery_date', '<=', $endDate) 
-         ->count();
-        // dd( $countAllOrder );
- 
+         ->sum('past_number_of_plates');
+    
          $getOrderItem = DB::table('orders')
          ->where('deleted_at', null)
          ->where('orders.order_amount', '!=', null)
@@ -463,7 +542,8 @@ class AdminController extends Controller
  
          $string =  $getOrderItem;
          $substring = 'plate';
-         $countAllPlate = substr_count($string, $substring);
+         $countPlateImportOrder = substr_count($string, $substring);
+         $countAllPlate =   $countPlateImportOrder + $pastInvoicePlates ;
  
          $countPlatformWhereOrderCame = DB::table('orders')
          ->Join('platforms', 'orders.platform_id', '=', 'platforms.id')->distinct()
@@ -474,27 +554,32 @@ class AdminController extends Controller
          ->whereDate('delivery_date', '<=', $endDate) 
          ->count('platforms.id');
  
-         $payouts = DB::table('orders')
-         ->where('deleted_at', null)
-         ->where('orders.order_amount', '!=', null)
-         ->where('orders.order_ref', '!=', null)
-         ->whereDate('delivery_date', '>=', $startDate)                                 
-         ->whereDate('delivery_date', '<=', $endDate) 
-         ->sum('payout');
- 
-         //$commission = (int)$sumAllOrders - (int)$payouts ;
-         $commission = Commission::join('orders', 'orders.id', '=', 'commission.order_id')
+         $commissionImported =  DB::table('commission')
+         ->join('orders', 'orders.id', 'commission.order_id')
          ->where('orders.deleted_at', null)
          ->where('orders.food_price', '!=', null)
-         ->whereDate('orders.delivery_date', '>=', $startDate)                                 
-         ->whereDate('orders.delivery_date', '<=', $endDate) 
+         ->whereDate('delivery_date', '>=', $startDate)                                 
+         ->whereDate('delivery_date', '<=', $endDate)
          ->sum('commission.localeats_comm');
  
-         $commissionPaid = DB::table('orders')
+         $pastInvoiceCommission = Orders::where('past_invoice_commission', '!=', null)
+         ->whereDate('delivery_date', '>=', $startDate)                                 
+         ->whereDate('delivery_date', '<=', $endDate)
+         ->sum('past_invoice_commission');
+ 
+         $commission = $commissionImported  + $pastInvoiceCommission ;
+         //commission Paid
+         $commissionPaidImportedInvoice = DB::table('orders')
          ->whereDate('delivery_date', '>=', $startDate)                                 
          ->whereDate('delivery_date', '<=', $endDate)
          ->sum('commission');
 
+         $pastPaidCommision = Orders::where('past_invoice_commission', '!=', null)
+         ->whereDate('delivery_date', '>=', $startDate)                                 
+         ->whereDate('delivery_date', '<=', $endDate)
+         ->sum('past_paid_commission');
+ 
+         $commissionPaid = $commissionPaidImportedInvoice + $pastPaidCommision;
 
          $chartYearlyTotalSales = Orders::select(
             \DB::raw('YEAR(delivery_date) as year'),)
@@ -509,7 +594,7 @@ class AdminController extends Controller
     
             $chartMonthlyTotalSales = Orders::select(
             \DB::raw("COUNT(*) as total_sales"), 
-            \DB::raw('DATE_FORMAT(delivery_date,"%M ") as month'),
+            \DB::raw('DATE_FORMAT(delivery_date,"%m/%Y") as month'),
             \DB::raw('SUM(order_amount) as sales_volume'),
             )->where('deleted_at', null)
             ->where('orders.order_amount', '!=', null)
@@ -590,18 +675,18 @@ class AdminController extends Controller
                 $chowdeckSalesPercentageChart = $chowdeckOrderCount / $countAllOrder * 100;
                 $glovoSalesPercentageChart = $glovoOrderCount / $countAllOrder * 100;
                 $edenSalesPercentageChart = $edenOrderCount / $countAllOrder * 100;
-                $manoSalesPercentageChart =  $countAllOrder / 1 * 100;
+                $manoSalesPercentageChart = $manoOrderCount / $countAllOrder  * 100;
             }
     
             $piechartData = [            
-            'label' => ['Chowdeck', 'Glovo', 'Eden'],
+            'label' => ['Chowdeck', 'Glovo', 'Eden', 'Mano'],
             'data' => [round($chowdeckSalesPercentageChart) , round($glovoSalesPercentageChart),  round($edenSalesPercentageChart), round($manoSalesPercentageChart)] ,
             ];
 
         //sales for barchart
         $chowdeckOrder =  Orders::join('platforms', 'platforms.id', '=', 'orders.platform_id')
         ->select(
-            \DB::raw('DATE_FORMAT(orders.delivery_date,"%M ") as month'),
+            \DB::raw('DATE_FORMAT(orders.delivery_date,"%m/%Y") as month'),
             \DB::raw('SUM(orders.order_amount) as sales'),
             )
             ->where('platforms.name', 'chowdeck')
@@ -616,7 +701,7 @@ class AdminController extends Controller
     
         $glovoOrder = Orders::join('platforms', 'platforms.id', '=', 'orders.platform_id')
         ->select(
-            \DB::raw('DATE_FORMAT(orders.delivery_date,"%M ") as month'),
+            \DB::raw('DATE_FORMAT(orders.delivery_date,"%m/%Y") as month'),
             \DB::raw('SUM(orders.order_amount) as sales'),
             )
             ->where('platforms.name', 'glovo')
@@ -631,7 +716,7 @@ class AdminController extends Controller
     
         $edenOrder=  Orders::join('platforms', 'platforms.id', '=', 'orders.platform_id')
         ->select(
-            \DB::raw('DATE_FORMAT(orders.delivery_date,"%M ") as month'),
+            \DB::raw('DATE_FORMAT(orders.delivery_date,"%m/%Y") as month'),
             \DB::raw('SUM(orders.order_amount) as sales'),
             )
             ->where('platforms.name', 'edenlife')
@@ -646,7 +731,7 @@ class AdminController extends Controller
 
         $manoOrder=  Orders::join('platforms', 'platforms.id', '=', 'orders.platform_id')
             ->select(
-                \DB::raw('DATE_FORMAT(orders.delivery_date,"%M ") as month'),
+                \DB::raw('DATE_FORMAT(orders.delivery_date,"%m/%Y") as month'),
                 \DB::raw('SUM(orders.order_amount) as sales'),
                 )
                 ->where('platforms.name', 'mano')
@@ -664,7 +749,7 @@ class AdminController extends Controller
             'chocdekSales'  =>  $barChartChowdeckSales,
             'glovoSales'    =>  $barChartGlovoSales,
             'edenSales'     =>  $barChartEdenSales,
-            'manpSales'     => $barChartManoSales,
+            'manoSales'     => $barChartManoSales,
         ]; 
         
             return view('admin.filter-dashboard', compact('name', 'role', 'countVendor',
@@ -675,7 +760,8 @@ class AdminController extends Controller
             'chowdeckOrderCount','glovoOrderCount', 'edenOrderCount', 
             'chowdeckSalesPercentageChart', 'glovoSalesPercentageChart', 
             'edenSalesPercentageChart', 'piechartData' ,  'barChartData',
-            'startDate', 'endDate',  'sumGlovoComm', 'vendorFoodPrice'));
+            'startDate', 'endDate',  'sumGlovoComm', 'vendorFoodPrice',
+            'manoOrderCount', 'manoSalesPercentageChart'));
           
     }
 
@@ -777,16 +863,27 @@ class AdminController extends Controller
         ->where('sales_platform.platform_name', 'edenlife')
         ->get('sales_platform.vendor_id');
 
+
+        $activeManoVendor = DB::table('sales_platform')
+        ->join('vendor', 'vendor.id', '=', 'sales_platform.vendor_id')->distinct()
+        ->join('platforms', 'platforms.name', '=', 'sales_platform.platform_name')
+        ->where('sales_platform.vendor_status', 'active')
+        ->where('sales_platform.platform_name', 'mano')
+        ->get('sales_platform.vendor_id');
+
+        $manoVendor = DB::table('sales_platform')
+        ->join('vendor', 'vendor.id', '=', 'sales_platform.vendor_id')
+        ->join('platforms', 'platforms.name', '=', 'sales_platform.platform_name')
+        ->where('sales_platform.platform_name', 'mano')
+        ->get('sales_platform.vendor_id');
+
         $perPage = $request->perPage ?? 10;
         $search = $request->input('search');
 
-        $platform = 
-        
-        DB::table('platforms')
+        $platform = DB::table('platforms')
         ->where('platforms.deleted_at', null)
         ->select(['platforms.*' ])
         ->orderBy('platforms.created_at', 'desc')
-
         ->where(function ($query) use ($search) {  // <<<
         $query->where('platforms.name', 'LIKE', '%'.$search.'%');
         })
@@ -798,14 +895,16 @@ class AdminController extends Controller
                 'activeChowdeckVendor', 'chowdeckVendor',
                 'glovoVendor', 'activeGlovoVendor',
                 'activeEdenlifeVendor', 'edenlifeVendor', 
-                'activePlatform', 'countPlatforms'))->withDetails( $pagination );     
+                'activePlatform', 'countPlatforms', 'activeManoVendor',
+                'manoVendor'))->withDetails( $pagination );     
             } 
         else{return redirect()->back()->with('platform-status', 'No record order found'); }
 
         return view('admin.all-platform', compact('perPage', 'name', 
         'role', 'platform',  'activeChowdeckVendor', 'chowdeckVendor',
         'glovoVendor', 'activeGlovoVendor',   'activeEdenlifeVendor', 
-        'edenlifeVendor', 'activePlatform', 'countPlatforms'));
+        'edenlifeVendor', 'activePlatform', 'countPlatforms', 'activeManoVendor',
+        'manoVendor'));
     }
 
     public function approveVendor(Request $request, $vendor_id){

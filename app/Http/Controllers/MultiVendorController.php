@@ -37,6 +37,8 @@ use App\Models\VendorFoodMenu;
 use App\Models\VendorExpensesCategory;
 use App\Models\TempInStoreSales;
 use App\Models\VendorOnlineSales;
+use App\Models\VendorGlovoImportSales;
+use App\Imports\ImportVendorGlovoSales;
 
 use Excel;
 use Auth;
@@ -102,9 +104,13 @@ class MultiVendorController extends Controller
        ->count('vendor_id');
 
        $outletsExpenses = DB::table('vendor_expenses')
-       ->join('sub_store', 'sub_store.vendor_id', '=', 'vendor_expenses.vendor_id')
        ->where('vendor_expenses.parent', $parent)
        ->sum('vendor_expenses.cost');
+
+       $countOutletsExpensesCameFrom = DB::table('vendor_expenses')
+       ->distinct('vendor_id')
+       ->where('parent', $parent)
+       ->count('vendor_id');
 
         $countAllOrder = VendorOnlineSales::join('sub_store', 'sub_store.vendor_id', '=', 'vendor_online_sales.vendor_id')
         ->where('sub_store.multi_store_id', $parent)
@@ -112,11 +118,11 @@ class MultiVendorController extends Controller
         ->count();
 
         $countPlatformWhereOrderCame = DB::table('vendor_online_sales')
-        ->Join('platforms', 'vendor_online_sales.platform_id', '=', 'platforms.id')->distinct()
+        ->Join('platforms', 'vendor_online_sales.platform_id', '=', 'platforms.name')->distinct()
         ->join('sub_store', 'sub_store.vendor_id', '=', 'vendor_online_sales.vendor_id')
         ->where('sub_store.multi_store_id', $parent)
         ->where('vendor_online_sales.order_amount', '!=', null)
-        ->count('platforms.id');
+        ->count('platforms.name');
 
         $sumAllOrders = DB::table('vendor_online_sales')   
         ->join('sub_store', 'sub_store.vendor_id', '=', 'vendor_online_sales.vendor_id')
@@ -125,16 +131,42 @@ class MultiVendorController extends Controller
         ->sum('vendor_online_sales.order_amount'); 
 
         $chowdeckOrderCount= DB::table('vendor_online_sales')
-        ->join('platforms', 'platforms.id', '=', 'vendor_online_sales.platform_id')
+        ->join('platforms', 'platforms.name', '=', 'vendor_online_sales.platform_id')
         ->join('sub_store', 'sub_store.vendor_id', '=', 'vendor_online_sales.vendor_id')
         ->where('sub_store.multi_store_id', $parent)
         ->where('platforms.name', 'chowdeck')
         ->where('vendor_online_sales.order_amount', '!=', null)
         ->get('vendor_online_sales.platform_id')->count();
 
+        $sumChowdeckOrder= DB::table('vendor_online_sales')
+        ->join('platforms', 'platforms.name', '=', 'vendor_online_sales.platform_id')
+        ->join('sub_store', 'sub_store.vendor_id', '=', 'vendor_online_sales.vendor_id')
+        ->where('sub_store.multi_store_id', $parent)
+        ->where('platforms.name', 'chowdeck')
+        ->where('vendor_online_sales.order_amount', '!=', null)
+        ->sum('vendor_online_sales.order_amount');
+
+        $GlovoOrderCount= DB::table('vendor_online_sales')
+        ->join('platforms', 'platforms.name', '=', 'vendor_online_sales.platform_id')
+        ->join('sub_store', 'sub_store.vendor_id', '=', 'vendor_online_sales.vendor_id')
+        ->where('sub_store.multi_store_id', $parent)
+        ->where('platforms.name', 'glovo')
+        ->where('vendor_online_sales.order_amount', '!=', null)
+        ->distinct('vendor_online_sales.vendor_id')
+        ->get('vendor_online_sales.vendor_id')->count();
+
+        $sumGlovoOrder= DB::table('vendor_online_sales')
+        ->join('platforms', 'platforms.name', '=', 'vendor_online_sales.platform_id')
+        ->join('sub_store', 'sub_store.vendor_id', '=', 'vendor_online_sales.vendor_id')
+        ->where('sub_store.multi_store_id', $parent)
+        ->where('platforms.name', 'glovo')
+        ->where('vendor_online_sales.order_amount', '!=', null)
+        ->sum('vendor_online_sales.order_amount');
+
         return view('multistore.parent.admin', compact('username','parent', 'outlets',
         'offlineSales', 'salesChannel', 'countAllOrder', 'countPlatformWhereOrderCame', 'sumAllOrders', 
-         'chowdeckOrderCount', 'countOutletsFromWhereOfflineSales','outletsExpenses'));
+         'chowdeckOrderCount', 'countOutletsFromWhereOfflineSales','outletsExpenses',
+        'GlovoOrderCount', 'sumGlovoOrder', 'countOutletsExpensesCameFrom', 'sumChowdeckOrder'));
         }
     }
 
@@ -636,5 +668,70 @@ class MultiVendorController extends Controller
            return redirect()->back()->with('sales-error', 'Opps! kindly enter supplies');    
        }     
    }
+
+   public function importVendorOnlineSales(Request $request){
+        // Validate the uploaded file
+        $request->validate([
+            'outlet'      => 'required|string|max:255',
+            'platform'    => 'required|string|max:255',
+            'file'        => 'required|mimes:xlsx,xls',
+        ]);
+        $characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
+        // generate a pin based on 2 * 7 digits + a random character
+        $pin = mt_rand(1000000, 9999999);
+        $import_id ='L'.str_shuffle($pin);
+        $today = Carbon::today();
+        
+        $file           = $request->file('file');
+        $vendor_id      = $request->outlet;
+        $platform_id    = $request->platform;
+
+        $parent_id      = User::where('vendor', $vendor_id)
+        ->get()->pluck('parent_store')->first();
+          //dd($parent_id);
+        $platform_name  = Platforms::where('name', $platform_id)
+        ->get()->pluck('id')->first();
+
+       if($platform_id == 'Glovo'){
+        $import =  Excel::import(new ImportVendorGlovoSales($parent_id, $vendor_id, $platform_id), $file);   
+
+        $glovoImport = VendorGlovoImportSales::whereDate('created_at', $today)
+        ->where('vendor_id', $vendor_id)
+        ->where('parent_id', $parent_id)
+        ->where('platform_id', $platform_id)
+        ->get();
+        //dd($glovoImport);
+
+        if($glovoImport->count() >= 1){
+            foreach($glovoImport as $glovo){
+                $sales = new VendorOnlineSales();
+                $sales->added_by        = $glovo->added_by;
+                $sales->parent_id       = $glovo->parent_id;
+                $sales->vendor_id       = $glovo->vendor_id;
+                $sales->platform_id     = $glovo->platform_id;
+                $sales->order_ref       = $glovo->b;
+                $sales->order_amount    = $glovo->o;
+                $sales->description     = $glovo->f;
+                $sales->delivery_date   = $glovo->n;
+                $sales->save();
+            }
+            if ($sales){
+                VendorGlovoImportSales::where('vendor_id', $vendor_id)
+                ->where('parent_id', $parent_id)
+                ->where('platform_id', $platform_id)
+                ->delete();
+                return redirect()->back()->with('upload-status',  ' Record saved successfully!');
+            }
+            else{
+                return redirect()->back()->with('upload-error', 'Opps! something went wrong');
+                }
+        }
+        else{
+        return redirect()->back()->with('upload-error', 'Opps! Can not upload this file');
+        }
+       }
+       //end glovoimport
+
+    }
 
 }

@@ -194,6 +194,10 @@
                                                             @if($data->name == 'Edenlife')
                                                             {{$activeEdenlifeVendor->count()}}
                                                             @endif
+
+                                                            @if($data->name == 'Mano')
+                                                            {{$activeManoVendor->count()}}
+                                                            @endif
                                                       </td>
                                                      
                                                       <td>0</td>

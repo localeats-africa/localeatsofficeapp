@@ -2342,8 +2342,8 @@ class HomeController extends Controller
          ->get();
  
          $vendorSoup= OfflineFoodMenu::where('vendor_id', $vendor_id)
-         ->where('soup', '!=', null)
-         ->orderBy('created_at', 'desc')
+        //  ->where('soup', '!=', null)
+        //  ->orderBy('created_at', 'desc')
          ->get();
  
          $vendorProtein= OfflineFoodMenu::where('vendor_id', $vendor_id)
@@ -2356,7 +2356,7 @@ class HomeController extends Controller
          //->orderBy('created_at', 'desc')
          ->get();
 
-        $sales = OfflineSales::where('vendor_id', $vendor_id)->get();
+        $sales = OfflineFoodMenu::where('vendor_id', $vendor_id)->get();
 
         return view('cashier.add-new-offline-sales',  compact('name', 'role', 
         'vendorName','salesList', 'vendor_id', 'sales',
@@ -2402,45 +2402,46 @@ class HomeController extends Controller
             $protein_qty = $request->protein_qty .' '; 
          }
 
-         if(is_null($request->soup)){
+         if(empty($request->soup)){
             $soup  = ' ';
          }
          else{
             $soup = 'plate of ' .$request->soup.' , ';
          }
 
-         if(is_null($request->swallow)){
+         if(empty($request->swallow)){
             $swallow  = ' ';
          }
          else{
             $swallow = $request->swallow.' , ';
          }
 
-         if(is_null($request->protein)){
+         if(empty($request->protein)){
             $protein  = ' ';
-
          }
          else{
             $protein = $request->protein.' , ';
          }
 
-         if(is_null($otherItem)){
+         if(empty($others)){
             $getOthers  = ' ';
-
          }
          else{
-            $getOthers = $otherItem.'  ';
+            $getOthers = $otherItem.'';
          }
 
+       //  ;
         $salesItem =   $soup_qty.  '  ' .$soup. '  ' .$swallow_qty.  '  '  .$swallow. '  ' .$protein_qty. '  ' .$protein.
-        '  '   .substr($getOthers, 1, -1) ;
+        '  '  .substr($getOthers, 1, -1);
+        //dd($salesItem );
+       
       
                     $sales = new OfflineSales();
                     $sales->added_by            = $request->added_by;
                     $sales->vendor_id           = $request->vendor;
                      $sales->sales_item         =  $salesItem ;
                      $sales->price              = $request->price;
-                     $sales->sales_date         = $request->date;
+                     $sales->sales_date         = date("Y-m-d ", strtotime($request->date)) ;
                      $sales->save();
             // }
             if($sales){

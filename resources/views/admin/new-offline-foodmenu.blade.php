@@ -13,9 +13,10 @@
                   </h3>
                   <nav aria-label="breadcrumb">
                         <ul class="breadcrumb">
-                              <li class="breadcrumb-item active" aria-current="page">
-                                    <a id="square" class="blinking-text" href="{{ url('export-offline-foodmenu-template') }}">Download Excel Template</a>
+                              <li class="breadcrumb-item active" >
+                                    <a class="" href="{{ url('export-offline-foodmenu-template') }}">Download Excel Template</a>
                               </li>
+                              <li  class="breadcrumb-item"> Clear the template menu.</li>
                         </ul>
                   </nav>
             </div>
