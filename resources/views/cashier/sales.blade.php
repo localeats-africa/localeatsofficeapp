@@ -103,37 +103,6 @@
             </div>
             <!---end Alert --->
 
-         
-            <form method="GET" action="{{ route('offline-sales') }}" name="submit"
-                        enctype="multipart/form-data">
-                        @csrf
-                        {{csrf_field()}}
-                  <div class="row">
-                        <div class="col-12">
-                              <div class="form-group">
-                                    <div class="input-group">
-                                          <span class="input-group-append">
-                                                <span class="input-group-text text-dark d-block">
-                                                      Filter sales by vendor
-                                                </span>
-                                          </span>
-                                          <select class="js-example-basic-single" style="width:40%" name="vendor">
-                                                <option>Search</option>
-                                                @foreach($vendorName as $store)
-                                                <option value="{{$store->id}}">
-                                                      {{$store->vendor_name}}</option>
-                                                @endforeach
-                                          </select>
-
-                                          <span class="input-group-append">
-                                                <input type="submit" class="input-group-text text-dark d-block" value="Send">
-                                                    
-                                                </span>
-                                    </div>
-                              </div>
-                        </div>
-                  </div>
-            </form>
 
             <p></p>
 
@@ -169,7 +138,7 @@
                                                 Search:
                                                 <div class="ms-2 d-inline-block">
 
-                                                      <form action="{{ route('offline-sales') }}" method="GET"
+                                                      <form action="{{ route('offline-sales', [$vendor_id]) }}" method="GET"
                                                             role="search">
                                                             {{ csrf_field() }}
                                                             <div class="input-group mb-2">
