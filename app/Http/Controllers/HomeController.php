@@ -2133,7 +2133,7 @@ class HomeController extends Controller
     }
 
     //Cashier
-    public function addVendorExpenses(Request $request){
+    public function addVendorExpenses(Request $request, $vendor_id){
         $name = Auth::user()->fullname;
         $id = Auth::user()->id;
         $role = DB::table('role')->select('role_name')
@@ -2142,13 +2142,9 @@ class HomeController extends Controller
         ->pluck('role_name')->first();
 
         //a cashier should only see things for the vendor assigned to him
-        $vendorName = Vendor::join('users', 'users.vendor', 'vendor.id')
-        ->where('users.id', $id)
+        $vendorName = Vendor::where('d', $vendor_id)
         ->get('vendor.vendor_name')->pluck('vendor_name')->first();
 
-        $vendor_id = Vendor::join('users', 'users.vendor', 'vendor.id')
-        ->where('users.id', $id)
-        ->get('vendor.id')->pluck('id')->first();
 
         $expensesList = ExpensesList::where('vendor_id', $vendor_id)
         ->orderBy('created_at', 'desc')
