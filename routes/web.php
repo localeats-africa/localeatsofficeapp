@@ -130,7 +130,7 @@ Route::controller(HomeController::class)->group(function () {
     Route::get('new-offline-sales', 'newOfflineSales')->name('new-offline-sales');
     Route::post('save-offline-sales', 'saveTempOfflineSales')->name('save-offline-sales');
     Route::post('send-offline-sales', 'storeOfflineSales')->name('send-offline-sales');
-
+    Route::get('vendor-assign-sales', 'vendorsAssignedSales')->name('vendor-assign-sales');
     Route::get('offline-sales', 'offlineSales')->name('offline-sales');
     Route::post('offline-sales-list', 'OfflineSaleList')->name('offline-sales-list');
     Route::post('add-vendor-offline-soup', 'storeVendorOfflineSoupSales')->name('add-vendor-offline-soup');
