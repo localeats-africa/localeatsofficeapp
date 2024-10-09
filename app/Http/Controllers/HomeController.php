@@ -2394,11 +2394,23 @@ class HomeController extends Controller
 
         $vendorID_list = array_column($vendorsAssigned, 'vendor'); 
         $selectMultipleVendor= call_user_func_array('array_merge', $vendorID_list);
+        
+        $perPage = $request->perPage ?? 10;
+        $search = $request->input('search');
+
         $vendor = Vendor::whereIn('id', $selectMultipleVendor)
         // ->groupBy('id')
-        ->get();
+        ->select('*')
+        ->where(function ($query) use ($search) {  // <<<
+        $query->where('vendor_name', 'LIKE', '%'.$search.'%');
+        })->paginate($perPage,  $pageName = 'vendor')->appends(['per_page'   => $perPage]);
+        $pagination = $vendor->appends ( array ('search' => $search) );
+        if (count ( $pagination ) > 0){
+        return view('cashier.vendor-assigned-sales',  compact(
+        'perPage', 'name', 'role', 'vendor'))->withDetails( $pagination );     
+        } 
      
-        return view('cashier.vendor-assigned-sales',  compact('name', 'role', 
+        return view('cashier.vendor-assigned-sales',  compact( 'perPage',  'name', 'role', 
         'vendor'));
     
     }
