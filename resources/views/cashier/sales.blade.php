@@ -1,4 +1,3 @@
-
 @extends('layouts.head')
 @extends('layouts.header')
 @extends('layouts.sidebar')
@@ -15,13 +14,13 @@
       <div class="content-wrapper">
             <div class="page-header">
                   <h3 class="page-title">
-                        <span class="text-info"> {{$vendorName}}</span> >> In-Store Sales
+                        In-Store Sales
                   </h3>
                   <nav aria-label="breadcrumb">
                         <ul class="breadcrumb">
                               <li class="breadcrumb-item active" aria-current="page">
-                                    <span></span><a href="/new-offline-sales"
-                                          class="btn btn-outline-danger">New In-Store Sales </a>
+                                    <span></span><a href="/new-offline-sales" class="btn btn-outline-danger">New
+                                          In-Store Sales </a>
                               </li>
                         </ul>
                   </nav>
@@ -31,7 +30,7 @@
             <!--Alert here--->
             <div class="row ">
                   <div class="col-12">
-                  @if(session('sales-status'))
+                        @if(session('sales-status'))
                         <div class="alert alert-important alert-success alert-dismissible" role="alert">
                               <div class="d-flex">
                                     <div>
@@ -104,8 +103,23 @@
             </div>
             <!---end Alert --->
 
+            <form action="">
+                  <div class="row">
+                        <div class="col-6">Filter Sales by Vendor</div>
+                        <div class="col-6">
+                              <select class="js-example-basic-single" style="width:100%" name="vendor">
+                                    <option>Search</option>
+                                    @foreach($vendorName as $store)
+                                    <option value="{{$store->id}}">
+                                          {{$store->vendor_name}}</option>
+                                    @endforeach
+                              </select>
+                        </div>
+                  </div>
+            </form>
+
             <p></p>
-        
+
             <div class="row ">
                   <div class="col-12">
                         <div class="card">
@@ -165,10 +179,13 @@
                                                 </tr>
                                           </thead>
                                           <tbody>
-                                          @foreach($sales as $data)
+                                                @foreach($sales as $data)
                                                 <tr>
-                                               
-                                                      <td>{{ date('Y-m-d', strtotime($data->sales_date))}} Time: <span class="text-info"> {{\Carbon\Carbon::parse($data->created_at)->format('H:i:s')}}</span></td>
+
+                                                      <td>{{ date('Y-m-d', strtotime($data->sales_date))}} Time: <span
+                                                                  class="text-info">
+                                                                  {{\Carbon\Carbon::parse($data->created_at)->format('H:i:s')}}</span>
+                                                      </td>
                                                       <td class="text-capitalize">
                                                             {{ $data->sales_item }}
                                                             @if($data->soup ==' ')
@@ -222,29 +239,29 @@
                                                       </td>
 
                                                       <td>
-                                                          
+
 
                                                             @if($data->soup ==' ')
                                                             @else
-                                                          
-                                                            {{ $data->soup_total }} 
+
+                                                            {{ $data->soup_total }}
                                                             @endif
 
                                                             @if($data->swallow ==' ')
                                                             @else
-                                                        
+
                                                             {{$data->swallow_total }}
                                                             @endif
 
                                                             @if($data->protein ==' ')
                                                             @else
-                                                      
+
                                                             {{$data->protein_total }}
                                                             @endif
 
                                                             @if($data->others ==' ')
                                                             @else
-                                                         
+
                                                             {{$data->others_total  }}
                                                             @endif
                                                             {{$data->price}}
