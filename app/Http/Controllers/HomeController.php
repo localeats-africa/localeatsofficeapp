@@ -2260,13 +2260,8 @@ class HomeController extends Controller
         }
     }
 
-    public function offlineSales(Request $request){
-        $this->validate($request, [ 
-            'vendor'  => 'max:255',
-            // 'phone'  => 'regex:/^([0-9\s\-\+\(\)]*)$/|min:9|max:13',        
-        ]);
-        $vendor_id = $request->vendor;
-
+    public function offlineSales(Request $request, $vendor_id){
+      
         $name = Auth::user()->fullname;
         $id = Auth::user()->id;
         $role = DB::table('role')->select('role_name')
