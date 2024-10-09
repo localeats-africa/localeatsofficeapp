@@ -2254,7 +2254,7 @@ class HomeController extends Controller
         $selectMultipleVendor= call_user_func_array('array_merge', $vendorID_list);
         $multipleVendor_list = Vendor::whereIn('id', $selectMultipleVendor)
         // ->groupBy('id')
-        ->get()->pluck('vendor_name');
+        ->get();
      
         //a cashier should only see things for the vendor assigned to him
         $vendorName = $multipleVendor_list;
