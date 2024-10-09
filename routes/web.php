@@ -124,7 +124,7 @@ Route::controller(HomeController::class)->group(function () {
     Route::post('send-email-pdf/{id}', 'sendEmailPdfInvoice')->name('send-email-pdf');
     Route::get('add-invoice-row/{id}', 'addInvoiceRow')->name('add-invoice-row');
     Route::post('update-invoice-newrow', 'storeAddNewInvoiceRow')->name('update-invoice-newrow');
-    Route::get('add-expenses', 'addVendorExpenses')->name('add-expenses');
+    Route::get('add-expenses/{vendor}', 'addVendorExpenses')->name('add-expenses');
     Route::post('add-expenses-list', 'addExpensesList')->name('add-expenses-list');
     Route::post('add-vendor-expenses', 'storeVendorDailyExpenses')->name('add-vendor-expenses');
     Route::get('new-offline-sales/{vendor}', 'newOfflineSales')->name('new-offline-sales');
