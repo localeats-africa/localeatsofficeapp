@@ -127,11 +127,11 @@ Route::controller(HomeController::class)->group(function () {
     Route::get('add-expenses', 'addVendorExpenses')->name('add-expenses');
     Route::post('add-expenses-list', 'addExpensesList')->name('add-expenses-list');
     Route::post('add-vendor-expenses', 'storeVendorDailyExpenses')->name('add-vendor-expenses');
-    Route::get('new-offline-sales', 'newOfflineSales')->name('new-offline-sales');
+    Route::get('new-offline-sales/{vendor}', 'newOfflineSales')->name('new-offline-sales');
     Route::post('save-offline-sales', 'saveTempOfflineSales')->name('save-offline-sales');
     Route::post('send-offline-sales', 'storeOfflineSales')->name('send-offline-sales');
     Route::get('vendor-assign-sales', 'vendorsAssignedSales')->name('vendor-assign-sales');
-    Route::get('offline-sales', 'offlineSales')->name('offline-sales');
+    Route::get('offline-sales/{vendor}', 'offlineSales')->name('offline-sales');
     Route::post('offline-sales-list', 'OfflineSaleList')->name('offline-sales-list');
     Route::post('add-vendor-offline-soup', 'storeVendorOfflineSoupSales')->name('add-vendor-offline-soup');
     Route::post('add-vendor-offline-swallow', 'storeVendorOfflineSwallowSales')->name('add-vendor-offline-swallow');
