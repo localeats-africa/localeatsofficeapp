@@ -136,7 +136,7 @@
                                                             <h6>Assign new role </h6>
                                                             <select class="js-example-basic-single" style="width:100%"
                                                                   name="role" id="bank">
-                                                                  <option value="{{$staffRoleName}}">
+                                                                  <option value="">
                                                                         Search Role
                                                                   </option>
                                                                   @foreach($userRole as $data)
@@ -164,7 +164,7 @@
                                                             <h6>Assign to a new Vendor </h6>
                                                             <select class="platform2" style="width:100%"
                                                                   name="vendor[]" id="" multiple>
-                                                                  <option value="{{$staffVendorAssignedTo}}">
+                                                                  <option value="">
                                                                         Search / Choose
                                                                   </option>
                                                                   @foreach($vendor as $data)
