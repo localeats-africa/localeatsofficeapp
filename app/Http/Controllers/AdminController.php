@@ -1814,7 +1814,7 @@ class AdminController extends Controller
             ->where('id', '!=', '2')
             ->get();
             //->where('role.id', '!=', '2')//except admin
-            
+
             $staffRoleName = DB::table('role')->select('role_name')
             ->join('users', 'users.role_id', 'role.id')
             ->where('users.id', $id)
@@ -1826,7 +1826,7 @@ class AdminController extends Controller
             $vendorID_list = array_column($getVendorID, 'vendor'); 
             $selectMultipleVendor= call_user_func_array('array_merge', $vendorID_list);
             $multipleVendor_list = Vendor::whereIn('id', $selectMultipleVendor)
-            ->groupBy('id')
+            // ->groupBy('id')
             ->get()->pluck('vendor_name');
             //dd( $data_list );
 
