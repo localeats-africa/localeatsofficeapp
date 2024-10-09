@@ -161,93 +161,29 @@
                                           {!! Str::limit("$data->vendor_name", 25, '...') !!}
                                     </h6>
                                     <div class="text-dark"> <small>{{$data->store_area}}, {{$data->state}}</small></div>
-
-                                    <p></p>
-                                    @if($data->vendor_status =='pending')
-                                    <span class="badge badge-pill badge-warning text-dark">
-                                          {{$data->vendor_status}} </span>
-                                    @elseif($data->vendor_status == 'approved')
-                                    <span class="badge badge-pill badge-success text-dark">
-                                          {{$data->vendor_status}} </span>
-                                    @else
-                                    <span class="badge badge-pill badge-secondary text-white">
-                                          {{$data->vendor_status}} </span>
-                                    @endif
-
-
                                     <div class="mt-3">
                                     </div>
                               </div>
                               <div class="d-flex">
-                                   
-                                    @if($data->vendor_status == 'suspended')
-                                    @auth
-                                    @if(Auth::user()->role_id =='2')
+                                    <a href="offline-sales/{{$data->id}}" class="card-btn "
+                                          style="text-decoration:none;" title="Sales">
+                                          <small>Sales</small> 
+                                    </a>
+                                 
+                                    <a href="new-offline-sales/{{$data->id}}" class="card-btn "
+                                          style="text-decoration:none;" title="New Sales">
+                                          <small>New Sales </small>
+                                    </a>
+
                                     <a href="vendor-dashboard/{{$data->id}}" class="card-btn "
-                                          style="text-decoration:none;" title="Profile">
-                                          <small>Dashboard </small> <small class="text-info"> &nbsp;<i
-                                                      class="fa fa-dashboard"></i></small>
+                                          style="text-decoration:none;" title="Expenses">
+                                          <small>Expenses </small>
                                     </a>
-                                    @endif
-                                    @endauth
 
-                                    @auth
-                                    @if(Auth::user()->role_id =='8')
                                     <a href="vendor-dashboard/{{$data->id}}" class="card-btn "
-                                          style="text-decoration:none;" title="Profile">
-                                          <small>Dashboard </small> <small class="text-info"> &nbsp;<i
-                                                      class="fa fa-dashboard"></i></small>
+                                          style="text-decoration:none;" title="New Expenses">
+                                          <small>New Expenses</small>
                                     </a>
-                                    @endif
-                                    @endauth
-
-                                    <a href="upload-past-invoice/{{$data->id}}" class="card-btn "
-                                          style="text-decoration:none;" title="Invoice">
-                                          <!-- Download SVG icon from http://tabler-icons.io/i/phone -->
-                                          <small>Past Invoices </small>
-                                    </a>
-
-                                    @else 
-                                    @auth
-                                    @if(Auth::user()->role_id =='2')
-                                    <a href="vendor-dashboard/{{$data->id}}" class="card-btn "
-                                          style="text-decoration:none;" title="Profile">
-                                          <small>Dashboard </small> <small class="text-info"> &nbsp;<i
-                                                      class="fa fa-dashboard"></i></small>
-                                    </a>
-                                    @endif
-                                    @endauth
-
-                                    @auth
-                                    @if(Auth::user()->role_id =='8')
-                                    <a href="vendor-dashboard/{{$data->id}}" class="card-btn "
-                                          style="text-decoration:none;" title="Profile">
-                                          <small>Dashboard </small> <small class="text-info"> &nbsp;<i
-                                                      class="fa fa-dashboard"></i></small>
-                                    </a>
-                                    @endif
-                                    @endauth
-
-                                    <a href="vendor-food-menu/{{$data->id}}" class="card-btn "
-                                          style="text-decoration:none;" title="Profile">
-                                          <small>FoodMenu </small> <small class="text-info"> &nbsp;<i
-                                                      class="fa fa-cutlery" aria-hidden="true"></i></small>
-                                    </a>
-
-                                    <a href="upload-invoice/{{$data->id}}" class="card-btn "
-                                          style="text-decoration:none;" title="Invoice">
-                                          <!-- Download SVG icon from http://tabler-icons.io/i/phone -->
-                                          <small>Create Invoice </small> <small class="text-info"> &nbsp;<i
-                                                      class="fa fa-plus"></i></small>
-                                    </a>
-
-                                    <a href="upload-past-invoice/{{$data->id}}" class="card-btn "
-                                          style="text-decoration:none;" title="Invoice">
-                                          <!-- Download SVG icon from http://tabler-icons.io/i/phone -->
-                                          <small>Past Invoices </small>
-                                    </a>
-                                    @endif
-                    
                               </div>
 
 
