@@ -8,32 +8,10 @@
       <div class="content-wrapper">
             <div class="page-header">
                   <h3 class="page-title">
-                        Overview
+                        Vendors Assigned
                   </h3>
             </div>
-            <div class="row ">
-                  <div class="col-12">
-                        <div class="row row-cards">
-                              <div class="col-sm-4  col-12 stretch-card grid-margin">
-                                    <div class="card bg-gradient-dark card-img-holder text-white">
-                                          <div class="card-body">
-                                                <img src="/assets/images/dashboard/circle.svg" class="card-img-absolute"
-                                                      alt="circle-image">
-                                                <h4 class="font-weight-normal mb-3">Vendors
-                                                      <i class="mdi mdi-pot-steam  mdi-24px float-end"></i>
-                                                </h4>
-                                                <h2 class="">{{$countVendor->count()}}</h2>
-                                          </div>
-                                          <hr class="w-100">
-                                          <div class="card-body">
-                                                <h6 class="card-text">{{$countActivevendor->count()}} active </h6>
-                                          </div>
-                                    </div>
-                              </div>
-
-                        </div>
-                  </div>
-            </div>
+         
             <!--row-deck-->
             <p></p>
             <!--Alert here--->
