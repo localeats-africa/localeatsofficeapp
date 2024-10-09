@@ -163,7 +163,7 @@
                                                       <div class="form-group">
                                                             <h6>Assign to a new Vendor </h6>
                                                             <select class="platform2" style="width:100%"
-                                                                  name="vendor" id="">
+                                                                  name="vendor[]" id="" multiple>
                                                                   <option value="{{$staffVendorAssignedTo}}">
                                                                         Search / Choose
                                                                   </option>
