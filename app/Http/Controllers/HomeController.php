@@ -2373,10 +2373,9 @@ class HomeController extends Controller
          ->get();
 
 
-        $sales = OfflineFoodMenu::Join('vendor', 'vendor.id', 'offline_foodmenu.vendor_id')
-        ->where('offline_foodmenu.vendor_id', $vendor_id)
-        ->where('offline_foodmenu.deleted_at', '=', null)
-        ->get(['offline_foodmenu.*', 'vendor.vendor_name' ]);
+        $sales = OfflineFoodMenu::where('vendor_id', $vendor_id)
+        ->where('deleted_at', '=', null)
+        ->get();
 
         return view('cashier.add-new-offline-sales',  compact('name', 'role', 
         'vendorName','salesList', 'vendor_id', 'sales',
