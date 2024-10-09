@@ -135,6 +135,78 @@ function decreaseSupply(){
       soup.value = value;
 
 }
+
+//1
+function increaseOne(){
+      qty = document.querySelector('#qtyOne');
+      var value = parseInt(qty.value, 10);
+      value = isNaN(value) ? 0 : value;
+      value++;
+      qty.value = value;
+}
+
+function decreaseOne(){
+      qty = document.querySelector('#qtyOne');
+      var value = parseInt(qty.value, 10);
+      value = isNaN(value) ? 0 : value;
+      value < 1 ? value = 1 : '';
+      value--;
+      qty.value = value;
+}
+
+//2
+function increaseTwo(){
+      qty = document.querySelector('#qtyTwo');
+      var value = parseInt(qty.value, 10);
+      value = isNaN(value) ? 0 : value;
+      value++;
+      qty.value = value;
+}
+
+function decreaseTwo(){
+      qty = document.querySelector('#qtyTwo');
+      var value = parseInt(qty.value, 10);
+      value = isNaN(value) ? 0 : value;
+      value < 1 ? value = 1 : '';
+      value--;
+      qty.value = value;
+}
+
+//3
+function increaseThree(){
+      qty = document.querySelector('#qtyThree');
+      var value = parseInt(qty.value, 10);
+      value = isNaN(value) ? 0 : value;
+      value++;
+      qty.value = value;
+}
+
+function decreaseThree(){
+      qty = document.querySelector('#qtyThree');
+      var value = parseInt(qty.value, 10);
+      value = isNaN(value) ? 0 : value;
+      value < 1 ? value = 1 : '';
+      value--;
+      qty.value = value;
+}
+
+//4
+function increaseFour(){
+      qty = document.querySelector('#qtyFour');
+      var value = parseInt(qty.value, 10);
+      value = isNaN(value) ? 0 : value;
+      value++;
+      qty.value = value;
+}
+
+function decreaseFour(){
+      qty = document.querySelector('#qtyFour');
+      var value = parseInt(qty.value, 10);
+      value = isNaN(value) ? 0 : value;
+      value < 1 ? value = 1 : '';
+      value--;
+      qty.value = value;
+}
 </script>
 
 
