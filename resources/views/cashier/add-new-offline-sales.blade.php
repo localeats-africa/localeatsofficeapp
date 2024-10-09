@@ -139,14 +139,14 @@
                                     <label for="">Quantity</label>
                                     <br>
                                     <div class="input-group">
-                                          <div class="btn btn-sm" id="decreaseSoup-{{ $data->id }}"
-                                                onclick="decreaseSoup({{$data->id}})" value="Decrease Value">-</div>
+                                          <div class="btn btn-sm" id="decreaseSupply"
+                                                onclick="decreaseSupply()" value="Decrease Value">-</div>
 
                                           <input type="text" class="form-control" name="soup_qty" value="0"
-                                                style="width:45px;" id="soup-{{ $data->id }}">
+                                                style="width:45px;" id="supply">
 
-                                          <div class="btn btn-sm" id="increaseSoup-{{ $data->id }}"
-                                                onclick="increaseSoup({{$data->id}})" value="Increase Value">+</div>
+                                          <div class="btn btn-sm" id="increaseSupply"
+                                                onclick="increaseSupply()" value="Increase Value">+</div>
                                     </div>
 
                               </div>
@@ -178,14 +178,14 @@
                                     <label for="">Quantity</label>
                                     <br>
                                     <div class="input-group">
-                                          <div class="btn btn-sm" id="decreaseSwallow-{{ $data->id }}"
-                                                onclick="decreaseSwallow({{$data->id}})" value="Decrease Value">-</div>
+                                          <div class="btn btn-sm" id=""
+                                                onclick="decreaseSwallow()" value="Decrease Value">-</div>
 
                                           <input type="text" class="form-control" name="swallow_qty" value="0"
-                                                style="width:45px;" id="swallow-{{ $data->id }}">
+                                                style="width:45px;" id="swallow">
 
-                                          <div class="btn btn-sm" id="increaseSwallow-{{ $data->id }}"
-                                                onclick="increaseSwallow({{$data->id}})" value="Increase Value">+</div>
+                                          <div class="btn btn-sm" id=""
+                                                onclick="increaseSwallow()" value="Increase Value">+</div>
 
                                     </div>
 
@@ -222,14 +222,14 @@
                                     <label for="">Quantity</label>
                                     <br>
                                     <div class="input-group">
-                                          <div class="btn btn-sm" id="decreaseProtein-{{ $data->id }}"
-                                                onclick="decreaseProtein({{$data->id}})" value="Decrease Value">-</div>
+                                          <div class="btn btn-sm" id=""
+                                                onclick="decreaseProtein()" value="Decrease Value">-</div>
 
                                           <input type="text" class="form-control" name="protein_qty" value="0"
-                                                style="width:55px;" id="protein-{{ $data->id }}">
+                                                style="width:55px;" id="protein">
 
-                                          <div class="btn btn-sm" id="increaseProtein-{{ $data->id }}"
-                                                onclick="increaseProtein({{$data->id}})" value="Increase Value">+</div>
+                                          <div class="btn btn-sm" id=""
+                                                onclick="increaseProtein()" value="Increase Value">+</div>
 
 
                                     </div>
@@ -264,14 +264,14 @@
                                     <label for="">Quantity</label>
                                     <br>
                                     <div class="input-group">
-                                    <div class="btn btn-sm" id="decreaseOthers-{{ $data->id }}"
-                                          onclick="decreaseOthers({{$data->id}})" value="Decrease Value">-</div>
+                                    <div class="btn btn-sm" id=""
+                                          onclick="decreaseOthers()" value="Decrease Value">-</div>
 
                                     <input type="text" class="form-control" name="others_qty" value="0"
-                                          style="width:55px;" id="others-{{ $data->id }}">
+                                          style="width:55px;" id="others">
 
-                                    <div class="btn btn-sm" id="increaseOthers-{{ $data->id }}"
-                                          onclick="increaseOthers({{$data->id}})" value="Increase Value">+</div>
+                                    <div class="btn btn-sm" id=""
+                                          onclick="increaseOthers()" value="Increase Value">+</div>
 
                                     </div>
 
