@@ -103,17 +103,34 @@
             </div>
             <!---end Alert --->
 
-            <form action="">
+         
+            <form method="GET" action="{{ route('offline-sales') }}" name="submit"
+                        enctype="multipart/form-data">
+                        @csrf
+                        {{csrf_field()}}
                   <div class="row">
-                        <div class="col-6">Filter Sales by Vendor</div>
-                        <div class="col-6">
-                              <select class="js-example-basic-single" style="width:100%" name="vendor">
-                                    <option>Search</option>
-                                    @foreach($vendorName as $store)
-                                    <option value="{{$store->id}}">
-                                          {{$store->vendor_name}}</option>
-                                    @endforeach
-                              </select>
+                        <div class="col-12">
+                              <div class="form-group">
+                                    <div class="input-group">
+                                          <span class="input-group-append">
+                                                <span class="input-group-text text-dark d-block">
+                                                      Filter sales by vendor
+                                                </span>
+                                          </span>
+                                          <select class="js-example-basic-single" style="width:40%" name="vendor">
+                                                <option>Search</option>
+                                                @foreach($vendorName as $store)
+                                                <option value="{{$store->id}}">
+                                                      {{$store->vendor_name}}</option>
+                                                @endforeach
+                                          </select>
+
+                                          <span class="input-group-append">
+                                                <input type="submit" class="input-group-text text-dark d-block" value="Send">
+                                                    
+                                                </span>
+                                    </div>
+                              </div>
                         </div>
                   </div>
             </form>
@@ -173,6 +190,7 @@
                                           <thead>
                                                 <tr>
                                                       <th>Date</th>
+                                                      <th>Vendor</th>
                                                       <th>Sales Item</th>
                                                       <th>Price</th>
                                                       <th>Total</th>
@@ -186,6 +204,7 @@
                                                                   class="text-info">
                                                                   {{\Carbon\Carbon::parse($data->created_at)->format('H:i:s')}}</span>
                                                       </td>
+                                                      <td class="text-capitalize">{{ $data->vendor_name }}</td>
                                                       <td class="text-capitalize">
                                                             {{ $data->sales_item }}
                                                             @if($data->soup ==' ')
