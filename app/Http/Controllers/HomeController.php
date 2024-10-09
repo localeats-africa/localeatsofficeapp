@@ -2258,9 +2258,7 @@ class HomeController extends Controller
      
         //a cashier should only see things for the vendor assigned to him
         $vendorName = $multipleVendor_list;
-        //dd( $vendorName );
       
-
         $salesList = OfflineFoodMenu::where('vendor_id', $vendor_id)
         ->where('item', '!=', null)
         ->orderBy('created_at', 'desc')
@@ -2319,6 +2317,11 @@ class HomeController extends Controller
 
 
     public function newOfflineSales(Request $request){
+        $this->validate($request, [ 
+            'vendor'  => 'max:255',
+            // 'phone'  => 'regex:/^([0-9\s\-\+\(\)]*)$/|min:9|max:13',        
+        ]);
+        $vendor_id = $request->vendor;
         $name = Auth::user()->fullname;
         $id = Auth::user()->id;
         $role = DB::table('role')->select('role_name')
@@ -2326,14 +2329,17 @@ class HomeController extends Controller
         ->where('users.id', $id)
         ->pluck('role_name')->first();
 
-        //a cashier should only see things for the vendor assigned to him
-        $vendorName = Vendor::join('users', 'users.vendor', 'vendor.id')
-        ->where('users.id', $id)
-        ->get('vendor.vendor_name')->pluck('vendor_name')->first();
+        $vendorsAssigned = User::where('id', $id)
+        ->get('vendor')->toArray();
 
-        $vendor_id = Vendor::join('users', 'users.vendor', 'vendor.id')
-        ->where('users.id', $id)
-        ->get('vendor.id')->pluck('id')->first();
+        $vendorID_list = array_column($vendorsAssigned, 'vendor'); 
+        $selectMultipleVendor= call_user_func_array('array_merge', $vendorID_list);
+        $multipleVendor_list = Vendor::whereIn('id', $selectMultipleVendor)
+        // ->groupBy('id')
+        ->get();
+     
+        //a cashier should only see things for the vendor assigned to him
+        $vendorName = $multipleVendor_list;
 
          //a cashier should only see things for the vendor assigned to him
          $vendorName = Vendor::join('users', 'users.vendor', 'vendor.id')
@@ -2366,7 +2372,11 @@ class HomeController extends Controller
          //->orderBy('created_at', 'desc')
          ->get();
 
-        $sales = OfflineFoodMenu::where('vendor_id', $vendor_id)->get();
+
+        $sales = OfflineFoodMenu::Join('vendor', 'vendor.id', 'offline_foodmenu.vendor_id')
+        ->where('offline_foodmenu.vendor_id', $vendor_id)
+        ->where('offline_foodmenu.deleted_at', '=', null)
+        ->get(['offline_foodmenu.*', 'vendor.vendor_name' ]);
 
         return view('cashier.add-new-offline-sales',  compact('name', 'role', 
         'vendorName','salesList', 'vendor_id', 'sales',
