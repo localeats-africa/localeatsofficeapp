@@ -2142,8 +2142,8 @@ class HomeController extends Controller
         ->pluck('role_name')->first();
 
         //a cashier should only see things for the vendor assigned to him
-        $vendorName = Vendor::where('d', $vendor_id)
-        ->get('vendor.vendor_name')->pluck('vendor_name')->first();
+        $vendorName = Vendor::where('id', $vendor_id)
+        ->get('vendor_name')->pluck('vendor_name')->first();
 
 
         $expensesList = ExpensesList::where('vendor_id', $vendor_id)
