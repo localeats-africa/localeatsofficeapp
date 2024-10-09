@@ -2384,6 +2384,29 @@ class HomeController extends Controller
     }
 
 
+    public function vendorsAssigned(Request $request){
+        $name = Auth::user()->fullname;
+        $id = Auth::user()->id;
+        $role = DB::table('role')->select('role_name')
+        ->join('users', 'users.role_id', 'role.id')
+        ->where('users.id', $id)
+        ->pluck('role_name')->first();
+
+        $vendorsAssigned = User::where('id', $id)
+        ->get('vendor')->toArray();
+
+        $vendorID_list = array_column($vendorsAssigned, 'vendor'); 
+        $selectMultipleVendor= call_user_func_array('array_merge', $vendorID_list);
+        $vendor = Vendor::whereIn('id', $selectMultipleVendor)
+        // ->groupBy('id')
+        ->get();
+     
+        return view('cashier.vendor-assigned-sales',  compact('name', 'role', 
+        'vendor'));
+    
+    }
+
+
     public function storeOfflineSales(Request $request){
         $this->validate($request, [ 
             'date'          => 'required|max:255',
