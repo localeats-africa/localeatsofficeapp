@@ -19,7 +19,7 @@
                   <nav aria-label="breadcrumb">
                         <ul class="breadcrumb">
                               <li class="breadcrumb-item active" aria-current="page">
-                                    <span></span><a href="/new-offline-sales" class="btn btn-outline-danger">New
+                                    <span></span><a href="/new-offline-sales/{{$vendor_id}}" class="btn btn-outline-danger">New
                                           In-Store Sales </a>
                               </li>
                         </ul>
