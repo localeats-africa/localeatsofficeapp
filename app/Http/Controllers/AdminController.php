@@ -275,7 +275,7 @@ class AdminController extends Controller
         // Monthly Sales  Chart%Y/%m  %M %M %Y
         $chartMonthlyTotalSales = Orders::select(
         \DB::raw("COUNT(*) as total_sales"), 
-        \DB::raw('DATE_FORMAT(delivery_date,"%m/%Y") as month'),
+        \DB::raw('DATE_FORMAT(delivery_date,"%b") as month'),
         \DB::raw('SUM(order_amount) as sales_volume'),
         )->where('deleted_at', null)
         ->where('orders.order_amount', '!=', null)
@@ -353,7 +353,7 @@ class AdminController extends Controller
     //sales for barchart
     $chowdeckOrder =  Orders::join('platforms', 'platforms.id', '=', 'orders.platform_id')
     ->select(
-        \DB::raw('DATE_FORMAT(orders.delivery_date,"%m/%Y") as month'),
+        \DB::raw('DATE_FORMAT(orders.delivery_date,"%b") as month'),
         \DB::raw('SUM(orders.order_amount) as sales'),
         \DB::raw('COUNT(orders.order_amount) as count'),
         )
@@ -370,7 +370,7 @@ class AdminController extends Controller
 
     $glovoOrder = Orders::join('platforms', 'platforms.id', '=', 'orders.platform_id')
     ->select(
-        \DB::raw('DATE_FORMAT(orders.delivery_date,"%m/%Y") as month'),
+        \DB::raw('DATE_FORMAT(orders.delivery_date,"%b") as month'),
         \DB::raw('SUM(orders.order_amount) as sales'),
         \DB::raw('COUNT(orders.order_amount) as count'),
         )
@@ -386,7 +386,7 @@ class AdminController extends Controller
 
     $edenOrder=  Orders::join('platforms', 'platforms.id', '=', 'orders.platform_id')
     ->select(
-        \DB::raw('DATE_FORMAT(orders.delivery_date,"%m/%Y") as month'),
+        \DB::raw('DATE_FORMAT(orders.delivery_date,"%b") as month'),
         \DB::raw('SUM(orders.order_amount) as sales'),
         \DB::raw('COUNT(orders.order_amount) as count'),
         )
@@ -402,7 +402,7 @@ class AdminController extends Controller
 
     $manoOrder =  Orders::join('platforms', 'platforms.id', '=', 'orders.platform_id')
         ->select(
-        \DB::raw('DATE_FORMAT(orders.delivery_date,"%m/%Y") as month'),
+        \DB::raw('DATE_FORMAT(orders.delivery_date,"%b") as month'),
         \DB::raw('SUM(orders.order_amount) as sales'),
         \DB::raw('COUNT(orders.order_amount) as count'),
         )
@@ -611,7 +611,7 @@ class AdminController extends Controller
     
             $chartMonthlyTotalSales = Orders::select(
             \DB::raw("COUNT(*) as total_sales"), 
-            \DB::raw('DATE_FORMAT(delivery_date,"%m/%Y") as month'),
+            \DB::raw('DATE_FORMAT(orders.delivery_date,"%b") as month'),
             \DB::raw('SUM(order_amount) as sales_volume'),
             )->where('deleted_at', null)
             ->where('orders.order_amount', '!=', null)
@@ -703,7 +703,7 @@ class AdminController extends Controller
         //sales for barchart
         $chowdeckOrder =  Orders::join('platforms', 'platforms.id', '=', 'orders.platform_id')
         ->select(
-            \DB::raw('DATE_FORMAT(orders.delivery_date,"%m/%Y") as month'),
+            \DB::raw('DATE_FORMAT(orders.delivery_date,"%b") as month'),
             \DB::raw('SUM(orders.order_amount) as sales'),
             )
             ->where('platforms.name', 'chowdeck')
@@ -718,7 +718,7 @@ class AdminController extends Controller
     
         $glovoOrder = Orders::join('platforms', 'platforms.id', '=', 'orders.platform_id')
         ->select(
-            \DB::raw('DATE_FORMAT(orders.delivery_date,"%m/%Y") as month'),
+            \DB::raw('DATE_FORMAT(orders.delivery_date,"%b") as month'),
             \DB::raw('SUM(orders.order_amount) as sales'),
             )
             ->where('platforms.name', 'glovo')
@@ -733,7 +733,7 @@ class AdminController extends Controller
     
         $edenOrder=  Orders::join('platforms', 'platforms.id', '=', 'orders.platform_id')
         ->select(
-            \DB::raw('DATE_FORMAT(orders.delivery_date,"%m/%Y") as month'),
+            \DB::raw('DATE_FORMAT(orders.delivery_date,"%b") as month'),
             \DB::raw('SUM(orders.order_amount) as sales'),
             )
             ->where('platforms.name', 'edenlife')
@@ -748,7 +748,7 @@ class AdminController extends Controller
 
         $manoOrder=  Orders::join('platforms', 'platforms.id', '=', 'orders.platform_id')
             ->select(
-                \DB::raw('DATE_FORMAT(orders.delivery_date,"%m/%Y") as month'),
+                \DB::raw('DATE_FORMAT(orders.delivery_date,"%b") as month'),
                 \DB::raw('SUM(orders.order_amount) as sales'),
                 )
                 ->where('platforms.name', 'mano')
