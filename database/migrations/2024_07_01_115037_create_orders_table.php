@@ -25,7 +25,7 @@ return new class extends Migration
             $table->string('order_amount')->nullable();
             $table->string('extra')->nullable();
             $table->string('description')->nullable();
-            $table->string('delivery_date')->nullable();
+            $table->dateTime('delivery_date')->nullable();
 
         });
     }
