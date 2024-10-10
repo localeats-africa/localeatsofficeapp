@@ -144,14 +144,7 @@ Route::controller(HomeController::class)->group(function () {
     Route::post('past-invoices',  'storePastInvoices')->name('past-invoices');
     Route::get('vendor-dashboard/{id}', 'showVendorDashboard')->name('vendor-dashboard');
     Route::get('filter-vendor-dashboard/{id}', 'filterVendorDashboard')->name('filter-vendor-dashboard');
-    //MultiStore
-    Route::get('parent-vendor',  'allParentVendor')->name('parent-vendor');
-    Route::get('new-parent-vendor',  'newParentVendor')->name('new-parent-vendor');
-    Route::post('add-parent-vendor',  'addParentVendor')->name('add-parent-vendor');
-    //create outlets
-    Route::get('child-vendor/{id}',  'childVendor')->name('child-vendor');
-    Route::get('new-child-vendor/{id}',  'newChildVendor')->name('new-child-vendor');
-    Route::post('add-child-vendor',  'storeChildVendor')->name('add-child-vendor');
+
 });
 
 
@@ -202,7 +195,14 @@ Route::controller(AdminController::class)->group(function () {
     Route::post('update-user/{id}',  'updateUser')->name('update-user');
     //export
     Route::get('export-offline-foodmenu-template', 'exportOfflineFoodMenuTemplate')->name('export-offline-foodmenu-template');
-    
+    //MultiStore
+    Route::get('parent-vendor',  'allParentVendor')->name('parent-vendor');
+    Route::get('new-parent-vendor',  'newParentVendor')->name('new-parent-vendor');
+    Route::post('add-parent-vendor',  'addParentVendor')->name('add-parent-vendor');
+    //create outlets
+    Route::get('child-vendor/{id}',  'childVendor')->name('child-vendor');
+    Route::get('new-child-vendor/{id}',  'newChildVendor')->name('new-child-vendor');
+    Route::post('add-child-vendor',  'storeChildVendor')->name('add-child-vendor');
 });
 
 Route::controller(ManagerController::class)->group(function () {
