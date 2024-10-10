@@ -266,17 +266,27 @@ class AdminController extends Controller
         ->where('orders.food_price', '!=', null)
         ->groupby('year')
         ->get();
+
+        $month = [];
+
+        for ($m=1; $m<=12; $m++) {
+            $month[] = date('M', mktime(0,0,0,$m, 1, date('Y')));
+        }
+
+        //dd($month);
+
         // Monthly Sales  Chart%Y/%m  %M %M %Y
         $chartMonthlyTotalSales = Orders::select(
         \DB::raw("COUNT(*) as total_sales"), 
-        \DB::raw('DATE_FORMAT(delivery_date,"%m/%Y") as month'),
+        \DB::raw('DATE_FORMAT(delivery_date,"%b/%Y") as month'),
         \DB::raw('SUM(order_amount) as sales_volume'),
         )->where('deleted_at', null)
         ->where('orders.order_amount', '!=', null)
         ->where('orders.order_ref', '!=', null)
         ->where('orders.food_price', '!=', null)
         ->groupBy('month')
-        ->get()->toArray(); 
+        ->get(); 
+
 
         $chartSalesMonth = Arr::pluck($chartMonthlyTotalSales, 'month');
         $chartSalesVolume = Arr::pluck($chartMonthlyTotalSales, 'sales_volume');
