@@ -282,20 +282,10 @@ class AdminController extends Controller
         ->where('orders.order_ref', '!=', null)
         ->where('orders.food_price', '!=', null)
         ->groupBy('month')
-       // ->orderBy('month', 'DESC')
         ->get(); 
 
-        // $month = Orders::select(\DB::raw('DATE_FORMAT(delivery_date,"%b/%Y") as month')
-        // )->where('deleted_at', null)
-        // ->where('orders.order_amount', '!=', null)
-        // ->where('orders.order_ref', '!=', null)
-        // ->where('orders.food_price', '!=', null)
-        // ->orderBy('delivery_date', 'ASC')
-        // ->pluck('month')
-        // ->unique();
 
         $chartSalesMonth = Arr::pluck($chartMonthlyTotalSales, 'month');
-        //$chartSalesMonth =  $month;
         $chartSalesVolume = Arr::pluck($chartMonthlyTotalSales, 'sales_volume');
         $chartSalesTotal = Arr::pluck($chartMonthlyTotalSales, 'total_sales');
 
