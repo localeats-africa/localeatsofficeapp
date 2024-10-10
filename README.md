@@ -2,7 +2,7 @@
 
 ## About Application
 <p align="center">
-LocalEats Management Application
+LocalEats Restuarant Management Application, Bookkeeping, invoicing, Sales, Profit and Loss
 </p>
 
 ##  Users Role
