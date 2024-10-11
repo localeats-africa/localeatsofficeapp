@@ -114,7 +114,7 @@
                                                             <select class="js-example-basic-single2 text-secondary" style="width:100%" name="store_area" >
                                                             <option value="{{$vendor->store_area}}">{{$vendor->store_area}}</option>
                                                             @foreach($location as $data)
-                                                            <option value="{{$data->id}}">
+                                                            <option value="{{$data->area}}">
                                                                   {{$data->area}}
                                                             </option>
                                                             @endforeach
