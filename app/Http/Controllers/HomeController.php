@@ -54,6 +54,7 @@ use App\Models\VendorExpensesCategory;
 use App\Models\TempInStoreSales;
 use App\Models\VendorOnlineSales;
 use App\Models\VendorInstoreSales;
+use App\Models\StoreRegion;
 
 use Excel;
 use Auth;
