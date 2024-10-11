@@ -2090,7 +2090,7 @@ class HomeController extends Controller
           $storeOrder->order_ref       = $request->order_reference;
           $storeOrder->order_amount    = $request->order_amount;
           $storeOrder->description     = $request->item;
-          $storeOrder->delivery_date   = $request->delivery_date;
+          $storeOrder->delivery_date   = date('Y-m-d', strtotime($request->delivery_date)) ;
           $storeOrder->save();
 
           $commission = new Commission();
