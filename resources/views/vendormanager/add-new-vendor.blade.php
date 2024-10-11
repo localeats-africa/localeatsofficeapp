@@ -306,7 +306,7 @@
                                                 <select class="js-example-basic-single2 text-secondary" style="width:100%" name="area" >
                                                 <option value="">Choose</option>
                                                 @foreach($location as $data)
-                                                <option value="{{$data->id}}">
+                                                <option value="{{$data->area}}">
                                                       {{$data->area}}
                                                 </option>
                                                 @endforeach
