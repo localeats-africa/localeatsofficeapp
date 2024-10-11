@@ -466,6 +466,8 @@ class HomeController extends Controller
             $location = Area::all();
             $vendor = Vendor::find($id);
 
+            $storeRegion = StoreRegion::all();
+
             $vendorBank = DB::table('vendor')->where('vendor.id', $id)
             ->join('banks', 'banks.code', '=', 'vendor.bank_name')
             ->select('banks.name')->pluck('name')->first();
