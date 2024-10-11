@@ -125,11 +125,11 @@
                                                 <div class="col-md-4">
                                                       <div class="form-group">
                                                             <h6>Store Region<i class="text-danger">*</i> 
-                                                            <select class="js-example-basic-single2 text-secondary" style="width:100%" name="store_area" >
+                                                            <select class="js-example-basic-single2 text-secondary" style="width:100%" name="store_region" >
                                                             <option value="{{$vendor->store_region}}">{{$vendor->store_region}}</option>
                                                             @foreach($storeRegion as $region)
-                                                            <option value="{{$region->store_region}}">
-                                                                  {{$region->store_region}}
+                                                            <option value="{{$region->region}}">
+                                                                  {{$region->region}}
                                                             </option>
                                                             @endforeach
                                                       </select>
