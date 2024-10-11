@@ -497,6 +497,7 @@ class HomeController extends Controller
             $vendor = Vendor::find($id);
             $vendor->vendor_name    = $request->vendor_name;
             $vendor->store_area     = $request->store_area;
+            $vendor->store_region   = $request->store_region;
             $vendor->address        = $request->address;
             $vendor->contact_fname  = $request->first_name;
             $vendor->contact_lname  = $request->last_name;
