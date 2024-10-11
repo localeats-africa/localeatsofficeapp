@@ -100,7 +100,7 @@
 
                                     <div class="row">
                                                 <p><h5>Store: </h5></p>
-                                                <div class="col-md-6">
+                                                <div class="col-md-4">
                                                       <div class="form-group">
                                                             <h6>Name:<i class="text-danger">*</i> <br>  <small class="text-danger">(Enter this excatly how it should appear)</small></h6>
                                                             <input type="text" value="{{$vendor->vendor_name}}" name="vendor_name"
@@ -108,7 +108,7 @@
                                                       </div>
                                                 </div>
 
-                                                <div class="col-md-6">
+                                                <div class="col-md-4">
                                                       <div class="form-group">
                                                             <h6>Store Area / Location:<i class="text-danger">*</i> 
                                                             <select class="js-example-basic-single2 text-secondary" style="width:100%" name="store_area" >
@@ -121,6 +121,21 @@
                                                       </select>
                                                       </div>
                                                 </div>
+
+                                                <div class="col-md-4">
+                                                      <div class="form-group">
+                                                            <h6>Store Region<i class="text-danger">*</i> 
+                                                            <select class="js-example-basic-single2 text-secondary" style="width:100%" name="store_area" >
+                                                            <option value="{{$vendor->store_region}}">{{$vendor->store_region}}</option>
+                                                            @foreach($storeRegion as $region)
+                                                            <option value="{{$region->store_region}}">
+                                                                  {{$region->store_region}}
+                                                            </option>
+                                                            @endforeach
+                                                      </select>
+                                                      </div>
+                                                </div>
+
 
                                              
                                           </div>
