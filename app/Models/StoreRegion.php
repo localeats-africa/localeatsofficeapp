@@ -8,4 +8,5 @@ use Illuminate\Database\Eloquent\Model;
 class StoreRegion extends Model
 {
     use HasFactory;
+    protected $table = 'store_region';
 }
