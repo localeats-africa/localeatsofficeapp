@@ -474,7 +474,7 @@ class HomeController extends Controller
             ->select('banks.name')->pluck('name')->first();
 
             return view('vendormanager.edit-vendor', compact('vendor', 'vendorBank', 
-            'selectBankName', 'role', 'name', 'location')); 
+            'selectBankName', 'role', 'name', 'location', 'storeRegion')); 
         }
           else { return Redirect::to('/login');
         }
