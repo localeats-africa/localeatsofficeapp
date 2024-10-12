@@ -108,7 +108,7 @@ sty
                                                             <div class="col-auto">
                                                                   <input type="file" id="myFileInput"
                                                                         style="display:none;" name="image"
-                                                                        accept=".jpg,.jpeg,.png" />
+                                                                        />
                                                                   <input type="button"
                                                                         onclick="document.getElementById('myFileInput').click()"
                                                                         value="Store Image" class="btn" />
@@ -116,7 +116,7 @@ sty
 
                                                             <span class="text-danger small"> Image format: <span
                                                                         class="text-secondary">.jpg, .png,
-                                                                        .jpeg.</span> Max size: <span
+                                                                        .jpeg.</span>Dimension: 400x400 |  Max size:   <span
                                                                         class="text-secondary">300kb.</span></span>
                                                       </div>
 
