@@ -466,6 +466,7 @@ class HomeController extends Controller
             $selectBankName = BankList::all();
             $location = Area::all();
             $vendor = Vendor::find($id);
+            $vendorImage = Vendor::where('id', $id)->get()->pluck('vendor_logo')->first();
 
             $storeRegion = StoreRegion::all();
 
@@ -474,7 +475,7 @@ class HomeController extends Controller
             ->select('banks.name')->pluck('name')->first();
 
             return view('vendormanager.edit-vendor', compact('vendor', 'vendorBank', 
-            'selectBankName', 'role', 'name', 'location', 'storeRegion')); 
+            'selectBankName', 'role', 'name', 'location', 'storeRegion', 'vendorImage')); 
         }
           else { return Redirect::to('/login');
         }
@@ -493,7 +494,7 @@ class HomeController extends Controller
             'account_name'  => 'max:255',
             'account_number' => 'max:255',
             'address'       => 'max:255',
-            'image'         => 'image|mimes:jpg,png,jpeg|max:300',// maximum is 300kb , 600 x 600 pixel
+            // 'image'         => 'image|mimes:jpg,png,jpeg|max:300',// maximum is 300kb , 600 x 600 pixel
             ]);
 
 
