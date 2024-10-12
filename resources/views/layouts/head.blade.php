@@ -28,7 +28,7 @@
       <!-- Plugin css for this page -->
       <link rel="stylesheet" href="{{ asset('assets/vendors/select2/select2.css?v=echo filemtime();') }}">
       <link rel="stylesheet" href="{{ asset('assets/vendors/select2-bootstrap-theme/select2-bootstrap.min.css?v=echo filemtime();') }}">
-      <link rel="stylesheet" href="{{ asset('assets/css/demo.css?v=echo filemtime();') }}">
+      <link rel="stylesheet" href="{{ asset('assets/css/demo.css') }}">
       <link rel="stylesheet" href="{{ asset('assets/css/style.css?v=echo filemtime();') }}">
 
 </head>
