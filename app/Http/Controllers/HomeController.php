@@ -493,7 +493,19 @@ class HomeController extends Controller
             'account_name'  => 'max:255',
             'account_number' => 'max:255',
             'address'       => 'max:255',
+            'image'         => 'image|mimes:jpg,png,jpeg|max:300',// maximum is 300kb , 600 x 600 pixel
             ]);
+
+
+            $image= $request->file('image');
+            if(isset($image)){
+            $imageName =  rand(1000000000, 9999999999).'.jpeg';
+             $image->move(public_path('images/store'),$imageName);
+             $image_path = "/images/store/" . $imageName; 
+             }
+            else {
+            $image_path = "";
+             }
             $vendor = Vendor::find($id);
             $vendor->vendor_name    = $request->vendor_name;
             $vendor->store_area     = $request->store_area;
@@ -507,6 +519,7 @@ class HomeController extends Controller
             $vendor->account_name   = $request->account_name;
             $vendor->account_number = $request->account_number;
             $vendor->mira_url       = $request->mira_url;
+            $vendor->vendor_logo    = $image_path;
             
             $vendor->update();
 
