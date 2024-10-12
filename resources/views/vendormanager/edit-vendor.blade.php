@@ -111,13 +111,10 @@ sty
                                                                         />
                                                                   <input type="button"
                                                                         onclick="document.getElementById('myFileInput').click()"
-                                                                        value="Store Image" class="btn" />
+                                                                        value="Upload Store Image" class="btn btn-outline-danger btn-sm" />
                                                             </div>
 
-                                                            <span class="text-danger small"> Image format: <span
-                                                                        class="text-secondary">.jpg, .png,
-                                                                        .jpeg.</span>Dimension: 400x400 |  Max size:   <span
-                                                                        class="text-secondary">300kb.</span></span>
+                                                           
                                                       </div>
 
                                           <div class="row">
