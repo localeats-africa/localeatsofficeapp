@@ -111,7 +111,7 @@ sty
                                                                         accept=".jpg,.jpeg,.png" />
                                                                   <input type="button"
                                                                         onclick="document.getElementById('myFileInput').click()"
-                                                                        value="Change Logo" class="btn" />
+                                                                        value="Store Image" class="btn" />
                                                             </div>
 
                                                             <span class="text-danger small"> Image format: <span
