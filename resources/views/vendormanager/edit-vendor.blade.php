@@ -90,8 +90,8 @@ sty
 
             <div class="row ">
                   <div class="col-12">
-                        <form action="{{ route('update-vendor', [$vendor->id] )}}" method="post" enctype=”multipart/form-data”>
-                              @csrf
+                        <form action="{{ route('update-vendor', [$vendor->id] )}}" method="post" enctype="multipart/form-data" name="submit">
+                        @csrf
                               <div class="card">
                                     <div class="card-header">
                                           <h3 class="card-title"> </h3>
