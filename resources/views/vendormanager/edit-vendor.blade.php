@@ -3,6 +3,7 @@
 @extends('layouts.sidebar')
 @extends('layouts.footer')
 @section('content')
+sty
 <!-- main-panel -->
 <div class="main-panel">
       <div class="content-wrapper">
@@ -97,6 +98,27 @@
                                           <h5>All field with <i class="text-danger">*</i> are required</h5>
                                     </div>
                                     <div class="card-body py-3">
+                                    <div class="row align-items-center">
+                                                            <div class="col-auto">
+                                                                  <span class="avatar avatar-xl"
+                                                                      >
+                                                                        <img id="logo" src="">
+                                                                  </span>
+                                                            </div>
+                                                            <div class="col-auto">
+                                                                  <input type="file" id="myFileInput"
+                                                                        style="display:none;" name="image"
+                                                                        accept=".jpg,.jpeg,.png" />
+                                                                  <input type="button"
+                                                                        onclick="document.getElementById('myFileInput').click()"
+                                                                        value="Change Logo" class="btn" />
+                                                            </div>
+
+                                                            <span class="text-danger small"> Image format: <span
+                                                                        class="text-secondary">.jpg, .png,
+                                                                        .jpeg.</span> Max size: <span
+                                                                        class="text-secondary">300kb.</span></span>
+                                                      </div>
 
                                           <div class="row">
                                                 <p>
@@ -316,4 +338,26 @@
 <script src="{{ asset('assets/js/file-upload.js')}}"></script>
 <script src="{{ asset('assets/js/typeahead.js')}}"></script>
 <script src="{{ asset('assets/js/select2.js')}}"></script>
+
+<script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+
+<script type="text/javascript">
+$(document).ready(function(e) {
+      $('#myFileInput').change(function() {
+            let reader = new FileReader();
+            reader.onload = (e) => {
+                  $('#logo').attr('src', e.target.result);
+            }
+            reader.readAsDataURL(this.files[0]);
+      });
+
+      $('#cert').change(function() {
+            let reader = new FileReader();
+            reader.onload = (e) => {
+                  $('#cert-preview').attr('src', e.target.result);
+            }
+            reader.readAsDataURL(this.files[0]);
+      });
+});
+</script>
 @endsection
