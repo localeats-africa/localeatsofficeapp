@@ -242,7 +242,7 @@
                                                 <div class="col-md-6">
                                                       <div class="form-group">
                                                             <h6>Mira URL</h6>
-                                                            <input type="text" value="{{$vendor->mira_url}}" name="mira"
+                                                            <input type="text" value="{{$vendor->mira_url}}" name="mira_url"
                                                                   class="form-control">
                                                       </div>
                                                 </div>
