@@ -502,8 +502,8 @@ class HomeController extends Controller
             $image= $request->file('image');
             if(isset($image)){
             $imageName =  rand(1000000000, 9999999999).'.jpeg';
-             $image->move(public_path('images/store'),$imageName);
-             $image_path = "/images/store/" . $imageName; 
+             $image->move(public_path('assets/store'),$imageName);
+             $image_path = "/assets/store/" . $imageName; 
              }
             else {
             $image_path = "";
