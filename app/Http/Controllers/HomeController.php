@@ -494,7 +494,7 @@ class HomeController extends Controller
             'account_name'  => 'max:255',
             'account_number' => 'max:255',
             'address'       => 'max:255',
-             'image'         => 'image|mimes:jpg,png,jpeg|max:300',// maximum is 300kb , 600 x 600 pixel
+           'image'          =>'required|image|mimes:jpeg,jpg,png,bmp,gif,svg' // maximum is 300kb , 600 x 600 pixel
             ]);
 
 
