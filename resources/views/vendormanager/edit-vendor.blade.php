@@ -102,7 +102,7 @@ sty
                                                             <div class="col-auto">
                                                                   <span class="avatar avatar-xl"
                                                                       >
-                                                                        <img id="logo"  style="background-image: url()" src="{{asset($vendorImage)}}">
+                                                                        <img id="logo"  src="{{asset($vendorImage)}}">
                                                                   </span>
                                                             </div>
                                                             <div class="col-auto">
