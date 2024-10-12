@@ -98,46 +98,56 @@
                                     </div>
                                     <div class="card-body py-3">
 
-                                    <div class="row">
-                                                <p><h5>Store: </h5></p>
+                                          <div class="row">
+                                                <p>
+                                                <h5>Store: </h5>
+                                                </p>
                                                 <div class="col-md-4">
                                                       <div class="form-group">
-                                                            <h6>Name:<i class="text-danger">*</i> <br>  <small class="text-danger">(Enter this excatly how it should appear)</small></h6>
-                                                            <input type="text" value="{{$vendor->vendor_name}}" name="vendor_name"
-                                                                  class="form-control">
+                                                            <h6>Name:<i class="text-danger">*</i> <br> <small
+                                                                        class="text-danger">(Enter this excatly how it
+                                                                        should appear)</small></h6>
+                                                            <input type="text" value="{{$vendor->vendor_name}}"
+                                                                  name="vendor_name" class="form-control">
                                                       </div>
                                                 </div>
 
                                                 <div class="col-md-4">
                                                       <div class="form-group">
-                                                            <h6>Store Area / Location:<i class="text-danger">*</i> 
-                                                            <select class="js-example-basic-single2 text-secondary" style="width:100%" name="store_area" >
-                                                            <option value="{{$vendor->store_area}}">{{$vendor->store_area}}</option>
-                                                            @foreach($location as $data)
-                                                            <option value="{{$data->area}}">
-                                                                  {{$data->area}}
-                                                            </option>
-                                                            @endforeach
-                                                      </select>
+                                                            <h6>Store Area / Location:<i class="text-danger">*</i>
+                                                                  <select
+                                                                        class="js-example-basic-single2 text-secondary"
+                                                                        style="width:100%" name="store_area">
+                                                                        <option value="{{$vendor->store_area}}">
+                                                                              {{$vendor->store_area}}</option>
+                                                                        @foreach($location as $data)
+                                                                        <option value="{{$data->area}}">
+                                                                              {{$data->area}}
+                                                                        </option>
+                                                                        @endforeach
+                                                                  </select>
                                                       </div>
                                                 </div>
 
                                                 <div class="col-md-4">
                                                       <div class="form-group">
-                                                            <h6>Store Region<i class="text-danger">*</i> 
-                                                            <select class="js-example-basic-single2 text-secondary" style="width:100%" name="store_region" >
-                                                            <option value="{{$vendor->store_region}}">{{$vendor->store_region}}</option>
-                                                            @foreach($storeRegion as $region)
-                                                            <option value="{{$region->region}}">
-                                                                  {{$region->region}}
-                                                            </option>
-                                                            @endforeach
-                                                      </select>
+                                                            <h6>Store Region<i class="text-danger">*</i>
+                                                                  <select
+                                                                        class="js-example-basic-single2 text-secondary"
+                                                                        style="width:100%" name="store_region">
+                                                                        <option value="{{$vendor->store_region}}">
+                                                                              {{$vendor->store_region}}</option>
+                                                                        @foreach($storeRegion as $region)
+                                                                        <option value="{{$region->region}}">
+                                                                              {{$region->region}}
+                                                                        </option>
+                                                                        @endforeach
+                                                                  </select>
                                                       </div>
                                                 </div>
 
 
-                                             
+
                                           </div>
                                           <!--- row-->
 
@@ -151,23 +161,25 @@
                                                       </div>
                                                 </div>
 
-                                             
+
                                           </div>
                                           <!--- row-->
                                           <div class="row">
-                                                <p><h5>Contact Person:</h5></p>
+                                                <p>
+                                                <h5>Contact Person:</h5>
+                                                </p>
                                                 <div class="col-md-3">
                                                       <div class="form-group">
                                                             <h6>First Name </h6>
-                                                            <input type="text" value="{{$vendor->contact_fname}}" name="first_name"
-                                                                  class="form-control">
+                                                            <input type="text" value="{{$vendor->contact_fname}}"
+                                                                  name="first_name" class="form-control">
                                                       </div>
                                                 </div>
                                                 <div class="col-md-3">
                                                       <div class="form-group">
                                                             <h6>Last Name </h6>
-                                                            <input type="text" value="{{$vendor->contact_lname}}" name="first_name"
-                                                                  class="form-control">
+                                                            <input type="text" value="{{$vendor->contact_lname}}"
+                                                                  name="first_name" class="form-control">
                                                       </div>
                                                 </div>
 
@@ -225,9 +237,21 @@
                                           </div>
                                           <!--- row-->
 
+
+                                          <div class="row">
+                                                <div class="col-md-6">
+                                                      <div class="form-group">
+                                                            <h6>Mira URL</h6>
+                                                            <input type="text" value="{{$vendor->mira_url}}" name="mira"
+                                                                  class="form-control">
+                                                      </div>
+                                                </div>
+                                                </div>
+
                                           <div class="row">
                                                 <p></p>
                                                 <div class="col-md-6">
+                                                   
                                                 </div>
                                                 <div
                                                       class="col-md-6 col-12 grid-margin stretch-card justify-content-end">
