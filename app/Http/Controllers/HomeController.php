@@ -467,6 +467,7 @@ class HomeController extends Controller
             $location = Area::all();
             $vendor = Vendor::find($id);
             $vendorImage = Vendor::where('id', $id)->get()->pluck('vendor_logo')->first();
+        
 
             $storeRegion = StoreRegion::all();
 
