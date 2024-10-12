@@ -506,6 +506,8 @@ class HomeController extends Controller
             $vendor->bank_name      = $request->bank_name;
             $vendor->account_name   = $request->account_name;
             $vendor->account_number = $request->account_number;
+            $vendor->mira_url       = $request->mira_url;
+            
             $vendor->update();
 
             if($vendor){
