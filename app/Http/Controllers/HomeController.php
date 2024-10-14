@@ -1152,7 +1152,7 @@ class HomeController extends Controller
                 $storeOrder->extra           = $order->extra;
                 $storeOrder->description     = $order->description;
                 $storeOrder->order_status    = 'pending';
-                $storeOrder->delivery_date   = $order->delivery_date;
+                $storeOrder->delivery_date   = date('Y-m-d', strtotime($order->delivery_date)) ;
                 $storeOrder->save();
 
                 $getplatform = Platforms::where('id', $storeOrder->platform_id)->pluck('name');
