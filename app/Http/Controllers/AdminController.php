@@ -272,10 +272,39 @@ class AdminController extends Controller
         //     $month[] = date('M', mktime(0,0,0,$m, 1, date('Y')));
         // }
 
+        $default = collect([
+            "Jan" => 0,
+            "Feb" => 0,
+            "Mar" => 0,
+            "Apr" => 0,
+            "May" => 0,
+            "Jun" => 0,
+            "Jul" => 0,
+            "Aug" => 0,
+            "Sep" => 0,
+            "Oct" => 0,
+            "Nov" => 0,
+            "Dec" => 0
+          ]);
+          
+         ;
+
         // Monthly Sales  Chart%Y/%m  %M %M %Y
+
+        $chartMonths = Orders::select(
+            \DB::raw("COUNT(*) as total_sales"), 
+            \DB::raw('DATE_FORMAT(delivery_date,"%b") as month'),
+            )->where('deleted_at', null)
+            ->where('orders.order_amount', '!=', null)
+            ->where('orders.order_ref', '!=', null)
+            ->where('orders.food_price', '!=', null)
+          // ->orderBy('month','desc')
+            ->groupBy('month')
+            ->pluck('month');
+
         $chartMonthlyTotalSales = Orders::select(
         \DB::raw("COUNT(*) as total_sales"), 
-        \DB::raw('DATE_FORMAT(delivery_date,"%b") as month'),
+        \DB::raw('DATE_FORMAT(delivery_date,"%m/%Y") as month'),
         \DB::raw('SUM(order_amount) as sales_volume'),
         )->where('deleted_at', null)
         ->where('orders.order_amount', '!=', null)
@@ -292,7 +321,7 @@ class AdminController extends Controller
         $monthlist = array_map(fn($chartSalesMonth) => Carbon::create(null, $chartSalesMonth)->format('M'), range(1, 12));
         $salesYear =  Arr::pluck($chartYearlyTotalSales, 'year');
         $data = [
-         'month' =>  $chartSalesMonth ,
+         'month' => $chartSalesMonth,
          'sales' =>  $chartSalesVolume,
          'total' =>  $chartSalesTotal,
         ];
