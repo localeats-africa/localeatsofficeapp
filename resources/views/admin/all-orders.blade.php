@@ -201,6 +201,7 @@
                                           id="orders">
                                           <thead>
                                                 <tr>
+                                                      <th>Import Date</th>
                                                       <th>Order Ref.</th>
                                                       <th>Platform</th>
                                                       <th>Vendors</th>
@@ -216,6 +217,7 @@
                                           <tbody>
                                                 @foreach($orders as $data)
                                                 <tr>
+                                                      <td>{{ date('Y-m-d', strtotime($data->created_at))}}</td>
                                                       <td>{{$data->order_ref}}</td>
                                                       <td class="text-capitalize">{{$data->name}}</td>
                                                       <td class="text-capitalize">{{$data->vendor_name}}</td>
