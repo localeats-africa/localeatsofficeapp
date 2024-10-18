@@ -1329,6 +1329,8 @@ class HomeController extends Controller
             'commission.platform_comm',
             'commission.localeats_comm']);
 
+           // dd($orders);
+
             $ordersLastID = DB::table('orders')
             ->Join('platforms', 'orders.platform_id', '=', 'platforms.id')
             ->Join('commission', 'orders.id', '=', 'commission.order_id')
