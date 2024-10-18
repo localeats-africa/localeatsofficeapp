@@ -516,7 +516,7 @@
                                                                               @else
 
                                                                               <input type="hidden" id="order"
-                                                                                    value="{{$data->id}}">
+                                                                                    value="{{$ordersLastID}}">
 
                                                                               <input type="hidden" id="vendor"
                                                                                     value="{{$data->vendor_id}}">
@@ -547,7 +547,7 @@
                                                                         </th>
                                                                         <th>
                                                                               <input type="hidden" id="order_id"
-                                                                                    value="{{$data->id}}">
+                                                                                    value="{{$ordersLastID}}">
                                                                               <div class="input-group">
                                                                                     <input type="text"
                                                                                           id="commission_paid"
