@@ -519,7 +519,7 @@
                                                                                     value="{{$ordersLastID}}">
 
                                                                               <input type="hidden" id="vendor"
-                                                                                    value="{{$data->vendor_id}}">
+                                                                                    value="{{$vendorID}}">
 
                                                                               <div class="input-group">
                                                                                     <input type="text"
