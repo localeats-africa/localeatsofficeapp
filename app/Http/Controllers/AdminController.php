@@ -311,6 +311,7 @@ class AdminController extends Controller
         ->where('orders.order_ref', '!=', null)
         ->where('orders.food_price', '!=', null)
         ->groupBy('month')
+        ->orderBy('month', 'asc')
         ->get(); 
 
 
