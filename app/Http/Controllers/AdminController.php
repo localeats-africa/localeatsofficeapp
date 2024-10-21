@@ -384,6 +384,7 @@ class AdminController extends Controller
         ->where('orders.food_price', '!=', null)
        // ->whereYear('orders.delivery_date', '=', Carbon::now()->year)
         ->groupby('month')
+        ->orderBy('month', 'asc')
         ->get();
     $barChartChowdeckSales = Arr::pluck($chowdeckOrder, 'sales');
     $barChartChowdeckSCount = Arr::pluck($chowdeckOrder, 'count');
@@ -401,6 +402,7 @@ class AdminController extends Controller
         ->where('orders.food_price', '!=', null)
         //->whereYear('orders.delivery_date', '=', Carbon::now()->year)
         ->groupby('month')
+        ->orderBy('month', 'asc')
         ->get();
         $barChartGlovoSales = Arr::pluck($glovoOrder, 'sales');
 
@@ -417,6 +419,7 @@ class AdminController extends Controller
         ->where('orders.food_price', '!=', null)
         //->whereYear('orders.delivery_date', '=', Carbon::now()->year)
         ->groupby('month')
+        ->orderBy('month', 'asc')
         ->get();
         $barChartEdenSales = Arr::pluck($edenOrder, 'sales');
 
@@ -432,6 +435,7 @@ class AdminController extends Controller
         ->where('orders.order_ref', '!=', null)
         ->where('orders.food_price', '!=', null)
         ->groupby('month')
+        ->orderBy('month', 'asc')
         ->get();
     $barChartManoSales = Arr::pluck($manoOrder, 'sales');
   
