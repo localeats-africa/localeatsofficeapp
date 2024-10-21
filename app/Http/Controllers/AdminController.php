@@ -1291,12 +1291,16 @@ class AdminController extends Controller
                 return view('admin.all-orders',  compact(
                 'perPage', 'name', 'role', 'orders',
                 'sumAllOrders', 'countAllOrder', 'countPlatformWhereOrderCame',
-                'countAllPlate'))->withDetails( $pagination );     
+                'countAllPlate', 'vendor'))->withDetails( $pagination );     
             } 
-            else{return redirect()->back()->with('order-status', 'No record order found');}
+            else{
+                return view('admin.all-orders', compact('perPage', 'name', 'role', 'orders', 
+                'sumAllOrders', 'countAllOrder', 'countPlatformWhereOrderCame',
+                'countAllPlate', 'vendor'));
+            }
         return view('admin.all-orders', compact('name', 'role', 'orders', 
         'sumAllOrders', 'countAllOrder', 'countPlatformWhereOrderCame',
-        'countAllPlate'));
+        'countAllPlate', 'vendor'));
     }
 
 
