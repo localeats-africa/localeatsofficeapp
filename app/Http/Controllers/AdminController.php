@@ -644,6 +644,7 @@ class AdminController extends Controller
             ->whereDate('delivery_date', '>=', $startDate)                                 
             ->whereDate('delivery_date', '<=', $endDate) 
             ->groupby('month')
+            ->orderBy('month', 'asc')
             ->get();
 
             $chartSalesMonth = Arr::pluck($chartMonthlyTotalSales, 'month');
@@ -737,6 +738,7 @@ class AdminController extends Controller
             ->whereDate('delivery_date', '>=', $startDate)                                 
             ->whereDate('delivery_date', '<=', $endDate) 
             ->groupby('month')
+            ->orderBy('month', 'asc')
             ->get();
         $barChartChowdeckSales = Arr::pluck($chowdeckOrder, 'sales');
     
@@ -752,6 +754,7 @@ class AdminController extends Controller
             ->whereDate('delivery_date', '>=', $startDate)                                 
             ->whereDate('delivery_date', '<=', $endDate) 
             ->groupby('month')
+            ->orderBy('month', 'asc')
             ->get();
             $barChartGlovoSales = Arr::pluck($glovoOrder, 'sales');
     
@@ -767,6 +770,7 @@ class AdminController extends Controller
             ->whereDate('delivery_date', '>=', $startDate)                                 
             ->whereDate('delivery_date', '<=', $endDate) 
             ->groupby('month')
+            ->orderBy('month', 'asc')
             ->get();
             $barChartEdenSales = Arr::pluck($edenOrder, 'sales');
 
@@ -782,6 +786,7 @@ class AdminController extends Controller
                 ->whereDate('delivery_date', '>=', $startDate)                                 
                 ->whereDate('delivery_date', '<=', $endDate) 
                 ->groupby('month')
+                ->orderBy('month', 'asc')
                 ->get();
         $barChartManoSales = Arr::pluck($manoOrder, 'sales');
       
