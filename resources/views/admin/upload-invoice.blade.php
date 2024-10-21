@@ -172,80 +172,7 @@
 
 
                                                             <div class="col-sm-9">
-                                                                  @if($platform->platform_name == 'Chowdeck')
-                                                                  <div class="row ">
-                                                                        <form method="GET"
-                                                                              action="{{ route('add-chowdeck-order') }}"
-                                                                              name="submit"
-                                                                              enctype="multipart/form-data">
-                                                                              @csrf
-                                                                              {{csrf_field()}}
-                                                                              <div class="row ">
-                                                                                    <input type="hidden" name="platform"
-                                                                                          value="{{$platform->id}}">
-                                                                                    <input type="hidden" name="vendor"
-                                                                                          value="{{$vendorID}}">
-                                                                                    <div class="col-sm-6 col-12">
-                                                                                          <div class="form-group">
-                                                                                                <div
-                                                                                                      class="input-group date">
-                                                                                                      <span
-                                                                                                            class="input-group-append">
-                                                                                                            <span
-                                                                                                                  class="input-group-text text-dark d-block">
-                                                                                                                  Start
-                                                                                                            </span>
-                                                                                                      </span>
-                                                                                                      <input type="text"
-                                                                                                            value=""
-                                                                                                            name="from"
-                                                                                                            class="form-control"
-                                                                                                            placeholder=""
-                                                                                                            id="from" />
-                                                                                                      <span
-                                                                                                            class="input-group-append">
-                                                                                                            <span
-                                                                                                                  class="input-group-text bg-light d-block">
-                                                                                                                  <i
-                                                                                                                        class="fa fa-calendar"></i>
-                                                                                                            </span>
-                                                                                                      </span>
-                                                                                                </div>
-                                                                                          </div>
-                                                                                    </div>
-
-                                                                                    <div class="col-sm-6 col-12">
-                                                                                          <div class="form-group">
-                                                                                                <div
-                                                                                                      class="input-group date">
-                                                                                                      <span
-                                                                                                            class="input-group-append">
-                                                                                                            <span
-                                                                                                                  class="input-group-text text-dark d-block">
-                                                                                                                  End
-                                                                                                            </span>
-                                                                                                      </span>
-                                                                                                      <input type="text"
-                                                                                                            value=""
-                                                                                                            name="to"
-                                                                                                            class="form-control"
-                                                                                                            placeholder=""
-                                                                                                            id="to" />
-
-                                                                                                      <button
-                                                                                                            type="submit"
-                                                                                                            name="submit"
-                                                                                                            class="btn btn-outline-success btn-sm py-2">Filter!</button>
-                                                                                                </div>
-                                                                                          </div>
-                                                                                    </div>
-
-
-                                                                              </div>
-                                                                              <!---end row--->
-                                                                        </form>
-                                                                  </div>
-                                                                  @else
+                                                                
                                                                   <form method="post"
                                                                         action="{{ route('add-invoice') }}"
                                                                         name="submit" id=""
@@ -290,7 +217,6 @@
                                                                         </div>
                                                                   </form>
 
-                                                                  @endif
                                                             </div>
 
                                                             @endforeach
