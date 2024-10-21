@@ -64,7 +64,7 @@
             </div>
             <!---end Alert --->
             <p></p>
-            <form method="post" action="{{ route('setup') }}" name="submit" enctype="multipart/form-data">
+            <form method="get" action="{{ route('all-orders') }}" name="submit" enctype="multipart/form-data">
                   @csrf
                   {{csrf_field()}}
                   <div class="row text-end">
@@ -304,4 +304,14 @@
 <script src="{{ asset('assets/js/typeahead.js')}}"></script>
 <script src="{{ asset('assets/js/select2.js')}}"></script>
 <!-- End custom js for this page -->
+
+<script>
+$(function() {
+      $("#from").datepicker();
+});
+
+$(function() {
+      $("#to").datepicker();
+});
+</script>
 @endsection
