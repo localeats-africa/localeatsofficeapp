@@ -8,96 +8,10 @@
       <div class="content-wrapper">
             <div class="page-header">
                   <h3 class="page-title">
-                        Overview
+                        Sales
                   </h3>
             </div>
-            <div class="container ">
-                  <div class="row ">
-                        <div class="col-12">
-                              <div class="row row-cards">
-                                    <div class="col-md-4 stretch-card grid-margin">
-                                          <div class="card bg-gradient-danger card-img-holder text-white">
-                                                <div class="card-body">
-                                                      <img src="{{ asset('assets/images/dashboard/circle.svg') }}"
-                                                            class="card-img-absolute" alt="circle-image">
-                                                      <h4 class="font-weight-normal">Number Of Orders <i
-                                                                  class="mdi mdi-pot-steam  mdi-24px float-end"></i>
-                                                      </h4>
-                                                      <h2 class="mb-5">{{$countAllOrder}}</h2>
-                                                      <hr class="w-100">
-                                                      <h6 class="card-text">From  <span class="text-dark">( {{$countPlatformWhereOrderCame}} )</span>
-                                                            <span
-                                                                  style="float:right;">platform (s)</span> 
 
-                                                      </h6>
-                                                </div>
-
-                                          </div>
-                                    </div>
-
-                                    <div class="col-md-4 stretch-card grid-margin">
-                                          <div class="card bg-gradient-success card-img-holder text-white">
-                                                <div class="card-body">
-                                                      <img src="{{ asset('assets/images/dashboard/circle.svg') }}"
-                                                            class="card-img-absolute" alt="circle-image">
-                                                      <h4 class="font-weight-normal">Number Of Plates <i
-                                                                  class="mdi mdi-pot-steam  mdi-24px float-end"></i>
-                                                      </h4>
-                                                      <h2 class="mb-5">{{$countAllPlate}}</h2>
-                                                      <hr class="w-100">
-                                                      <h6 class="card-text">From  <span class="text-dark">( {{$countAllOrder}} )</span>
-                                                            <span
-                                                                  style="float:right;">order (s)</span> 
-
-                                                      </h6>
-                                                </div>
-
-                                          </div>
-                                    </div>
-
-                                    <div class="col-md-4 stretch-card grid-margin">
-                                          <div class="card bg-gradient-info card-img-holder text-white">
-                                                <div class="card-body">
-                                                      <img src="{{ asset('assets/images/dashboard/circle.svg')}}"
-                                                            class="card-img-absolute" alt="circle-image">
-                                                      <h4 class="font-weight-normal">Sales <i
-                                                                  class="mdi mdi-24px float-end">
-                                                                  <svg xmlns="http://www.w3.org/2000/svg" class="icon"
-                                                                        width="24" height="24" viewBox="0 0 24 24"
-                                                                        stroke-width="2" stroke="currentColor"
-                                                                        fill="none" stroke-linecap="round"
-                                                                        stroke-linejoin="round">
-                                                                        <path stroke="none" d="M0 0h24v24H0z"
-                                                                              fill="none"></path>
-                                                                        <path
-                                                                              d="M9 14c0 1.657 2.686 3 6 3s6 -1.343 6 -3s-2.686 -3 -6 -3s-6 1.343 -6 3z">
-                                                                        </path>
-                                                                        <path
-                                                                              d="M9 14v4c0 1.656 2.686 3 6 3s6 -1.344 6 -3v-4">
-                                                                        </path>
-                                                                        <path
-                                                                              d="M3 6c0 1.072 1.144 2.062 3 2.598s4.144 .536 6 0c1.856 -.536 3 -1.526 3 -2.598c0 -1.072 -1.144 -2.062 -3 -2.598s-4.144 -.536 -6 0c-1.856 .536 -3 1.526 -3 2.598z">
-                                                                        </path>
-                                                                        <path d="M3 6v10c0 .888 .772 1.45 2 2"></path>
-                                                                        <path d="M3 11c0 .888 .772 1.45 2 2"></path>
-                                                                  </svg>
-                                                            </i>
-                                                      </h4>
-                                                      <h2 class="mb-5">₦{{number_format($sumAllOrders)}}</h2>
-                                                      <hr class="w-100">
-                                                      <h6 class="card-text">weekly average <span style="float:right;">₦0
-                                                            </span></h6>
-                                                </div>
-                                          </div>
-                                    </div>
-
-         
-                              </div>
-                              <!--row--->
-                        </div>
-                  </div>
-                  <!--row-deck-->
-            </div>
             <p></p>
             <p></p>
             <!--Alert here--->
@@ -153,119 +67,80 @@
             <form method="post" action="{{ route('setup') }}" name="submit" enctype="multipart/form-data">
                   @csrf
                   {{csrf_field()}}
-                  <div class="row">
-                        <div class="col-md-4 grid-margin stretch-card">
-                              <div class="card">
-                                    <div class="card-body">
-                                          <div class="form-group">
+                  <div class="row text-end">
+                        <h6>Filter sales by vendor name:</h6>
+                        <div class="col-md-6  col-12">
+                              <div class="input-group ">
+                                    <span class="input-group-append">
+                                          <span class="input-group-text text-dark d-block">
+                                                Vendor <i class="text-danger">*</i>
+                                          </span>
+                                    </span>
+                                    <select class="js-example-basic-single text-secondary" style="width:70%"
+                                          name="vendor" id="vendor">
+                                          <option> Search
+                                          </option>
+                                          @foreach($vendor as $data)
+                                          <option value="{{$data->id}}">
+                                                {{$data->vendor_name}}</option>
+                                          @endforeach
+                                    </select>
+                                    <span class="input-group-append">
+                                                <span class="input-group-text bg-light d-block">
+                                                   
+                                                </span>
+                                          </span>
+                              </div>
 
-                                                <label>Vendor <i class="text-danger">*</i></label>
-                                                <select class="js-example-basic-single text-secondary"
-                                                      style="width:100%" name="vendor" id="vendor">
-                                                      <option> Search
-                                                      </option>
-                                                      @foreach($vendor as $data)
-                                                      <option value="{{$data->id}}">
-                                                            {{$data->vendor_name}}</option>
-                                                      @endforeach
-                                                </select>
 
-                                          </div>
-                                          @error('vendor')
-                                          <div class="alert alert-danger alert-dismissible" role="alert">
-                                                <div class="d-flex">
-                                                      <div>
-                                                            <!-- Download SVG icon from http://tabler-icons.io/i/alert-circle -->
-                                                            <svg xmlns="http://www.w3.org/2000/svg"
-                                                                  class="icon alert-icon" width="24" height="24"
-                                                                  viewBox="0 0 24 24" stroke-width="2"
-                                                                  stroke="currentColor" fill="none"
-                                                                  stroke-linecap="round" stroke-linejoin="round">
-                                                                  <path stroke="none" d="M0 0h24v24H0z" fill="none" />
-                                                                  <path d="M3 12a9 9 0 1 0 18 0a9 9 0 0 0 -18 0" />
-                                                                  <path d="M12 8v4" />
-                                                                  <path d="M12 16h.01" />
-                                                            </svg>
-                                                      </div>
-                                                      <div>
-                                                            {{ $message }}
-                                                      </div>
-                                                </div>
-                                                <a class="btn-close" data-bs-dismiss="alert" aria-label="close"></a>
-                                          </div>
-                                          @enderror
+                        </div>
+
+                        <div class="col-md-3 col-12">
+                              <div class="form-group">
+                                    <div class="input-group ">
+                                          <span class="input-group-append">
+                                                <span class="input-group-text text-dark d-block">
+                                                      Start
+                                                </span>
+                                          </span>
+                                          <input type="text" value="" name="from" class="form-control" placeholder=""
+                                                id="from" />
+                                          <span class="input-group-append">
+                                                <span class="input-group-text bg-light d-block">
+                                                      <i class="fa fa-calendar"></i>
+                                                </span>
+                                          </span>
                                     </div>
                               </div>
                         </div>
 
-
-                        <div class="col-md-4 grid-margin stretch-card">
-                              <div class="card">
-                                    <div class="card-body">
-                                          <div class="form-label ">Reference / Code <i class="text-danger">*</i>
-                                          </div>
-                                          <input type="text" class="form-control" name="reference">
-                                          @error('reference')
-                                          <div class="alert alert-danger alert-dismissible" role="alert">
-                                                <div class="d-flex">
-                                                      <div>
-                                                            <!-- Download SVG icon from http://tabler-icons.io/i/alert-circle -->
-                                                            <svg xmlns="http://www.w3.org/2000/svg"
-                                                                  class="icon alert-icon" width="24" height="24"
-                                                                  viewBox="0 0 24 24" stroke-width="2"
-                                                                  stroke="currentColor" fill="none"
-                                                                  stroke-linecap="round" stroke-linejoin="round">
-                                                                  <path stroke="none" d="M0 0h24v24H0z" fill="none" />
-                                                                  <path d="M3 12a9 9 0 1 0 18 0a9 9 0 0 0 -18 0" />
-                                                                  <path d="M12 8v4" />
-                                                                  <path d="M12 16h.01" />
-                                                            </svg>
-                                                      </div>
-                                                      <div>
-                                                            {{ $message }}
-                                                      </div>
-                                                </div>
-                                                <a class="btn-close" data-bs-dismiss="alert" aria-label="close"></a>
-                                          </div>
-                                          @enderror
+                        <div class="col-md-3 col-12">
+                              <div class="form-group">
+                                    <div class="input-group ">
+                                          <span class="input-group-append">
+                                                <span class="input-group-text text-dark d-block">
+                                                      End
+                                                </span>
+                                          </span>
+                                          <input type="text" value="" name="to" class="form-control" placeholder=""
+                                                id="to" />
+                                          <span class="input-group-append">
+                                                <span class="input-group-text bg-light d-block">
+                                                      <i class="fa fa-calendar"></i>
+                                                </span>
+                                          </span>
+                                          <button type="submit" name="submit"
+                                                class="btn bg-gradient-dark btn-sm  text-white">GO!</button>
                                     </div>
                               </div>
                         </div>
 
 
                   </div>
+                  <!---end row--->
+
                   <!--- row---->
 
-                  <!-- row -->
-                  <div class="row">
-                        <div class="col-md-6">
-                        </div>
-                        <div class="col-md-6 col-12 grid-margin stretch-card justify-content-end">
-
-                              <!-- send button here -->
-                              <div class="card-footer bg-transparent mt-auto">
-                                    <div class="btn-list ">
-                                          <button type="submit" name="submit"
-                                                class="btn bg-gradient-primary  text-white">
-                                                <svg xmlns="http://www.w3.org/2000/svg"
-                                                      class="icon icon-tabler icon-tabler-device-floppy" width="24"
-                                                      height="24" viewBox="0 0 24 24" stroke-width="1.5"
-                                                      stroke="currentColor" fill="none" stroke-linecap="round"
-                                                      stroke-linejoin="round">
-                                                      <path stroke="none" d="M0 0h24v24H0z" fill="none" />
-                                                      <path
-                                                            d="M6 4h10l4 4v10a2 2 0 0 1 -2 2h-12a2 2 0 0 1 -2 -2v-12a2 2 0 0 1 2 -2" />
-                                                      <path d="M12 14m-2 0a2 2 0 1 0 4 0a2 2 0 1 0 -4 0" />
-                                                      <path d="M14 4l0 4l-6 0l0 -4" />
-                                                </svg>
-                                                Submit
-                                          </button>
-                                    </div>
-                              </div>
-
-                        </div>
-                  </div>
-                  <!-- row -->
             </form>
 
             <p></p>
@@ -301,7 +176,8 @@
                                                 Search:
                                                 <div class="ms-2 d-inline-block">
 
-                                                      <form action="{{ route('all-orders') }}" method="GET" role="search">
+                                                      <form action="{{ route('all-orders') }}" method="GET"
+                                                            role="search">
                                                             {{ csrf_field() }}
                                                             <div class="input-group mb-2">
                                                                   <input type="text" class="form-control"
@@ -324,8 +200,8 @@
                                                       <th>Order Ref.</th>
                                                       <th>Platform</th>
                                                       <th>Vendors</th>
-                                                     
-                                                      <th>Item  (s)</th>
+
+                                                      <th>Item (s)</th>
                                                       <th>Amount</th>
                                                       <th>Food Price</th>
                                                       <th>Extra</th>
@@ -340,15 +216,16 @@
                                                       <td>{{$data->order_ref}}</td>
                                                       <td class="text-capitalize">{{$data->name}}</td>
                                                       <td class="text-capitalize">{{$data->vendor_name}}</td>
-                                                  
-                                                      <td width="50%" style="white-space:wrap; line-height:1.6">   {!! nl2br($data->description) !!}</td>
+
+                                                      <td width="50%" style="white-space:wrap; line-height:1.6"> {!!
+                                                            nl2br($data->description) !!}</td>
                                                       <td>{{$data->order_amount}}</td>
                                                       <td>{{$data->food_price}}</td>
                                                       <td>{{$data->extra}}</td>
                                                       <td>{{ date('Y-m-d', strtotime($data->delivery_date))}}
-                                                          </td>
+                                                      </td>
                                                       <td class="text-capitalize">{{$data->fullname}}</td>
-                                                
+
 
                                                 </tr>
                                                 @endforeach
@@ -371,9 +248,8 @@
                                           @if(isset($orders))
                                           @if($orders->currentPage() > 1)
                                           <li class="page-item ">
-                                                <a class="page-link text-danger"
-                                                      href="{{ $orders->previousPageUrl() }}" tabindex="-1"
-                                                      aria-disabled="true">
+                                                <a class="page-link text-danger" href="{{ $orders->previousPageUrl() }}"
+                                                      tabindex="-1" aria-disabled="true">
                                                       <!-- Download SVG icon from http://tabler-icons.io/i/chevron-left -->
                                                       <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24"
                                                             height="24" viewBox="0 0 24 24" stroke-width="2"
@@ -418,4 +294,14 @@
       <!--- content wrapper---->
 </div>
 <!-- main-panel -->
+
+<script src="{{ asset('assets/vendors/select2/select2.min.js')}}"></script>
+<script src="{{ asset('assets/vendors/typeahead.js/typeahead.bundle.min.js')}}"></script>
+
+<!-- endinject -->
+<!-- Custom js for this page -->
+<script src="{{ asset('assets/js/file-upload.js')}}"></script>
+<script src="{{ asset('assets/js/typeahead.js')}}"></script>
+<script src="{{ asset('assets/js/select2.js')}}"></script>
+<!-- End custom js for this page -->
 @endsection
