@@ -1226,6 +1226,11 @@ class AdminController extends Controller
         ->join('users', 'users.role_id', 'role.id')
         ->where('users.id', $id)
         ->pluck('role_name')->first();
+        
+        $vendor = Vendor::all();
+        $vendor_id      = $request->vendor;
+        $startDate      =  date("Y-m-d", strtotime($request->from)) ;
+        $endDate        =  date("Y-m-d", strtotime($request->to));
 
         $sumAllOrders = Orders::where('deleted_at', null)
         ->where('order_amount', '!=', null)
@@ -1239,7 +1244,6 @@ class AdminController extends Controller
         ->where('orders.order_ref', '!=', null)
         ->count();
 
-
         $getOrderItem = DB::table('orders')
         ->where('deleted_at', null)
         ->where('orders.order_amount', '!=', null)
@@ -1249,7 +1253,6 @@ class AdminController extends Controller
         $string =  $getOrderItem;
         $substring = 'plate';
         $countAllPlate = substr_count($string, $substring);
-
 
         $countPlatformWhereOrderCame = DB::table('orders')
         ->Join('platforms', 'orders.platform_id', '=', 'platforms.id')->distinct()
@@ -1261,7 +1264,6 @@ class AdminController extends Controller
         $perPage = $request->perPage ?? 10;
         $search = $request->input('search'); 
        
-
         $orders = DB::table('orders')
         ->join('vendor', 'orders.vendor_id', '=', 'vendor.id')
         ->join('users', 'orders.added_by', '=', 'users.id')
@@ -1269,6 +1271,9 @@ class AdminController extends Controller
         ->where('orders.deleted_at', null)
         ->where('orders.order_amount', '!=', null)
         ->where('orders.order_ref', '!=', null)
+        ->where('orders.vendor_id', $vendor_id)
+        ->whereDate('orders.delivery_date', '>=', $startDate)                                 
+        ->whereDate('orders.delivery_date', '<=', $endDate) 
         ->select(['orders.*', 'vendor.vendor_name', 'platforms.name', 'users.fullname'])
         ->orderBy('orders.created_at', 'desc')
         ->where(function ($query) use ($search) {  // <<<
@@ -1276,6 +1281,7 @@ class AdminController extends Controller
                ->orWhere('orders.invoice_ref', 'LIKE', '%'.$search.'%')
                ->orWhere('platforms.name', 'LIKE', '%'.$search.'%')
                ->orWhere('orders.delivery_date', 'LIKE', '%'.$search.'%')
+               ->orWhere('orders.created_at', 'LIKE', '%'.$search.'%')
                ->orderBy('orders.created_at', 'desc');
         })->paginate($perPage, $columns = ['*'], $pageName = 'orders'
         )->appends(['per_page'   => $perPage]);
