@@ -1328,8 +1328,6 @@ class HomeController extends Controller
             ->get(['orders.*', 'platforms.name', 
             'commission.platform_comm',
             'commission.localeats_comm']);
-
-            //dd($duplicates);
         
         return view('admin.merge-invoice', compact('role', 'name', 'vendorName',
         'vendorAddress','vendorState', 'vendorCountry', 'vendorPhone',
