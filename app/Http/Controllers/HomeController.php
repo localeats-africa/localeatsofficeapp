@@ -1328,6 +1328,15 @@ class HomeController extends Controller
             ->get(['orders.*', 'platforms.name', 
             'commission.platform_comm',
             'commission.localeats_comm']);
+
+            //dd($duplicates);
+
+            $ordersLastID = DB::table('orders')
+            ->Join('platforms', 'orders.platform_id', '=', 'platforms.id')
+            ->Join('commission', 'orders.id', '=', 'commission.order_id')
+            ->where('orders.vendor_id', $vendor)
+            ->where('orders.invoice_ref', $invoice_ref)
+            ->get('orders.id')->pluck('id')->last();
         
         return view('admin.merge-invoice', compact('role', 'name', 'vendorName',
         'vendorAddress','vendorState', 'vendorCountry', 'vendorPhone',
@@ -1558,7 +1567,7 @@ class HomeController extends Controller
         $query->where('orders.created_at', 'LIKE', '%'.$search.'%')
                ->orWhere('vendor.vendor_name', 'LIKE', '%'.$search.'%')
                ->orWhere('orders.invoice_ref', 'LIKE', '%'.$search.'%');
-              // ->orderBy('orders.created_at', 'desc');
+               //->orderBy('orders.created_at', 'desc');
         })->paginate($perPage, $columns = ['*'], $pageName = 'orders'
         )->appends(['per_page'   => $perPage]);
     
