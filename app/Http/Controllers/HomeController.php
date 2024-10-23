@@ -1329,14 +1329,7 @@ class HomeController extends Controller
             'commission.platform_comm',
             'commission.localeats_comm']);
 
-           // dd($orders);
-
-            $ordersLastID = DB::table('orders')
-            ->Join('platforms', 'orders.platform_id', '=', 'platforms.id')
-            ->Join('commission', 'orders.id', '=', 'commission.order_id')
-            ->where('orders.vendor_id', $vendor)
-            ->where('orders.invoice_ref', $invoice_ref)
-            ->get('orders.id')->pluck('id')->last();
+            //dd($duplicates);
         
         return view('admin.merge-invoice', compact('role', 'name', 'vendorName',
         'vendorAddress','vendorState', 'vendorCountry', 'vendorPhone',
