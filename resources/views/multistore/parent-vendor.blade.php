@@ -286,17 +286,7 @@
                                     </h6>
                                     <div class="text-dark"> <small>{{$data->store_area}}, {{$data->state}}</small></div>
 
-                                    <p></p>
-                                    @if($data->vendor_status =='pending')
-                                    <span class="badge badge-pill badge-warning text-dark">
-                                          {{$data->vendor_status}} </span>
-                                    @elseif($data->vendor_status == 'approved')
-                                    <span class="badge badge-pill badge-success text-dark">
-                                          {{$data->vendor_status}} </span>
-                                    @else
-                                    <span class="badge badge-pill badge-secondary text-white">
-                                          {{$data->vendor_status}} </span>
-                                    @endif
+                                  
 
 
                                     <div class="mt-3">
@@ -304,7 +294,7 @@
                               </div>
                               <div class="d-flex">
                                    
-                                    @if($data->vendor_status == 'suspended')
+                                    @if($data->status == 'suspended')
                                     @auth
                                     @if(Auth::user()->role_id =='2')
                                     <a href="vendor-dashboard/{{$data->id}}" class="card-btn "
