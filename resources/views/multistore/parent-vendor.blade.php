@@ -314,13 +314,6 @@
                                     </a>
                                     @endif
                                     @endauth
-
-                                    <a href="upload-past-invoice/{{$data->id}}" class="card-btn "
-                                          style="text-decoration:none;" title="Invoice">
-                                          <!-- Download SVG icon from http://tabler-icons.io/i/phone -->
-                                          <small>Past Invoices </small>
-                                    </a>
-
                                     @else 
                                     @auth
                                     @if(Auth::user()->role_id =='2')
@@ -343,11 +336,10 @@
                                     @endauth
                                     @php
                                  
-                                    $outlets = App\Models\SubStore::where('multi_store_id',
-                                    $data->id)->count();
+                                    $outlets = App\Models\SubStore::where('multi_store_id', $data->id)->count();
                                     @endphp 
 
-                                    <a href="child-vendor/{{$data->vendor_id}}" class="card-btn "
+                                    <a href="child-vendor/{{$data->id}}" class="card-btn "
                                           style="text-decoration:none;" title="Outlets">
                                           <small> ( {{$outlets}} ) Outlets </small> <small class="text-info"> &nbsp;<i
                                                       class="fa fa-cutlery" aria-hidden="true"></i></small>
