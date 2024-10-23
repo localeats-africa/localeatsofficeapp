@@ -2403,9 +2403,10 @@ class AdminController extends Controller
         ->select('*')->pluck('multi_store_name')->first();
 
         $parent_id = DB::table('multi_store')
-        ->where('vendor_id', $vendor_id)
+        ->where('id', $vendor_id)
         ->get('*')->pluck('id')->first();
 
+         //dd( $vendor_id);
         $stateID = DB::table('state')->select(['*'])
         ->pluck('id');
 
