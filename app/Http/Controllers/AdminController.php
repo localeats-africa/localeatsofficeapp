@@ -2196,7 +2196,7 @@ class AdminController extends Controller
                 return redirect()->back()->with('error', 'This user is existing'); 
             }
 
-            $role = Role::where('role_name', 'parentvendor')
+            $role = Role::where('role_name', 'md')
             ->get()->pluck('id')->first();
 
             $username = substr($request->store_name, -10);
@@ -2494,7 +2494,7 @@ class AdminController extends Controller
             if($checkUser){
                 return redirect()->back()->with('error', 'This user is existing'); 
             }
-            $role = Role::where('role_name', 'childvendor')
+            $role = Role::where('role_name', 'outletmanager')
             ->get()->pluck('id')->first();
             $username = substr($request->store_name, -30);
         
