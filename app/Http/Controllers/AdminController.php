@@ -2229,45 +2229,32 @@ class AdminController extends Controller
              $logoPath = "";
              }
 
-            $addVendor                              = new Vendor();
-            $addVendor->vendor_ref                  = $vendorRef;
-            $addVendor->added_by                    = $id;
-            $addVendor->vendor_logo                  = $logoPath;
-            $addVendor->store_name                  = $request->store_name;
-            $addVendor->store_area                  = $request->area;
-            $addVendor->vendor_name                 = $request->store_name;
-            $addVendor->number_of_store_locations   = $request->number_of_store_location;
-            $addVendor->description                 = $request->description;
-            $addVendor->contact_fname               = $request->first_name;
-            $addVendor->contact_lname               = $request->last_name;
-            $addVendor->contact_phone               = $request->phone;
-            $addVendor->email                       = $request->email;
-            $addVendor->address                     = $request->address;
-            $addVendor->state_id                    = $request->state;
-            $addVendor->country_id                  = $request->country;
-            $addVendor->vendor_status               = $vendorStatus;
-            $addVendor->save();
+            // $addVendor                              = new Vendor();
+            // $addVendor->vendor_ref                  = $vendorRef;
+            // $addVendor->added_by                    = $id;
+            // $addVendor->vendor_logo                 = $logoPath;
+            // $addVendor->store_name                  = $request->store_name;
+            // $addVendor->store_area                  = $request->area;
+            // $addVendor->vendor_name                 = $request->store_name;
+            // $addVendor->number_of_store_locations   = $request->number_of_store_location;
+            // $addVendor->description                 = $request->description;
+            // $addVendor->contact_fname               = $request->first_name;
+            // $addVendor->contact_lname               = $request->last_name;
+            // $addVendor->contact_phone               = $request->phone;
+            // $addVendor->email                       = $request->email;
+            // $addVendor->address                     = $request->address;
+            // $addVendor->state_id                    = $request->state;
+            // $addVendor->country_id                  = $request->country;
+            // $addVendor->vendor_status               = $vendorStatus;
+            // $addVendor->save();
 
               $parentStore = new MultiStore();
-              $parentStore->vendor_id        = $addVendor->id;
               $parentStore->user_id          = $addUser->id;
-              $parentStore->multi_store_name = $addVendor->store_name;
+              $parentStore->multi_store_name = $request->store_name;;
               $parentStore->level            = 'parent';
               $parentStore->save();
               User::where('id', $addUser->id)->update(['parent_store' => $parentStore->id]);
-                
-                //create vendor id in sales platform table
-                $platformStatus ='inactive';
-                $platforms = Platforms::all();
-                
-               foreach($platforms as $platform){
-                    $addPlatform = new SalesPlatform();
-                    $addPlatform->vendor_id         = $addVendor->id;
-                    $addPlatform->platform_name     = $platform->name;
-                    $addPlatform->vendor_status     = $platformStatus;
-                    $addPlatform->save();
-               }
-
+             
                 $data = array(
                 'name'     => $request->name,
                 'email'    => $request->email,
@@ -2317,25 +2304,23 @@ class AdminController extends Controller
             ->get();
 
              // a vendor is consider active if it's active on one or more platform
-            $countActivevendor = DB::table('sales_platform')
-            ->join('vendor', 'vendor.id', '=', 'sales_platform.vendor_id')->distinct()
-            ->join('multi_store', 'multi_store.vendor_id', 'vendor.id')
+            $countActivevendor = DB::table('multi_store')
+            ->join('sub_store', 'sub_store.multi_store_id', 'multi_store.id')
+            ->join('sales_platform', 'sales_platform.vendor_id', '=', 'sub_store.vendor_id')->distinct()
             ->where('sales_platform.vendor_status', 'active')
             ->get('sales_platform.vendor_id');
        
             $perPage = $request->perPage ?? 25;
             $search = $request->input('search');
     
-            $vendor =  DB::table('vendor')
-            ->join('multi_store', 'multi_store.vendor_id', 'vendor.id')
-            ->join('state', 'state.id', '=', 'vendor.state_id')
+            $vendor =  DB::table('multi_store')
+            // ->join('multi_store', 'multi_store.vendor_id', 'vendor.id')
+            // ->join('state', 'state.id', '=', 'vendor.state_id')
             ->where('multi_store.level', 'parent')
-            ->select(['multi_store.*', 'vendor.vendor_status', 'vendor.store_area',
-            'state.state'])
-            ->orderBy('vendor.created_at', 'desc')
+            ->select(['multi_store.*'])
+            ->orderBy('multi_store.created_at', 'desc')
             ->where(function ($query) use ($search) {  // <<<
-            $query->where('multi_store.multi_store_name', 'LIKE', '%'.$search.'%')
-                    ->orWhere('vendor.vendor_status', 'LIKE', '%'.$search.'%');
+            $query->where('multi_store.multi_store_name', 'LIKE', '%'.$search.'%');
             })
             ->paginate($perPage,  $pageName = 'vendor')->appends(['per_page'   => $perPage]);
             $pagination = $vendor->appends ( array ('search' => $search) );
@@ -2544,9 +2529,11 @@ class AdminController extends Controller
                 $childStore->level            = 'child';
                 $childStore->save();
 
+                $vendorID = [];
+                $vendorID = $addVendor->id;
                 User::where('id', $addUser->id)
                 ->update([
-                    'vendor' => $addVendor->id,
+                    'vendor' =>  $vendorID,
                     'parent_store' => $request->parent_id
                 ]);
                 //create vendor id in sales platform table
