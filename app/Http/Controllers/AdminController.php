@@ -2229,25 +2229,6 @@ class AdminController extends Controller
              $logoPath = "";
              }
 
-            // $addVendor                              = new Vendor();
-            // $addVendor->vendor_ref                  = $vendorRef;
-            // $addVendor->added_by                    = $id;
-            // $addVendor->vendor_logo                 = $logoPath;
-            // $addVendor->store_name                  = $request->store_name;
-            // $addVendor->store_area                  = $request->area;
-            // $addVendor->vendor_name                 = $request->store_name;
-            // $addVendor->number_of_store_locations   = $request->number_of_store_location;
-            // $addVendor->description                 = $request->description;
-            // $addVendor->contact_fname               = $request->first_name;
-            // $addVendor->contact_lname               = $request->last_name;
-            // $addVendor->contact_phone               = $request->phone;
-            // $addVendor->email                       = $request->email;
-            // $addVendor->address                     = $request->address;
-            // $addVendor->state_id                    = $request->state;
-            // $addVendor->country_id                  = $request->country;
-            // $addVendor->vendor_status               = $vendorStatus;
-            // $addVendor->save();
-
               $parentStore = new MultiStore();
               $parentStore->user_id             = $addUser->id;
               $parentStore->store_logo          = $logoPath;
