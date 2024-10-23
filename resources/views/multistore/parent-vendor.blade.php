@@ -192,27 +192,27 @@
                                           </span>
 
                                           <div class="dropdown-menu dropdown-menu-end text-end ">
-                                                @if($data->vendor_status == 'approved')
+                                                @if($data->status == 'approved')
                                                 <a class="dropdown-item text-capitalize text-dark"
-                                                      href="edit-vendor/{{$data->vendor_id}}">
+                                                      href="edit-vendor/{{$data->id}}">
                                                       <small>Edit</small>
                                                 </a>
                                                 <br>
                                                 <a class="dropdown-item text-capitalize text-dark"
-                                                      href="vendor-profile/{{$data->vendor_id}}">
+                                                      href="vendor-profile/{{$data->id}}">
                                                       <small>View</small>
                                                 </a>
 
                                                 <br>
                                                 @auth
                                                 @if(Auth::user()->role_id =='2')
-                                                <form action="{{route('suspend-vendor', [$data->vendor_id])}}" method="POST"
+                                                <form action="{{route('suspend-vendor', [$data->id])}}" method="POST"
                                                       role="search">
                                                       {{ csrf_field() }}
                                                       <div class="input-group mb-2">
                                                             <input type="hidden" class="form-control"
                                                                   placeholder="Search for…" name="suspend"
-                                                                  value="{{$data->vendor_id}}">
+                                                                  value="{{$data->id}}">
                                                             <button type="submit"
                                                                   class="dropdown-item text-capitalize text-dark">Suspend</button>
                                                       </div>
@@ -223,15 +223,15 @@
                                                 <p></p>
                                                 @endif
 
-                                                @if($data->vendor_status == 'suspended')
+                                                @if($data->status == 'suspended')
                                                 <a class="dropdown-item text-capitalize text-dark"
-                                                      href="vendor-profile/{{$data->vendor_id}}">
+                                                      href="vendor-profile/{{$data->id}}">
                                                       <small>View</small>
                                                 </a>
                                                 @auth
                                                 @if(Auth::user()->role_id =='2')
                                                 <a class="dropdown-item text-capitalize text-dark"
-                                                      href="approve-vendor/{{$data->vendor_id}}">
+                                                      href="approve-vendor/{{$data->id}}">
                                                       <small>Re-activate</small>
                                                 </a>
                                                 @endif
@@ -240,14 +240,14 @@
                                                 <p></p>
                                                 @endif
 
-                                                @if($data->vendor_status == 'pending')
+                                                @if($data->status == 'pending')
                                                 <a class="dropdown-item text-capitalize text-dark"
-                                                      href="vendor-profile/{{$data->vendor_id}}">
+                                                      href="vendor-profile/{{$data->id}}">
                                                       <small>View</small>
                                                 </a>
                                                 <br>
                                                 <a class="dropdown-item text-capitalize text-dark"
-                                                      href="edit-vendor/{{$data->vendor_id}}">
+                                                      href="edit-vendor/{{$data->id}}">
                                                       <small>Edit</small>
                                                 </a>
                                                 <br>
@@ -256,12 +256,12 @@
                                                 @if(Auth::user()->role_id =='2')
 
                                                 <a class="dropdown-item text-capitalize text-dark"
-                                                      href="approve-vendor/{{$data->vendor_id}}">
+                                                      href="approve-vendor/{{$data->id}}">
                                                       <small>Approve</small>
                                                 </a>
                                                 <br>
 
-                                                <form action="{{route('suspend-vendor', [$data->vendor_id])}}" method="POST"
+                                                <form action="{{route('suspend-vendor', [$data->id])}}" method="POST"
                                                       role="search">
                                                       {{ csrf_field() }}
                                                       <div class="input-group mb-2">
