@@ -2307,7 +2307,7 @@ class AdminController extends Controller
             ->pluck('role_name')->first();
     
             $countVendor =  DB::table('multi_store')
-            ->join('vendor', 'vendor.id', 'multi_store.vendor_id')
+           // ->join('vendor', 'vendor.id', 'multi_store.vendor_id')
             ->where('multi_store.level', 'parent')
             ->get();
 
@@ -2326,7 +2326,7 @@ class AdminController extends Controller
             ->join('state', 'state.id', '=', 'multi_store.state_id')
             ->where('multi_store.level', 'parent')
             ->select(['multi_store.*', 'state.state'])
-            ->orderBy('vendor.created_at', 'desc')
+            ->orderBy('multi_store.created_at', 'desc')
             ->where(function ($query) use ($search) {  // <<<
             $query->where('multi_store.multi_store_name', 'LIKE', '%'.$search.'%');
             })
