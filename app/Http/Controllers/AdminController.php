@@ -2520,11 +2520,11 @@ class AdminController extends Controller
                 $childStore->level            = 'child';
                 $childStore->save();
 
-                $array  = strval( $addVendor->id ) ;
-                $vendorID = json_decode($array, true);
+                $string  = strval( $addVendor->id ) ;
+                $vendorID =   $string ;
                 User::where('id', $addUser->id)
                 ->update([
-                    'vendor' =>  $vendorID,
+                    'vendor' => ["$vendorID"],
                     'parent_store' => $request->parent_id
                 ]);
                 //create vendor id in sales platform table
