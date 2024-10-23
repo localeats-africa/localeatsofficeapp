@@ -2322,10 +2322,11 @@ class AdminController extends Controller
             $search = $request->input('search');
     
             $vendor =  DB::table('multi_store')
-           // ->join('multi_store', 'multi_store.vendor_id', 'vendor.id')
+           // ->join('users', 'users.parent_store', 'multi_store.id')
             ->join('state', 'state.id', '=', 'multi_store.state_id')
             ->where('multi_store.level', 'parent')
             ->select(['multi_store.*', 'state.state'])
+            //dd( $vendor);
             ->orderBy('multi_store.created_at', 'desc')
             ->where(function ($query) use ($search) {  // <<<
             $query->where('multi_store.multi_store_name', 'LIKE', '%'.$search.'%');
