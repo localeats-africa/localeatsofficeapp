@@ -2520,8 +2520,8 @@ class AdminController extends Controller
                 $childStore->level            = 'child';
                 $childStore->save();
 
-                $vendorID = [];
-                $vendorID = $addVendor->id;
+                $array  = strval( $addVendor->id ) ;
+                $vendorID = json_decode($array, true);
                 User::where('id', $addUser->id)
                 ->update([
                     'vendor' =>  $vendorID,
