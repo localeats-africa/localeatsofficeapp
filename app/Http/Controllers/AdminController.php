@@ -2249,8 +2249,16 @@ class AdminController extends Controller
             // $addVendor->save();
 
               $parentStore = new MultiStore();
-              $parentStore->user_id          = $addUser->id;
-              $parentStore->multi_store_name = $request->store_name;;
+              $parentStore->user_id             = $addUser->id;
+              $parentStore->store_logo          = $logoPath;
+              $parentStore->multi_store_name    = $request->store_name;
+              $parentStore->address             = $request->address;
+              $parentStore->store_area          = $request->area;
+              $parentStore->state_id            = $request->state;
+              $parentStore->contact_fname       = $request->first_name;
+              $parentStore->contact_lname        = $request->last_name;
+              $parentStore->contact_phone       = $request->phone;
+              $parentStore->country_id          = $request->country;
               $parentStore->level            = 'parent';
               $parentStore->save();
               User::where('id', $addUser->id)->update(['parent_store' => $parentStore->id]);
