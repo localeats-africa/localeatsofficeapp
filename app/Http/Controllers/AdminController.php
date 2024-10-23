@@ -2418,8 +2418,8 @@ class AdminController extends Controller
         ->where('users.id', $id)
         ->pluck('role_name')->first();
 
-        $vendorName = DB::table('vendor')->where('id', $vendor_id)
-        ->select('*')->pluck('store_name')->first();
+        $vendorName = DB::table('multi_store')->where('id', $vendor_id)
+        ->select('*')->pluck('multi_store_name')->first();
 
         $parent_id = DB::table('multi_store')
         ->where('vendor_id', $vendor_id)
