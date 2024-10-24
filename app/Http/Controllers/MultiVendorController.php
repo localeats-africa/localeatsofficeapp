@@ -692,9 +692,9 @@ class MultiVendorController extends Controller
         $vendor_id      = $request->outlet;
         $platform_id    = $request->platform;
 
-        $parent_id      = User::where('vendor', $vendor_id)
-        ->get()->pluck('parent_store')->first();
-          //dd($parent_id);
+        $parent_id      = SubStore::where('vendor_id', $vendor_id)
+        ->get()->pluck('multi_store_id')->first();
+         // dd($parent_id);
         $platform_name  = Platforms::where('name', $platform_id)
         ->get()->pluck('id')->first();
 
