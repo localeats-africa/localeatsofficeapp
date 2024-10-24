@@ -167,7 +167,7 @@ class MultiVendorController extends Controller
         $allOnlineSales = VendorOnlineSales::join('multi_store', 'multi_store.id', 'vendor_online_sales.parent_id')
        // ->join('users', 'users.parent_store', 'multi_store.id')
         ->where('multi_store.multi_store_name', '01Shawarma')
-        ->get(['vendor_online_sales.order_amount']);
+        ->get(['vendor_online_sales.*']);
 
         return view('multistore.parent.admin', compact('username','parent', 'outlets',
         'offlineSales', 'salesChannel', 'countAllOrder', 'countPlatformWhereOrderCame', 'sumAllOrders', 
@@ -708,6 +708,8 @@ class MultiVendorController extends Controller
         ->get();
         //dd($glovoImport);
 
+   
+
         if($glovoImport->count() >= 1){
             foreach($glovoImport as $glovo){
                 $sales = new VendorOnlineSales();
@@ -715,6 +717,7 @@ class MultiVendorController extends Controller
                 $sales->parent_id       = $glovo->parent_id;
                 $sales->vendor_id       = $glovo->vendor_id;
                 $sales->platform_id     = $glovo->platform_id;
+                $sales->bts_commission  = $glovo->o * 8 / 100;
                 $sales->order_ref       = $glovo->b;
                 $sales->order_amount    = $glovo->o;
                 $sales->description     = $glovo->f;
