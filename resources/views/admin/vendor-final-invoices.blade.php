@@ -205,9 +205,10 @@
                                           id="orders">
                                           <thead>
                                                 <tr>
-                                                      <th> Import Date </th>
+                                                      <th> Upload Date </th>
                                                       <th>Vendor</th>
                                                       <th>Invoice Ref.</th>
+                                                      <th>Invoice Date</th>
                                                       <th>Payment Status</th>
                                                       <th></th>
                                                 </tr>
@@ -221,6 +222,12 @@
                                                       <td class="text-sm">{{$data->vendor_name}}
                                                              </td>
                                                       <td>{{ $data->invoice_ref}}</td>
+                                                      <td> 
+                                                            @if($data->invoice_start_date == null)
+                                                            @else
+                                                            {{date('d/m/Y',  strtotime($data->invoice_start_date))}} - {{date('d/m/Y',  strtotime($data->invoice_end_date))}} 
+                                                            @endif 
+                                                      </td>
                                                       <td>
                                                             @if( $data->payment_status =='pending ')
                                                             <span
