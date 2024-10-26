@@ -337,7 +337,7 @@ class MultiVendorController extends Controller
         'chowdeckSalesPercentageChart', 'glovoSalesPercentageChart', 
         'edenSalesPercentageChart', 'piechartData' ,  'barChartData',
         'sumGlovoComm', 'manoOrderCount', 
-        'manoSalesPercentageChart',));
+        'manoSalesPercentageChart', 'data'));
         }
     }
 
