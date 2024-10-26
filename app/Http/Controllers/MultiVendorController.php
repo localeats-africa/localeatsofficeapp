@@ -186,9 +186,12 @@ class MultiVendorController extends Controller
         $profiltLoss =  $allSales - $outletsExpenses -  $vatConsumptionTax ;
 
         $platformOrders = DB::table('vendor_online_sales')
-        ->join('platforms', 'platforms.id', '=', 'vendor_online_sales.platform_id')->distinct()
+        ->join('platforms', 'platforms.name', '=', 'vendor_online_sales.platform_id')->distinct()
         ->where('platforms.deleted_at', null)
+        ->where('vendor_online_sales.parent_id', $parent)
         ->get(['platforms.*']);
+
+        //dd( $platformOrders );
 
         $chartYearlyTotalSales = VendorOnlineSales::select(
             \DB::raw('YEAR(delivery_date) as year'),)
@@ -221,28 +224,28 @@ class MultiVendorController extends Controller
             ];
     
             $chowdeckOrderCount= DB::table('vendor_online_sales')
-            ->join('platforms', 'platforms.id', '=', 'vendor_online_sales.platform_id')
+            ->join('platforms', 'platforms.name', '=', 'vendor_online_sales.platform_id')
             ->where('platforms.name', 'chowdeck')
             ->where('vendor_online_sales.order_amount', '!=', null)
             ->where('vendor_online_sales.parent_id', $parent)
             ->get('vendor_online_sales.platform_id')->count();
     
             $glovoOrderCount= DB::table('vendor_online_sales')
-            ->join('platforms', 'platforms.id', '=', 'vendor_online_sales.platform_id')
+            ->join('platforms', 'platforms.name', '=', 'vendor_online_sales.platform_id')
             ->where('platforms.name', 'glovo')
             ->where('vendor_online_sales.order_amount', '!=', null)
             ->where('vendor_online_sales.parent_id', $parent)
             ->get('vendor_online_sales.platform_id')->count();
     
             $edenOrderCount= DB::table('vendor_online_sales')
-            ->join('platforms', 'platforms.id', '=', 'vendor_online_sales.platform_id')
+            ->join('platforms', 'platforms.name', '=', 'vendor_online_sales.platform_id')
             ->where('platforms.name', 'edenlife')
             ->where('vendor_online_sales.order_amount', '!=', null)
             ->where('vendor_online_sales.parent_id', $parent)
             ->get('vendor_online_sales.platform_id')->count();
     
             $manoOrderCount= DB::table('vendor_online_sales')
-            ->join('platforms', 'platforms.id', '=', 'vendor_online_sales.platform_id')
+            ->join('platforms', 'platforms.name', '=', 'vendor_online_sales.platform_id')
             ->where('platforms.name', 'mano')
             ->where('vendor_online_sales.order_amount', '!=', null)
             ->where('vendor_online_sales.parent_id', $parent)
