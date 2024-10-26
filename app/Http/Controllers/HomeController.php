@@ -1134,6 +1134,9 @@ class HomeController extends Controller
         $pin = mt_rand(1000000, 9999999);
         $invoice_ref ='L'.str_shuffle($pin);
 
+        $startDate      =   date("Y-m-d", strtotime($request->from)) ;
+        $endDate        =  date("Y-m-d", strtotime($request->to));
+
         $tempOrder = TempOrder::whereDate('created_at', $today)
         ->where('vendor_id', $vendor)->get();
         //$glovoComm =  each order_amount * 0.22 ;
@@ -1185,7 +1188,9 @@ class HomeController extends Controller
                 Orders::where('id', $storeOrder->id)
                 ->update([
                 'number_of_order_merge' => $countRow,
-                'payment_status' => 'pending',
+                'payment_status'        => 'pending',
+                'invoice_start_date'    => $startDate,
+                'invoice_end_date'      => $endDate,
                 ]);
                 
                 TempOrder::where('vendor_id', $vendor)->delete();
