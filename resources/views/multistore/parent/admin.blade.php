@@ -217,10 +217,10 @@
                                           <div class="card-body">
                                                 <img src="{{ asset('assets/images/dashboard/circle.svg')}}"
                                                       class="card-img-absolute" alt="circle-image">
-                                                <h4 class="font-weight-normal">Bertatech Sales <i
+                                                <h4 class="font-weight-normal">Consumption & VAT <i
                                                             class="mdi mdi-cloud-braces mdi-24px float-end"></i>
                                                 </h4>
-                                                <h2 class="mb-5">₦{{$btsCommission}}</h2>
+                                                <h2 class="mb-5">₦{{$vatConsumptionTax}}</h2>
                                                 <hr class="w-100">
                                           </div>
                                     </div>
@@ -331,40 +331,6 @@
                                     </div>
                               </div>
 
-                              <div class="col-md-3 stretch-card grid-margin">
-                                    <div class="card bg-warning card-img-holder text-dark">
-                                          <div class="card-body">
-                                                <img src="{{ asset('assets/images/dashboard/circle.svg') }}"
-                                                      class="card-img-absolute" alt="circle-image">
-                                                <h4 class="font-weight-normal"> Consumption & VAT <i
-                                                            class="mdi mdi-24px float-end text-dark">
-                                                            <svg xmlns="http://www.w3.org/2000/svg" class="icon"
-                                                                  width="20" height="20" viewBox="0 0 24 24"
-                                                                  stroke-width="2" stroke="currentColor" fill="none"
-                                                                  stroke-linecap="round" stroke-linejoin="round">
-                                                                  <path stroke="none" d="M0 0h24v24H0z" fill="none">
-                                                                  </path>
-                                                                  <path
-                                                                        d="M9 14c0 1.657 2.686 3 6 3s6 -1.343 6 -3s-2.686 -3 -6 -3s-6 1.343 -6 3z">
-                                                                  </path>
-                                                                  <path
-                                                                        d="M9 14v4c0 1.656 2.686 3 6 3s6 -1.344 6 -3v-4">
-                                                                  </path>
-                                                                  <path
-                                                                        d="M3 6c0 1.072 1.144 2.062 3 2.598s4.144 .536 6 0c1.856 -.536 3 -1.526 3 -2.598c0 -1.072 -1.144 -2.062 -3 -2.598s-4.144 -.536 -6 0c-1.856 .536 -3 1.526 -3 2.598z">
-                                                                  </path>
-                                                                  <path d="M3 6v10c0 .888 .772 1.45 2 2"></path>
-                                                                  <path d="M3 11c0 .888 .772 1.45 2 2"></path>
-                                                            </svg>
-                                                      </i>
-                                                </h4>
-                                                <h2 class="mb-5">₦{{$vatConsumptionTax}}</h2>
-                                                <hr class="w-100">
-               
-                                          </div>
-
-                                    </div>
-                              </div>
 
 
                         </div><!---row---> 
