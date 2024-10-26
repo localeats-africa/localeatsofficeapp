@@ -235,7 +235,7 @@
                                                 <h4 class="font-weight-normal"> Online Sales <i
                                                             class="mdi mdi-shopping  mdi-24px float-end"></i>
                                                 </h4>
-                                                <h2 class="mb-5">₦{{number_format($sumAllOrders)}}</h2>
+                                                <h2 class="mb-5">₦{{number_format($allSales)}}</h2>
                                                 <hr class="w-100">
                                                 <h6 class="card-text">From <span class="text-white">(
                                                             {{$countAllOrder}} )</span>
