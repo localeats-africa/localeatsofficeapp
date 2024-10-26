@@ -220,7 +220,7 @@
                                                 <h4 class="font-weight-normal">Bertatech Sales <i
                                                             class="mdi mdi-cloud-braces mdi-24px float-end"></i>
                                                 </h4>
-                                                <h2 class="mb-5">₦{{0}}</h2>
+                                                <h2 class="mb-5">₦{{$btsCommission}}</h2>
                                                 <hr class="w-100">
                                           </div>
                                     </div>
