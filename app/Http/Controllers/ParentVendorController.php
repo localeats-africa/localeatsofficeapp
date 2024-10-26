@@ -868,10 +868,10 @@ class ParentVendorController extends Controller
     
            $outletsExpenses = DB::table('vendor_expenses')
            ->join('sub_store', 'sub_store.vendor_id', '=', 'vendor_expenses.vendor_id')
-           ->where('vendor_expenses.vendor_id', $vendor_id)
-           ->where('parent', $parent)
+           //->where('vendor_expenses.vendor_id', $vendor_id)
+           ->where('vendor_expenses.parent', $parent)
            ->sum('vendor_expenses.cost');
-    
+
             $countAllOrder = VendorOnlineSales::join('sub_store', 'sub_store.vendor_id', '=', 'vendor_online_sales.vendor_id')
             ->where('sub_store.vendor_id', $vendor_id)
             ->where('vendor_online_sales.parent_id', $parent)
