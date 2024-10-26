@@ -93,10 +93,7 @@ class MultiVendorController extends Controller
         ->join('sub_store', 'sub_store.vendor_id', 'vendor.id')
         ->where('sub_store.multi_store_id', $parent)
         ->get('sub_store.vendor_id');
-        //dd($outletsVendorID);
 
-        // $consumers = collect($outletsVendorID);
-        // count only active vendor
         $salesChannel = DB::table('sales_platform')
         ->join('sub_store', 'sub_store.vendor_id', '=', 'sales_platform.vendor_id')
         ->where('sales_platform.vendor_status', 'active')
@@ -147,6 +144,16 @@ class MultiVendorController extends Controller
         ->where('platforms.name', 'chowdeck')
         ->where('vendor_online_sales.order_amount', '!=', null)
         ->get('vendor_online_sales.platform_id')->count();
+        //  TOTAL DEDUCTION
+         //bts percentage for 01Shawarma 8% of each order (online and offline)
+        // vat is 7.5%$. comsuption tax 5 %
+        $totalBTSCommission =  $sumAllOrders * 8 / 100;
+        $totalVAT =  $sumAllOrders * 7.5 / 100;
+        $totalComsuption = $sumAllOrders * 5 / 100;
+
+        $vatConsumptionTax =  $totalVAT + $totalComsuption;
+        $allSales = $sumAllOrders  + $offlineSales->sum('amount');
+        $profiltLoss =  $allSales - $outletsExpenses -  $vatConsumptionTax ;
 
         $sumChowdeckOrder= DB::table('vendor_online_sales')
         ->join('platforms', 'platforms.name', '=', 'vendor_online_sales.platform_id')
@@ -173,25 +180,18 @@ class MultiVendorController extends Controller
         ->where('vendor_online_sales.order_amount', '!=', null)
         ->sum('vendor_online_sales.order_amount');
 
-        $sumGlovoComm = (int)$sumAllOrders * 0.22;
+        $totalGlovoComm = (int)$sumGlovoOrder * 0.22;
+        $glovoBTSCommission =  $sumGlovoOrder * 8 / 100;
+        $glovoVAT =  $sumGlovoOrder * 7.5 / 100;
+        $glovoComsuption = $sumGlovoOrder * 5 / 100;
 
-        //bts percentage for 01Shawarma 8% of each order (online and offline)
-        // vat is 7.5%$. comsuption tax 5 %
-        $btsCommission =  $sumAllOrders * 8 / 100;
-        $vat =  $sumAllOrders * 7.5 / 100;
-        $comsuption = $sumAllOrders * 5 / 100;
-
-        $vatConsumptionTax =  $vat + $comsuption;
-        $allSales = $sumAllOrders  + $offlineSales->sum('amount');
-        $profiltLoss =  $allSales - $outletsExpenses -  $vatConsumptionTax ;
+        $allGlovoOrders = $sumGlovoOrder - $glovoBTSCommission  - $glovoVAT -  $glovoComsuption -  $totalGlovoComm;
 
         $platformOrders = DB::table('vendor_online_sales')
         ->join('platforms', 'platforms.name', '=', 'vendor_online_sales.platform_id')->distinct()
         ->where('platforms.deleted_at', null)
         ->where('vendor_online_sales.parent_id', $parent)
         ->get(['platforms.*']);
-
-        //dd( $platformOrders );
 
         $chartYearlyTotalSales = VendorOnlineSales::select(
             \DB::raw('YEAR(delivery_date) as year'),)
@@ -209,7 +209,6 @@ class MultiVendorController extends Controller
             ->groupBy('month')
             ->orderBy('month', 'asc')
             ->get(); 
-    
     
             $chartSalesMonth = Arr::pluck($chartMonthlyTotalSales, 'month');
             $chartSalesVolume = Arr::pluck($chartMonthlyTotalSales, 'sales_volume');
@@ -276,10 +275,11 @@ class MultiVendorController extends Controller
             ->groupby('month')
             ->orderBy('month', 'asc')
             ->get();
+
         $barChartChowdeckSales = Arr::pluck($chowdeckOrder, 'sales');
         $barChartChowdeckSCount = Arr::pluck($chowdeckOrder, 'count');
     
-        $glovoOrder = VendorOnlineSales::join('platforms', 'platforms.name', '=', 'vendor_online_sales.platform_id')
+        $glovoOrder =  VendorOnlineSales::join('platforms', 'platforms.name', '=', 'vendor_online_sales.platform_id')
         ->select(
             \DB::raw('DATE_FORMAT(vendor_online_sales.delivery_date,"%m/%Y") as month'),
             \DB::raw('SUM(vendor_online_sales.order_amount) as sales'),
@@ -322,11 +322,30 @@ class MultiVendorController extends Controller
             ->orderBy('month', 'asc')
             ->get();
         $barChartManoSales = Arr::pluck($manoOrder, 'sales');
-      
+
+        //chowdeck
+        $chowdeckResult = array_slice($barChartChowdeckSales, 1);
+        $stringChowdeckSales =  implode(",",$chowdeckResult);
+        $monthlyBTSCommissionChowdeck = (int) $stringChowdeckSales  * 8 / 100;
+        $monthlyVATChowdeck =  (int) $stringChowdeckSales * 7.5 / 100;
+        $monthlyComsuptionChowdeck = (int) $stringChowdeckSales * 5 / 100;
+        $chowdeckBarChartTax = (int) $stringChowdeckSales - $monthlyBTSCommissionChowdeck - $monthlyVATChowdeck - $monthlyComsuptionChowdeck;
+        $barChartChowdeck = [ '0' => 0, $chowdeckBarChartTax];
+        // glovo
+        $glovoResult = array_slice($barChartGlovoSales, 1);
+        $stringGlovoSales =  implode(",",$glovoResult);
+        $monthlyBTSCommissionGlovo = (int) $stringGlovoSales  * 8 / 100;
+        $monthlyVATGlovo =  (int) $stringGlovoSales * 7.5 / 100;
+        $monthlyComsuptionGlovo = (int) $stringGlovoSales * 5 / 100;
+        $monthlyGlovoComm = (int)$stringGlovoSales * 0.22;
+        $glovoBarChartTax = (int) $stringGlovoSales - $monthlyBTSCommissionGlovo - $monthlyVATGlovo - $monthlyComsuptionGlovo  -  $monthlyGlovoComm;
+
+        $barChartGlovo = [ '0' => 0, $glovoBarChartTax];
+          //dd(  $glovoBarChartlessTax);
         $barChartData = [
             'months'        =>  $chartSalesMonth,
-            'chocdekSales'  =>  $barChartChowdeckSales,
-            'glovoSales'    =>  $barChartGlovoSales,
+            'chocdekSales'  =>  $barChartChowdeck ,
+            'glovoSales'    =>  $barChartGlovo,
             'edenSales'     =>  $barChartEdenSales,
             'manoSales'     =>  $barChartManoSales,
         ]; 
@@ -335,12 +354,12 @@ class MultiVendorController extends Controller
         'offlineSales', 'salesChannel', 'countAllOrder', 'countPlatformWhereOrderCame', 'sumAllOrders', 
          'chowdeckOrderCount', 'countOutletsFromWhereOfflineSales','outletsExpenses',
         'GlovoOrderCount', 'sumGlovoOrder', 'countOutletsExpensesCameFrom', 'sumChowdeckOrder', 
-        'btsCommission', 'vatConsumptionTax', 'profiltLoss', 'salesYear', 'platformOrders',
+        'totalBTSCommission', 'vatConsumptionTax', 'profiltLoss', 'salesYear', 'platformOrders',
         'chowdeckOrderCount','glovoOrderCount', 'edenOrderCount', 'currentYear',
         'chowdeckSalesPercentageChart', 'glovoSalesPercentageChart', 
         'edenSalesPercentageChart', 'piechartData' ,  'barChartData',
         'sumGlovoComm', 'manoOrderCount', 
-        'manoSalesPercentageChart', 'data'));
+        'manoSalesPercentageChart', 'data', 'allGlovoOrders'));
         }
     }
 
