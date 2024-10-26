@@ -143,21 +143,7 @@
                                           </div>
                                     </div>
                               </div>
-                              <div class="col-md-3 stretch-card grid-margin">
-                                    <div class="card bg-gradient-info card-img-holder text-dark">
-                                          <div class="card-body">
-                                                <img src="{{ asset('assets/images/dashboard/circle.svg') }}"
-                                                      class="card-img-absolute" alt="circle-image">
-                                                <h4 class="font-weight-normal">Outlets <i
-                                                            class="mdi mdi-pot-steam  mdi-24px float-end"></i>
-                                                </h4>
-                                                <h2 class="mb-5">{{$outlets->count()}}</h2>
-                                                <hr class="w-100">
-                                          </div>
-
-                                    </div>
-                              </div>
-
+                 
 
                               <div class="col-md-3 stretch-card grid-margin">
                                     <div class="card bg-success card-img-holder text-dark">
