@@ -263,7 +263,7 @@ class MultiVendorController extends Controller
             ];
             
         // barchart
-        $chowdeckOrder =  VendorOnlineSales::join('platforms', 'platforms.id', '=', 'vendor_online_sales.platform_id')
+        $chowdeckOrder =  VendorOnlineSales::join('platforms', 'platforms.name', '=', 'vendor_online_sales.platform_id')
         ->select(
             \DB::raw('DATE_FORMAT(vendor_online_sales.delivery_date,"%m/%Y") as month'),
             \DB::raw('SUM(vendor_online_sales.order_amount) as sales'),
@@ -279,7 +279,7 @@ class MultiVendorController extends Controller
         $barChartChowdeckSales = Arr::pluck($chowdeckOrder, 'sales');
         $barChartChowdeckSCount = Arr::pluck($chowdeckOrder, 'count');
     
-        $glovoOrder = VendorOnlineSales::join('platforms', 'platforms.id', '=', 'vendor_online_sales.platform_id')
+        $glovoOrder = VendorOnlineSales::join('platforms', 'platforms.name', '=', 'vendor_online_sales.platform_id')
         ->select(
             \DB::raw('DATE_FORMAT(vendor_online_sales.delivery_date,"%m/%Y") as month'),
             \DB::raw('SUM(vendor_online_sales.order_amount) as sales'),
@@ -294,7 +294,7 @@ class MultiVendorController extends Controller
             ->get();
             $barChartGlovoSales = Arr::pluck($glovoOrder, 'sales');
     
-        $edenOrder=  VendorOnlineSales::join('platforms', 'platforms.id', '=', 'vendor_online_sales.platform_id')
+        $edenOrder=  VendorOnlineSales::join('platforms', 'platforms.name', '=', 'vendor_online_sales.platform_id')
         ->select(
             \DB::raw('DATE_FORMAT(vendor_online_sales.delivery_date,"%m/%Y") as month'),
             \DB::raw('SUM(vendor_online_sales.order_amount) as sales'),
@@ -309,7 +309,7 @@ class MultiVendorController extends Controller
             ->get();
             $barChartEdenSales = Arr::pluck($edenOrder, 'sales');
     
-        $manoOrder =  VendorOnlineSales::join('platforms', 'platforms.id', '=', 'vendor_online_sales.platform_id')
+        $manoOrder =  VendorOnlineSales::join('platforms', 'platforms.name', '=', 'vendor_online_sales.platform_id')
             ->select(
             \DB::raw('DATE_FORMAT(vendor_online_sales.delivery_date,"%m/%Y") as month'),
             \DB::raw('SUM(vendor_online_sales.order_amount) as sales'),
