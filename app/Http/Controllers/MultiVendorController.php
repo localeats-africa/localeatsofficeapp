@@ -68,6 +68,16 @@ class MultiVendorController extends Controller
         ->join('users', 'users.role_id', 'role.id')
         ->where('users.id', $user_id)
         ->pluck('role_name')->first();
+        $weekStartMonday = Carbon::now()->startOfWeek();// Monday
+        $weekEndSunday = Carbon::now()->endOfWeek(); //Snnday
+        $startOfWeek = $weekStartMonday->format('Y-m-d');
+        $endOfWeek =   $weekEndSunday->format('Y-m-d');
+
+        $today = Carbon::now()->format('Y-m-d');
+        $currentYear =  Carbon::now()->year;
+
+        $sevenDaysBack = Carbon::now()->subDays(7)->startOfDay();
+        $lastSevenDays  =  date('Y-m-d', strtotime($sevenDaysBack));
 
         $parent =  DB::table('multi_store')
         ->join('users', 'users.parent_store', 'multi_store.id')
@@ -163,6 +173,8 @@ class MultiVendorController extends Controller
         ->where('vendor_online_sales.order_amount', '!=', null)
         ->sum('vendor_online_sales.order_amount');
 
+        $sumGlovoComm = (int)$sumAllOrders * 0.22;
+
         //bts percentage for 01Shawarma 8% of each order (online and offline)
         // vat is 7.5%$. comsuption tax 5 %
         $btsCommission =  $sumAllOrders * 8 / 100;
@@ -172,6 +184,12 @@ class MultiVendorController extends Controller
         $vatConsumptionTax =  $vat + $comsuption;
         $allSales = $sumAllOrders  + $offlineSales->sum('amount');
         $profiltLoss =  $allSales - $outletsExpenses -  $vatConsumptionTax ;
+
+        $platformOrders = DB::table('vendor_online_sales')
+        ->join('platforms', 'platforms.id', '=', 'vendor_online_sales.platform_id')->distinct()
+        ->where('platforms.deleted_at', null)
+        ->get(['platforms.*']);
+
         $chartYearlyTotalSales = VendorOnlineSales::select(
             \DB::raw('YEAR(delivery_date) as year'),)
             ->where('vendor_online_sales.order_amount', '!=', null)
@@ -314,7 +332,12 @@ class MultiVendorController extends Controller
         'offlineSales', 'salesChannel', 'countAllOrder', 'countPlatformWhereOrderCame', 'sumAllOrders', 
          'chowdeckOrderCount', 'countOutletsFromWhereOfflineSales','outletsExpenses',
         'GlovoOrderCount', 'sumGlovoOrder', 'countOutletsExpensesCameFrom', 'sumChowdeckOrder', 
-        'btsCommission', 'vatConsumptionTax', 'profiltLoss'));
+        'btsCommission', 'vatConsumptionTax', 'profiltLoss', 'salesYear', 'platformOrders',
+        'chowdeckOrderCount','glovoOrderCount', 'edenOrderCount', 'currentYear',
+        'chowdeckSalesPercentageChart', 'glovoSalesPercentageChart', 
+        'edenSalesPercentageChart', 'piechartData' ,  'barChartData',
+        'sumGlovoComm', 'manoOrderCount', 
+        'manoSalesPercentageChart',));
         }
     }
 
