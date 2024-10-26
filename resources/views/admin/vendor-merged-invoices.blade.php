@@ -133,8 +133,10 @@
                                                       <td> 
                                                             @if($data->invoice_start_date == null)
                                                             @else
-                                                            {{date('d/m/Y',  strtotime($data->invoice_start_date))}} - {{date('d/m/Y',  strtotime($data->invoice_end_date))}} </td>
+                                                            {{date('d/m/Y',  strtotime($data->invoice_start_date))}} - {{date('d/m/Y',  strtotime($data->invoice_end_date))}} 
                                                             @endif 
+                                                      </td>
+                                                         
                                                       <td class="">
                                                             @auth
                                                             @if(Auth::user()->role_id == '2')
