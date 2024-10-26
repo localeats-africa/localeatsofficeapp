@@ -355,6 +355,8 @@ class MultiVendorController extends Controller
             'months'        =>  $chartSalesMonth,
             'chocdekSales'  =>  $barChartChowdeck ,
             'glovoSales'    =>  $barChartGlovo,
+            'edenSales'     =>  '',
+            'manoSales'     => '',
         ]; 
 
         return view('multistore.parent.admin', compact('username','parent', 'outlets',
@@ -659,6 +661,8 @@ class MultiVendorController extends Controller
             'months'        =>  $chartSalesMonth,
             'chocdekSales'  =>  $barChartChowdeck ,
             'glovoSales'    =>  $barChartGlovo,
+            'edenSales'     =>  '',
+            'manoSales'     => '',
         ]; 
 
         return view('multistore.child.admin', compact('username','parent', 'vendor_id', 'outlets',
