@@ -1634,10 +1634,12 @@ class HomeController extends Controller
 
         $invoiceStartDate = Orders::where('vendor_id', $vendor)
         ->where('invoice_ref', $invoice_ref)
+        ->where('invoice_start_date', '!=', null)
         ->get('*')->pluck('invoice_start_date')->first();
 
         $invoiceEndDate = Orders::where('vendor_id', $vendor)
         ->where('invoice_ref', $invoice_ref)
+        ->where('invoice_start_date', '!=', null)
         ->get('*')->pluck('invoice_end_date')->first();
 
         $vendorBusinessName = Vendor::where('id', $vendor)
