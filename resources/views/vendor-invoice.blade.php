@@ -421,7 +421,7 @@ function getPDF() {
                         top_left_margin *
                         4), canvas_image_width, canvas_image_height);
             }
-            pdf.save("invoice-{{$invoice_ref}}.pdf");
+            pdf.save("invoice-{{$invoice_ref}}-{{$invoiceStartDate}}-{{$invoiceEndDate}}.pdf");
       });
 }
 </script>
