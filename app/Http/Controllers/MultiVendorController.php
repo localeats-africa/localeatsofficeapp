@@ -170,10 +170,145 @@ class MultiVendorController extends Controller
         $comsuption = $sumAllOrders * 5 / 100;
 
         $vatConsumptionTax =  $vat + $comsuption;
-
         $allSales = $sumAllOrders  + $offlineSales->sum('amount');
-
         $profiltLoss =  $allSales - $outletsExpenses -  $vatConsumptionTax ;
+        $chartYearlyTotalSales = VendorOnlineSales::select(
+            \DB::raw('YEAR(delivery_date) as year'),)
+            ->where('vendor_online_sales.order_amount', '!=', null)
+            ->where('parent_id', $parent)
+            ->groupby('year')
+            ->get();
+
+        $chartMonthlyTotalSales = VendorOnlineSales::select(
+            \DB::raw("COUNT(*) as total_sales"), 
+            \DB::raw('DATE_FORMAT(delivery_date,"%m/%Y") as month'),
+            \DB::raw('SUM(order_amount) as sales_volume'),
+            )->where('vendor_online_sales.order_amount', '!=', null)
+            ->where('parent_id', $parent)
+            ->groupBy('month')
+            ->orderBy('month', 'asc')
+            ->get(); 
+    
+    
+            $chartSalesMonth = Arr::pluck($chartMonthlyTotalSales, 'month');
+            $chartSalesVolume = Arr::pluck($chartMonthlyTotalSales, 'sales_volume');
+            $chartSalesTotal = Arr::pluck($chartMonthlyTotalSales, 'total_sales');
+    
+            $monthlist = array_map(fn($chartSalesMonth) => Carbon::create(null, $chartSalesMonth)->format('M'), range(1, 12));
+            $salesYear =  Arr::pluck($chartYearlyTotalSales, 'year');
+            $data = [
+             'month' => $chartSalesMonth,
+             'sales' =>  $chartSalesVolume,
+             'total' =>  $chartSalesTotal,
+            ];
+    
+            $chowdeckOrderCount= DB::table('vendor_online_sales')
+            ->join('platforms', 'platforms.id', '=', 'vendor_online_sales.platform_id')
+            ->where('platforms.name', 'chowdeck')
+            ->where('vendor_online_sales.order_amount', '!=', null)
+            ->where('vendor_online_sales.parent_id', $parent)
+            ->get('vendor_online_sales.platform_id')->count();
+    
+            $glovoOrderCount= DB::table('vendor_online_sales')
+            ->join('platforms', 'platforms.id', '=', 'vendor_online_sales.platform_id')
+            ->where('platforms.name', 'glovo')
+            ->where('vendor_online_sales.order_amount', '!=', null)
+            ->where('vendor_online_sales.parent_id', $parent)
+            ->get('vendor_online_sales.platform_id')->count();
+    
+            $edenOrderCount= DB::table('vendor_online_sales')
+            ->join('platforms', 'platforms.id', '=', 'vendor_online_sales.platform_id')
+            ->where('platforms.name', 'edenlife')
+            ->where('vendor_online_sales.order_amount', '!=', null)
+            ->where('vendor_online_sales.parent_id', $parent)
+            ->get('vendor_online_sales.platform_id')->count();
+    
+            $manoOrderCount= DB::table('vendor_online_sales')
+            ->join('platforms', 'platforms.id', '=', 'vendor_online_sales.platform_id')
+            ->where('platforms.name', 'mano')
+            ->where('vendor_online_sales.order_amount', '!=', null)
+            ->where('vendor_online_sales.parent_id', $parent)
+            ->get('vendor_online_sales.platform_id')->count();
+    
+            // pie chart
+            $chowdeckSalesPercentageChart = $chowdeckOrderCount / $countAllOrder * 100;
+            $glovoSalesPercentageChart = $glovoOrderCount / $countAllOrder * 100;
+            $edenSalesPercentageChart = $edenOrderCount / $countAllOrder * 100;
+            $manoSalesPercentageChart = $manoOrderCount / $countAllOrder * 100;
+    
+            $piechartData = [            
+            'label' => ['Chowdeck', 'Glovo', 'Eden', 'Mano'],
+            'data' => [round($chowdeckSalesPercentageChart) , round($glovoSalesPercentageChart),  round($edenSalesPercentageChart), round( $manoSalesPercentageChart)] ,
+            ];
+            
+        // barchart
+        $chowdeckOrder =  VendorOnlineSales::join('platforms', 'platforms.id', '=', 'vendor_online_sales.platform_id')
+        ->select(
+            \DB::raw('DATE_FORMAT(vendor_online_sales.delivery_date,"%m/%Y") as month'),
+            \DB::raw('SUM(vendor_online_sales.order_amount) as sales'),
+            \DB::raw('COUNT(vendor_online_sales.order_amount) as count'),
+            )
+            ->where('platforms.name', 'chowdeck')
+            ->where('vendor_online_sales.order_amount', '!=', null)
+            ->where('vendor_online_sales.parent_id', $parent)
+           // ->whereYear('orders.delivery_date', '=', Carbon::now()->year)
+            ->groupby('month')
+            ->orderBy('month', 'asc')
+            ->get();
+        $barChartChowdeckSales = Arr::pluck($chowdeckOrder, 'sales');
+        $barChartChowdeckSCount = Arr::pluck($chowdeckOrder, 'count');
+    
+        $glovoOrder = VendorOnlineSales::join('platforms', 'platforms.id', '=', 'vendor_online_sales.platform_id')
+        ->select(
+            \DB::raw('DATE_FORMAT(vendor_online_sales.delivery_date,"%m/%Y") as month'),
+            \DB::raw('SUM(vendor_online_sales.order_amount) as sales'),
+            \DB::raw('COUNT(vendor_online_sales.order_amount) as count'),
+            )
+            ->where('platforms.name', 'glovo')
+            ->where('vendor_online_sales.order_amount', '!=', null)
+            ->where('vendor_online_sales.parent_id', $parent)
+            //->whereYear('orders.delivery_date', '=', Carbon::now()->year)
+            ->groupby('month')
+            ->orderBy('month', 'asc')
+            ->get();
+            $barChartGlovoSales = Arr::pluck($glovoOrder, 'sales');
+    
+        $edenOrder=  VendorOnlineSales::join('platforms', 'platforms.id', '=', 'vendor_online_sales.platform_id')
+        ->select(
+            \DB::raw('DATE_FORMAT(vendor_online_sales.delivery_date,"%m/%Y") as month'),
+            \DB::raw('SUM(vendor_online_sales.order_amount) as sales'),
+            \DB::raw('COUNT(vendor_online_sales.order_amount) as count'),
+            )
+            ->where('platforms.name', 'edenlife')
+            ->where('vendor_online_sales.order_amount', '!=', null)
+            ->where('vendor_online_sales.parent_id', $parent)
+            //->whereYear('orders.delivery_date', '=', Carbon::now()->year)
+            ->groupby('month')
+            ->orderBy('month', 'asc')
+            ->get();
+            $barChartEdenSales = Arr::pluck($edenOrder, 'sales');
+    
+        $manoOrder =  VendorOnlineSales::join('platforms', 'platforms.id', '=', 'vendor_online_sales.platform_id')
+            ->select(
+            \DB::raw('DATE_FORMAT(vendor_online_sales.delivery_date,"%m/%Y") as month'),
+            \DB::raw('SUM(vendor_online_sales.order_amount) as sales'),
+            \DB::raw('COUNT(vendor_online_sales.order_amount) as count'),
+            )
+            ->where('platforms.name', 'mano')
+            ->where('vendor_online_sales.order_amount', '!=', null)
+            ->where('vendor_online_sales.parent_id', $parent)
+            ->groupby('month')
+            ->orderBy('month', 'asc')
+            ->get();
+        $barChartManoSales = Arr::pluck($manoOrder, 'sales');
+      
+        $barChartData = [
+            'months'        =>  $chartSalesMonth,
+            'chocdekSales'  =>  $barChartChowdeckSales,
+            'glovoSales'    =>  $barChartGlovoSales,
+            'edenSales'     =>  $barChartEdenSales,
+            'manoSales'     =>  $barChartManoSales,
+        ]; 
 
         return view('multistore.parent.admin', compact('username','parent', 'outlets',
         'offlineSales', 'salesChannel', 'countAllOrder', 'countPlatformWhereOrderCame', 'sumAllOrders', 
