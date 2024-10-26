@@ -172,7 +172,7 @@
 
 
                                                             <div class="col-sm-9">
-                                                                
+
                                                                   <form method="post"
                                                                         action="{{ route('add-invoice') }}"
                                                                         name="submit" id=""
@@ -230,32 +230,53 @@
                                     </div>
                               </div>
                               <!---row --->
-
-                              <div class="row">
-                                    <div class="col-md-6">
-                                    </div>
-                                    <div class="col-md-6 col-12 grid-margin stretch-card justify-content-end">
-
-                                          <!-- send button here -->
-                                          <div class="card-footer bg-transparent mt-auto">
-                                                <div class="btn-list ">
-                                                      <form method="post" action="{{ route('merge-invoice') }}"
-                                                            enctype="multipart/form-data">
-                                                            @csrf
-                                                            {{csrf_field()}}
-                                                            <input type="hidden" value="{{$vendorID}}" name="vendor">
-                                                            <button type="submit"
-                                                                  class="btn text-white bg-gradient-primary ">Merge &
-                                                                  Compute</button>
-                                                      </form>
-
-                                                </div>
+                              <form method="post" action="{{ route('merge-invoice') }}" enctype="multipart/form-data">
+                                    @csrf
+                                    {{csrf_field()}}
+                                    <div class="row">
+                                          <div class="col-md-4 col-12">
                                           </div>
 
-                                    </div>
-                              </div>
-                              <!-- row -->
+                                          <div class="col-md-8 col-12 grid-margin stretch-card justify-content-end">
 
+                                                <div class="form-group">
+                                                      <div class="input-group ">
+                                                            <span class="input-group-append">
+                                                                  <span class="input-group-text text-dark d-block ">
+                                                                        Start  <i class="text-danger">*</i>
+                                                                  </span>
+                                                            </span>
+                                                            <input type="text" value="" name="invoice_start_date" class="form-control"
+                                                                  placeholder="" id="from" />
+
+                                                      </div>
+                                                </div>
+
+                                                <div class="form-group">
+                                                      <div class="input-group ">
+                                                            <span class="input-group-append">
+                                                                  <span class="input-group-text text-dark d-block">
+                                                                        End  <i class="text-danger">*</i>
+                                                                  </span>
+                                                            </span>
+                                                            <input type="text" value="" name="invoice_end_date" class="form-control"
+                                                                  placeholder="" id="to" />
+                                                            <span class="input-group-append">
+                                                                  <span class="input-group-text bg-light d-block">
+                                                                        <i class="fa fa-calendar"></i>
+                                                                  </span>
+                                                                  
+                                                            </span>
+                                                            <input type="hidden" value="{{$vendorID}}" name="vendor">
+                                                      <button type="submit"
+                                                            class="btn text-white bg-gradient-primary ">Merge &
+                                                            Compute</button>
+                                                      </div>
+                                                </div>
+                                          </div>
+                                    </div>
+                                    <!-- row -->
+                              </form>
                         </div>
                   </div>
             </div>
