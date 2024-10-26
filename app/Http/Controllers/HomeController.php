@@ -1127,6 +1127,11 @@ class HomeController extends Controller
     }
     
     public function mergeInvoice(Request $request){
+        $this->validate($request, [ 
+            'from'      => 'required|string|max:255',
+            'to'        => 'required|string|max:255',
+        ]);
+        //th
         $vendor = $request->vendor;
         $today = Carbon::today();
         $characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
