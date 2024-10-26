@@ -1632,6 +1632,14 @@ class HomeController extends Controller
         ->where('invoice_ref', $invoice_ref)
         ->get('*')->pluck('invoice_ref')->first();
 
+        $invoiceStartDate = Orders::where('vendor_id', $vendor)
+        ->where('invoice_ref', $invoice_ref)
+        ->get('*')->pluck('invoice_start_date')->first();
+
+        $invoiceEndDate = Orders::where('vendor_id', $vendor)
+        ->where('invoice_ref', $invoice_ref)
+        ->get('*')->pluck('invoice_end_date')->first();
+
         $vendorBusinessName = Vendor::where('id', $vendor)
         ->get('*')->pluck('store_name')->first();
 
@@ -1714,7 +1722,8 @@ class HomeController extends Controller
             'vendorEmail', 'vendorFname', 'vendorLname', 'orders',
             'sumFoodPrice', 'sumExtra','vendorFoodPrice', 'payout', 
             'payment_status', 'invoice_ref', 'vendor', 
-            'vendorAccountNumber', 'vendorAccountName', 'vendorBankName', 'payment_date'));
+            'vendorAccountNumber', 'vendorAccountName', 'vendorBankName', 
+            'payment_date', 'invoiceStartDate', 'invoiceEndDate'));
 
      }
 
