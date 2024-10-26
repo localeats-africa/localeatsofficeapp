@@ -164,15 +164,14 @@ class MultiVendorController extends Controller
         ->sum('vendor_online_sales.order_amount');
 
         //bts percentage for 01Shawarma 8% of each order (online and offline)
-        $allOnlineSales = VendorOnlineSales::join('multi_store', 'multi_store.id', 'vendor_online_sales.parent_id')
-       // ->join('users', 'users.parent_store', 'multi_store.id')
+        $btsCommission = VendorOnlineSales::join('multi_store', 'multi_store.id', 'vendor_online_sales.parent_id')
         ->where('multi_store.multi_store_name', '01Shawarma')
-        ->get(['vendor_online_sales.*']);
+        ->sum('vendor_online_sales.bts_commission');
 
         return view('multistore.parent.admin', compact('username','parent', 'outlets',
         'offlineSales', 'salesChannel', 'countAllOrder', 'countPlatformWhereOrderCame', 'sumAllOrders', 
          'chowdeckOrderCount', 'countOutletsFromWhereOfflineSales','outletsExpenses',
-        'GlovoOrderCount', 'sumGlovoOrder', 'countOutletsExpensesCameFrom', 'sumChowdeckOrder'));
+        'GlovoOrderCount', 'sumGlovoOrder', 'countOutletsExpensesCameFrom', 'sumChowdeckOrder', 'btsCommission'));
         }
     }
 
