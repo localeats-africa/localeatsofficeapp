@@ -665,10 +665,10 @@ class MultiVendorController extends Controller
             'manoSales'     => '',
         ]; 
 
-        return view('multistore.child.admin', compact('username','parent', 'vendor_id', 'outlets',
+        return view('multistore.child.admin', compact('username','parent', 'vendor_id',
         'offlineSales', 'salesChannel', 'countAllOrder', 'countPlatformWhereOrderCame', 'sumAllOrders', 
          'chowdeckOrderCount', 'countOutletsFromWhereOfflineSales','outletsExpenses',
-        'GlovoOrderCount', 'sumGlovoOrder', 'countOutletsExpensesCameFrom', 'sumChowdeckOrder', 
+        'GlovoOrderCount', 'sumGlovoOrder',  'sumChowdeckOrder', 
         'totalBTSCommission', 'vatConsumptionTax', 'profiltLoss', 'salesYear', 'platformOrders',
         'chowdeckOrderCount','glovoOrderCount', 'edenOrderCount', 'currentYear',
         'chowdeckSalesPercentageChart', 'glovoSalesPercentageChart', 
