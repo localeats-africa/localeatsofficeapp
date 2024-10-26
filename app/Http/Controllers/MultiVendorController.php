@@ -175,7 +175,7 @@ class MultiVendorController extends Controller
         'offlineSales', 'salesChannel', 'countAllOrder', 'countPlatformWhereOrderCame', 'sumAllOrders', 
          'chowdeckOrderCount', 'countOutletsFromWhereOfflineSales','outletsExpenses',
         'GlovoOrderCount', 'sumGlovoOrder', 'countOutletsExpensesCameFrom', 'sumChowdeckOrder', 
-        'btsCommission', 'vatConsumptionTax '));
+        'btsCommission', 'vatConsumptionTax'));
         }
     }
 
