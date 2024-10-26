@@ -179,13 +179,20 @@ class MultiVendorController extends Controller
         ->where('platforms.name', 'glovo')
         ->where('vendor_online_sales.order_amount', '!=', null)
         ->sum('vendor_online_sales.order_amount');
-
+        //glovo
         $totalGlovoComm = (int)$sumGlovoOrder * 0.22;
         $glovoBTSCommission =  $sumGlovoOrder * 8 / 100;
         $glovoVAT =  $sumGlovoOrder * 7.5 / 100;
         $glovoComsuption = $sumGlovoOrder * 5 / 100;
 
         $allGlovoOrders = $sumGlovoOrder - $glovoBTSCommission  - $glovoVAT -  $glovoComsuption -  $totalGlovoComm;
+
+        //chowdeck
+        $chowdeckBTSCommission =  $sumChowdeckOrder * 8 / 100;
+        $chowdeckVAT =  $sumChowdeckOrder * 7.5 / 100;
+        $chowdeckComsuption = $sumChowdeckOrder * 5 / 100;
+
+        $allChowdeckOrders = $sumChowdeckOrder - $chowdeckBTSCommission  - $chowdeckVAT -  $chowdeckComsuption;
 
         $platformOrders = DB::table('vendor_online_sales')
         ->join('platforms', 'platforms.name', '=', 'vendor_online_sales.platform_id')->distinct()
@@ -357,9 +364,8 @@ class MultiVendorController extends Controller
         'totalBTSCommission', 'vatConsumptionTax', 'profiltLoss', 'salesYear', 'platformOrders',
         'chowdeckOrderCount','glovoOrderCount', 'edenOrderCount', 'currentYear',
         'chowdeckSalesPercentageChart', 'glovoSalesPercentageChart', 
-        'edenSalesPercentageChart', 'piechartData' ,  'barChartData',
-        'sumGlovoComm', 'manoOrderCount', 
-        'manoSalesPercentageChart', 'data', 'allGlovoOrders'));
+        'edenSalesPercentageChart', 'piechartData' ,  'barChartData', 'manoOrderCount', 
+        'manoSalesPercentageChart', 'data', 'allGlovoOrders', 'allChowdeckOrders'));
         }
     }
 
