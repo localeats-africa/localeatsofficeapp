@@ -152,8 +152,8 @@ class MultiVendorController extends Controller
         $totalComsuption = $sumAllOrders * 5 / 100;
 
         $vatConsumptionTax =  $totalVAT + $totalComsuption;
-        $allSales = $sumAllOrders  + $offlineSales->sum('amount');
-        $profiltLoss =  $allSales - $outletsExpenses -  $vatConsumptionTax ;
+        $allSales = $sumAllOrders -  $vatConsumptionTax -  $totalBTSCommission + $offlineSales->sum('amount');
+        $profiltLoss =  $allSales - $outletsExpenses  ;
 
         $sumChowdeckOrder= DB::table('vendor_online_sales')
         ->join('platforms', 'platforms.name', '=', 'vendor_online_sales.platform_id')
@@ -365,7 +365,7 @@ class MultiVendorController extends Controller
         'chowdeckOrderCount','glovoOrderCount', 'edenOrderCount', 'currentYear',
         'chowdeckSalesPercentageChart', 'glovoSalesPercentageChart', 
         'edenSalesPercentageChart', 'piechartData' ,  'barChartData', 'manoOrderCount', 
-        'manoSalesPercentageChart', 'data', 'allGlovoOrders', 'allChowdeckOrders'));
+        'manoSalesPercentageChart', 'data', 'allGlovoOrders', 'allChowdeckOrders', 'allSales'));
         }
     }
 
