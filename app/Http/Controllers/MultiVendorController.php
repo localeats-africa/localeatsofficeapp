@@ -144,16 +144,6 @@ class MultiVendorController extends Controller
         ->where('platforms.name', 'chowdeck')
         ->where('vendor_online_sales.order_amount', '!=', null)
         ->get('vendor_online_sales.platform_id')->count();
-        //  TOTAL DEDUCTION
-         //bts percentage for 01Shawarma 8% of each order (online and offline)
-        // vat is 7.5%$. comsuption tax 5 %
-        $totalBTSCommission =  $sumAllOrders * 8 / 100;
-        $totalVAT =  $sumAllOrders * 7.5 / 100;
-        $totalComsuption = $sumAllOrders * 5 / 100;
-
-        $vatConsumptionTax =  $totalVAT + $totalComsuption;
-        $allSales = $sumAllOrders -  $vatConsumptionTax -  $totalBTSCommission + $offlineSales->sum('amount');
-        $profiltLoss =  $allSales - $outletsExpenses  ;
 
         $sumChowdeckOrder= DB::table('vendor_online_sales')
         ->join('platforms', 'platforms.name', '=', 'vendor_online_sales.platform_id')
@@ -194,6 +184,19 @@ class MultiVendorController extends Controller
 
         $allChowdeckOrders = $sumChowdeckOrder - $chowdeckBTSCommission  - $chowdeckVAT -  $chowdeckComsuption;
 
+
+        //  TOTAL DEDUCTION
+         //bts percentage for 01Shawarma 8% of each order (online and offline)
+        // vat is 7.5%$. comsuption tax 5 %
+        $totalBTSCommission =  $sumAllOrders * 8 / 100;
+        $totalVAT =  $sumAllOrders * 7.5 / 100;
+        $totalComsuption = $sumAllOrders * 5 / 100;
+
+        $vatConsumptionTax =  $totalVAT + $totalComsuption;
+        $allSales = $sumAllOrders -  $vatConsumptionTax -  $totalBTSCommission -  $totalGlovoComm  ;
+        $profiltLoss =  $allSales + $offlineSales->sum('amount') - $outletsExpenses  ;
+
+       // dd($allSales);
         $platformOrders = DB::table('vendor_online_sales')
         ->join('platforms', 'platforms.name', '=', 'vendor_online_sales.platform_id')->distinct()
         ->where('platforms.deleted_at', null)
