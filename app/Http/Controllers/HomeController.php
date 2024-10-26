@@ -1128,8 +1128,8 @@ class HomeController extends Controller
     
     public function mergeInvoice(Request $request){
         $this->validate($request, [ 
-            'from'      => 'required|string|max:255',
-            'to'        => 'required|string|max:255',
+            'invoice_start_date'      => 'required|string|max:255',
+            'invoice_end_date'        => 'required|string|max:255',
         ]);
         //th
         $vendor = $request->vendor;
@@ -1139,8 +1139,8 @@ class HomeController extends Controller
         $pin = mt_rand(1000000, 9999999);
         $invoice_ref ='L'.str_shuffle($pin);
 
-        $startDate      =   date("Y-m-d", strtotime($request->from)) ;
-        $endDate        =  date("Y-m-d", strtotime($request->to));
+        $startDate      =   date("Y-m-d", strtotime($request->invoice_start_date)) ;
+        $endDate        =  date("Y-m-d", strtotime($request->invoice_end_date));
 
         $tempOrder = TempOrder::whereDate('created_at', $today)
         ->where('vendor_id', $vendor)->get();
