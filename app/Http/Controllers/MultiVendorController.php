@@ -166,11 +166,16 @@ class MultiVendorController extends Controller
         //bts percentage for 01Shawarma 8% of each order (online and offline)
         // vat is 7.5%$. comsuption tax 5 %
         $btsCommission =  $sumAllOrders * 8 / 100;
+        $vat =  $sumAllOrders * 7.5 / 100;
+        $comsuption = $sumAllOrders * 5 / 100;
+
+        $vatConsumptionTax =  $vat + $comsuption;
 
         return view('multistore.parent.admin', compact('username','parent', 'outlets',
         'offlineSales', 'salesChannel', 'countAllOrder', 'countPlatformWhereOrderCame', 'sumAllOrders', 
          'chowdeckOrderCount', 'countOutletsFromWhereOfflineSales','outletsExpenses',
-        'GlovoOrderCount', 'sumGlovoOrder', 'countOutletsExpensesCameFrom', 'sumChowdeckOrder', 'btsCommission'));
+        'GlovoOrderCount', 'sumGlovoOrder', 'countOutletsExpensesCameFrom', 'sumChowdeckOrder', 
+        'btsCommission', 'vatConsumptionTax '));
         }
     }
 
