@@ -507,6 +507,7 @@
 <!-- <script src="{{ asset('assets/js/chart.js') }}"></script> -->
 <!-- End custom js for this page -->
 
+
 <link rel="stylesheet" href="https://code.jquery.com/ui/1.13.3/themes/base/jquery-ui.css">
 
 <script src="https://code.jquery.com/jquery-3.7.1.js"></script>
@@ -534,32 +535,38 @@ $(function() {
             var graphGradient2 = document.getElementById('visit-sale-chart').getContext("2d");
             //eden
             var graphGradient3 = document.getElementById('visit-sale-chart').getContext("2d");
+            //mano  
+            var graphGradient4 = document.getElementById('visit-sale-chart').getContext("2d");
 
             var gradientStrokeViolet = graphGradient1.createLinearGradient(0, 0, 0, 181);
             gradientStrokeViolet.addColorStop(0, 'rgba(12, 81, 63, 1)');
             gradientStrokeViolet.addColorStop(1, 'rgba(12, 81, 63, 1)');
-            var gradientLegendViolet =
-                  'linear-gradient(to right, rgba(12, 81, 63, 1), rgba(12, 81, 63, 1))';
+            var gradientLegendViolet = 'linear-gradient(to right, rgba(12, 81, 63, 1), rgba(12, 81, 63, 1))';
 
             var gradientStrokeBlue = graphGradient2.createLinearGradient(0, 0, 0, 360);
             gradientStrokeBlue.addColorStop(0, 'rgba(255, 194, 68, 1)');
             gradientStrokeBlue.addColorStop(1, 'rgba(255, 194, 68, 1)');
-            var gradientLegendBlue =
-                  'linear-gradient(to right, rgba(255, 194, 68, 1), rgba(255, 194, 68, 1))';
+            var gradientLegendBlue = 'linear-gradient(to right, rgba(255, 194, 68, 1), rgba(255, 194, 68, 1))';
 
             var gradientStrokeRed = graphGradient3.createLinearGradient(0, 0, 0, 300);
             gradientStrokeRed.addColorStop(0, 'rgba(162, 153, 149, 1)');
             gradientStrokeRed.addColorStop(1, 'rgba(162, 153, 149, 1)');
-            var gradientLegendRed =
-                  'linear-gradient(to right, rgba(162, 153, 149, 1), rgba(162, 153, 149, 1))';
+            var gradientLegendRed = 'linear-gradient(to right, rgba(162, 153, 149, 1), rgba(162, 153, 149, 1))';
+
+            var gradientStrokeMano = graphGradient4.createLinearGradient(0, 0, 0, 170);
+            gradientStrokeMano.addColorStop(0, 'rgba(238, 39, 55, 1)');
+            gradientStrokeMano.addColorStop(1, 'rgba(238, 39, 55, 1)');
+            var gradientLegendMano = 'linear-gradient(to right, rgba(238, 39, 55, 1), rgba(238, 39, 55, 1))';
+
             const bgColor1 = ["rgba(12, 81, 63, 1)"];
             const bgColor2 = ["rgba(255, 194, 68, 1"];
             const bgColor3 = ["rgba(162, 153, 149, 1)"];
+            const bgManoColor = ["rgba(238, 39, 55, 1)"];
 
             new Chart(ctx, {
                   type: 'bar',
                   data: {
-                        labels: ,
+                        labels: @json($barChartData['months']),
                         datasets: [{
                                     label: "Chowdeck",
                                     borderColor: gradientStrokeViolet,
@@ -570,7 +577,7 @@ $(function() {
                                     fill: false,
                                     borderWidth: 1,
                                     fill: 'origin',
-                                    data: ,
+                                    data: @json($barChartData['chocdekSales']),
                                     barPercentage: 0.5,
                                     categoryPercentage: 0.5,
                               },
@@ -584,7 +591,7 @@ $(function() {
                                     fill: false,
                                     borderWidth: 1,
                                     fill: 'origin',
-                                    data: ,
+                                    data: @json($barChartData['glovoSales']),
                                     barPercentage: 0.5,
                                     categoryPercentage: 0.5,
                               },
@@ -598,10 +605,26 @@ $(function() {
                                     fill: false,
                                     borderWidth: 1,
                                     fill: 'origin',
-                                    data: ,
+                                    data: @json($barChartData['edenSales']),
                                     barPercentage: 0.5,
                                     categoryPercentage: 0.5,
-                              }
+                              },
+
+                              {
+                                    label: "Mano",
+                                    borderColor: gradientStrokeMano,
+                                    backgroundColor: gradientStrokeMano,
+                                    hoverBackgroundColor: gradientStrokeMano,
+                                    fillColor: bgManoColor,
+                                    pointRadius: 0,
+                                    fill: false,
+                                    borderWidth: 1,
+                                    fill: 'origin',
+                                    data: @json($barChartData['manoSales']),
+                                    barPercentage: 0.5,
+                                    categoryPercentage: 0.5,
+                              },
+
                         ]
                   },
                   options: {
@@ -635,16 +658,12 @@ $(function() {
                         }
                   },
                   plugins: [{
-                        afterDatasetUpdate: function(chart, args,
-                              options) {
+                        afterDatasetUpdate: function(chart, args, options) {
                               const chartId = chart.canvas.id;
                               var i;
-                              const legendId =
-                                    `${chartId}-legend`;
-                              const ul = document.createElement(
-                                    'ul');
-                              for (i = 0; i < chart.data.datasets
-                                    .length; i++) {
+                              const legendId = `${chartId}-legend`;
+                              const ul = document.createElement('ul');
+                              for (i = 0; i < chart.data.datasets.length; i++) {
                                     ul.innerHTML += `
               <li>
                 <span style="background-color: ${chart.data.datasets[i].fillColor}"></span>
@@ -653,8 +672,7 @@ $(function() {
             `;
                               }
                               // alert(chart.data.datasets[0].backgroundColor);
-                              return document.getElementById(
-                                    legendId).appendChild(
+                              return document.getElementById(legendId).appendChild(
                                     ul);
                         }
                   }]
@@ -669,6 +687,9 @@ $(function() {
             var graphGradient2 = document.getElementById("traffic-chart").getContext('2d');
             //eden
             var graphGradient3 = document.getElementById("traffic-chart").getContext('2d');
+            //mano
+            var graphGradient4 = document.getElementById("traffic-chart").getContext('2d');
+
             //chowdeck
             var gradientStrokeBlue = graphGradient1.createLinearGradient(0, 0, 0, 181);
             gradientStrokeBlue.addColorStop(0, 'rgba(12, 81, 63, 1)');
@@ -685,37 +706,40 @@ $(function() {
             gradientStrokeGreen.addColorStop(0, 'rgba(162, 153, 149, 1)');
             gradientStrokeGreen.addColorStop(1, 'rgba(162, 153, 149, 1)');
             var gradientLegendGreen = 'rgba(162, 153, 149, 1)';
-
-            // const bgColor1 = ["rgba(54, 215, 232, 1)"];
-            // const bgColor2 = ["rgba(255, 191, 150, 1"];
-            // const bgColor3 = ["rgba(6, 185, 157, 1)"];
+            //mano
+            var gradientStrokeMano = graphGradient4.createLinearGradient(0, 0, 0, 300);
+            gradientStrokeMano.addColorStop(0, 'rgba(238, 39, 55, 1)');
+            gradientStrokeMano.addColorStop(1, 'rgba(238, 39, 55, 1)');
+            var gradientLegendMano = 'rgba(238, 39, 55, 1)';
 
             new Chart(ctx, {
                   type: 'doughnut',
                   data: {
-                        labels: ,
+                        labels: @json($piechartData['label']),
                         datasets: [{
-                              data: ,
-                              backgroundColor: [gradientStrokeBlue,
-                                    gradientStrokeRed,
-                                    gradientStrokeGreen
+                              data: @json($piechartData['data']),
+                              backgroundColor: [gradientStrokeBlue, gradientStrokeRed,
+                                    gradientStrokeGreen, gradientStrokeMano
                               ],
                               hoverBackgroundColor: [
                                     gradientStrokeBlue,
                                     gradientStrokeRed,
-                                    gradientStrokeGreen
+                                    gradientStrokeGreen,
+                                    gradientStrokeMano
 
                               ],
                               borderColor: [
                                     gradientStrokeBlue,
                                     gradientStrokeRed,
-                                    gradientStrokeGreen
+                                    gradientStrokeGreen,
+                                    gradientStrokeMano
 
                               ],
                               legendColor: [
                                     gradientLegendBlue,
                                     gradientLegendRed,
-                                    gradientLegendGreen
+                                    gradientLegendGreen,
+                                    gradientLegendMano
 
                               ]
                         }]
@@ -736,16 +760,12 @@ $(function() {
                         }
                   },
                   plugins: [{
-                        afterDatasetUpdate: function(chart, args,
-                              options) {
+                        afterDatasetUpdate: function(chart, args, options) {
                               const chartId = chart.canvas.id;
                               var i;
-                              const legendId =
-                                    `${chartId}-legend`;
-                              const ul = document.createElement(
-                                    'ul');
-                              for (i = 0; i < chart.data.datasets[
-                                          0].data
+                              const legendId = `${chartId}-legend`;
+                              const ul = document.createElement('ul');
+                              for (i = 0; i < chart.data.datasets[0].data
                                     .length; i++) {
                                     ul.innerHTML += `
                 <li>
@@ -754,8 +774,7 @@ $(function() {
                 </li>
               `;
                               }
-                              return document.getElementById(
-                                    legendId).appendChild(
+                              return document.getElementById(legendId).appendChild(
                                     ul);
                         }
                   }]
@@ -792,8 +811,7 @@ $(function() {
             document.querySelector('#proBanner').classList.remove('d-flex');
             document.querySelector('.navbar').classList.remove('pt-5');
             document.querySelector('.navbar').classList.add('fixed-top');
-            document.querySelector('.page-body-wrapper').classList.add(
-                  'proBanner-padding-top');
+            document.querySelector('.page-body-wrapper').classList.add('proBanner-padding-top');
             document.querySelector('.navbar').classList.remove('mt-3');
             var date = new Date();
             date.setTime(date.getTime() + 24 * 60 * 60 * 1000);
@@ -809,10 +827,10 @@ var ctx = document.getElementById('lineChart').getContext('2d');
 var myChart = new Chart(ctx, {
       type: 'line',
       data: {
-            labels: ,
+            labels: @json($data['month']),
             datasets: [{
-                  label: ,
-                  data: ,
+                  label: @json($salesYear),
+                  data: @json($data['sales']),
                   backgroundColor: [
                         'rgba(255, 99, 132, 0.2)',
                         'rgba(54, 162, 235, 0.2)',
@@ -845,10 +863,10 @@ var myChart = new Chart(ctx, {
 
 <script>
 var areaData = {
-      labels: ,
+      labels: @json($data['month']),
       datasets: [{
-            label: ,
-            data: ,
+            label: @json($salesYear),
+            data: @json($data['sales']),
             backgroundColor: [
                   'rgba(255, 99, 132, 0.2)',
                   'rgba(54, 162, 235, 0.2)',
