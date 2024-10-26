@@ -342,7 +342,6 @@
             <!--row-deck-->
 
             <p></p>
-
             <div class="row">
                   <div class="col-md-7 grid-margin stretch-card">
                         <div class="card">
@@ -363,11 +362,89 @@
                                                             <th> </th>
                                                             <th> Name </th>
                                                             <th> Orders</th>
-                                                            <th> % Progress </th>
+                                                            <th> Progress </th>
                                                       </tr>
                                                 </thead>
                                                 <tbody>
-                                                      <tr></tr>
+                                                      @foreach($platformOrders as $platform)
+                                                      <tr>
+                                                            <td>
+                                                                  @if(empty($platform->img_url))
+                                                                  None
+                                                                  @else
+                                                                  <img src="{{ asset($platform->img_url) }}"
+                                                                        class="cursor" style="">
+                                                                  @endif
+                                                            </td>
+                                                            <td>{{$platform->name}} </td>
+                                                            <td>
+                                                                  @if($platform->name == 'Chowdeck')
+                                                                  {{$chowdeckOrderCount}}
+                                                                  @endif
+
+                                                                  @if($platform->name == 'Glovo')
+                                                                  {{$glovoOrderCount}}
+                                                                  @endif
+
+                                                                  @if($platform->name == 'Edenlife')
+                                                                  {{$edenOrderCount}}
+                                                                  @endif
+
+                                                                  @if($platform->name == 'Mano')
+                                                                  {{$manoOrderCount}}
+                                                                  @endif
+                                                            </td>
+                                                            <td>
+                                                                  @if($platform->name == 'Chowdeck')
+
+                                                                  <div class="progress" role="progressbar">
+                                                                        <div class="progress-bar  progress-bar-striped progress-bar-animated bg-info"
+                                                                              role="progressbar"
+                                                                              style="width: {{ $chowdeckSalesPercentageChart}}%"
+                                                                              aria-valuenow="{{$chowdeckSalesPercentageChart}}"
+                                                                              aria-valuemin="0" aria-valuemax="100">
+                                                                        </div>
+                                                                  </div>
+                                                                  @endif
+
+                                                                  @if($platform->name == 'Glovo')
+
+                                                                  <div class="progress" role="progressbar">
+                                                                        <div class="progress-bar  progress-bar-striped progress-bar-animated bg-info"
+                                                                              role="progressbar"
+                                                                              style="width: {{$glovoSalesPercentageChart}}%"
+                                                                              aria-valuenow="{{$glovoSalesPercentageChart}}"
+                                                                              aria-valuemin="" aria-valuemax="100">
+                                                                        </div>
+                                                                  </div>
+                                                                  @endif
+
+                                                                  @if($platform->name == 'Edenlife')
+
+                                                                  <div class="progress" role="progressbar">
+                                                                        <div class="progress-bar  progress-bar-striped progress-bar-animated bg-info"
+                                                                              role="progressbar"
+                                                                              style="width: {{$edenSalesPercentageChart}}%"
+                                                                              aria-valuenow="{{$edenSalesPercentageChart}}"
+                                                                              aria-valuemin="" aria-valuemax="100">
+                                                                        </div>
+                                                                  </div>
+                                                                  @endif
+
+                                                                  @if($platform->name == 'Mano')
+
+                                                                  <div class="progress" role="progressbar">
+                                                                        <div class="progress-bar  progress-bar-striped progress-bar-animated bg-info"
+                                                                              role="progressbar"
+                                                                              style="width: {{$manoSalesPercentageChart}}%"
+                                                                              aria-valuenow="{{$manoSalesPercentageChart}}"
+                                                                              aria-valuemin="" aria-valuemax="100">
+                                                                        </div>
+                                                                  </div>
+                                                                  @endif
+                                                            </td>
+                                                      </tr>
+                                                      @endforeach
 
                                                 </tbody>
                                           </table>
