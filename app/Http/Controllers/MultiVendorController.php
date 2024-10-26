@@ -715,6 +715,7 @@ class MultiVendorController extends Controller
                 $sales->parent_id       = $glovo->parent_id;
                 $sales->vendor_id       = $glovo->vendor_id;
                 $sales->platform_id     = $glovo->platform_id;
+                $sales->bts_commission  = (int)$glovo->o * 8 / 100;
                 $sales->order_ref       = $glovo->b;
                 $sales->order_amount    = $glovo->o;
                 $sales->description     = $glovo->f;
