@@ -171,11 +171,13 @@ class MultiVendorController extends Controller
 
         $vatConsumptionTax =  $vat + $comsuption;
 
+        $profiltLoss = $sumAllOrders  + $offlineSales->sum('amount');
+
         return view('multistore.parent.admin', compact('username','parent', 'outlets',
         'offlineSales', 'salesChannel', 'countAllOrder', 'countPlatformWhereOrderCame', 'sumAllOrders', 
          'chowdeckOrderCount', 'countOutletsFromWhereOfflineSales','outletsExpenses',
         'GlovoOrderCount', 'sumGlovoOrder', 'countOutletsExpensesCameFrom', 'sumChowdeckOrder', 
-        'btsCommission', 'vatConsumptionTax'));
+        'btsCommission', 'vatConsumptionTax', 'profiltLoss'));
         }
     }
 
