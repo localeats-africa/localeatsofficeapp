@@ -324,7 +324,7 @@
                                                             </svg>
                                                       </i>
                                                 </h4>
-                                                <h2 class="mb-5">₦{{$profiltLoss}}</h2>
+                                                <h2 class="mb-5">₦{{number_format($profiltLoss)}}</h2>
                                                 <hr class="w-100">
                
                                           </div>
