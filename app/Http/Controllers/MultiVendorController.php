@@ -935,9 +935,12 @@ class MultiVendorController extends Controller
         ->where('sub_store.user_id', $user_id)
         ->get('vendor.*')->pluck('store_name')->first();
 
-        $vendor_id = Vendor::join('users', 'users.vendor', 'vendor.id')
-        ->where('users.id', $user_id)
-        ->get('vendor.id')->pluck('id')->first();
+        $getVendor_id = User::where('id', $user_id)
+        ->get('vendor')->pluck('vendor');
+        $stringVendor = substr($getVendor_id, 1, -1);
+        $removebracket= str_replace(array('[[',']]'),'',$stringVendor);
+        $vendorBracket = str_replace('"', '', $removebracket);
+        $vendor_id = substr($vendorBracket, 1, -1);
 
         $foodMenu = VendorFoodMenu::where('store_id', $parentID)->get();
 
@@ -977,9 +980,9 @@ class MultiVendorController extends Controller
        $getVendor_id = User::where('id', $user_id)
        ->get('vendor')->pluck('vendor');
        $stringVendor = substr($getVendor_id, 1, -1);
-       $jsonVendor = json_encode($stringVendor);
-       $removebracket= str_replace(array('[[',']]'),'',$jsonVendor);
-       $vendor_id = str_replace('"', '', $removebracket);
+       $removebracket= str_replace(array('[[',']]'),'',$stringVendor);
+       $vendorBracket = str_replace('"', '', $removebracket);
+       $vendor_id = substr($vendorBracket, 1, -1);
 
        $food            = $request->item;
        $quantity        =  $request->input('quantity');
@@ -1051,9 +1054,13 @@ class MultiVendorController extends Controller
        ->where('sub_store.user_id', $user_id)
        ->get('vendor.*')->pluck('store_name')->first();
 
-       $vendor_id = Vendor::join('users', 'users.vendor', 'vendor.id')
-        ->where('users.id', $user_id)
-        ->get('vendor.id')->pluck('id')->first();
+       $getVendor_id = User::where('id', $user_id)
+       ->get('vendor')->pluck('vendor');
+       $stringVendor = substr($getVendor_id, 1, -1);
+       $removebracket= str_replace(array('[[',']]'),'',$stringVendor);
+       $vendorBracket = str_replace('"', '', $removebracket);
+       $vendor_id = substr($vendorBracket, 1, -1);
+
 
        $getSales = TempInStoreSales::where('parent', $parentID)
        ->where('vendor_id', $vendor_id )
