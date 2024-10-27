@@ -158,8 +158,56 @@
                                     </div>
                               </div>
 
+                              <div class="col-md-3 stretch-card grid-margin">
+                                    <div class="card bg-gradient-dark card-img-holder text-white">
+                                          <div class="card-body">
+                                                <img src="{{ asset('assets/images/dashboard/circle.svg') }}"
+                                                      class="card-img-absolute" alt="circle-image">
+                                                <h4 class="font-weight-normal"> Online Sales <i
+                                                            class="mdi mdi-shopping  mdi-24px float-end"></i>
+                                                </h4>
+                                                <h2 class="mb-5">₦{{number_format($allSales)}}</h2>
+                                                <hr class="w-100">
+                                                <h6 class="card-text">From <span class="text-white">(
+                                                            {{$countAllOrder}} )</span>
+                                                      <span style="float:right;">order (s)</span>
+
+                                                </h6>
+                                          </div>
+
+                                    </div>
+                              </div>
 
                               <div class="col-md-3 stretch-card grid-margin">
+                                    <div class="card bg-gradient-danger card-img-holder text-dark">
+                                          <div class="card-body">
+                                                <img src="{{ asset('assets/images/dashboard/circle.svg') }}"
+                                                      class="card-img-absolute" alt="circle-image">
+                                                <h4 class="font-weight-normal">Outlet Expenses <i
+                                                            class="mdi mdi-pot-steam  mdi-24px float-end"></i>
+                                                </h4>
+                                                <h2 class="mb-5">₦{{number_format($outletsExpenses)}}</h2>
+                                                <hr class="w-100">
+                                                <h6 class="card-text">From <span class="text-dark">(
+                                                            {{$countOutletsExpensesCameFrom}} )</span>
+                                                      <span style="float:right;">outlet (s)</span>
+
+                                                </h6>
+                                          </div>
+
+                                    </div>
+                              </div>
+
+                        </div>
+                        <!--row--->
+                  </div>
+            </div>
+            <!--row-deck-->
+
+            <div class="row ">
+                  <div class="col-12">
+                        <div class="row row-cards">
+                        <div class="col-md-3 stretch-card grid-margin">
                                     <div class="card bg-success card-img-holder text-dark">
                                           <div class="card-body">
                                                 <img src="{{ asset('assets/images/dashboard/circle.svg') }}"
@@ -198,19 +246,22 @@
                                     </div>
                               </div>
 
+                              <div class="col-md-3 stretch-card grid-margin">
+                                    <div class="card bg-gradient-secondary card-img-holder text-dark">
+                                          <div class="card-body">
+                                                <img src="{{ asset('assets/images/dashboard/circle.svg')}}"
+                                                      class="card-img-absolute" alt="circle-image">
+                                                <h4 class="font-weight-normal">BertaTech Sales<i
+                                                            class="mdi mdi-cloud-braces mdi-24px float-end"></i>
+                                                </h4>
+                                                <h2 class="mb-5">₦{{number_format($totalBTSCommission)}}</h2>
+                                                <hr class="w-100">
+                                               
+                                          </div>
+                                    </div>
+                              </div>
 
 
-                        </div>
-                        <!--row--->
-                  </div>
-            </div>
-            <!--row-deck-->
-
-            <div class="row ">
-                  <div class="col-12">
-                        <div class="row row-cards">
-
-                           
 
                               <div class="col-md-3 stretch-card grid-margin">
                                     <div class="card bg-primary card-img-holder text-dark">
@@ -227,32 +278,14 @@
                               </div>
 
 
-                              <div class="col-md-3 stretch-card grid-margin">
-                                    <div class="card bg-gradient-dark card-img-holder text-white">
-                                          <div class="card-body">
-                                                <img src="{{ asset('assets/images/dashboard/circle.svg') }}"
-                                                      class="card-img-absolute" alt="circle-image">
-                                                <h4 class="font-weight-normal"> Online Sales <i
-                                                            class="mdi mdi-shopping  mdi-24px float-end"></i>
-                                                </h4>
-                                                <h2 class="mb-5">₦{{number_format($allSales)}}</h2>
-                                                <hr class="w-100">
-                                                <h6 class="card-text">From <span class="text-white">(
-                                                            {{$countAllOrder}} )</span>
-                                                      <span style="float:right;">order (s)</span>
-
-                                                </h6>
-                                          </div>
-
-                                    </div>
-                              </div>
+                           
 
                               <div class="col-md-3 stretch-card grid-margin">
                                     <div class="card  bg-secondary  card-img-holder text-dark">
                                           <div class="card-body">
                                                 <img src="{{ asset('assets/images/dashboard/circle.svg') }}"
                                                       class="card-img-absolute" alt="circle-image">
-                                                <h4 class="font-weight-normal"> In-Store Sales <i
+                                                <h4 class="font-weight-normal"> Walk-in Sales <i
                                                             class="fa fa-cutlery  mdi-24px float-end"></i>
                                                 </h4>
                                                 <h2 class="mb-5">₦{{number_format($offlineSales->sum('amount'))}}</h2>
@@ -267,35 +300,6 @@
                                     </div>
                               </div>
 
-                              <div class="col-md-3 stretch-card grid-margin">
-                                    <div class="card bg-gradient-danger card-img-holder text-dark">
-                                          <div class="card-body">
-                                                <img src="{{ asset('assets/images/dashboard/circle.svg') }}"
-                                                      class="card-img-absolute" alt="circle-image">
-                                                <h4 class="font-weight-normal">Outlet Expenses <i
-                                                            class="mdi mdi-pot-steam  mdi-24px float-end"></i>
-                                                </h4>
-                                                <h2 class="mb-5">₦{{number_format($outletsExpenses)}}</h2>
-                                                <hr class="w-100">
-                                                <h6 class="card-text">From <span class="text-dark">(
-                                                            {{$countOutletsExpensesCameFrom}} )</span>
-                                                      <span style="float:right;">outlet (s)</span>
-
-                                                </h6>
-                                          </div>
-
-                                    </div>
-                              </div>
-
-                        </div>
-                        <!--row--->
-                  </div>
-            </div>
-            <!--row-deck-->
-
-            <div class="row ">
-                  <div class="col-12">
-                        <div class="row row-cards">
 
                               <div class="col-md-3 stretch-card grid-margin">
                                     <div class="card bg-info card-img-holder text-dark">
@@ -330,6 +334,19 @@
                                           </div>
                                     </div>
                               </div>
+
+                        
+
+                        </div>
+                        <!--row--->
+                  </div>
+            </div>
+            <!--row-deck-->
+
+            <div class="row ">
+                  <div class="col-12">
+                        <div class="row row-cards">
+
 
 
 
