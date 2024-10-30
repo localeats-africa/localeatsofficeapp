@@ -3412,8 +3412,21 @@ class HomeController extends Controller
     ->join('users', 'users.role_id', 'role.id')
     ->where('users.id', $user_id)
     ->pluck('role_name')->first();
-    $comment = InvoiceComment::where('invoice_ref', $invoice_ref)->get();
-    return view('vendormanager.invoice-comment', compact('name', 'role', 
+
+    $perPage = $request->perPage ?? 25;
+    $search = $request->input('search');
+
+    $comment = InvoiceComment::where('invoice_ref', $invoice_ref)
+    ->select('*')
+    ->where(function ($query) use ($search) {  // <<<
+    $query->where('comment', 'LIKE', '%'.$search.'%');
+    })->paginate($perPage,  $pageName = 'comment')->appends(['per_page'   => $perPage]);
+    $pagination = $comment->appends ( array ('search' => $search) );
+    if (count ( $pagination ) > 0){
+    return view('vendormanager.invoice-comment',  compact(
+    'perPage', 'name', 'role', 'invoice_ref', 'comment'))->withDetails( $pagination );     
+    } 
+    return view('vendormanager.invoice-comment', compact(  'perPage','name', 'role', 
     'invoice_ref', 'comment'));
    }
 
