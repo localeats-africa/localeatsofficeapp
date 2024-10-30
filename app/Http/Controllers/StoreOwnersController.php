@@ -57,12 +57,29 @@ class StoreOwnersController extends Controller
         $username = Auth::user()->username;
         $user_id = Auth::user()->id;
 
+
         $role = DB::table('role')->select('role_name')
         ->join('users', 'users.role_id', 'role.id')
         ->where('users.id', $user_id)
         ->pluck('role_name')->first();
+        //payouts as online sales
+        $payouts = DB::table('orders')
+        ->where('deleted_at', null)
+        ->where('orders.order_amount', '!=', null)
+        ->where('orders.order_ref', '!=', null)
+        ->where('orders.vendor_id', $vendor_id)  
+        ->sum('payout');
+        // for localeats vendor
+       $offlineSales = DB::table('offline_sales')
+       ->where('vendor_id', $vendor_id)
+       ->sum('price');
 
-        return view('storeowner-admin', compact('username'));
+       $expenses = DB::table('vendor_expenses')
+       ->join('sub_store', 'sub_store.vendor_id', '=', 'vendor_expenses.vendor_id')
+       ->where('vendor_expenses.vendor_id', $vendor_id)
+       ->sum('vendor_expenses.cost');
+
+        return view('storeowner-admin', compact('username', 'payouts'));
 
     }
 }
