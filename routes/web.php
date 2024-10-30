@@ -145,6 +145,8 @@ Route::controller(HomeController::class)->group(function () {
     Route::post('past-invoices',  'storePastInvoices')->name('past-invoices');
     Route::get('vendor-dashboard/{id}', 'showVendorDashboard')->name('vendor-dashboard');
     Route::get('filter-vendor-dashboard/{id}', 'filterVendorDashboard')->name('filter-vendor-dashboard');
+    //leave comment on invoice
+    Route::get('invoice-comment/{id}', 'invoiceComment')->name('invoice-comment');
 
 });
 
