@@ -1774,7 +1774,7 @@ class HomeController extends Controller
         $search = $request->input('search');
 
         $orders = DB::table('orders')->distinct()
-        //->leftjoin('merge_invoices', 'orders.number_of_order_merge', '=', 'merge_invoices.number_of_order_merge')
+        ->leftjoin('invoice_comment', 'invoice_comment.invoice_ref', '=', 'orders.invoice_ref')
         ->join('vendor', 'orders.vendor_id', '=', 'vendor.id')
         ->where('orders.deleted_at', null)
         ->whereNotNull('payment_status')
