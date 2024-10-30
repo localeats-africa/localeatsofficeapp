@@ -61,14 +61,13 @@ class StoreOwnersController extends Controller
         ->where('users.id', $user_id)
         ->pluck('role_name')->first();
 
-        $getVendorID = User::where('id', $id)->get('vendor')->toArray();
+        $getVendorID = User::where('id', $user_id)->get('vendor')->toArray();
         $vendorID_list = array_column($getVendorID, 'vendor'); 
         $selectMultipleVendor= call_user_func_array('array_merge', $vendorID_list);
-        $multipleVendor_list = Vendor::whereIn('id', $selectMultipleVendor)->get()->pluck('vendor_name');
-        
+        $multipleVendor_list = Vendor::whereIn('id', $selectMultipleVendor)->get()->pluck('id');
         $removeBracket = substr($multipleVendor_list, 1, -1);
-        $staffVendorAssignedTo =  str_replace('"', ' ', $removeBracket);
-         dd( $staffVendorAssignedTo );
+        $vendor_id =  str_replace('"', ' ', $removeBracket);
+         //dd( $vendor_id );
 
         //payouts as online sales
         $payouts = DB::table('orders')
@@ -87,7 +86,7 @@ class StoreOwnersController extends Controller
        ->where('vendor_expenses.vendor_id', $vendor_id)
        ->sum('vendor_expenses.cost');
 
-        return view('storeowner-admin', compact('username', 'payouts'));
+        return view('storeowner.storeowner-admin', compact('username', 'payouts'));
 
     }
 }
