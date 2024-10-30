@@ -106,18 +106,4 @@
 <!-- main-panel -->
 
 
-
-<script src="https://cdn.jsdelivr.net/npm/quill@2/dist/quill.core.js"></script>
-
-<script>
-tinymce.init({
-      selector: 'textarea#description',
-      menubar: false,
-      plugins: 'code table lists image',
-      toolbar: 'undo redo | blocks | bold italic |',
-});
-</script>
-
-
-
 @endsection
