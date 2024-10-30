@@ -53,6 +53,11 @@
                                 <a class="text-danger" href="{{ url('/', [auth()->user()->username, 'vendor'] ) }}">Click {{ __('Dashboard') }}</a>
                               @endif
 
+                              <!-- storeowner vendor sidebar menu-->
+                                    @if(Auth::user()->role_id == '11')
+                                <a class="text-danger" href="{{ route('store') }}">Click {{ __('Dashboard') }}</a>
+                              @endif
+
                               @endauth
                         </div>
                   </div>
