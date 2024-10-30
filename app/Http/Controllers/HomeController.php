@@ -3403,7 +3403,7 @@ class HomeController extends Controller
     }
 
 
-   public function invoiceComment(Request $request){
+   public function invoiceComment(Request $request, $invoice_ref){
 
     $name = Auth::user()->name;
     $user_id = Auth::user()->id;
