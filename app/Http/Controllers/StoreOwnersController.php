@@ -56,7 +56,7 @@ class StoreOwnersController extends Controller
         $this->middleware(['auth', 'user-access:11', 'verified']);
     }
 
-    public function storeowner(Request $request){
+    public function vendoraccount(Request $request){
         $username = Auth::user()->username;
         $user_id = Auth::user()->id;
 
@@ -64,7 +64,7 @@ class StoreOwnersController extends Controller
         ->join('users', 'users.role_id', 'role.id')
         ->where('users.id', $user_id)
         ->pluck('role_name')->first();
-        
+
         return view();
 
     }
