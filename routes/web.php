@@ -15,6 +15,7 @@ use App\Http\Controllers\AccountManagerController;
 use App\Http\Controllers\ParentVendorController;
 use App\Http\Controllers\MultiVendorController;
 use App\Http\Controllers\VendorsController;
+use App\Http\Controllers\StoreOwnersController;
 
 /*
 |--------------------------------------------------------------------------
@@ -279,9 +280,12 @@ Route::controller(ParentVendorController::class)->group(function () {
    Route::get('/{username}/outlet-dashboard/{id}',  'outletDashboard')->name('outlet-dashboard');
 });
 
-
 Route::controller(VendorsController::class)->group(function () {
     Route::get('/{username}/all-supplies',  'outletAllSupplies')->name('all-supplies');
     Route::post('accept-supply',  'acceptSupply')->name('accept-supply');
     Route::post('reject-supplies',  'rejectSupply')->name('reject-supplies');
+});
+
+Route::controller(StoreOwnersController::class)->group(function () {
+    Route::get('storeowner',  'storeowner')->name('store');
 });
