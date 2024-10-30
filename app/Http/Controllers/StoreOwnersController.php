@@ -56,12 +56,20 @@ class StoreOwnersController extends Controller
     public function vendoraccount(Request $request){
         $username = Auth::user()->username;
         $user_id = Auth::user()->id;
-
-
         $role = DB::table('role')->select('role_name')
         ->join('users', 'users.role_id', 'role.id')
         ->where('users.id', $user_id)
         ->pluck('role_name')->first();
+
+        $getVendorID = User::where('id', $id)->get('vendor')->toArray();
+        $vendorID_list = array_column($getVendorID, 'vendor'); 
+        $selectMultipleVendor= call_user_func_array('array_merge', $vendorID_list);
+        $multipleVendor_list = Vendor::whereIn('id', $selectMultipleVendor)->get()->pluck('vendor_name');
+        
+        $removeBracket = substr($multipleVendor_list, 1, -1);
+        $staffVendorAssignedTo =  str_replace('"', ' ', $removeBracket);
+         dd( $staffVendorAssignedTo );
+
         //payouts as online sales
         $payouts = DB::table('orders')
         ->where('deleted_at', null)
