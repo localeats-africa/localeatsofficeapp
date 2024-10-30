@@ -18,7 +18,7 @@
             <div class="row ">
                   <div class="col-12">
 
-                  @if(session('invoice'))
+                        @if(session('invoice'))
                         <div class="alert  alert-success alert-dismissible" role="alert">
                               <div class="d-flex">
                                     <div>
@@ -130,13 +130,14 @@
                                                       <td class="text-sm">{{$data->vendor_name}} </td>
                                                       <td>{{ $data->invoice_ref}}</td>
 
-                                                      <td> 
+                                                      <td>
                                                             @if($data->invoice_start_date == null)
                                                             @else
-                                                            {{date('d/m/Y',  strtotime($data->invoice_start_date))}} - {{date('d/m/Y',  strtotime($data->invoice_end_date))}} 
-                                                            @endif 
+                                                            {{date('d/m/Y',  strtotime($data->invoice_start_date))}} -
+                                                            {{date('d/m/Y',  strtotime($data->invoice_end_date))}}
+                                                            @endif
                                                       </td>
-                                                         
+
                                                       <td class="">
                                                             @auth
                                                             @if(Auth::user()->role_id == '2')
@@ -153,16 +154,21 @@
                                                                               href="computed-invoice/{{$data->id}}/{{$data->number_of_order_merge}}/{{$data->invoice_ref}}">View
                                                                         </a>
                                                                         <br>
+                                                                        <a class="dropdown-item text-danger"
+                                                                              href="computed-invoice/{{$data->id}}/{{$data->number_of_order_merge}}/{{$data->invoice_ref}}">Comments
+                                                                        </a>
+                                                                        <br>
                                                                         @if($data->payment_status == 'paid')
                                                                         @else
 
                                                                         <input type="hidden" id="vendor_id"
-                                                                                    value="{{$data->vendor_id}}">
-                                                                              <input type="hidden" id="invoice_ref"
-                                                                                    value="{{$data->invoice_ref}}">
-                                                                              <a class="dropdown-item text-danger" href="delete-invoice/{{$data->invoice_ref}}">
-                                                                                    Delete</a>
-                    
+                                                                              value="{{$data->vendor_id}}">
+                                                                        <input type="hidden" id="invoice_ref"
+                                                                              value="{{$data->invoice_ref}}">
+                                                                        <a class="dropdown-item text-danger"
+                                                                              href="delete-invoice/{{$data->invoice_ref}}">
+                                                                              Delete</a>
+
                                                                         @endif
 
                                                                   </div>
@@ -172,19 +178,48 @@
                                                             @endif
 
                                                             @if(Auth::user()->role_id == '6')
+                                                            <span class="dropdown">
+                                                                  <button
+                                                                        class="btn dropdown-toggle align-text-top text-danger"
+                                                                        data-bs-boundary="viewport"
+                                                                        data-bs-toggle="dropdown"
+                                                                        style="padding:0;">Action</button>
 
-                                                            <a href="computed-invoice/{{$data->id}}/{{$data->number_of_order_merge}}/{{$data->invoice_ref}}"
-                                                                  class="text-danger"><i class="fa fa-eye"></i></a>
+                                                                  <div class="dropdown-menu ">
 
+                                                                        <a class="dropdown-item text-dark"
+                                                                              href="computed-invoice/{{$data->id}}/{{$data->number_of_order_merge}}/{{$data->invoice_ref}}"
+                                                                             ><small>View</small></a>
+                                                                        <br>
+                                                                        <a class="dropdown-item text-dark"
+                                                                              href="computed-invoice/{{$data->id}}/{{$data->number_of_order_merge}}/{{$data->invoice_ref}}"><small>Comments</small>
+                                                                        </a>
+                                                                        <br>
+                                                                  </div>
 
+                                                            </span>
                                                             @endif
 
                                                             @if(Auth::user()->role_id == '8')
+                                                            <span class="dropdown">
+                                                                  <button
+                                                                        class="btn dropdown-toggle align-text-top text-danger"
+                                                                        data-bs-boundary="viewport"
+                                                                        data-bs-toggle="dropdown"
+                                                                        style="padding:0;">Action</button>
+                                                            <div class="dropdown-menu ">
 
-                                                            <a href="computed-invoice/{{$data->id}}/{{$data->number_of_order_merge}}/{{$data->invoice_ref}}"
-                                                                  class="text-danger"><i class="fa fa-eye"></i></a>
+                                                                  <a class="dropdown-item text-dark"
+                                                                        href="computed-invoice/{{$data->id}}/{{$data->number_of_order_merge}}/{{$data->invoice_ref}}"
+                                                                      ><small>View</small></a>
+                                                                  <br>
+                                                                  <a class="dropdown-item text-dark"
+                                                                        href="computed-invoice/{{$data->id}}/{{$data->number_of_order_merge}}/{{$data->invoice_ref}}"><small>Comments</small>
+                                                                  </a>
+                                                                  <br>
 
-
+                                                            </div>
+                                                            </span>
                                                             @endif
                                                             @endauth
                                                       </td>
