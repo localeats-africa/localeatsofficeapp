@@ -3411,6 +3411,8 @@ class HomeController extends Controller
     ->join('users', 'users.role_id', 'role.id')
     ->where('users.id', $user_id)
     ->pluck('role_name')->first();
+    // remove html tag fron text strip_tags(<b> hello<b>)
+    $comment = strip_tags($request->comment);
 
     return view('vendormanager.invoice-comment', compact('name', 'role', 'invoice_ref'));
    }
