@@ -155,7 +155,7 @@
                                                                         </a>
                                                                         <br>
                                                                         <a class="dropdown-item text-danger"
-                                                                              href="computed-invoice/{{$data->id}}/{{$data->number_of_order_merge}}/{{$data->invoice_ref}}">Comments
+                                                                              href="invoice-comment/{{$data->invoice_ref}}">Comments
                                                                         </a>
                                                                         <br>
                                                                         @if($data->payment_status == 'paid')
@@ -192,7 +192,7 @@
                                                                              ><small>View</small></a>
                                                                         <br>
                                                                         <a class="dropdown-item text-dark"
-                                                                              href="computed-invoice/{{$data->id}}/{{$data->number_of_order_merge}}/{{$data->invoice_ref}}"><small>Comments</small>
+                                                                              href="invoice-comment/{{$data->invoice_ref}}"><small>Comments</small>
                                                                         </a>
                                                                         <br>
                                                                   </div>
@@ -214,7 +214,7 @@
                                                                       ><small>View</small></a>
                                                                   <br>
                                                                   <a class="dropdown-item text-dark"
-                                                                        href="computed-invoice/{{$data->id}}/{{$data->number_of_order_merge}}/{{$data->invoice_ref}}"><small>Comments</small>
+                                                                        href="invoice-comment/{{$data->invoice_ref}}"><small>Comments</small>
                                                                   </a>
                                                                   <br>
 
