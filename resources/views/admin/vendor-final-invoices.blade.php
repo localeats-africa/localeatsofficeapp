@@ -222,7 +222,7 @@
                                                       <td class="text-sm">{{$data->vendor_name}}
                                                       </td>
                                                       <td>{{ $data->invoice_ref}} <a href=""  data-toggle="tooltip"
-                                                                  data-placement="top" title="{{$data->vendor_name}}">
+                                                                  data-placement="top" title="{{$data->comment}}">
                                                                   <i class="fa fa-info-circle" aria-hidden="true"></i>
 </a></td>
                                                       <td>
