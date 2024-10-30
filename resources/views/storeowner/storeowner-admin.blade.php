@@ -8,7 +8,7 @@
       <div class="content-wrapper">
             <div class="page-header">
                   <h3 class="page-title">
-                  <span class="text-info"> {{ $username }}</span> >>> Sales Insight  </span>
+                        <span class="text-info"> {{ $username }}</span> >>> Sales Insight </span>
                   </h3>
                   <nav aria-label="breadcrumb">
                         <ul class="breadcrumb">
@@ -23,19 +23,18 @@
                   </nav>
             </div>
 
-          <!-- filter dashboard  -->
-          <div class="row ">
-                  <form method="GET" action="{{ route('store') }}" name="submit"
-                        enctype="multipart/form-data">
+            <!-- filter dashboard  -->
+            <div class="row ">
+                  <form method="GET" action="{{ route('store') }}" name="submit" enctype="multipart/form-data">
                         @csrf
                         {{csrf_field()}}
                         <div class="row text-end">
-                        <h6>Filter record:</h6>
+                              <h6>Filter record:</h6>
                               <div class="col-md-3">
                               </div>
                               <div class="col-md-3">
                               </div>
-                              
+
                               <div class="col-md-3 col-12">
                                     <div class="form-group">
                                           <div class="input-group date">
@@ -82,51 +81,9 @@
                   </form>
             </div>
             <!---end row --->
-            <!-- <div class="container "> -->
-            <div class="row ">
-                  <div class="col-12">
-                        <div class="row row-cards">
-
-                              <div class="col-md-4 stretch-card grid-margin">
-                                    <div class="card bg-gradient-secondary card-img-holder text-dark">
-                                          <div class="card-body">
-                                                <img src="{{ asset('assets/images/dashboard/circle.svg') }}"
-                                                      class="card-img-absolute" alt="circle-image">
-                                                <h4 class="font-weight-normal">Number Of Orders <i
-                                                            class="mdi mdi-shopping  mdi-24px float-end"></i>
-                                                </h4>
-                                                <h2 class="mb-5">{{$countAllOrder}}</h2>
-                                                <hr class="w-100">
-                               
-                                          </div>
-
-                                    </div>
-                              </div>
-
-                              <div class="col-md-4 stretch-card grid-margin">
-                                    <div class="card bg-secondary card-img-holder text-dark">
-                                          <div class="card-body">
-                                                <img src="{{ asset('assets/images/dashboard/circle.svg') }}"
-                                                      class="card-img-absolute" alt="circle-image">
-                                                <h4 class="font-weight-normal">Number Of Plates <i
-                                                            class="fa fa-cutlery  mdi-24px float-end"></i>
-                                                </h4>
-                                                <h2 class="mb-5">{{$countAllPlate}}</h2>
-                                                <hr class="w-100">
-                                                
-                                          </div>
-
-                                    </div>
-                              </div>
-
-
-                        </div>
-                        <!--row--->
-                  </div>
-            </div>
-            <!--row-deck-->
-                        <!--row-->
-                        <div class="row row-cards">
+       
+     <!--row-->
+     <div class="row row-cards">
                         <div class="col-md-4 stretch-card grid-margin">
                                     <div class="card bg-secondary card-img-holder text-dark">
                                           <div class="card-body">
@@ -161,8 +118,8 @@
                                           <div class="card-body">
                                                 <img src="{{ asset('assets/images/dashboard/circle.svg') }}"
                                                       class="card-img-absolute" alt="circle-image">
-                                                <h4 class="font-weight-normal">Expenses<i
-                                                            class="fa fa-cutlery  mdi-24px float-end"></i>
+                                                <h4 class="font-weight-normal">Expenses   
+                                                      <i class="mdi mdi-cash mdi-24px float-end"></i>
                                                 </h4>
                                                 <h2 class="mb-5">{{number_format($expenses)}}</h2>
                                                 <hr class="w-100">
@@ -174,56 +131,136 @@
 
                         </div>
                         <!--row--->
+
+            <div class="row ">
+                  <div class="col-12">
+                        <div class="row row-cards">
+
+                        <div class="col-md-4 stretch-card grid-margin">
+                                    <div class="card bg-secondary card-img-holder text-dark">
+                                          <div class="card-body">
+                                                <img src="{{ asset('assets/images/dashboard/circle.svg') }}"
+                                                      class="card-img-absolute" alt="circle-image">
+                                                <h4 class="font-weight-normal">Profit/Loss 
+                                                <i
+                                                            class="mdi mdi-24px float-end">
+                                                            <svg xmlns="http://www.w3.org/2000/svg" class="icon"
+                                                                  width="24" height="24" viewBox="0 0 24 24"
+                                                                  stroke-width="2" stroke="currentColor" fill="none"
+                                                                  stroke-linecap="round" stroke-linejoin="round">
+                                                                  <path stroke="none" d="M0 0h24v24H0z" fill="none">
+                                                                  </path>
+                                                                  <path
+                                                                        d="M9 14c0 1.657 2.686 3 6 3s6 -1.343 6 -3s-2.686 -3 -6 -3s-6 1.343 -6 3z">
+                                                                  </path>
+                                                                  <path
+                                                                        d="M9 14v4c0 1.656 2.686 3 6 3s6 -1.344 6 -3v-4">
+                                                                  </path>
+                                                                  <path
+                                                                        d="M3 6c0 1.072 1.144 2.062 3 2.598s4.144 .536 6 0c1.856 -.536 3 -1.526 3 -2.598c0 -1.072 -1.144 -2.062 -3 -2.598s-4.144 -.536 -6 0c-1.856 .536 -3 1.526 -3 2.598z">
+                                                                  </path>
+                                                                  <path d="M3 6v10c0 .888 .772 1.45 2 2"></path>
+                                                                  <path d="M3 11c0 .888 .772 1.45 2 2"></path>
+                                                            </svg>
+                                                      </i>
+                                                </h4>
+                                                <h2 class="mb-5">{{$countAllOrder}}</h2>
+                                                <hr class="w-100">
+
+                                          </div>
+
+                                    </div>
+                              </div>
+
+                              <div class="col-md-4 stretch-card grid-margin">
+                                    <div class="card bg-gradient-secondary card-img-holder text-dark">
+                                          <div class="card-body">
+                                                <img src="{{ asset('assets/images/dashboard/circle.svg') }}"
+                                                      class="card-img-absolute" alt="circle-image">
+                                                <h4 class="font-weight-normal">Number Of Orders <i
+                                                            class="mdi mdi-shopping  mdi-24px float-end"></i>
+                                                </h4>
+                                                <h2 class="mb-5">{{$countAllOrder}}</h2>
+                                                <hr class="w-100">
+
+                                          </div>
+
+                                    </div>
+                              </div>
+
+                              <div class="col-md-4 stretch-card grid-margin">
+                                    <div class="card bg-secondary card-img-holder text-dark">
+                                          <div class="card-body">
+                                                <img src="{{ asset('assets/images/dashboard/circle.svg') }}"
+                                                      class="card-img-absolute" alt="circle-image">
+                                                <h4 class="font-weight-normal">Number Of Plates <i
+                                                            class="fa fa-cutlery  mdi-24px float-end"></i>
+                                                </h4>
+                                                <h2 class="mb-5">{{$countAllPlate}}</h2>
+                                                <hr class="w-100">
+
+                                          </div>
+
+                                    </div>
+                              </div>
+
+
+                        </div>
+                        <!--row--->
                   </div>
             </div>
             <!--row-deck-->
-            <!-- </div> -->
-            <p></p>
-            <!--Alert here--->
-            <!-- <div class="container "> -->
-            <div class="row ">
-                  <div class="col-12">
-                        @if(session('add-vendor'))
-                        <div class="alert alert-important alert-success alert-dismissible" role="alert">
-                              <div class="d-flex">
-                                    <div>
-                                          <!-- Download SVG icon from http://tabler-icons.io/i/alert-triangle -->
-                                          <svg xmlns="http://www.w3.org/2000/svg" class="icon alert-icon" width="24"
-                                                height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"
-                                                fill="none" stroke-linecap="round" stroke-linejoin="round">
-                                                <path stroke="none" d="M0 0h24v24H0z" fill="none" />
-                                                <path
-                                                      d="M10.24 3.957l-8.422 14.06a1.989 1.989 0 0 0 1.7 2.983h16.845a1.989 1.989 0 0 0 1.7 -2.983l-8.423 -14.06a1.989 1.989 0 0 0 -3.4 0z" />
-                                                <path d="M12 9v4" />
-                                                <path d="M12 17h.01" />
-                                          </svg>
-                                    </div>
-                                    <div> {!! session('add-vendor') !!}</div>
-                              </div>
-                              <a class="btn-close" data-bs-dismiss="alert" aria-label="close"></a>
-                        </div>
-                        @endif
 
-
-                  </div>
-            </div>
-
-            <!---end Alert --->
-        
-            <!--- row--->
-            <p></p>
-            <!-- </div> -->
       </div>
-      <!--content wrapper-->
-      <footer class="footer">
-            <div class="d-sm-flex justify-content-center justify-content-sm-between">
-                  <span class="text-muted text-center text-sm-left d-block d-sm-inline-block">Copyright ©
-                        LocalEats Africa {{ date('Y')}} </a>. All rights
-                        reserved.</span>
-                  <span class="float-none float-sm-right d-block mt-1 mt-sm-0 text-center"><i
-                              class="mdi mdi-heart text-danger"></i></span>
+</div>
+<!--row-deck-->
+<!-- </div> -->
+<p></p>
+<!--Alert here--->
+<!-- <div class="container "> -->
+<div class="row ">
+      <div class="col-12">
+            @if(session('add-vendor'))
+            <div class="alert alert-important alert-success alert-dismissible" role="alert">
+                  <div class="d-flex">
+                        <div>
+                              <!-- Download SVG icon from http://tabler-icons.io/i/alert-triangle -->
+                              <svg xmlns="http://www.w3.org/2000/svg" class="icon alert-icon" width="24" height="24"
+                                    viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none"
+                                    stroke-linecap="round" stroke-linejoin="round">
+                                    <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                                    <path
+                                          d="M10.24 3.957l-8.422 14.06a1.989 1.989 0 0 0 1.7 2.983h16.845a1.989 1.989 0 0 0 1.7 -2.983l-8.423 -14.06a1.989 1.989 0 0 0 -3.4 0z" />
+                                    <path d="M12 9v4" />
+                                    <path d="M12 17h.01" />
+                              </svg>
+                        </div>
+                        <div> {!! session('add-vendor') !!}</div>
+                  </div>
+                  <a class="btn-close" data-bs-dismiss="alert" aria-label="close"></a>
             </div>
-      </footer>
+            @endif
+
+
+      </div>
+</div>
+
+<!---end Alert --->
+
+<!--- row--->
+<p></p>
+<!-- </div> -->
+</div>
+<!--content wrapper-->
+<footer class="footer">
+      <div class="d-sm-flex justify-content-center justify-content-sm-between">
+            <span class="text-muted text-center text-sm-left d-block d-sm-inline-block">Copyright ©
+                  LocalEats Africa {{ date('Y')}} </a>. All rights
+                  reserved.</span>
+            <span class="float-none float-sm-right d-block mt-1 mt-sm-0 text-center"><i
+                        class="mdi mdi-heart text-danger"></i></span>
+      </div>
+</footer>
 </div>
 <!-- main-panel -->
 
