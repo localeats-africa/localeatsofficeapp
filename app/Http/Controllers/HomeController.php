@@ -3426,7 +3426,7 @@ class HomeController extends Controller
     // remove html tag fron text strip_tags(<b> hello<b>)
     $comment = strip_tags($request->comment);
     $addcomment = new InvoiceComment();
-    $addcomment->invoice_ref    = $request->invoice_ref;
+    $addcomment->invoice_ref    = $request->invoice;
     $addcomment->comment        = $comment;
     $addcomment->added_by       = Auth::user()->id;
     $addcomment->save();
