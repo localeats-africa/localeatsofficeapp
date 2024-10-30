@@ -287,5 +287,5 @@ Route::controller(VendorsController::class)->group(function () {
 });
 
 Route::controller(StoreOwnersController::class)->group(function () {
-    Route::get('storeowner',  'storeowner')->name('store');
+    Route::get('vendoraccount',  'vendoraccount')->name('store');
 });
