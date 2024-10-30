@@ -83,8 +83,7 @@
                                           <div class="form-label required">New Comment <i class="text-danger">*</i>
                                           </div>
                                           <!-- Create the editor container -->
-                                          <div id="editor" class="mb-3" style="height: 100px;">
-
+                                          <div id="editor" class="mb-3" style="height: 70px;">
                                           </div>
 
                                     </div>
@@ -130,7 +129,7 @@
                   <div class="col-12">
                         <div class="card">
                               <div class="card-header">
-                                    <h3 class="card-title">Menu </h3>
+                                    <h3 class="card-title">All Comment for Invoice number: {{$invoice_ref}} </h3>
                               </div>
 
                               <div class="card-body border-bottom py-3">
@@ -273,7 +272,8 @@
 <!-- Initialize Quill editor -->
 <script>
 const quill = new Quill('#editor', {
-      theme: 'snow'
+      theme: 'snow',
+      placeholder: "Write here..."
 });
 
 // ....
