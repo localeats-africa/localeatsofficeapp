@@ -3412,7 +3412,7 @@ class HomeController extends Controller
     ->where('users.id', $user_id)
     ->pluck('role_name')->first();
 
-    return view('vendormanager.invoice-comment', compact('name', 'role'));
+    return view('vendormanager.invoice-comment', compact('name', 'role', 'invoice_ref'));
    }
  
 }//class
