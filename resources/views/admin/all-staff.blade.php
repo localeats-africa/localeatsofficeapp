@@ -14,7 +14,7 @@
                         <ul class="breadcrumb">
                               <li class="breadcrumb-item active" aria-current="page">
                                     <span></span><a href="{{ url('new-staff') }}" class="btn btn-block btn-danger"><i
-                                                class="fa fa-plus-square"></i> &nbsp;New Staff </a>
+                                                class="fa fa-plus-square"></i> &nbsp;New User </a>
                               </li>
                         </ul>
                   </nav>
