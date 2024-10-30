@@ -65,7 +65,7 @@ class StoreOwnersController extends Controller
         ->where('users.id', $user_id)
         ->pluck('role_name')->first();
 
-        return view();
+        return view('storeowner-admin', compact('username'));
 
     }
 }
