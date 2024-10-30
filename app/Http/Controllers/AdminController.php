@@ -1125,8 +1125,10 @@ class AdminController extends Controller
         ->where('role_name', '!=', 'admin')
         ->get();
 
+        $vendor = Vendor::all();
+
         return view('admin.staff', compact('role', 
-        'name',  'userRole'));
+        'name',  'userRole', 'vendor'));
     }
 
     public function addUser(Request $request){
@@ -1156,6 +1158,7 @@ class AdminController extends Controller
         $addUser->fullname          = $request->name;
         $addUser->email             = $request->email;
         $addUser->role_id           = $request->role;
+        $addUser->vendor            = $request->vendor;
         $addUser->email_verified_at = $verified;
         $addUser->password          = $password;
         $addUser->status            ='active';
