@@ -5,6 +5,14 @@
 @section('content')
 
 
+
+<textarea id="description" class="hidden ..."></textarea>
+<div id="content">{!! old('description') !!}</div>
+
+
+
+@endsection
+
 @push('scripts')
 <script src="https://cdnjs.cloudflare.com/ajax/libs/trix/1.3.1/trix.js"></script>
 
@@ -17,5 +25,3 @@ tinymce.init({
 });
 </script>
 @endpush
-
-@endsection
