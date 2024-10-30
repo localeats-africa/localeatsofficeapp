@@ -76,6 +76,7 @@
                   <div class="row">
                         <div class="col-md-6">
                               <input type="hidden" class="form-control" id="comment" name="comment">
+                              <input type="hidden" value="{{$invoice_ref}}" name="invoice">
                         </div>
                         <div class="col-md-6 col-12 grid-margin stretch-card justify-content-end">
                               <!-- send button here -->
