@@ -1774,7 +1774,7 @@ class HomeController extends Controller
         $search = $request->input('search');
 
         $orders = DB::table('orders')->distinct()
-        ->leftjoin('invoice_comment', 'invoice_comment.invoice_ref', '=', 'orders.invoice_ref')
+       // ->leftjoin('invoice_comment', 'invoice_comment.invoice_ref', '=', 'orders.invoice_ref')->distinct('invoice_comment.invoice_ref')
         ->join('vendor', 'orders.vendor_id', '=', 'vendor.id')
         ->where('orders.deleted_at', null)
         ->whereNotNull('payment_status')
@@ -1782,7 +1782,7 @@ class HomeController extends Controller
         // ->orwhere('orders.payment_status', 'pending')
         ->orderBy('orders.created_at', 'desc')
         ->select(['orders.*', 
-        'vendor.vendor_name', 'vendor.id' , 'invoice_comment.comment'])
+        'vendor.vendor_name', 'vendor.id'])
         ->where(function ($query) use ($search) {  // <<<
         $query->where('orders.created_at', 'LIKE', '%'.$search.'%')
                ->orWhere('vendor.vendor_name', 'LIKE', '%'.$search.'%')
