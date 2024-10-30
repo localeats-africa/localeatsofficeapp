@@ -86,7 +86,7 @@ class StoreOwnersController extends Controller
        ->where('vendor_expenses.vendor_id', $vendor_id)
        ->sum('vendor_expenses.cost');
 
-        return view('storeowner.storeowner-admin', compact('username', 'payouts'));
+        return view('storeowner.storeowner-admin', compact('username', 'payouts', 'offlineSales', 'expenses'));
 
     }
 }
