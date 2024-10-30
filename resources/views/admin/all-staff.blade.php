@@ -28,7 +28,7 @@
                                           <div class="card-body">
                                                 <img src="{{ asset('assets/images/dashboard/circle.svg')}}"
                                                       class="card-img-absolute" alt="circle-image">
-                                                <h4 class="font-weight-normal">Staff (s) <i
+                                                <h4 class="font-weight-normal">User (s) <i
                                                             class="mdi mdi-account-multiple  mdi-24px float-end"></i>
                                                 </h4>
                                                 <h2 class="mb-5">{{$user->count()}}</h2>
