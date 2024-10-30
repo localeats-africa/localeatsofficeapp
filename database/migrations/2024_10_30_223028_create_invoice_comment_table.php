@@ -16,6 +16,9 @@ return new class extends Migration
         Schema::create('invoice_comment', function (Blueprint $table) {
             $table->id();
             $table->timestamps();
+            $table->string('invoice_ref');
+            $table->string('comment');
+            $table->string('added_by');
         });
     }
 
