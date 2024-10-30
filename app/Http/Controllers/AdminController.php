@@ -1156,6 +1156,7 @@ class AdminController extends Controller
 
         $addUser = new User;
         $addUser->fullname          = $request->name;
+        $addUser->username          = $request->name;
         $addUser->email             = $request->email;
         $addUser->role_id           = $request->role;
         $addUser->vendor            = $request->vendor;
