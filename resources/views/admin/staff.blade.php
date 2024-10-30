@@ -97,7 +97,7 @@
                   @csrf
                   {{csrf_field()}}
                   <div class="row">
-                        <div class="col-md-4 grid-margin stretch-card">
+                        <div class="col-md-3 grid-margin stretch-card">
                               <div class="card">
                                     <div class="card-body">
                                           <div class="form-label required">Fullname <i class="text-danger">*</i>
@@ -132,7 +132,7 @@
                               </div>
                         </div>
 
-                        <div class="col-md-4 grid-margin stretch-card">
+                        <div class="col-md-3 grid-margin stretch-card">
                               <div class="card">
                                     <div class="card-body">
                                           <div class="form-label required">Email <i class="text-danger">*</i>
@@ -169,7 +169,7 @@
 
 
 
-                        <div class="col-md-4 grid-margin stretch-card">
+                        <div class="col-md-3 grid-margin stretch-card">
                               <div class="card">
                                     <div class="card-body">
                                           <div class="form-label required">Assign a role <i class="text-danger">*</i>
@@ -209,42 +209,58 @@
                                     </div>
                               </div>
                         </div>
+                   
+                        <div class="col-md-3 grid-margin stretch-card">
+                              <div class="form-group">
+                                    <h6>Assign to a new Vendor </h6>
+                                    <select class="platform2" style="width:100%" name="vendor[]" id="" multiple>
+                                          <option value="">
+                                                Search / Choose
+                                          </option>
+                                          @foreach($vendor as $data)
+                                          <option value="{{$data->id}}">
+                                                {{$data->vendor_name}}</option>
+                                          @endforeach
+                                    </select>
+                              </div>
+                        </div>
 
                   </div>
                   <!--- row---->
 
-       
 
-            <div class="row">
 
-                  <div class="col-md-4 grid-margin stretch-card">
-                        <!-- send button here -->
-                        <div class="card-footer bg-transparent mt-auto">
-                              <div class="btn-list ">
-                                    <button type="submit" name="submit"
-                                          class="btn bg-gradient-primary btn-sm  text-white">
-                                          <svg xmlns="http://www.w3.org/2000/svg"
-                                                class="icon icon-tabler icon-tabler-device-floppy" width="24"
-                                                height="24" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"
-                                                fill="none" stroke-linecap="round" stroke-linejoin="round">
-                                                <path stroke="none" d="M0 0h24v24H0z" fill="none" />
-                                                <path
-                                                      d="M6 4h10l4 4v10a2 2 0 0 1 -2 2h-12a2 2 0 0 1 -2 -2v-12a2 2 0 0 1 2 -2" />
-                                                <path d="M12 14m-2 0a2 2 0 1 0 4 0a2 2 0 1 0 -4 0" />
-                                                <path d="M14 4l0 4l-6 0l0 -4" />
-                                          </svg>
-                                          Add Staff
-                                    </button>
+                  <div class="row">
+
+                        <div class="col-md-4 grid-margin stretch-card">
+                              <!-- send button here -->
+                              <div class="card-footer bg-transparent mt-auto">
+                                    <div class="btn-list ">
+                                          <button type="submit" name="submit"
+                                                class="btn bg-gradient-primary btn-sm  text-white">
+                                                <svg xmlns="http://www.w3.org/2000/svg"
+                                                      class="icon icon-tabler icon-tabler-device-floppy" width="24"
+                                                      height="24" viewBox="0 0 24 24" stroke-width="1.5"
+                                                      stroke="currentColor" fill="none" stroke-linecap="round"
+                                                      stroke-linejoin="round">
+                                                      <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                                                      <path
+                                                            d="M6 4h10l4 4v10a2 2 0 0 1 -2 2h-12a2 2 0 0 1 -2 -2v-12a2 2 0 0 1 2 -2" />
+                                                      <path d="M12 14m-2 0a2 2 0 1 0 4 0a2 2 0 1 0 -4 0" />
+                                                      <path d="M14 4l0 4l-6 0l0 -4" />
+                                                </svg>
+                                                Add Staff
+                                          </button>
+                                    </div>
                               </div>
                         </div>
+
+
+                        <div class="col-md-4 grid-margin stretch-card">
+
+                        </div>
+
                   </div>
-
-
-                  <div class="col-md-4 grid-margin stretch-card">
-
-                  </div>
-
-            </div>
 
             </form>
       </div>
