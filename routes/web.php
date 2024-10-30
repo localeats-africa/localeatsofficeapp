@@ -147,7 +147,8 @@ Route::controller(HomeController::class)->group(function () {
     Route::get('filter-vendor-dashboard/{id}', 'filterVendorDashboard')->name('filter-vendor-dashboard');
     //leave comment on invoice
     Route::get('invoice-comment/{id}', 'invoiceComment')->name('invoice-comment');
-
+    Route::post('save_invoice_comment',  'saveComment')->name('save_invoice_comment');
+    
 });
 
 
