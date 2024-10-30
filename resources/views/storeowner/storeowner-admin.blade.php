@@ -8,7 +8,7 @@
       <div class="content-wrapper">
             <div class="page-header">
                   <h3 class="page-title">
-                  <span class="text-info"> {{ $vendorName }}</span> >>> Sales Insight  </span>
+                  <span class="text-info"> {{ $username }}</span> >>> Sales Insight  </span>
                   </h3>
                   <nav aria-label="breadcrumb">
                         <ul class="breadcrumb">
