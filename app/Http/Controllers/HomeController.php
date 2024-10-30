@@ -1782,7 +1782,7 @@ class HomeController extends Controller
         // ->orwhere('orders.payment_status', 'pending')
         ->orderBy('orders.created_at', 'desc')
         ->select(['orders.*', 
-        'vendor.vendor_name', 'vendor.id' ])
+        'vendor.vendor_name', 'vendor.id' , 'invoice_comment.comment'])
         ->where(function ($query) use ($search) {  // <<<
         $query->where('orders.created_at', 'LIKE', '%'.$search.'%')
                ->orWhere('vendor.vendor_name', 'LIKE', '%'.$search.'%')
