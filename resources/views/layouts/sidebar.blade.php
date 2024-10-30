@@ -158,13 +158,7 @@
                               <i class="mdi mdi-account-multiple fs-24 menu-icon"></i>
                         </a>
                   </li>
-
-                  <li class="nav-item">
-                        <a class="nav-link" href="{{ url('roles')}}" target="">
-                              <span class="menu-title">LocalEats Roles</span>
-                              <i class="mdi mdi-account-tag fs-24 menu-icon"></i>
-                        </a>
-                  </li>
+               
 
                   <li class="nav-item">
                         <a class="nav-link" data-bs-toggle="collapse" href="#vendor" aria-expanded="false"
@@ -222,6 +216,15 @@
                   </li>
 
                   @endif
+
+                  @if(Auth::user()->username == 'tech')
+                  <li class="nav-item">
+                        <a class="nav-link" href="{{ url('roles')}}" target="">
+                              <span class="menu-title">LocalEats Roles</span>
+                              <i class="mdi mdi-account-tag fs-24 menu-icon"></i>
+                        </a>
+                  </li>
+                  @endif 
                   <!--- vendor manager sidebar ---->
                   @if(Auth::user()->role_id == '6')
 
