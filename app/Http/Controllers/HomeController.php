@@ -3413,9 +3413,8 @@ class HomeController extends Controller
     ->where('users.id', $user_id)
     ->pluck('role_name')->first();
     $comment = InvoiceComment::where('invoice_ref', $invoice_ref)->get();
-
-
-    return view('vendormanager.invoice-comment', compact('name', 'role', 'invoice_ref', 'comment'));
+    return view('vendormanager.invoice-comment', compact('name', 'role', 
+    'invoice_ref', 'comment'));
    }
 
    public function saveComment(Request $request){
