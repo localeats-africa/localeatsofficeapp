@@ -49,13 +49,13 @@
                         @csrf
                         {{csrf_field()}}
                         <div class="row text-end">
-                        <h6></h6>
+                              <h6></h6>
                               <div class="col-md-3">
                               </div>
                               <div class="col-md-3">
                               </div>
-                              
-                              <div class="col-md-2 col-12">    
+
+                              <div class="col-md-2 col-12">
                               </div>
 
                               <div class="col-md-4 col-12">
@@ -63,12 +63,12 @@
                                           <div class="input-group">
                                                 <span class="input-group-append">
                                                       <span class="input-group-text text-dark d-block">
-                                                      Filter record:
+                                                            Filter record:
                                                       </span>
                                                 </span>
-                                              
-                                                <select class="js-example-basic-single text-secondary"
-                                                      name="status" style="width:50%">
+
+                                                <select class="js-example-basic-single text-secondary" name="status"
+                                                      style="width:50%">
                                                       <option>Invoice Status</option>
                                                       <option value="paid">Paid</option>
                                                       <option value="pending ">UnPaid</option>
@@ -220,13 +220,17 @@
                                                       <td>{{ date('d/m/Y', strtotime($data->created_at))}}</td>
 
                                                       <td class="text-sm">{{$data->vendor_name}}
-                                                             </td>
-                                                      <td>{{ $data->invoice_ref}}</td>
-                                                      <td> 
+                                                      </td>
+                                                      <td>{{ $data->invoice_ref}} <a href=""  data-toggle="tooltip"
+                                                                  data-placement="top" title="{{$data->vendor_name}}">
+                                                                  <i class="fa fa-info-circle" aria-hidden="true"></i>
+</a></td>
+                                                      <td>
                                                             @if($data->invoice_start_date == null)
                                                             @else
-                                                            {{date('d/m/Y',  strtotime($data->invoice_start_date))}} - {{date('d/m/Y',  strtotime($data->invoice_end_date))}} 
-                                                            @endif 
+                                                            {{date('d/m/Y',  strtotime($data->invoice_start_date))}} -
+                                                            {{date('d/m/Y',  strtotime($data->invoice_end_date))}}
+                                                            @endif
                                                       </td>
                                                       <td>
                                                             @if( $data->payment_status =='pending ')
@@ -266,7 +270,7 @@
                                                                         class="text-danger"><i
                                                                               class="fa fa-edit"></i></a></span>
 
-                                                                        
+
                                                             @endif
                                                             @endauth
                                                       </td>
