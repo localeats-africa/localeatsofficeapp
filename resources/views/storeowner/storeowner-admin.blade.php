@@ -164,7 +164,7 @@
                                                 <h4 class="font-weight-normal">Expenses<i
                                                             class="fa fa-cutlery  mdi-24px float-end"></i>
                                                 </h4>
-                                                <h2 class="mb-5">{{$offlineSales}}</h2>
+                                                <h2 class="mb-5">{{$expenses}}</h2>
                                                 <hr class="w-100">
                                                 
                                           </div>
