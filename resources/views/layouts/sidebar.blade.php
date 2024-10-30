@@ -69,7 +69,6 @@
                               <span class="menu-title">Invoice (s)</span>
                               <i class="menu-arrow"></i>
                               <i class="mdi mdi-invoice-text-multiple   menu-icon fs-24"></i>
-
                         </a>
                         <div class="collapse" id="invoice">
                               <ul class="nav flex-column sub-menu">
@@ -119,7 +118,6 @@
                                           <path d="M3 11c0 .888 .772 1.45 2 2"></path>
                                     </svg>
                               </i>
-
                         </a>
                   </li>
 
@@ -130,7 +128,6 @@
                         </a>
                   </li>
       
-
                   <li class="nav-item">
                         <a class="nav-link" href="{{ url('restaurant')}}" target="">
                               <span class="menu-title">Restaurant Type</span>
@@ -214,7 +211,6 @@
 
                         </a>
                   </li>
-
                   @endif
 
                   @if(Auth::user()->username == 'tech')
