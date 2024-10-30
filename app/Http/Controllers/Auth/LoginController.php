@@ -79,7 +79,7 @@ class LoginController extends Controller
                 return redirect('/'.$value.'/vendor');
             }
             else if (auth()->user()->role_id == '11') {
-                return redirect()->route('storeowner');
+                return redirect()->route('vendoraccount');
             }
             else{
                 return redirect()->route('home');
