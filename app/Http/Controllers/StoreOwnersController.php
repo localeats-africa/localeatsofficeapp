@@ -86,7 +86,25 @@ class StoreOwnersController extends Controller
        ->where('vendor_expenses.vendor_id', $vendor_id)
        ->sum('vendor_expenses.cost');
 
-        return view('storeowner.storeowner-admin', compact('username', 'payouts', 'offlineSales', 'expenses'));
+       $countAllOrder = Orders::where('deleted_at', null)
+       ->where('orders.order_amount', '!=', null)
+       ->where('orders.order_ref', '!=', null)
+       ->where('vendor_id', $vendor_id)   
+       ->count();
+
+       $getOrderItem = DB::table('orders')
+       ->where('deleted_at', null)
+       ->where('orders.order_amount', '!=', null)
+       ->where('orders.order_ref', '!=', null)
+       ->where('vendor_id', $vendor_id)   
+       ->get('description')->pluck('description');
+
+       $string =  $getOrderItem;
+       $substring = 'plate';
+       $countAllPlate = substr_count($string, $substring);
+
+        return view('storeowner.storeowner-admin', compact('username', 'payouts', 'offlineSales', 
+        'expenses', 'countAllOrder', 'countAllPlate'));
 
     }
 }
