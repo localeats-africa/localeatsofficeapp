@@ -61,8 +61,18 @@
                                           <div class="form-label required">New Comment <i class="text-danger">*</i>
                                           </div>
 
-                                          <textarea id="description" class="form-control"></textarea>
-                                          <div id="content">{!! old('description') !!}</div>
+                                          <div id="toolbar">
+                                                <button class="ql-bold">Bold</button>
+                                                <button class="ql-italic">Italic</button>
+                                          </div>
+
+                                          <!-- Create the editor container -->
+                                          <div id="editor">
+                                                <p>Hello World!</p>
+                                                <p>Some initial <strong>bold</strong> text</p>
+                                                <p><br /></p>
+                                          </div>
+
 
                                     </div>
                               </div>
@@ -111,4 +121,3 @@ tinymce.init({
 
 
 @endsection
-
