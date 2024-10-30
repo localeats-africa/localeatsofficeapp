@@ -3431,7 +3431,6 @@ class HomeController extends Controller
     $addcomment->added_by       = Auth::user()->id;
     $addcomment->save();
 
-    
 
     return redirect()->back()->with('status', 'Comment saved successfully');
    }
