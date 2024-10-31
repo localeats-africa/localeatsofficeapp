@@ -2194,14 +2194,16 @@ class HomeController extends Controller
         ->join('users', 'users.role_id', 'role.id')
         ->where('users.id', $id)
         ->pluck('role_name')->first();
-
         //a cashier should only see things for the vendor assigned to him
         $vendorName = Vendor::where('id', $vendor_id)
         ->get('vendor_name')->pluck('vendor_name')->first();
 
-
         $expensesList = ExpensesList::where('vendor_id', $vendor_id)
         ->orderBy('created_at', 'desc')
+        ->get();
+
+        $expensesCategory = VendorExpensesCategory::where('vendor_id', 'default')
+        ->orwhere('vendor_id', $vendor_id)
         ->get();
 
         $perPage = $request->perPage ?? 10;
@@ -2234,6 +2236,7 @@ class HomeController extends Controller
 
         $storeExpense = new ExpensesList();
         $storeExpense->vendor_id    = $request->vendor;
+        $storeExpense->category     = $request->category;
         $storeExpense->item         = $request->item;
         $storeExpense->added_by     = Auth::user()->id;
         $storeExpense->save();
