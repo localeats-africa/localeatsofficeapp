@@ -3599,7 +3599,7 @@ public function storeVendorExpensesCategory(Request $request){
 
     $addExpensesCategory = new VendorExpensesCategory;
     $addExpensesCategory->category   = $request->category;
-    $addExpensesCategory->vendor_id  = $request->vendor_id;
+    $addExpensesCategory->vendor_id  = $request->vendor;
     $addExpensesCategory->save();
     
     if($addExpensesCategory){
