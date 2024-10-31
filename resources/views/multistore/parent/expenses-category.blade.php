@@ -8,7 +8,7 @@
       <div class="content-wrapper">
             <div class="page-header">
                   <h3 class="page-title">
-                        Food Category
+                        Expenses Category
                   </h3>
             </div>
             <!--Alert here--->
