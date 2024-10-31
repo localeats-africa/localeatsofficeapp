@@ -8,7 +8,7 @@
       <div class="content-wrapper">
             <div class="page-header">
                   <h3 class="page-title">
-                        Food Category
+                        Expenses Category
                   </h3>
             </div>
             <!--Alert here--->
@@ -134,7 +134,7 @@
                         <div class="col-md-4 grid-margin stretch-card">
                               <!-- send button here -->
                               <div class="card-footer bg-transparent mt-auto">
-                                    <input type="hidden" name="parent" value="{{$parentID}}">
+                                    <input type="hidden" name="vendor" value="{{$vendor_id}}">
                                     <div class="btn-list ">
                                           <button type="submit" name="submit"
                                                 class="btn bg-gradient-primary btn-sm  text-white">
