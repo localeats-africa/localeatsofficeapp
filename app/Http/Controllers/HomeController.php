@@ -56,6 +56,8 @@ use App\Models\VendorOnlineSales;
 use App\Models\VendorInstoreSales;
 use App\Models\StoreRegion;
 use App\Models\InvoiceComment;
+use App\Models\VendorInventory;
+use App\Models\SubVendorInventory;
 
 use Excel;
 use Auth;
@@ -3491,11 +3493,18 @@ class HomeController extends Controller
 
 //storeowner save supply temporary
   public function vendorSaveSupply(Request $request){
+    $username = Auth::user()->username;
+    $user_id = Auth::user()->id;
+    $role = DB::table('role')->select('role_name')
+    ->join('users', 'users.role_id', 'role.id')
+    ->where('users.id', $user_id)
+    ->pluck('role_name')->first();
+
     $this->validate($request, [ 
         'quantity'      => 'required|max:255', 
         'item'          => 'required|max:255'         
     ]);
-    $username   = Auth::user()->username;
+
     $vendor_id  = $request->vendor_id;
     $item       = $request->item;
     $qty        = $request->input('quantity');
