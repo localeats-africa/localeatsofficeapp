@@ -93,7 +93,7 @@
             </div>
             <p></p>
 
-            <form method="post" action="{{ route('add-expenses-category') }}" name="submit" enctype="multipart/form-data">
+            <form method="post" action="{{ route('add-vendor-expenses-category') }}" name="submit" enctype="multipart/form-data">
                   @csrf
                   {{csrf_field()}}
                   <div class="row">
@@ -200,7 +200,7 @@
                                                 Search:
                                                 <div class="ms-2 d-inline-block">
 
-                                                      <form action="{{ url(auth()->user()->username, 'expenses-category') }}" method="GET"
+                                                      <form action="{{ url('vendor-expenses-category') }}" method="GET"
                                                             role="search">
                                                             {{ csrf_field() }}
                                                             <div class="input-group mb-2">
