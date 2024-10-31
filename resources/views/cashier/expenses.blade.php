@@ -96,7 +96,7 @@
                         @csrf
                         {{csrf_field()}}
                         <div class="row">
-                        <div class="col-md-4 col-12">
+                        <div class="col-md-3 col-12">
                                     <div class="form-group">
                                           <label for="">Expenses List</label>
                                           <br>
@@ -106,7 +106,7 @@
                                     </div>
                               </div>
                              
-                              <div class="col-md-4 col-12">
+                              <div class="col-md-3 col-12">
                                     <div class="form-group">
                                           <label for="">Price</label>
                                           <br>
@@ -116,7 +116,22 @@
                                           </div>
                                     </div>
                               </div>
-                              <div class="col-md-4 col-12">
+
+                              <div class="col-md-3 col-12">
+                                    <div class="form-group">
+                                          <label for="">Category</label>
+                                          <br>
+                                          <select class="js-example-basic-single2" style="width:100%" name="category"
+                                                id="vendor2">
+                                                <option> search </option>
+                                                @foreach($expensesCategory as $data)
+                                                <option value="{{$data->category}}">
+                                                      {{$data->category}}</option>
+                                                @endforeach
+                                          </select>
+                                    </div>
+                              </div>
+                              <div class="col-md-3 col-12">
                                     <div class="form-group">
                                           <label for="">Date</label>
                                           <br>
