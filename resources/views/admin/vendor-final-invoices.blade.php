@@ -222,13 +222,16 @@
                                                       <td class="text-sm">{{$data->vendor_name}}
                                                       </td>
                                                       <td>{{ $data->invoice_ref}} 
-                                                            @if($data->comment)
-                                                            <a href="" data-toggle="tooltip"
-                                                                  data-placement="top" title="{{$data->comment}}">
+                                                      @foreach (\App\Models\InvoiceComment::orderBy('id', 'desc')->get()->take(1)  as $comment)
+                                                     @if($data->invoice_ref == $comment->invoice_ref)
+                                                     <a href="" data-toggle="tooltip"
+                                                                  data-placement="top" title="{{$comment->comment}}">
                                                                   <i class="fa fa-info-circle" aria-hidden="true"></i>
                                                             </a>
-                                                            @else 
                                                             @endif 
+                                                      @endforeach
+
+                                                          
                                                       </td>
                                                       <td>
                                                             @if($data->invoice_start_date == null)
