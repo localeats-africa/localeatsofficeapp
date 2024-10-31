@@ -170,7 +170,7 @@ text-transform: lowercase;
                                           id="orders">
                                           <thead>
                                                 <tr>
-                                                      <th>SN</th>
+                                                      <th>Date</th>
                                                       <th>Item</th>
                                                       <th>Weight/Size</th>
                                                       <th>Quantity</th>
@@ -179,7 +179,7 @@ text-transform: lowercase;
                                           <tbody>
                                                 @foreach($supply as $data)
                                                 <tr>
-                                                      <td>{{$loop->iteration}}</td>
+                                                <td>{{ date('Y-m-d', strtotime($data->created_at))}}</td>
                                                       <td class="text-capitalize">{{$data->supply}}</td>
                                                       <td>
                                                             @if($data->size == 0)
