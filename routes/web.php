@@ -151,6 +151,8 @@ Route::controller(HomeController::class)->group(function () {
     //storeowner add supplies
     Route::get('vendor-add-supply',  'vendorAddSupply')->name('vendor-add-supply');
     Route::post('vendor-save-supplies',  'vendorSaveSupply')->name('vendor-save-supplies');
+    Route::post('vendor-push-supplies',  'pushSupplies')->name('push-supplies');
+
 });
 
 
