@@ -303,6 +303,10 @@
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
 <script src="https://code.jquery.com/ui/1.13.3/jquery-ui.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.1/js/select2.min.js"></script>
+
+<script src="{{ asset('assets/vendors/select2/select2.min.js')}}"></script>
+
+<script src="{{ asset('assets/js/select2.js')}}"></script>
 <script type="text/javascript">
 var id = document.getElementById('vendor_id').value;
 var showRoute = "{{ route('autocomplete-expenses', ':id') }}";
