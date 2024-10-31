@@ -3444,8 +3444,49 @@ class HomeController extends Controller
     $addcomment->added_by       = Auth::user()->id;
     $addcomment->save();
 
-
     return redirect()->back()->with('status', 'Comment saved successfully');
    }
+
+   //storeowner/vendor, cashier can add supplies
+   public function vendorAddSupply(Request $request){
+    $username = Auth::user()->username;
+    $user_id = Auth::user()->id;
+    $role = DB::table('role')->select('role_name')
+    ->join('users', 'users.role_id', 'role.id')
+    ->where('users.id', $user_id)
+    ->pluck('role_name')->first();
+
+    $getVendor_id = User::where('id', $user_id)
+    ->get('vendor')->pluck('vendor');
+    $stringVendor = substr($getVendor_id, 1, -1);
+    $removebracket= str_replace(array('[[',']]'),'',$stringVendor);
+    $vendorBracket = str_replace('"', '', $removebracket);
+    $vendor_id = substr($vendorBracket, 1, -1);
+    
+    $sizes = InventoryItemSizes::all();
+
+    $perPage = $request->perPage ?? 25;
+    $search = $request->input('search');
+
+    $supply = TempVendorInventory::where('vendor_id',  $vendor_id)
+    ->select(['temp_vendor_inventory.*'])
+    ->orderBy('temp_vendor_inventory.created_at', 'desc')
+    ->where(function ($query) use ($search) {  // <<<
+    $query->where('temp_vendor_inventory.supply', 'LIKE', '%'.$search.'%')
+            ->orWhere('temp_vendor_inventory.created_at', 'LIKE', '%'.$search.'%');
+    })
+    ->paginate($perPage,  $pageName = 'supply')->appends(['per_page'   => $perPage]);
+    $pagination = $supply->appends ( array ('search' => $search) );
+        if (count ( $pagination ) > 0){
+            return view('storeowner.add-supply', compact(
+            'perPage', 'role', 'username', 'supply', 'vendor_id', 'sizes'))->withDetails($pagination);     
+        } 
+    else{ 
+        // Session::flash('food-status', 'No record order found'); 
+        return view('storeowner.add-supply',  compact(  'perPage', 'role', 'username', 'supply', 'vendor_id', 'sizes'))->with('food-status', 'No record order found'); 
+    }
+    return view('storeowner.add-supply',  compact(  'perPage', 'role', 'username', 'supply', 'vendor_id', 'sizes'));
+    
+}
  
 }//class
