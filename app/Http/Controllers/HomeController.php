@@ -3488,5 +3488,111 @@ class HomeController extends Controller
     return view('storeowner.add-supply',  compact(  'perPage', 'role', 'username', 'supply', 'vendor_id', 'sizes'));
     
 }
+
+//storeowner save supply temporary
+  public function vendorSaveSupply(Request $request){
+    $this->validate($request, [ 
+        'quantity'      => 'required|max:255', 
+        'item'          => 'required|max:255'         
+    ]);
+
+    $username   = Auth::user()->username;
+    $vendor_id  = $request->vendor_id;
+    $item       = $request->item;
+    $qty        = $request->input('quantity');
+
+    // SubVendorInventory
+        $supply = new TempVendorInventory();
+        $supply->vendor_id          = $request->vendor_id;
+        $supply->supply_qty         = $request->quantity;
+        $supply->size               = $request->size;
+        $supply->weight             = $request->weight;
+        $supply->supply             = $request->item;
+        $supply->save();
+
+    if($supply){
+        $response = [
+            'code'      => '',
+            'message'   => 'Supply sent successfully',
+            'status'    => 'success',
+        ];
+        $data = json_encode($response, true);
+         
+        return redirect()->back()->with('supply-status', 'Item saved');
+    }
+    else{
+        return redirect()->back()->with('sales-error', 'Opps! something happend');
+    }
+}
+
+public function deleteTempSupply(Request $request, $id){
+  // $id =  $request->id;
+   $remove = TempVendorInventory::where('id', $id)->delete();
+   if($remove){
+    return redirect()->back()->with('supply-status', 'Item removed');  
+   }
+   else{
+    return redirect()->back()->with('sales-error', 'Opps! something happend');
+    }
+}
+
+//storeowner store supplies
+public function storeSupplies(Request $request){
+    $username   = Auth::user()->username;
+    $today = Carbon::today();
+    $characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
+    $pin = mt_rand(1000000, 9999999);
+    $supplyRef ='S'.str_shuffle($pin);
+
+    $getVendor_id = User::where('id', $user_id)
+    ->get('vendor')->pluck('vendor');
+    $stringVendor = substr($getVendor_id, 1, -1);
+    $removebracket= str_replace(array('[[',']]'),'',$stringVendor);
+    $vendorBracket = str_replace('"', '', $removebracket);
+    $vendor_id = substr($vendorBracket, 1, -1);
+
+    $getSupply = TempVendorInventory::where('vendor_id', $vendor_id)
+    ->get();
+   
+    if($getSupply->count() >= 1){
+        foreach($getSupply as $key  =>  $data){
+                $supply = new SubVendorInventory();
+                $supply->vendor_id          = $data->vendor_id;
+                $supply->supply_qty         = $data->supply_qty;
+                $supply->size               = $data->size;
+                $supply->weight             = $data->weight;
+                $supply->supply             = $data->supply;
+                $supply->supply_ref         = $supplyRef;
+                $supply->save();
+        }
+        if($supply){
+            $response = [
+                'code'      => '',
+                'message'   => 'Supply stored successfully',
+                'status'    => 'success',
+            ];
+            $data = json_encode($response, true);
+
+            $countRow =TempVendorInventory::where('vendor_id', $vendor_id)
+            ->count();
+          
+            SubVendorInventory::where('id', $supply->id)
+            ->update([
+            'number_of_items' => $countRow,
+            ]);
+           
+            TempVendorInventory::where('vendor_id', $vendor_id)->delete();
+
+            return redirect($username.'/outlet-supplies/'.$request->vendor_id )->with('supply-status', 'Supply sent successfully');
+        }
+        else{
+            return redirect()->back()->with('sales-error', 'Opps! something happend');
+        } 
+    }
+    else{
+        return redirect()->back()->with('supply-error', 'Opps! kindly enter supplies');    
+    }     
+}
+
  
 }//class
