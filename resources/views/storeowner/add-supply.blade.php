@@ -97,7 +97,7 @@ text-transform: lowercase;
 
             <p></p>
             <p></p>
-            <form method="post" action="" name="submit" enctype="multipart/form-data">
+            <form method="post" action="{{ route('vendor-save-supplies') }}" name="submit" enctype="multipart/form-data">
                   @csrf
                   {{csrf_field()}}
                   <div class="row">
@@ -195,12 +195,7 @@ text-transform: lowercase;
                                                             @endif       
                                                     </td>
                                                     <td >
-                                                      <form action="{{ route('remove-supply-item', [$data->id]) }}" method="post">
-                                                      @csrf
-                                                      {{csrf_field()}}
-                                                            <input type="hidden" value="" name="id">
-                                                            <button type="submit"  name="submit" class=" btn btn-xs text-danger"><i class="fa fa-trash"></i></button>
-                                                      </form>
+                                                     
                                                     </td>
 
                                                 </tr>
@@ -213,17 +208,6 @@ text-transform: lowercase;
 
                         </div>
                         <!--- card-->
-                        <p></p>
-                      
-                        <form method="post" action="{{ route('push-supplies') }}" name="submit"
-                              enctype="multipart/form-data">
-                              @csrf
-                              {{csrf_field()}}
-                              <input type="hidden" name="vendor_id" value="{{$vendor_id}}">
-                              
-                              <button type="submit" name="submit"
-                                    class="btn bg-gradient-primary btn-md  text-white">Push Supplies </button>
-                        </form>
                      
                   </div>
             </div>
