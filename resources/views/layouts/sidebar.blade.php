@@ -363,7 +363,7 @@
                   <li class="nav-item">
                         <a class="nav-link" href="{{ url('vendor-add-supply') }}">
                               <span class="menu-title">Add Supply</span>
-                              <i class="mdi mdi-book   menu-icon fs-24"></i>
+                              <i class="mdi mdi-supply   menu-icon fs-24"></i>
                         </a>
                   </li>
 
