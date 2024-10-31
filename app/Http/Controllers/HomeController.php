@@ -3571,6 +3571,7 @@ public function vendorExpensesCategory(Request $request){
     $expensesCategory=  DB::table('vendor_expenses_category')
     ->where('deleted_at', null)
     ->where('vendor_id', $vendor_id)
+    ->orWhere('vendor_id', 'default')
     ->select(['*' ])
     ->orderBy('created_at', 'desc')
     ->where(function ($query) use ($search) {  // <<<
