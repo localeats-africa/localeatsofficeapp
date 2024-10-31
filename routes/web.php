@@ -148,7 +148,9 @@ Route::controller(HomeController::class)->group(function () {
     //leave comment on invoice
     Route::get('invoice-comment/{id}', 'invoiceComment')->name('invoice-comment');
     Route::post('save_invoice_comment',  'saveComment')->name('save_invoice_comment');
-    
+    //storeowner add supplies
+    Route::get('vendor-add-supply',  'vendorAddSupply')->name('vendor-add-supply');
+    Route::post('vendor-save-supplies',  'vendorSaveSupply')->name('vendor-save-supplies');
 });
 
 
