@@ -2220,12 +2220,12 @@ class HomeController extends Controller
         $pagination = $expenses->appends ( array ('search' => $search) );
             if (count ( $pagination ) > 0){
                 return view('cashier.expenses',  compact('name', 'role', 
-                'vendorName','expensesList', 'vendor_id', 'perPage', 'expenses'))->withDetails( $pagination );     
+                'vendorName','expensesList', 'vendor_id', 'perPage', 'expenses', 'expensesCategory'))->withDetails( $pagination );     
             } 
         //else{return redirect()->back()->with('expenses-status', 'No record order found'); }
 
         return view('cashier.expenses',  compact('name', 'role', 
-         'vendorName','expensesList', 'vendor_id', 'perPage', 'expenses'));
+         'vendorName','expensesList', 'vendor_id', 'perPage', 'expenses', 'expensesCategory'));
     }
 
     public function addExpensesList(Request $request){
