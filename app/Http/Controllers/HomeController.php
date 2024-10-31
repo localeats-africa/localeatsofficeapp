@@ -3550,6 +3550,64 @@ public function deleteTempSupply(Request $request, $id){
     }
 }
 
+public function vendorExpensesCategory(Request $request){
+    $username = Auth::user()->username;
+    $user_id = Auth::user()->id;
+    $role = DB::table('role')->select('role_name')
+    ->join('users', 'users.role_id', 'role.id')
+    ->where('users.id', $user_id)
+    ->pluck('role_name')->first();
+
+    $getVendor_id = User::where('id', $user_id)
+    ->get('vendor')->pluck('vendor');
+    $stringVendor = substr($getVendor_id, 1, -1);
+    $removebracket= str_replace(array('[[',']]'),'',$stringVendor);
+    $vendorBracket = str_replace('"', '', $removebracket);
+    $vendor_id = substr($vendorBracket, 1, -1);
+
+    $perPage = $request->perPage ?? 10;
+    $search = $request->input('search');
+    
+    $expensesCategory=  DB::table('vendor_expenses_category')
+    ->where('deleted_at', null)
+    ->where('vendor_id', $vendor_id)
+    ->select(['*' ])
+    ->orderBy('created_at', 'desc')
+    ->where(function ($query) use ($search) {  // <<<
+    $query->where('vendor_expenses_category.category', 'LIKE', '%'.$search.'%');
+    })
+    ->paginate($perPage,  $pageName = 'expensesCategory')->appends(['per_page'   => $perPage]);
+    $pagination = $expensesCategory->appends ( array ('search' => $search) );
+        if (count ( $pagination ) > 0){
+            return view('storeowner.expenses-category',  compact(
+            'perPage', 'username', 'role', 'expensesCategory', 'vendor_id'))->withDetails( $pagination );     
+        } 
+    else{
+        //return redirect()->back()->with('error', 'No record order found')
+        return view('storeowner.expenses-category',  compact(
+            'perPage', 'username', 'role', 'expensesCategory', 'vendor_id')); 
+    }
+
+    return view('storeowner.expenses-category',  compact(
+        'perPage', 'username', 'role', 'expensesCategory', 'vendor_id'));
+}
+
+public function storeVendorExpensesCategory(Request $request){
+    $this->validate($request, [ 
+        'category'   => 'required|string|max:255',
+    ]);
+
+    $addExpensesCategory = new VendorExpensesCategory;
+    $addExpensesCategory->category   = $request->category;
+    $addExpensesCategory->vendor_id  = $request->vendor_id;
+    $addExpensesCategory->save();
+    
+    if($addExpensesCategory){
+       return redirect()->back()->with('add-food-type', 'Expenses Category Added!');
+    }
+    else{return redirect()->back()->with('error', 'Opps! something went wrong.'); }
+}
+
 
 
  
