@@ -163,8 +163,6 @@ text-transform: lowercase;
                               <div class="card-header">
                                     <h4 class="card-title"> </h4>
                               </div>
-
-
                               <div class="table-responsive " id="card">
                                     <table class="table table-striped card-table table-center text-nowrap datatable"
                                           id="orders">
