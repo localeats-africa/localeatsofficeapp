@@ -2236,7 +2236,6 @@ class HomeController extends Controller
 
         $storeExpense = new ExpensesList();
         $storeExpense->vendor_id    = $request->vendor;
-        $storeExpense->category     = $request->category;
         $storeExpense->item         = $request->item;
         $storeExpense->added_by     = Auth::user()->id;
         $storeExpense->save();
@@ -2270,6 +2269,7 @@ class HomeController extends Controller
 
         $expenses = new VendorExpenses();
         $expenses->vendor_id        = $request->vendor;
+        $expenses->category         = $request->category;
         $expenses->description      = $request->item;
         $expenses->cost             = $request->price;
         $expenses->added_by         = Auth::user()->id;
