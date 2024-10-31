@@ -97,7 +97,7 @@ text-transform: lowercase;
 
             <p></p>
             <p></p>
-            <form method="post" action="{{ route('vendor-save-suppliess') }}" name="submit" enctype="multipart/form-data">
+            <form method="post" action="" name="submit" enctype="multipart/form-data">
                   @csrf
                   {{csrf_field()}}
                   <div class="row">
@@ -219,12 +219,10 @@ text-transform: lowercase;
                               enctype="multipart/form-data">
                               @csrf
                               {{csrf_field()}}
-                              <input type="hidden" name="parent_id" value="{{$parentStoreID}}">
                               <input type="hidden" name="vendor_id" value="{{$vendor_id}}">
                               
                               <button type="submit" name="submit"
-                                    class="btn bg-gradient-primary btn-md  text-white">Push Supplies To
-                                    {{$outletStoreName}}</button>
+                                    class="btn bg-gradient-primary btn-md  text-white">Push Supplies </button>
                         </form>
                      
                   </div>
