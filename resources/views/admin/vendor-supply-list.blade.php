@@ -73,7 +73,7 @@
 
             <div class="row ">
 
-                  <form method="GET" action="{{ route('expenses-list') }}" name="submit" enctype="multipart/form-data">
+                  <form method="GET" action="{{ route('supply-list') }}" name="submit" enctype="multipart/form-data">
                         @csrf
                         {{csrf_field()}}
                         <div class="row">
