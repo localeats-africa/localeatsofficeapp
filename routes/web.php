@@ -189,6 +189,7 @@ Route::controller(AdminController::class)->group(function () {
     Route::get('expenses-list', 'expensesList')->name('expenses-list');
     Route::get('new-expenses', 'newExpenses')->name('new-expenses');
     Route::post('add-expenses', 'addExpenses')->name('add-expenses');
+    Route::get('supply-list', 'vendorSupplyList')->name('supply-list');
     Route::post('merge-invoice-commission-paid',  'vendorInvoiceCommisionPaid')->name('merge-invoice-commission-paid');     
     Route::get('profit-and-loss', 'profitAndLoss')->name('profit-and-loss'); 
     Route::get('vendor-sales-list', 'salesList')->name('vendor-sales-list');
@@ -210,7 +211,6 @@ Route::controller(AdminController::class)->group(function () {
     Route::post('add-parent-vendor',  'addParentVendor')->name('add-parent-vendor');
     Route::get('parent-store-dashboard/{id}', 'showParentVendorDashboard')->name('parent-store-dashboard');
     Route::get('filter-parent-store-dashboard/{id}', 'filterParentVendorDashboard')->name('filter-parent-store-dashboard');
-   
     //create outlets
     Route::get('child-vendor/{id}',  'allChildVendor')->name('child-vendor');
     Route::get('new-child-vendor/{id}',  'newChildVendor')->name('new-child-vendor');
