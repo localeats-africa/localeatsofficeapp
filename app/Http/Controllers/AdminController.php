@@ -2572,10 +2572,539 @@ class AdminController extends Controller
                 $data = json_encode($error);
                 return redirect()->back()->with('add-vendor', 'Something went wrong');
             }
-            return redirect()->back()->with('add-vendor', 'Something went wrong');
-        
+            return redirect()->back()->with('add-vendor', 'Something went wrong');   
+    }
+
+    public function showParentVendorDashboard(Request $request, $vendor_id){
+        $name = Auth::user()->name;
+        $user_id = Auth::user()->id;
+        $role = DB::table('role')->select('role_name')
+        ->join('users', 'users.role_id', 'role.id')
+        ->where('users.id', $user_id)
+        ->pluck('role_name')->first();
+
+        $status = DB::table('vendor')->where('vendor.id', $vendor_id)
+        ->select('*')->pluck('vendor_status')->first();
+
+        $vendorLogo = Vendor::where('id', $vendor_id)
+        ->get('vendor_logo');
+
+        $vendorRef = DB::table('vendor')->where('id', $vendor_id)
+        ->select('*')->pluck('vendor_ref')->first();
+           
+        $vendorName = DB::table('vendor')->where('id', $vendor_id)
+        ->select('*')->pluck('vendor_name')->first();
+
+        $activePlatform = DB::table('sales_platform')
+      // ->join('platforms', 'platforms.name', '=', 'sales_platform.platform_name')->distinct()
+        ->where('vendor_status', 'active')
+        ->where('vendor_id', $vendor_id)
+        ->get('platform_name');
+
+        $sumAllOrders = DB::table('orders')
+        ->where('deleted_at', null)
+        ->where('orders.order_amount', '!=', null)
+        ->where('orders.order_ref', '!=', null)
+        ->where('vendor_id', $vendor_id)   
+        ->sum('order_amount');
+
+        $sumFoodPrice = DB::table('orders')
+        ->where('deleted_at', null)
+        ->where('orders.order_amount', '!=', null)
+        ->where('orders.order_ref', '!=', null)
+        ->where('vendor_id', $vendor_id)            
+        ->sum('food_price');
+
+        $sumExtra =  DB::table('orders')
+        ->where('deleted_at', null)
+        ->where('orders.order_amount', '!=', null)
+        ->where('orders.order_ref', '!=', null)
+        ->where('vendor_id', $vendor_id)   
+        ->sum('extra');
+
+        $vendorFoodPrice =  $sumFoodPrice + $sumExtra ;
+
+        $sumGlovoComm = DB::table('commission')
+        ->join('orders', 'orders.id', 'commission.order_id')
+        ->where('orders.deleted_at', null)
+        ->where('orders.food_price', '!=', null)
+        ->where('orders.vendor_id', $vendor_id)  
+        ->sum('commission.platform_comm');
+
+        $countAllOrder = Orders::where('deleted_at', null)
+         ->where('orders.order_amount', '!=', null)
+         ->where('orders.order_ref', '!=', null)
+         ->where('vendor_id', $vendor_id)   
+         ->count();
+        // dd( $countAllOrder );
+ 
+         $getOrderItem = DB::table('orders')
+         ->where('deleted_at', null)
+         ->where('orders.order_amount', '!=', null)
+         ->where('orders.order_ref', '!=', null)
+         ->where('vendor_id', $vendor_id)   
+         ->get('description')->pluck('description');
+ 
+         $string =  $getOrderItem;
+         $substring = 'plate';
+         $countAllPlate = substr_count($string, $substring);
+         $countPlatformWhereOrderCame = DB::table('orders')
+         ->Join('platforms', 'orders.platform_id', '=', 'platforms.id')->distinct()
+         ->where('orders.deleted_at', null)
+         ->where('orders.order_amount', '!=', null)
+         ->where('orders.order_ref', '!=', null)
+         ->where('orders.vendor_id', $vendor_id)   
+         ->count('platforms.id');
+ 
+         $payouts = DB::table('orders')
+         ->where('deleted_at', null)
+         ->where('orders.order_amount', '!=', null)
+         ->where('orders.order_ref', '!=', null)
+         ->where('orders.vendor_id', $vendor_id)  
+         ->sum('payout');
+ 
+         //$commission = (int)$sumAllOrders - (int)$payouts ;
+         $commission = Commission::join('orders', 'orders.id', '=', 'commission.order_id')
+         ->where('orders.deleted_at', null)
+         ->where('orders.food_price', '!=', null)
+         ->where('orders.vendor_id', $vendor_id)  
+         ->sum('commission.localeats_comm');
+ 
+         $commissionPaid = DB::table('orders')
+         ->where('orders.vendor_id', $vendor_id)  
+         ->sum('commission');
+
+         $chartYearlyTotalSales = Orders::select(
+            \DB::raw('YEAR(delivery_date) as year'),)
+            ->where('deleted_at', null)
+            ->where('orders.order_amount', '!=', null)
+            ->where('orders.order_ref', '!=', null)
+            ->where('orders.food_price', '!=', null)
+            ->where('orders.vendor_id', $vendor_id)  
+            ->groupby('year')
+            ->get();
+    
+            $chartMonthlyTotalSales = Orders::select(
+            \DB::raw("COUNT(*) as total_sales"), 
+            \DB::raw('DATE_FORMAT(delivery_date,"%M ") as month'),
+            \DB::raw('SUM(order_amount) as sales_volume'),
+            )->where('deleted_at', null)
+            ->where('orders.order_amount', '!=', null)
+            ->where('orders.order_ref', '!=', null)
+            ->where('orders.food_price', '!=', null)
+            ->where('orders.vendor_id', $vendor_id)  
+            ->groupby('month')
+            ->get();
+
+            $chartSalesMonth = Arr::pluck($chartMonthlyTotalSales, 'month');
+            $chartSalesVolume = Arr::pluck($chartMonthlyTotalSales, 'sales_volume');
+            $chartSalesTotal = Arr::pluck($chartMonthlyTotalSales, 'total_sales');
+    
+            $monthlist = array_map(fn($month) => Carbon::create(null, $month)->format('M'), range(1, 12));
+            $salesYear =  Arr::pluck($chartYearlyTotalSales, 'year');
+            $data = [
+             'month' =>  $chartSalesMonth ,
+             'sales' =>  $chartSalesVolume,
+             'total' =>  $chartSalesTotal,
+            ];
+    
+            $chowdeckOrderCount= DB::table('orders')
+            ->join('platforms', 'platforms.id', '=', 'orders.platform_id')
+            ->where('platforms.name', 'chowdeck')
+            ->where('orders.deleted_at', null)
+            ->where('orders.order_amount', '!=', null)
+            ->where('orders.order_ref', '!=', null)
+            ->where('orders.vendor_id', $vendor_id)  
+            ->get('orders.platform_id')->count();
+    
+            $glovoOrderCount= DB::table('orders')
+            ->join('platforms', 'platforms.id', '=', 'orders.platform_id')
+            ->where('platforms.name', 'glovo')
+            ->where('orders.deleted_at', null)
+            ->where('orders.order_amount', '!=', null)
+            ->where('orders.order_ref', '!=', null)
+            ->where('orders.vendor_id', $vendor_id)  
+            ->get('orders.platform_id')->count();
+    
+            $edenOrderCount= DB::table('orders')
+            ->join('platforms', 'platforms.id', '=', 'orders.platform_id')
+            ->where('platforms.name', 'edenlife')
+            ->where('orders.deleted_at', null)
+            ->where('orders.order_amount', '!=', null)
+            ->where('orders.order_ref', '!=', null)
+            ->where('orders.vendor_id', $vendor_id)  
+            ->get('orders.platform_id')->count();
+    
+            $platformOrders = DB::table('orders')
+            ->join('platforms', 'platforms.id', '=', 'orders.platform_id')->distinct()
+            ->where('platforms.deleted_at', null)
+            ->where('orders.vendor_id', $vendor_id)  
+            ->get(['platforms.*']);
+            
+            // bar chart
+            if($countAllOrder < 1){
+                $chowdeckSalesPercentageChart = $chowdeckOrderCount / 1 * 100;
+                $glovoSalesPercentageChart = $glovoOrderCount / 1 * 100;
+                $edenSalesPercentageChart = $edenOrderCount / 1 * 100;
+            }
+            else{
+                $chowdeckSalesPercentageChart = $chowdeckOrderCount / $countAllOrder * 100;
+                $glovoSalesPercentageChart = $glovoOrderCount / $countAllOrder * 100;
+                $edenSalesPercentageChart = $edenOrderCount / $countAllOrder * 100;
+            }
+    
+            $piechartData = [            
+            'label' => ['Chowdeck', 'Glovo', 'Eden'],
+            'data' => [round($chowdeckSalesPercentageChart) , round($glovoSalesPercentageChart),  round($edenSalesPercentageChart)] ,
+            ];
+        //sales for barchart
+    
+        $chowdeckOrder =  Orders::join('platforms', 'platforms.id', '=', 'orders.platform_id')
+        ->select(
+            \DB::raw('DATE_FORMAT(orders.delivery_date,"%M ") as month'),
+            \DB::raw('SUM(orders.order_amount) as sales'),
+            )
+            ->where('platforms.name', 'chowdeck')
+            ->where('orders.deleted_at', null)
+            ->where('orders.order_amount', '!=', null)
+            ->where('orders.order_ref', '!=', null)
+            ->where('orders.vendor_id', $vendor_id)  
+            ->groupby('month')
+            ->get();
+        $barChartChowdeckSales = Arr::pluck($chowdeckOrder, 'sales');
+    
+        $glovoOrder = Orders::join('platforms', 'platforms.id', '=', 'orders.platform_id')
+        ->select(
+            \DB::raw('DATE_FORMAT(orders.delivery_date,"%M ") as month'),
+            \DB::raw('SUM(orders.order_amount) as sales'),
+            )
+            ->where('platforms.name', 'glovo')
+            ->where('orders.deleted_at', null)
+            ->where('orders.order_amount', '!=', null)
+            ->where('orders.order_ref', '!=', null)
+            ->where('orders.vendor_id', $vendor_id)  
+            ->groupby('month')
+            ->get();
+            $barChartGlovoSales = Arr::pluck($glovoOrder, 'sales');
+    
+        $edenOrder=  Orders::join('platforms', 'platforms.id', '=', 'orders.platform_id')
+        ->select(
+            \DB::raw('DATE_FORMAT(orders.delivery_date,"%M ") as month'),
+            \DB::raw('SUM(orders.order_amount) as sales'),
+            )
+            ->where('platforms.name', 'edenlife')
+            ->where('orders.deleted_at', null)
+            ->where('orders.order_amount', '!=', null)
+            ->where('orders.order_ref', '!=', null)
+            ->where('orders.vendor_id', $vendor_id)  
+            ->groupby('month')
+            ->get();
+            $barChartEdenSales = Arr::pluck($edenOrder, 'sales');
+      
+        $barChartData = [
+            'months'        =>  $chartSalesMonth,
+            'chocdekSales'  =>  $barChartChowdeckSales,
+            'glovoSales'    =>  $barChartGlovoSales,
+            'edenSales'     =>  $barChartEdenSales,
+        ]; 
+        return view('vendormanager.vendor-dashboard',  compact('name', 'role', 
+        'activePlatform', 'payouts', 'commission',   'sumAllOrders', 
+       'countAllOrder', 'countPlatformWhereOrderCame',
+       'countAllPlate', 'commissionPaid', 'data', 'salesYear', 'platformOrders',
+       'chowdeckOrderCount','glovoOrderCount', 'edenOrderCount', 
+       'chowdeckSalesPercentageChart', 'glovoSalesPercentageChart', 
+       'edenSalesPercentageChart', 'piechartData' ,  'barChartData',
+        'vendorFoodPrice', 'vendorName', 'sumGlovoComm', 'vendor_id'));
 
     }
+
+    public function filterParentVendorDashboard(Request $request, $vendor_id){
+        $name = Auth::user()->name;
+        $user_id = Auth::user()->id;
+        $role = DB::table('role')->select('role_name')
+        ->join('users', 'users.role_id', 'role.id')
+        ->where('users.id', $user_id)
+        ->pluck('role_name')->first();
+
+        $status = DB::table('vendor')->where('vendor.id', $vendor_id)
+        ->select('*')->pluck('vendor_status')->first();
+
+        $vendorLogo = Vendor::where('id', $vendor_id)
+        ->get('vendor_logo');
+
+        $vendorRef = DB::table('vendor')->where('id', $vendor_id)
+        ->select('*')->pluck('vendor_ref')->first();
+           
+        $vendorName = DB::table('vendor')->where('id', $vendor_id)
+        ->select('*')->pluck('vendor_name')->first();
+
+         //filter dashboard Start here
+         $startDate      =   date("Y-m-d", strtotime($request->from)) ;
+         $endDate        =  date("Y-m-d", strtotime($request->to));
+
+
+        $activePlatform = DB::table('sales_platform')
+      // ->join('platforms', 'platforms.name', '=', 'sales_platform.platform_name')->distinct()
+        ->where('vendor_status', 'active')
+        ->where('vendor_id', $vendor_id)
+        ->get('platform_name');
+
+        $sumAllOrders = DB::table('orders')
+        ->where('deleted_at', null)
+        ->where('orders.order_amount', '!=', null)
+        ->where('orders.order_ref', '!=', null)
+        ->where('vendor_id', $vendor_id)   
+        ->whereDate('delivery_date', '>=', $startDate)                                 
+        ->whereDate('delivery_date', '<=', $endDate) 
+        ->sum('order_amount');
+
+        $sumFoodPrice = DB::table('orders')
+        ->where('deleted_at', null)
+        ->where('orders.order_amount', '!=', null)
+        ->where('orders.order_ref', '!=', null)
+        ->where('vendor_id', $vendor_id)   
+        ->whereDate('delivery_date', '>=', $startDate)                                 
+        ->whereDate('delivery_date', '<=', $endDate)          
+        ->sum('food_price');
+
+        $sumExtra =  DB::table('orders')
+        ->where('deleted_at', null)
+        ->where('orders.order_amount', '!=', null)
+        ->where('orders.order_ref', '!=', null)
+        ->where('vendor_id', $vendor_id)   
+        ->whereDate('delivery_date', '>=', $startDate)                                 
+        ->whereDate('delivery_date', '<=', $endDate) 
+        ->sum('extra');
+
+        $vendorFoodPrice =  $sumFoodPrice + $sumExtra ;
+
+        $sumGlovoComm = DB::table('commission')
+        ->join('orders', 'orders.id', 'commission.order_id')
+        ->where('orders.deleted_at', null)
+        ->where('orders.food_price', '!=', null)
+        ->where('orders.vendor_id', $vendor_id)  
+        ->whereDate('delivery_date', '>=', $startDate)                                 
+        ->whereDate('delivery_date', '<=', $endDate) 
+        ->sum('commission.platform_comm');
+
+        $countAllOrder = Orders::where('deleted_at', null)
+         ->where('orders.order_amount', '!=', null)
+         ->where('orders.order_ref', '!=', null)
+         ->where('vendor_id', $vendor_id)  
+         ->whereDate('delivery_date', '>=', $startDate)                                 
+         ->whereDate('delivery_date', '<=', $endDate)  
+         ->count();
+        // dd( $countAllOrder );
+ 
+         $getOrderItem = DB::table('orders')
+         ->where('deleted_at', null)
+         ->where('orders.order_amount', '!=', null)
+         ->where('orders.order_ref', '!=', null)
+         ->where('vendor_id', $vendor_id)   
+         ->whereDate('delivery_date', '>=', $startDate)                                 
+         ->whereDate('delivery_date', '<=', $endDate) 
+         ->get('description')->pluck('description');
+ 
+         $string =  $getOrderItem;
+         $substring = 'plate';
+         $countAllPlate = substr_count($string, $substring);
+ 
+         $countPlatformWhereOrderCame = DB::table('orders')
+         ->Join('platforms', 'orders.platform_id', '=', 'platforms.id')->distinct()
+         ->where('orders.deleted_at', null)
+         ->where('orders.order_amount', '!=', null)
+         ->where('orders.order_ref', '!=', null)
+         ->where('orders.vendor_id', $vendor_id)  
+         ->whereDate('delivery_date', '>=', $startDate)                                 
+         ->whereDate('delivery_date', '<=', $endDate)  
+         ->count('platforms.id');
+ 
+         $payouts = DB::table('orders')
+         ->where('deleted_at', null)
+         ->where('orders.order_amount', '!=', null)
+         ->where('orders.order_ref', '!=', null)
+         ->whereDate('delivery_date', '>=', $startDate)                                 
+         ->whereDate('delivery_date', '<=', $endDate) 
+         ->where('orders.vendor_id', $vendor_id)  
+         ->sum('payout');
+ 
+         //$commission = (int)$sumAllOrders - (int)$payouts ;
+         $commission = Commission::join('orders', 'orders.id', '=', 'commission.order_id')
+         ->where('orders.deleted_at', null)
+         ->where('orders.food_price', '!=', null)
+         ->where('orders.vendor_id', $vendor_id)  
+         ->whereDate('delivery_date', '>=', $startDate)                                 
+         ->whereDate('delivery_date', '<=', $endDate) 
+         ->sum('commission.localeats_comm');
+ 
+         $commissionPaid = DB::table('orders')
+         ->where('orders.vendor_id', $vendor_id)  
+         ->whereDate('delivery_date', '>=', $startDate)                                 
+         ->whereDate('delivery_date', '<=', $endDate) 
+         ->sum('commission');
+
+         $chartYearlyTotalSales = Orders::select(
+            \DB::raw('YEAR(delivery_date) as year'),)
+            ->where('deleted_at', null)
+            ->where('orders.order_amount', '!=', null)
+            ->where('orders.order_ref', '!=', null)
+            ->where('orders.food_price', '!=', null)
+            ->where('orders.vendor_id', $vendor_id)  
+            ->whereDate('delivery_date', '>=', $startDate)                                 
+            ->whereDate('delivery_date', '<=', $endDate) 
+            ->groupby('year')
+            ->get();
+    
+            $chartMonthlyTotalSales = Orders::select(
+            \DB::raw("COUNT(*) as total_sales"), 
+            \DB::raw('DATE_FORMAT(delivery_date,"%M ") as month'),
+            \DB::raw('SUM(order_amount) as sales_volume'),
+            )->where('deleted_at', null)
+            ->where('orders.order_amount', '!=', null)
+            ->where('orders.order_ref', '!=', null)
+            ->where('orders.food_price', '!=', null)
+            ->where('orders.vendor_id', $vendor_id) 
+            ->whereDate('delivery_date', '>=', $startDate)                                 
+            ->whereDate('delivery_date', '<=', $endDate)  
+            ->groupby('month')
+            ->get();
+
+            $chartSalesMonth = Arr::pluck($chartMonthlyTotalSales, 'month');
+            $chartSalesVolume = Arr::pluck($chartMonthlyTotalSales, 'sales_volume');
+            $chartSalesTotal = Arr::pluck($chartMonthlyTotalSales, 'total_sales');
+    
+            $monthlist = array_map(fn($month) => Carbon::create(null, $month)->format('M'), range(1, 12));
+            $salesYear =  Arr::pluck($chartYearlyTotalSales, 'year');
+            $data = [
+             'month' =>  $chartSalesMonth ,
+             'sales' =>  $chartSalesVolume,
+             'total' =>  $chartSalesTotal,
+            ];
+    
+            $chowdeckOrderCount= DB::table('orders')
+            ->join('platforms', 'platforms.id', '=', 'orders.platform_id')
+            ->where('platforms.name', 'chowdeck')
+            ->where('orders.deleted_at', null)
+            ->where('orders.order_amount', '!=', null)
+            ->where('orders.order_ref', '!=', null)
+            ->where('orders.vendor_id', $vendor_id)  
+            ->whereDate('delivery_date', '>=', $startDate)                                 
+            ->whereDate('delivery_date', '<=', $endDate) 
+            ->get('orders.platform_id')->count();
+    
+            $glovoOrderCount= DB::table('orders')
+            ->join('platforms', 'platforms.id', '=', 'orders.platform_id')
+            ->where('platforms.name', 'glovo')
+            ->where('orders.deleted_at', null)
+            ->where('orders.order_amount', '!=', null)
+            ->where('orders.order_ref', '!=', null)
+            ->where('orders.vendor_id', $vendor_id)  
+            ->whereDate('delivery_date', '>=', $startDate)                                 
+            ->whereDate('delivery_date', '<=', $endDate) 
+            ->get('orders.platform_id')->count();
+    
+            $edenOrderCount= DB::table('orders')
+            ->join('platforms', 'platforms.id', '=', 'orders.platform_id')
+            ->where('platforms.name', 'edenlife')
+            ->where('orders.deleted_at', null)
+            ->where('orders.order_amount', '!=', null)
+            ->where('orders.order_ref', '!=', null)
+            ->where('orders.vendor_id', $vendor_id)  
+            ->whereDate('delivery_date', '>=', $startDate)                                 
+            ->whereDate('delivery_date', '<=', $endDate) 
+            ->get('orders.platform_id')->count();
+    
+            $platformOrders = DB::table('orders')
+            ->join('platforms', 'platforms.id', '=', 'orders.platform_id')->distinct()
+            ->where('platforms.deleted_at', null)
+            ->where('orders.vendor_id', $vendor_id)  
+            ->whereDate('delivery_date', '>=', $startDate)                                 
+            ->whereDate('delivery_date', '<=', $endDate) 
+            ->get(['platforms.*']);
+            
+            // bar chart
+            if($countAllOrder < 1){
+                $chowdeckSalesPercentageChart = $chowdeckOrderCount / 1 * 100;
+                $glovoSalesPercentageChart = $glovoOrderCount / 1 * 100;
+                $edenSalesPercentageChart = $edenOrderCount / 1 * 100;
+            }
+            else{
+                $chowdeckSalesPercentageChart = $chowdeckOrderCount / $countAllOrder * 100;
+                $glovoSalesPercentageChart = $glovoOrderCount / $countAllOrder * 100;
+                $edenSalesPercentageChart = $edenOrderCount / $countAllOrder * 100;
+            }
+    
+            $piechartData = [            
+            'label' => ['Chowdeck', 'Glovo', 'Eden'],
+            'data' => [round($chowdeckSalesPercentageChart) , round($glovoSalesPercentageChart),  round($edenSalesPercentageChart)] ,
+            ];
+        //sales for barchart
+    
+        $chowdeckOrder =  Orders::join('platforms', 'platforms.id', '=', 'orders.platform_id')
+        ->select(
+            \DB::raw('DATE_FORMAT(orders.delivery_date,"%M ") as month'),
+            \DB::raw('SUM(orders.order_amount) as sales'),
+            )
+            ->where('platforms.name', 'chowdeck')
+            ->where('orders.deleted_at', null)
+            ->where('orders.order_amount', '!=', null)
+            ->where('orders.order_ref', '!=', null)
+            ->where('orders.vendor_id', $vendor_id)  
+            ->whereDate('delivery_date', '>=', $startDate)                                 
+            ->whereDate('delivery_date', '<=', $endDate) 
+            ->groupby('month')
+            ->get();
+        $barChartChowdeckSales = Arr::pluck($chowdeckOrder, 'sales');
+    
+        $glovoOrder = Orders::join('platforms', 'platforms.id', '=', 'orders.platform_id')
+        ->select(
+            \DB::raw('DATE_FORMAT(orders.delivery_date,"%M ") as month'),
+            \DB::raw('SUM(orders.order_amount) as sales'),
+            )
+            ->where('platforms.name', 'glovo')
+            ->where('orders.deleted_at', null)
+            ->where('orders.order_amount', '!=', null)
+            ->where('orders.order_ref', '!=', null)
+            ->where('orders.vendor_id', $vendor_id)  
+            ->whereDate('delivery_date', '>=', $startDate)                                 
+            ->whereDate('delivery_date', '<=', $endDate) 
+            ->groupby('month')
+            ->get();
+            $barChartGlovoSales = Arr::pluck($glovoOrder, 'sales');
+    
+        $edenOrder=  Orders::join('platforms', 'platforms.id', '=', 'orders.platform_id')
+        ->select(
+            \DB::raw('DATE_FORMAT(orders.delivery_date,"%M ") as month'),
+            \DB::raw('SUM(orders.order_amount) as sales'),
+            )
+            ->where('platforms.name', 'edenlife')
+            ->where('orders.deleted_at', null)
+            ->where('orders.order_amount', '!=', null)
+            ->where('orders.order_ref', '!=', null)
+            ->where('orders.vendor_id', $vendor_id)  
+            ->whereDate('delivery_date', '>=', $startDate)                                 
+            ->whereDate('delivery_date', '<=', $endDate) 
+            ->groupby('month')
+            ->get();
+            $barChartEdenSales = Arr::pluck($edenOrder, 'sales');
+      
+        $barChartData = [
+            'months'        =>  $chartSalesMonth,
+            'chocdekSales'  =>  $barChartChowdeckSales,
+            'glovoSales'    =>  $barChartGlovoSales,
+            'edenSales'     =>  $barChartEdenSales,
+        ]; 
+        return view('vendormanager.filter-vendor-dashboard',  compact('name', 'role', 
+        'activePlatform', 'payouts', 'commission',   'sumAllOrders', 
+       'countAllOrder', 'countPlatformWhereOrderCame',
+       'countAllPlate', 'commissionPaid', 'data', 'salesYear', 'platformOrders',
+       'chowdeckOrderCount','glovoOrderCount', 'edenOrderCount', 
+       'chowdeckSalesPercentageChart', 'glovoSalesPercentageChart', 
+       'edenSalesPercentageChart', 'piechartData' ,  'barChartData',
+        'vendorFoodPrice', 'vendorName', 'sumGlovoComm',   
+        'startDate', 'endDate','vendor_id' ));
+    }
+
 
 
 }//class
