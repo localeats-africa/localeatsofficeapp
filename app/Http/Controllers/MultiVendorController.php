@@ -260,7 +260,7 @@ class MultiVendorController extends Controller
             ->get('vendor_online_sales.platform_id')->count();
     
             // pie chart
-           if($countAllOrder > 1){
+           if($countAllOrder > 0){
             $chowdeckSalesPercentageChart = $chowdeckOrderCount / $countAllOrder * 100;
             $glovoSalesPercentageChart = $glovoOrderCount / $countAllOrder * 100;
             $edenSalesPercentageChart = $edenOrderCount / $countAllOrder * 100;
