@@ -2334,7 +2334,7 @@ class AdminController extends Controller
         }
     }
 
-    public function childVendor(Request $request, $vendor_id){
+    public function allChildVendor(Request $request, $vendor_id){
         if(Auth::user()){
             $name = Auth::user()->name;
             $user_id = Auth::user()->id;
