@@ -317,7 +317,7 @@
                                     @else 
                                     @auth
                                     @if(Auth::user()->role_id =='2')
-                                    <a href="vendor-dashboard/{{$data->id}}" class="card-btn "
+                                    <a href="parent-store-dashboard/{{$data->id}}" class="card-btn "
                                           style="text-decoration:none;" title="Profile">
                                           <small>Dashboard </small> <small class="text-info"> &nbsp;<i
                                                       class="fa fa-dashboard"></i></small>
