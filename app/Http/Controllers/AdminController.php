@@ -2598,6 +2598,10 @@ class AdminController extends Controller
         ->where('users.id',  $parent)
         ->get('users.*')->pluck('parent_store')->first();
 
+        $parentStoreName =  DB::table('multi_store')
+        ->where('id',  $parent)
+        ->get()->pluck('multi_store_name')->first();
+
         $outlets =  DB::table('vendor')
         ->join('sub_store', 'sub_store.vendor_id', 'vendor.id')
         ->where('sub_store.multi_store_id', $parent)
@@ -2880,7 +2884,7 @@ class AdminController extends Controller
             'manoSales'     => '',
         ]; 
 
-        return view('multistore.parent-vendor-dashboard', compact('name','parent', 'outlets',
+        return view('multistore.parent-vendor-dashboard', compact('name','parent', 'parentStoreName',  'outlets',
         'offlineSales', 'salesChannel', 'countAllOrder', 'countPlatformWhereOrderCame', 'sumAllOrders', 
         'chowdeckOrderCount', 'countOutletsFromWhereOfflineSales','outletsExpenses',
         'GlovoOrderCount', 'sumGlovoOrder', 'countOutletsExpensesCameFrom', 'sumChowdeckOrder', 
