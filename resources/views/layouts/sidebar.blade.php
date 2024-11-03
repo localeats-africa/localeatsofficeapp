@@ -187,6 +187,9 @@
                         </a>
                         <div class="collapse" id="food-menu">
                               <ul class="nav flex-column sub-menu">
+                              <li class="nav-item">
+                                          <a class="nav-link" href="{{ url('supply-list') }}">Supply</a>
+                                    </li>
 
                                     <li class="nav-item">
                                           <a class="nav-link" href="{{ url('expenses-list') }}">
