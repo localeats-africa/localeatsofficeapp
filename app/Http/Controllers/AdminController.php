@@ -2593,20 +2593,15 @@ class AdminController extends Controller
         $sevenDaysBack = Carbon::now()->subDays(7)->startOfDay();
         $lastSevenDays  =  date('Y-m-d', strtotime($sevenDaysBack));
 
-        $parent =  DB::table('multi_store')
+        $parentID =  DB::table('multi_store')
         ->join('users', 'users.parent_store', 'multi_store.id')
-        ->where('users.id',  $user_id)
+        ->where('users.id',  $parent)
         ->get('users.*')->pluck('parent_store')->first();
 
         $outlets =  DB::table('vendor')
         ->join('sub_store', 'sub_store.vendor_id', 'vendor.id')
         ->where('sub_store.multi_store_id', $parent)
         ->get();
-
-        $outletsVendorID =  DB::table('vendor')
-        ->join('sub_store', 'sub_store.vendor_id', 'vendor.id')
-        ->where('sub_store.multi_store_id', $parent)
-        ->get('sub_store.vendor_id');
 
         $salesChannel = DB::table('sales_platform')
         ->join('sub_store', 'sub_store.vendor_id', '=', 'sales_platform.vendor_id')
