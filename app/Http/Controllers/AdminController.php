@@ -2885,7 +2885,7 @@ class AdminController extends Controller
             'manoSales'     => '',
         ]; 
 
-        return view('multistore.parent.admin', compact('username','parent', 'outlets',
+        return view('multistore.parent-store-dashboard', compact('username','parent', 'outlets',
         'offlineSales', 'salesChannel', 'countAllOrder', 'countPlatformWhereOrderCame', 'sumAllOrders', 
         'chowdeckOrderCount', 'countOutletsFromWhereOfflineSales','outletsExpenses',
         'GlovoOrderCount', 'sumGlovoOrder', 'countOutletsExpensesCameFrom', 'sumChowdeckOrder', 
