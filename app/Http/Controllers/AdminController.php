@@ -48,6 +48,7 @@ use App\Models\VendorExpensesCategory;
 use App\Models\TempInStoreSales;
 use App\Models\VendorOnlineSales;
 use App\Models\VendorInstoreSales;
+use App\Models\SubVendorInventory;
 use App\Mail\NewVendorEmail;
 
 use Excel;
@@ -1498,6 +1499,31 @@ class AdminController extends Controller
       else{
         return redirect()->back()->with('expense-error', 'Opps!');
       } 
+    }
+
+      //view supply list per vendor
+      public function vendorSupplyList(Request $request){
+        $id = Auth::user()->id;
+        $role = DB::table('role')->select('role_name')
+        ->join('users', 'users.role_id', 'role.id')
+        ->where('users.id', $id)
+        ->pluck('role_name')->first();
+        $vendor = Vendor::all();
+
+        $vendor_id      =  $request->vendor_id;
+        $startDate      =   date("Y-m-d", strtotime($request->from)) ;
+        $endDate        =  date("Y-m-d", strtotime($request->to));
+        
+        $vendorName = Vendor::where('id', $vendor_id)
+        ->get()->pluck('vendor_name')->first();
+        
+        $vendorSupply = SubVendorInventory::where('vendor_id',  $vendor_id)
+        ->whereDate('sub_vendor_inventory.created_at', '>=', $startDate)                                 
+        ->whereDate('sub_vendor_inventory.created_at', '<=', $endDate) 
+        ->get(['sub_vendor_inventory.*']);
+
+        return view('admin.vendor-supply-list', compact('role', 'vendor',
+        'vendorSupply',  'vendorName', 'startDate', 'endDate'));
     }
 
         //view sales list per vendor
