@@ -8,7 +8,7 @@
       <div class="content-wrapper">
             <div class="page-header">
                   <h3 class="page-title">
-                        Overview
+                       {{$parentStoreName}} Dashboard
                   </h3>
                   <nav aria-label="breadcrumb">
                         <ul class="breadcrumb">
