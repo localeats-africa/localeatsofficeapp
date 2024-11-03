@@ -2349,7 +2349,7 @@ class AdminController extends Controller
             $parent = DB::table('multi_store')
             ->where('id', $vendor_id)
             ->get('*')->pluck('id')->first();
-  //dd( $parent);
+            //dd( $parent);
             $countVendor =  DB::table('vendor')
             ->join('sub_store', 'sub_store.vendor_id', 'vendor.id')
             ->where('sub_store.multi_store_id', $parent)
@@ -2576,6 +2576,7 @@ class AdminController extends Controller
     }
 
     public function showParentVendorDashboard(Request $request, $parent){
+        if(Auth::user()){
         $name = Auth::user()->fname;
         $user_id = Auth::user()->id;
         $role = DB::table('role')->select('role_name')
@@ -2893,7 +2894,7 @@ class AdminController extends Controller
         'chowdeckSalesPercentageChart', 'glovoSalesPercentageChart', 
         'edenSalesPercentageChart', 'piechartData' ,  'barChartData', 'manoOrderCount', 
         'manoSalesPercentageChart', 'data', 'allGlovoOrders', 'allChowdeckOrders', 'allSales'));
-        
+        }   
     }
 
 
