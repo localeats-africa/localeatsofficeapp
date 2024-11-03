@@ -221,7 +221,7 @@
                                           <div class="card-body">
                                                 <img src="{{ asset('assets/images/dashboard/circle.svg') }}"
                                                       class="card-img-absolute" alt="circle-image">
-                                                <h4 class="font-weight-normal"> In-Store Sales <i
+                                                <h4 class="font-weight-normal"> Walk-in Sales <i
                                                             class="fa fa-cutlery  mdi-24px float-end"></i>
                                                 </h4>
                                                 <h2 class="mb-5">₦{{number_format($offlineSales->sum('amount'))}}</h2>
