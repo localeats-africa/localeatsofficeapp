@@ -208,8 +208,8 @@ Route::controller(AdminController::class)->group(function () {
     Route::get('parent-vendor',  'allParentVendor')->name('parent-vendor');
     Route::get('new-parent-vendor',  'newParentVendor')->name('new-parent-vendor');
     Route::post('add-parent-vendor',  'addParentVendor')->name('add-parent-vendor');
-    Route::get('parent-store-dashboard/{id}', 'showVendorDashboard')->name('parent-store-dashboard');
-    Route::get('filter-parent-store-dashboard/{id}', 'filterVendorDashboard')->name('filter-parent-store-dashboard');
+    Route::get('parent-store-dashboard/{id}', 'showParentVendorDashboard')->name('parent-store-dashboard');
+    Route::get('filter-parent-store-dashboard/{id}', 'filterParentVendorDashboard')->name('filter-parent-store-dashboard');
    
     //create outlets
     Route::get('child-vendor/{id}',  'allChildVendor')->name('child-vendor');
