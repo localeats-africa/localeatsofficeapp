@@ -2575,8 +2575,8 @@ class AdminController extends Controller
             return redirect()->back()->with('add-vendor', 'Something went wrong');   
     }
 
-    public function showParentVendorDashboard(Request $request, $vendor_id){
-        $username = Auth::user()->username;
+    public function showParentVendorDashboard(Request $request, $parent){
+        $name = Auth::user()->fname;
         $user_id = Auth::user()->id;
         $role = DB::table('role')->select('role_name')
         ->join('users', 'users.role_id', 'role.id')
@@ -2885,7 +2885,7 @@ class AdminController extends Controller
             'manoSales'     => '',
         ]; 
 
-        return view('multistore.parent-store-dashboard', compact('username','parent', 'outlets',
+        return view('multistore.parent-vendor-dashboard', compact('name','parent', 'outlets',
         'offlineSales', 'salesChannel', 'countAllOrder', 'countPlatformWhereOrderCame', 'sumAllOrders', 
         'chowdeckOrderCount', 'countOutletsFromWhereOfflineSales','outletsExpenses',
         'GlovoOrderCount', 'sumGlovoOrder', 'countOutletsExpensesCameFrom', 'sumChowdeckOrder', 
