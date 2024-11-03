@@ -260,15 +260,30 @@ class MultiVendorController extends Controller
             ->get('vendor_online_sales.platform_id')->count();
     
             // pie chart
+           if($countAllOrder > 1){
             $chowdeckSalesPercentageChart = $chowdeckOrderCount / $countAllOrder * 100;
             $glovoSalesPercentageChart = $glovoOrderCount / $countAllOrder * 100;
             $edenSalesPercentageChart = $edenOrderCount / $countAllOrder * 100;
             $manoSalesPercentageChart = $manoOrderCount / $countAllOrder * 100;
-    
             $piechartData = [            
-            'label' => ['Chowdeck', 'Glovo', 'Eden', 'Mano'],
-            'data' => [round($chowdeckSalesPercentageChart) , round($glovoSalesPercentageChart),  round($edenSalesPercentageChart), round( $manoSalesPercentageChart)] ,
-            ];
+                'label' => ['Chowdeck', 'Glovo', 'Eden', 'Mano'],
+                'data' => [round($chowdeckSalesPercentageChart) , round($glovoSalesPercentageChart),  round($edenSalesPercentageChart), round( $manoSalesPercentageChart)] ,
+                ];
+           }
+           else{
+            $chowdeckSalesPercentageChart = 0;
+            $glovoSalesPercentageChart=0;
+            $edenSalesPercentageChart = 0;
+            $manoSalesPercentageChart = 0;
+
+            $piechartData = [            
+                'label' => ['Chowdeck', 'Glovo', 'Eden', 'Mano'],
+                'data' => [round($chowdeckSalesPercentageChart) , round($glovoSalesPercentageChart),  round($edenSalesPercentageChart), round( $manoSalesPercentageChart)] ,
+                ];
+           
+           }
+    
+           
             
         // barchart
         $chowdeckOrder =  VendorOnlineSales::join('platforms', 'platforms.name', '=', 'vendor_online_sales.platform_id')
