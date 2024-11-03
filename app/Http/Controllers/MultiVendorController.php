@@ -280,10 +280,7 @@ class MultiVendorController extends Controller
                 'label' => ['Chowdeck', 'Glovo', 'Eden', 'Mano'],
                 'data' => [round($chowdeckSalesPercentageChart) , round($glovoSalesPercentageChart),  round($edenSalesPercentageChart), round( $manoSalesPercentageChart)] ,
                 ];
-           
-           }
-    
-           
+           }         
             
         // barchart
         $chowdeckOrder =  VendorOnlineSales::join('platforms', 'platforms.name', '=', 'vendor_online_sales.platform_id')
