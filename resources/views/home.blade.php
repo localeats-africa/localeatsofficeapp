@@ -55,7 +55,7 @@
 
                               <!-- storeowner vendor sidebar menu-->
                                     @if(Auth::user()->role_id == '11')
-                                <a class="text-danger" href="{{ url('store') }}">Click {{ __('Dashboard') }}</a>
+                                <a class="text-danger" href="{{ route('store') }}">Click {{ __('Dashboard') }}</a>
                               @endif
 
                               @endauth
