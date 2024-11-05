@@ -13,7 +13,7 @@
                   <nav aria-label="breadcrumb">
                         <ul class="breadcrumb">
                               <li class="breadcrumb-item active" aria-current="page">
-                                    <span></span><a href="{{ url(auth()->user()->username, 'new-meal-menu') }}" class="btn btn-block btn-danger"><i
+                                    <span></span><a href="{{ url('store-new-meal-menu') }}" class="btn btn-block btn-danger"><i
                                                 class="fa fa-plus-square"></i> &nbsp;Create New Food Menu </a>
                               </li>
                         </ul>
