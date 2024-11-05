@@ -86,10 +86,51 @@
                   </div>
             </div>
             <!---end Alert --->
-            <form method="post" action="{{ route('store-add-meal-menu') }}" name="submit" enctype="multipart/form-data">
+            <form method="post" action="{{ route('add-meal-menu') }}" name="submit" enctype="multipart/form-data">
                   @csrf
                   <div class="row">
-                        <div class="col-md-6 grid-margin stretch-card">
+
+                  <div class="col-md-3 grid-margin stretch-card">
+                              <div class="card">
+                                    <div class="card-body">
+                                          <div class="form-label required">Category
+                                          </div>
+                                          <select class="js-example-basic-single2 text-secondary" style="width:100%"
+                                                name="category">
+                                                <option>Choose</option>
+                                                @foreach($category as $data)
+                                                <option value="{{$data->category}}">
+                                                      {{$data->category}}
+                                                </option>
+                                                @endforeach
+                                          </select>
+                                          @error('category')
+                                          <div class="alert alert-danger alert-dismissible" role="alert">
+                                                <div class="d-flex">
+                                                      <div>
+                                                            <!-- Download SVG icon from http://tabler-icons.io/i/alert-circle -->
+                                                            <svg xmlns="http://www.w3.org/2000/svg"
+                                                                  class="icon alert-icon" width="24" height="24"
+                                                                  viewBox="0 0 24 24" stroke-width="2"
+                                                                  stroke="currentColor" fill="none"
+                                                                  stroke-linecap="round" stroke-linejoin="round">
+                                                                  <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                                                                  <path d="M3 12a9 9 0 1 0 18 0a9 9 0 0 0 -18 0" />
+                                                                  <path d="M12 8v4" />
+                                                                  <path d="M12 16h.01" />
+                                                            </svg>
+                                                      </div>
+                                                      <div>
+                                                            {{ $message }}
+                                                      </div>
+                                                </div>
+                                                <a class="btn-close" data-bs-dismiss="alert" aria-label="close"></a>
+                                          </div>
+                                          @enderror
+                                    </div>
+                              </div>
+                        </div>
+                        <div class="col-md-3 grid-margin stretch-card">
                               <div class="card">
                                     <div class="card-body">
                                           <div class="form-label required"> Food Item <i class="text-danger">*</i>
