@@ -166,7 +166,7 @@ class StoreOwnersController extends Controller
         else{return redirect()->back()->with('error', 'Opps! something went wrong.'); }
     }
 
-    public function foodMenu(Request $request, $username){
+    public function foodMenu(Request $request){
         if(Auth::user()){
             $username = Auth::user()->username;
             $user_id = Auth::user()->id;
@@ -188,29 +188,28 @@ class StoreOwnersController extends Controller
             $foodMenu = DB::table('offline_food_menu')
             ->join('users', 'users.id', 'offline_food_menu.added_by')
             ->where('offline_food_menu.deleted_at', null)
-            ->where('offline_food_menu.store_id', $parentID)
-            ->where('offline_food_menu.price', '!=', null)
-            ->where('offline_food_menu.food_item', '!=', null)
+            ->where('offline_food_menu.vendor_id', $vendor_id)
             ->select(['offline_food_menu.*', 'users.fullname'])
             ->orderBy('offline_food_menu.created_at', 'desc')
             ->where(function ($query) use ($search) {  // <<<
-            $query->where('offline_food_menu.food_item', 'LIKE', '%'.$search.'%')
-                ->orWhere('offline_food_menu.category', 'LIKE', '%'.$search.'%')
-                    ->orWhere('offline_food_menu.price', 'LIKE', '%'.$search.'%');
+            $query->where('offline_food_menu.soup', 'LIKE', '%'.$search.'%')
+                ->orWhere('offline_food_menu.swallow', 'LIKE', '%'.$search.'%')
+                    ->orWhere('offline_food_menu.protein', 'LIKE', '%'.$search.'%')
+                    ->orWhere('offline_food_menu.others', 'LIKE', '%'.$search.'%');
             })
             ->paginate($perPage,  $pageName = 'food')->appends(['per_page'   => $perPage]);
             $pagination = $foodMenu->appends ( array ('search' => $search) );
                 if (count ( $pagination ) > 0){
                     return view('storeowner.vendor-food-menu',  compact(
-                    'perPage', 'username', 'role', 'foodMenu', 'parentID'))->withDetails($pagination);     
+                    'perPage', 'username', 'role', 'foodMenu', 'vendor_idvendor_id'))->withDetails($pagination);     
                 } 
             else{
                 //return redirect()->back()->with('food-status', 'No record order found');
                 return view('storeowner.vendor-food-menu',  compact(
-                    'perPage', 'username', 'role', 'foodMenu', 'parentID'));
+                    'perPage', 'username', 'role', 'foodMenu', 'vendor_id'));
             }
             return view('storeowner.vendor-food-menu',  compact(
-                'perPage', 'username', 'role', 'foodMenu', 'parentID'));
+                'perPage', 'username', 'role', 'foodMenu', 'vendor_id'));
         }
     }
 
