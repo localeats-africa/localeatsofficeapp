@@ -123,7 +123,7 @@
 
                   <li class="nav-item">
                         <a class="nav-link" href="{{ url('all-food-menu') }}">
-                              <span class="menu-title">Food Menu</span>
+                              <span class="menu-title">Online Food Menu</span>
                               <i class="mdi mdi-menu   menu-icon fs-24"></i>
                         </a>
                   </li>
