@@ -232,7 +232,7 @@ class StoreOwnersController extends Controller
             $category = DB::table('offline_food_category')->get();
 
             return view('storeowner.add-food-menu',  compact('username', 
-            'role', 'vendor_id'));
+            'role', 'vendor_id', 'category'));
         }
     }
 
