@@ -93,7 +93,7 @@
                   <div class="col-md-3 grid-margin stretch-card">
                               <div class="card">
                                     <div class="card-body">
-                                          <div class="form-label required">Category
+                                          <div class="form-label required">Category <i class="text-danger">*</i>
                                           </div>
                                           <select class="js-example-basic-single2 text-secondary" style="width:100%"
                                                 name="category">
