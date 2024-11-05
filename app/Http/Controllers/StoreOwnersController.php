@@ -185,17 +185,17 @@ class StoreOwnersController extends Controller
             $perPage = $request->perPage ?? 15;
             $search = $request->input('search');
     
-            $foodMenu = DB::table('offline_food_menu')
-            ->join('users', 'users.id', 'offline_food_menu.added_by')
-            ->where('offline_food_menu.deleted_at', null)
-            ->where('offline_food_menu.vendor_id', $vendor_id)
-            ->select(['offline_food_menu.*', 'users.fullname'])
-            ->orderBy('offline_food_menu.created_at', 'desc')
+            $foodMenu = DB::table('offline_foodmenu')
+            ->join('users', 'users.id', 'offline_foodmenu.added_by')
+            ->where('offline_foodmenu.deleted_at', null)
+            ->where('offline_foodmenu.vendor_id', $vendor_id)
+            ->select(['offline_foodmenuoffline_foodmenu.*', 'users.fullname'])
+            ->orderBy('offline_foodmenu.created_at', 'desc')
             ->where(function ($query) use ($search) {  // <<<
-            $query->where('offline_food_menu.soup', 'LIKE', '%'.$search.'%')
-                ->orWhere('offline_food_menu.swallow', 'LIKE', '%'.$search.'%')
-                    ->orWhere('offline_food_menu.protein', 'LIKE', '%'.$search.'%')
-                    ->orWhere('offline_food_menu.others', 'LIKE', '%'.$search.'%');
+            $query->where('offline_foodmenu.soup', 'LIKE', '%'.$search.'%')
+                ->orWhere('offline_foodmenu.swallow', 'LIKE', '%'.$search.'%')
+                    ->orWhere('offline_foodmenu.protein', 'LIKE', '%'.$search.'%')
+                    ->orWhere('offline_foodmenu.others', 'LIKE', '%'.$search.'%');
             })
             ->paginate($perPage,  $pageName = 'food')->appends(['per_page'   => $perPage]);
             $pagination = $foodMenu->appends ( array ('search' => $search) );
@@ -229,10 +229,10 @@ class StoreOwnersController extends Controller
             $removeBracket = substr($multipleVendor_list, 1, -1);
             $vendor_id =  str_replace('"', ' ', $removeBracket);
 
-            $category = FoodCategory::where('store_id', $vendor_id)->get();
+            //$category = FoodCategory::where('store_id', $vendor_id)->get();
 
             return view('storeowner.add-food-menu',  compact('username', 
-            'role', 'vendor_id', 'category'));
+            'role', 'vendor_id'));
         }
     }
 
