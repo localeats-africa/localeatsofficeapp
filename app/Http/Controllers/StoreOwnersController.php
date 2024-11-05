@@ -229,7 +229,7 @@ class StoreOwnersController extends Controller
             $removeBracket = substr($multipleVendor_list, 1, -1);
             $vendor_id =  str_replace('"', ' ', $removeBracket);
 
-            //$category = FoodCategory::where('store_id', $vendor_id)->get();
+            $category = DB::table('offline_food_category')->get();
 
             return view('storeowner.add-food-menu',  compact('username', 
             'role', 'vendor_id'));
