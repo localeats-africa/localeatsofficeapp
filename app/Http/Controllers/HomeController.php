@@ -2374,36 +2374,30 @@ class HomeController extends Controller
         $vendorName = Vendor::where('id', $vendor_id)
         ->get()->pluck('vendor_name')->first();
  
-         $salesList = OfflineFoodMenu::where('vendor_id', $vendor_id)
-         ->where('item', '!=', null)
+         $salesList = OfflineFoodMenu::where('item', '!=', null)
          ->orderBy('created_at', 'desc')
          ->get();
 
-         $vendorSwallow = OfflineFoodMenu::where('vendor_id', $vendor_id)
-         ->where('swallow', '!=', null)
+         $vendorSwallow = OfflineFoodMenu::where('swallow', '!=', null)
          //->orderBy('created_at', 'desc')
          ->get();
  
-         $vendorSoup= OfflineFoodMenu::where('vendor_id', $vendor_id)
-          ->where('soup', '!=', null)
+         $vendorSoup= OfflineFoodMenu::where('soup', '!=', null)
         //  ->orderBy('created_at', 'desc')
          ->get();
 
          //dd( $vendorName);
  
-         $vendorProtein= OfflineFoodMenu::where('vendor_id', $vendor_id)
-         ->where('protein', '!=', null)
+         $vendorProtein= OfflineFoodMenu::where('protein', '!=', null)
          //->orderBy('created_at', 'desc')
          ->get();
  
-         $vendorOthersFoodItem= OfflineFoodMenu::where('vendor_id', $vendor_id)
-         ->where('others', '!=', null)
+         $vendorOthersFoodItem= OfflineFoodMenu::where('others', '!=', null)
          //->orderBy('created_at', 'desc')
          ->get();
 
 
-        $sales = OfflineFoodMenu::where('vendor_id', $vendor_id)
-        ->where('deleted_at', '=', null)
+        $sales = OfflineFoodMenu::where('deleted_at', '=', null)
         ->get();
 
         return view('cashier.add-new-offline-sales',  compact('name', 'role', 
