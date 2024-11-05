@@ -2373,22 +2373,23 @@ class HomeController extends Controller
      
         $vendorName = Vendor::where('id', $vendor_id)
         ->get()->pluck('vendor_name')->first();
-
  
          $salesList = OfflineFoodMenu::where('vendor_id', $vendor_id)
          ->where('item', '!=', null)
          ->orderBy('created_at', 'desc')
          ->get();
- 
+
          $vendorSwallow = OfflineFoodMenu::where('vendor_id', $vendor_id)
          ->where('swallow', '!=', null)
          //->orderBy('created_at', 'desc')
          ->get();
  
          $vendorSoup= OfflineFoodMenu::where('vendor_id', $vendor_id)
-        //  ->where('soup', '!=', null)
+          ->where('soup', '!=', null)
         //  ->orderBy('created_at', 'desc')
          ->get();
+
+         //dd( $vendorName);
  
          $vendorProtein= OfflineFoodMenu::where('vendor_id', $vendor_id)
          ->where('protein', '!=', null)
