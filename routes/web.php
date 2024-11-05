@@ -299,4 +299,8 @@ Route::controller(VendorsController::class)->group(function () {
 
 Route::controller(StoreOwnersController::class)->group(function () {
     Route::get('store',  'vendoraccount')->name('store');
+    Route::get('store-new-meal-menu',  'newFoodMenu')->name('store-meal-menu');
+    Route::get('store-meal-menu',  'foodMenu')->name('store-meal-menu');
+    Route::post('store-add-meal-menu',  'addFoodMenu')->name('store-add-meal-menu');
+    Route::get('store-edit-meal-menu/{id}', 'editFoodMenu')->name('store-edit-meal-menu');
 });
