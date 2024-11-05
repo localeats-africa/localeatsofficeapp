@@ -338,22 +338,7 @@
                   @endif
 
 
-                   <!--- Cashier sidebar ---->
-                   @if(Auth::user()->role_id == '7')
-                  <li class="nav-item">
-                        <a class="nav-link" href="{{ url('cashier')}}">
-                              <span class="menu-title">Dashboard</span>
-                              <i class="mdi mdi-home menu-icon"></i>
-                        </a>
-                  </li>
-
-                  <li class="nav-item">
-                        <a class="nav-link" href="{{ url('vendor-assign-sales') }}">
-                              <span class="menu-title">Bookkeeping</span>
-                              <i class="mdi mdi-book   menu-icon fs-24"></i>
-                        </a>
-                  </li>
-                  @endif 
+                 
                   <!--- Storeowner sidebar ---->
                   @if(Auth::user()->role_id == '11')
                   <li class="nav-item">
@@ -385,7 +370,6 @@
                   </li>
 
                 
-                 
                   @endif
 
                   <!-- -Account Manager -->
