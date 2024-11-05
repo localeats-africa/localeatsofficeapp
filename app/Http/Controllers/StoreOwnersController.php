@@ -249,7 +249,7 @@ class StoreOwnersController extends Controller
             $this->validate($request, [ 
                 'item'      => 'required|string|max:255',
                 'price'     => 'required|string|max:255',
-                'category'  => 'max:255',
+                'category'  => 'required|max:255',
             ]);
 
             $getVendorID = User::where('id', $user_id)->get('vendor')->toArray();
