@@ -362,13 +362,7 @@
                         </a>
                   </li>
 
-                  <li class="nav-item">
-                        <a class="nav-link" href="{{ url('store-meal-menu') }}">
-                              <span class="menu-title">Food Menu</span>
-                              <i class="fa fa-list   menu-icon fs-24"></i>
-                        </a>
-                  </li>
-               
+              
 
                   <li class="nav-item">
                         <a class="nav-link" href="{{ url('vendor-add-supply') }}">
